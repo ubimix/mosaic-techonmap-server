@@ -1,7 +1,6 @@
 define(function(require) {
     var Backbone = require('Backbone');
     var viewManager = require('./viewManager');
-
     var Router = Backbone.Router.extend({
         routes : {
             '' : 'homeScreen',
@@ -16,27 +15,22 @@ define(function(require) {
             ':workspace/*path/history' : 'historyScreen',
             ':workspace/*path' : 'resourceScreen'
         },
-
         homeScreen : function() {
             require('./../screens/home/app').run(viewManager, {});
         },
         loginScreen : function() {
             require('./../screens/login/app').run(viewManager, {});
-
         },
         searchScreen : function(workspace) {
             require('./../screens/search/app').run(viewManager, {
                 workspace : workspace
             });
-
         },
         workspaceScreen : function(workspace, sort) {
             require('./../screens/workspace/app').run(viewManager, {
                 workspace : workspace,
                 sort : sort
-               
             });
-
         },
         compareScreen : function(workspace, path, v1, v2) {
             require('./../screens/compare/app').run(viewManager, {

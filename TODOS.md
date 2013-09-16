@@ -2,7 +2,7 @@
 Login
 Create entity : /workspace/new -> view with ID / textarea. Actions : SAVE / CANCEL. SAVE -> resourceScreen
 i18n
-Add date to versions and sort by date
+
 Add possibility to log a message when bringing a change
 Recherche
 Voir comment refléter directement dans le tableau des entrées un changement de propriété d'une resource nouvellement sauvegardée
@@ -18,8 +18,16 @@ Improve notification messages (Pine Notify ?) when data is saved successfully / 
 
 Use CodeMirror editor
 
+dans config.passport: pourquoi quand on met function() {console.log('auth/google'); passport.authenticate('google')} 
+la function ne retourne jamais ?
+
 
 system:
   date:
   version:
   author:
+  
+done
+    Add date to versions and sort by date
+    
+    

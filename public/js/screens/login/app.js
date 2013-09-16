@@ -1,5 +1,4 @@
-define(function(require) {
-    var LoginView = require('./view');
+define(['./view'], function(LoginView) {
     return {
         run : function(viewManager, options) {
             var view = new LoginView(options);

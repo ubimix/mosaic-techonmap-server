@@ -1,0 +1,54 @@
+---
+  # Configuration sample file for Jingo (YAML)
+  application:
+    title: "TechOnMap"
+    repository: "/home/arkub/git/ubimix.jingo/data-1/"
+    docSubdir: ""
+    remote: ""
+    pushInterval: 30
+    secret: "change me"
+  server:
+    hostname: "umxdev.com"
+    port: 3000
+    localOnly: false
+    baseUrl: "http://umxdev.com:3000"
+  authorization:
+    anonRead: true
+    validMatches: ".+"
+  authentication:
+    google:
+      enabled: true
+    twitter:
+      enabled: true
+      oauthkeys:
+        consumerKey : 'fytCW2YVtV3QYClAIV8vA'
+        consumerSecret : 'dnXAumqDkGr5p3gKm9CIC4EPbaV5OkWPpDYU2xVNg'
+    facebook:
+      enabled: true
+      oauthkeys:
+        clientID : '491166480975374'
+        clientSecret : 'cd05173cecc60189b5ad96bc18dce6b3'
+    alone:
+      enabled: true
+      username: "jingo"
+      passwordHash: "3d223b7b934e7e0000da171740f53252905be2cf"
+      email: "slauriere@ubimix.com"
+  accessRules:
+    - roles: [ "admin", "owner" ]
+      allows:
+        - resources: ["wiki", "pages"]
+          permissions: [ "get", "put", "delete" ]
+    - roles: ["guest"]
+      allows:
+        - resources: "wiki"
+          permissions:  ["get"]
+  userRoles:
+     Anonymous: [ "guest" ]
+     Stéphane Laurière: [ "admin" ]
+     Loïc Haÿ: ["admin"]
+  twitterClient:
+        consumerKey : 'fytCW2YVtV3QYClAIV8vA'
+        consumerSecret : 'dnXAumqDkGr5p3gKm9CIC4EPbaV5OkWPpDYU2xVNg'
+        accessTokenKey : '10078002-PlycJAuvnnRfhNyPQBxwIyqvnhHYAHOSTFHngi1ow'
+        accessTokenSecret : '3zqJDH51aCuZxrhMnEmLjrmQPkUPxij0GB0oF3UM'
+      
