@@ -1,5 +1,5 @@
 {
-  "name": "backbone-express-spa",
+  "name": "djinko-server",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,7 +12,11 @@
     "underscore": "~1.4.4",
     "moment": "~2.0.0",
     "bcrypt-nodejs": "0.0.3",
-    "node-uuid":"*"
+    "node-uuid":"*",
+    "yamljs":"*",
+    "iconv": "*",
+    "glob": "~3.1.11",
+    "commander": "*"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.8",
