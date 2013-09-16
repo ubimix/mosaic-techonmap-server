@@ -23,8 +23,8 @@ define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
                 url : '/api/resources/' + this.options.path,
                 data : this.options.resource
             }).done(function(msg) {
+                $('#dialog-restore-ok').modal()
                 //TODO: handle errors
-                console.log('Data Saved: ' + msg);
             });
         }
 
