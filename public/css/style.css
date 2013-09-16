@@ -13,3 +13,32 @@ body {
 	list-style-type: none;
 	padding-right: 20px;
 }
+
+.navbar .nav-user {
+	position: relative;
+	left: 0;
+	display: block;
+	margin: 0 10px 0 0;
+	float: right;
+}
+
+.nav-user {
+	list-style: none;
+}
+
+.nav-user li {
+	display: inline;
+	list-style-type: none;
+}
+
+.navbar .nav-user>li>a {
+	float: none;
+	padding: 10px 0px 10px;
+	color: #777777;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+.nav-user>li>a {
+	display: block;
+}

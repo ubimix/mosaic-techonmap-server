@@ -11,6 +11,13 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
                         sort : options.sort
                     });
                     viewManager.show(view);
+                },
+                error: function(err) {
+                    var view = new MainView({
+                        error : err,
+                        workspace : options.workspace
+                    });
+                    viewManager.show(view);
                 }
             });
         }

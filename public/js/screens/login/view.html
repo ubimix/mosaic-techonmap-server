@@ -5,28 +5,42 @@
 
 <div>
 
-<a href="/api/logout">Logout</a>
+	{{ if (user.displayName) { }} {{=user.displayName}} <a
+		href="/api/logout">Logout</a> {{ } else { }}
 
+	<hr />
+	<p>
+		<b>Authenticate via</b> <a href="/api/auth/google"
+			class="btn btn-primary">Google</a>
 
-<hr/>
-      <p>
-        <b>Authenticate via</b>
-        
-        <a href="/api/auth/google" class="btn btn-primary">Google</a> 
-        
-     </p>
-     
-     <hr/>
-     <p>
-        <b>Authenticate via</b>
-        <a href="/api/auth/twitter" class="btn btn-primary">Twitter</a>
-    </p>
-    <hr/>
-    <p>        
-        <b>Authenticate via</b>
-        <a href="/api/auth/facebook" class="btn btn-primary">Facebook</a>
-      
-      </p>
-      
-      <hr/>
-</div>
+	</p>
+
+	<hr />
+	<p>
+		<b>Authenticate via</b> <a href="/api/auth/twitter"
+			class="btn btn-primary">Twitter</a>
+	</p>
+	<hr />
+	<p>
+		<b>Authenticate via</b> <a href="/api/auth/facebook"
+			class="btn btn-primary">Facebook</a>
+	</p>
+	<hr />
+
+	<p>
+	<form action='/api/login' method='post'>
+
+		<div>
+			<label>Login</label><input type="text" name="username">
+		</div>
+		<div>
+			<label>Password</label><input type="password" name="password">
+			</p>
+
+			<div class="form-actions">
+				<input type="submit" value="Login" class="btn btn-primary">
+			</div>
+
+			{{ } }}
+
+		</div>
