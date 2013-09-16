@@ -6,7 +6,6 @@ define([ './view' ], function(HistoryView) {
             $.get('/api/resources/' + options.path + '/history/' + options.version, function(data) {
                 var view = new HistoryView({
                     resource : data,
-                    version : options.version,
                     path : options.path,
                     workspace : options.workspace
                 });

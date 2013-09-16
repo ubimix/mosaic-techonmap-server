@@ -1,5 +1,5 @@
-define([ 'Backbone', 'text!./view.html', 'core/viewManager', '../history/app', '../workspace/app' ], function(Backbone, template,
-        viewManager, historyScreen, workspaceScreen) {
+define([ 'Backbone', 'BootstrapModal', 'text!./view.html', 'core/viewManager', '../history/app', '../workspace/app' ], function(
+        Backbone, BootstrapModal, template, viewManager, historyScreen, workspaceScreen) {
 
     var ResourceRowView = Backbone.View.extend({
         template : _.template(template),
@@ -51,7 +51,7 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', '../history/app', '
                     self.render();
                     // TODO: add bootstrap short message: resource saved
                     $('#dialog-save-ok').modal()
-                    
+
                     // TODO: add error callback
                 }
             });

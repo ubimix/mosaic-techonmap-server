@@ -44,7 +44,8 @@ require.config({
         json2 : './../components/require-handlebars-plugin/hbs/json2',
         text : './../components/requirejs-text/text',
         diff_match_patch: './../components/diff-match-patch/diff_match_patch',
-        BootstrapModal: './../components/bootstrap/js/bootstrap-modal' 
+        BootstrapModal: './../components/bootstrap/js/bootstrap-modal' ,
+        moment: './../components/momentjs/moment' 
     }
 });
 

@@ -1,4 +1,4 @@
-define([ '../models/Resource', './view','BootstrapModal' ], function(Resource, ResourceView, BootstrapModal) {
+define([ '../models/Resource', './view'], function(Resource, ResourceView) {
     return {
         run : function(viewManager, options) {
             var resource = new Resource({

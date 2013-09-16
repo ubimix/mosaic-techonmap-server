@@ -1,6 +1,9 @@
 var uuid = require('node-uuid');
 var Path = require('path');
 var Fs = require('fs');
+// TODO: when to use relative paths, absolute paths in node ?
+var Utils = require('../lib/yaml.utils');
+var _ = require('underscore')._;
 
 var resources = function(app) {
 
@@ -8,6 +11,14 @@ var resources = function(app) {
         var fileName = Path.basename(inputFile);
         var content = Fs.readFileSync(inputFile).toString();
         var items = JSON.parse(content);
+        // initialize dates and versions
+        
+        _.each(items, function(item) {
+            item.system = {};
+            item.system.version = uuid.v1();
+            item.system.date = Date.now();
+        });
+        
         return items;
 
     }
@@ -26,22 +37,34 @@ var resources = function(app) {
         return -1;
     }
     
-    function getResourceHistoryIndex(resourceId, versionId) {
+    function getResourceVersionIndex(resourceId, versionId) {
         // TODO: use underscore
         for ( var i = 0; i < history.length; i++) {
             var itemId = history[i].properties.id;
-            if (itemId == resourceId && history[i].version == versionId) {
+            if (itemId == resourceId && history[i].system && history[i].system.version == versionId) {
                 return i;
             }
         }
         return -1;
     }
     
-
+    
+    function archiveResource(index, current) {
+        var old = container[index];
+        var version = uuid.v1();
+        old.system = old.system || {}; 
+        old.system.version = version;
+        old.system.date = Date.now();
+        history.push(old);
+        // update the container with the current resource
+        container[index] = current;
+        
+    }
+    
     app.get('/api/resources', function(req, res) {
-        if (!container)
-            container = loadData('./source/data/geoitems.json');
+      
         res.json(container);
+        
     });
 
     
@@ -57,19 +80,15 @@ var resources = function(app) {
 
     // TODO: actually id will be a path (see router.js) -> how to handle it on
     // the server ?
+    // TODO: what if multiple concurrent access
     app.put('/api/resources/:id', function(req, res) {
         var id = req.params.id;
         var resource = req.body;
         console.log('Updating resource: ' + id);
-        var version = uuid.v1();
         var idx = getResourceIndex(id);
         if (idx >= 0) {
             // store old resource in history
-            var oldResource = container[idx];
-            oldResource['version'] = version;
-            history.push(oldResource);
-            // update the container with the current resource
-            container[idx] = resource;
+            archiveResource(idx, resource);
             res.json({
                 message : 'ok'
             });
@@ -120,23 +139,24 @@ var resources = function(app) {
     app.get('/api/resources/:id/history/:version', function(req, res) {
         var resourceId = req.params.id;
         var versionId = req.params.version;
-        if (versionId == '0') {
-            var ridx = getResourceIndex(resourceId);
-            if (ridx >= 0) {
-                res.json(container[ridx]);
-                return;
+        // check first if this is the current version
+        var ridx = getResourceIndex(resourceId);
+        if (ridx >= 0 && container[ridx].system.version == versionId) {
+            res.json(container[ridx]);
+            return;
+        }  else {
+            // then check if the version is found in the history array
+            var idx = getResourceVersionIndex(resourceId, versionId);
+            if (idx >= 0) {
+                res.json(history[idx]);
             } else {
                 throw new Error();
             }
         }
-        var idx = getResourceHistoryIndex(resourceId, versionId);
-        if (idx >= 0) {
-            res.json(history[idx]);
-        } else {
-            throw new Error();
-        }
     });
-
+    
+    container = loadData('./data/geoitems.json');
+    //
 };
 
 module.exports = resources;

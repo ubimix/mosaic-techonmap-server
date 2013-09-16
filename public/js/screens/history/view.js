@@ -1,4 +1,4 @@
-define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
+define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, template) {
     var View = Backbone.View.extend({
         template : _.template(template),
         render : function() {
@@ -11,23 +11,28 @@ define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
 
             var $hCol1 = this.$el.find('.history td:first-child');
             toggleCompareCheckboxes();
-            //TODO: mention jingo
+            // TODO: mention jingo
             $hCol1.find('input').on('click', function() {
                 toggleCompareCheckboxes();
             });
-            
+
             var self = this;
-            
-            this.$el.find('.compare').on('click', function() {
-                if ($hCol1.find(':checked').length < 2) {
-                  return false;
-                }
-                var xx = $hCol1.find(':checked').map(function() { return $(this).val(); }).toArray().join('/with/');
-                //TODO: is this really needed ?
-                self.remove();
-                Backbone.history.navigate('/' + self.options.workspace + '/' + self.options.path + '/history/compare/'+xx, true);
-                return false;
-              });
+
+            this.$el.find('.compare').on(
+                    'click',
+                    function() {
+                        if ($hCol1.find(':checked').length < 2) {
+                            return false;
+                        }
+                        var xx = $hCol1.find(':checked').map(function() {
+                            return $(this).val();
+                        }).toArray().join('/with/');
+                        // TODO: is this really needed ?
+                        self.remove();
+                        Backbone.history.navigate('/' + self.options.workspace + '/' + self.options.path + '/history/compare/'
+                                + xx, true);
+                        return false;
+                    });
 
             function toggleCompareCheckboxes() {
                 if ($hCol1.find(':checkbox').length == 1) {

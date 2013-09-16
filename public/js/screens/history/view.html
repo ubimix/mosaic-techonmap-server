@@ -5,22 +5,22 @@
 <table
 	class="history table table-striped table-bordered table-hover table-condensed">
 	<tbody>
-		{{ for (var i =0; i<history.length; i++) { }}
+		{{ _.each(_.sortBy(history, 'system.date').reverse(), function(item, index) { }}
 
 		<tr style="color: black;">
 			<td><input type="checkbox"
-				value="{{=history[i].version}}"></td>
+				value="{{=item.system.version}}"></td>
 				<td>Author...</td>
-				<td>Date...</td>
-			{{ if (history[i].version != '0') }} 
-			<td><a href="/{{=workspace }}/{{=current.properties.id }}/history/{{=history[i].version}}">{{=history[i].version }}</a></td>
+				<td>{{ var day = moment(item.system.date); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
+			{{ if (index >0) }} 
+			<td><a href="/{{=workspace }}/{{=current.properties.id }}/history/{{=item.system.version}}">{{=item.system.version }}</a></td>
 			{{ else { }}
 			<td><a href="/{{=workspace }}/{{=current.properties.id }}">CURRENT</a></td>
 			{{ } }}
 			
 		</tr>
 
-		{{ } }}
+		{{ }) }}
 	</tbody>
 </table>
 

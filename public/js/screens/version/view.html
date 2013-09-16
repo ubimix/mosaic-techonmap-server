@@ -3,7 +3,7 @@
 	<h1>{{=resource.properties.name}}</h1>
 
 	<p>
-		<span>Version: {{=version}}</span>
+		<span>Version: {{=resource.system.version}}</span>
 	</p>
 	<p>
 		<span>Back to current version : <a
@@ -12,7 +12,7 @@
 
 
 	<div class="form-actions">
-		<input id="version" type="hidden" value="{{=version}}" />
+		<input id="version" type="hidden" value="{{=resource.system.version}}" />
 		<button class="submit btn btn-primary">Restore</button>
 	</div>
 

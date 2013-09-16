@@ -8,7 +8,6 @@ define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
         render : function() {
             this.$el.html(this.template({
                 resource : this.options.resource,
-                version : this.options.version,
                 workspace : this.options.workspace,
                 path : this.options.path
             }));
