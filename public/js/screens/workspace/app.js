@@ -7,7 +7,8 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
                 success : function(coll) {
                     var view = new MainView({
                         collection : coll,
-                        workspace : options.workspace
+                        workspace : options.workspace,
+                        sort : options.sort
                     });
                     viewManager.show(view);
                 }
