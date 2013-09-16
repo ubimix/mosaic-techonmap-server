@@ -22,12 +22,12 @@ define([ 'Backbone', './resourcerow', 'text!./resourcelist.html' ], function(Bac
             var sortField = 'system.date';
             if (this.options.sort)
                 sortField = this.options.sort;
-            sortField = sortField.split('.');
+            var sortProperty = sortField.split('.');
             var models = _.sortBy(this.collection.models, function(resource) {
-                return resource.attributes[sortField[0]][sortField[1]];
+                return resource.attributes[sortProperty[0]][sortProperty[1]];
             });
 
-            if (this.options.sort == 'system.date')
+            if (sortField == 'system.date')
                 models.reverse();
 
             models.forEach(function(resource) {

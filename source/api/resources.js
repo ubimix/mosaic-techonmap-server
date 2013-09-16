@@ -94,7 +94,7 @@ var resources = function(app) {
         if (idx >= 0) {
             // store old resource in history
             archiveResource(idx, resource);
-            //send it back with its new version id and date
+            // send it back with its new version id and date
             res.json(resource);
         } else {
             throw new Error();
@@ -158,6 +158,8 @@ var resources = function(app) {
             }
         }
     });
+    
+
     
     container = loadData('./data/geoitems.json');
     //
