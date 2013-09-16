@@ -50,6 +50,8 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', '../history/app', '
                 success : function() {
                     self.render();
                     // TODO: add bootstrap short message: resource saved
+                    $('#dialog-save-ok').modal()
+                    
                     // TODO: add error callback
                 }
             });
