@@ -8,7 +8,8 @@ define([ 'Backbone', './resourcelist' ], function(Backbone, ResourceListView) {
         render : function() {
             var view = new ResourceListView({
                 collection : this.collection,
-                workspace : this.options.workspace
+                workspace : this.options.workspace,
+                sort : this.options.sort
             });
             this.$el.append(view.render().el);
             this.subviews.push(view);

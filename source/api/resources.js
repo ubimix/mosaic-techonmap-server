@@ -3,6 +3,7 @@ var Path = require('path');
 var Fs = require('fs');
 // TODO: when to use relative paths, absolute paths in node ?
 var Utils = require('../lib/yaml.utils');
+var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 
 var resources = function(app) {
@@ -17,6 +18,9 @@ var resources = function(app) {
             item.system = {};
             item.system.version = uuid.v1();
             item.system.date = Date.now();
+            if (!item.properties.id) {
+                item.properties.id = Namer.normalize(item.properties.name);
+            }
         });
         
         return items;
@@ -51,11 +55,12 @@ var resources = function(app) {
     
     function archiveResource(index, current) {
         var old = container[index];
-        var version = uuid.v1();
-        old.system = old.system || {}; 
-        old.system.version = version;
-        old.system.date = Date.now();
         history.push(old);
+        
+        var version = uuid.v1();
+        current.system = current.system || {}; 
+        current.system.version = version;
+        current.system.date = Date.now();
         // update the container with the current resource
         container[index] = current;
         
@@ -89,9 +94,8 @@ var resources = function(app) {
         if (idx >= 0) {
             // store old resource in history
             archiveResource(idx, resource);
-            res.json({
-                message : 'ok'
-            });
+            //send it back with its new version id and date
+            res.json(resource);
         } else {
             throw new Error();
         }

@@ -7,6 +7,8 @@ Add possibility to log a message when bringing a change
 Recherche
 Voir comment refléter directement dans le tableau des entrées un changement de propriété d'une resource nouvellement sauvegardée
 
+Pourquoi toutes les vues sont chargées dés le début ? E.g. il suffit de déclarer qu'une vue dépend de 'moment' pour que moment soit partout.
+
 Show data as YAML : generate YAML on client or on server ?
 Use Backgrid ? http://wyuenho.github.io/backbone-pageable/examples/server-mode.html
 

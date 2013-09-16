@@ -47,7 +47,13 @@ define([ 'Backbone', 'BootstrapModal', 'text!./view.html', 'core/viewManager', '
             });
             var self = this;
             this.model.save(null, {
-                success : function() {
+                success : function(model, response) {
+                    //console.log('saved: ' + JSON.stringify(data, null, 2));
+                    //var obj = JSON.parse(data);
+                    //var obj = data;
+                    //self.model.set('system.version', response.system.version);
+                    //self.model.set('system.date', response.system.date);
+
                     self.render();
                     // TODO: add bootstrap short message: resource saved
                     $('#dialog-save-ok').modal()

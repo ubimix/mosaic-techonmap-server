@@ -10,6 +10,7 @@ define(function(require) {
             ':workspace/search' : 'searchScreen',
             ':workspace' : 'workspaceScreen',
             ':workspace/' : 'workspaceScreen',
+            ':workspace/sort/:sort' : 'workspaceScreen',
             ':workspace/*path/history/compare/:version1/with/:version2' : 'compareScreen',
             ':workspace/*path/history/:version' : 'versionScreen',
             ':workspace/*path/history' : 'historyScreen',
@@ -29,9 +30,11 @@ define(function(require) {
             });
 
         },
-        workspaceScreen : function(workspace) {
+        workspaceScreen : function(workspace, sort) {
             require('./../screens/workspace/app').run(viewManager, {
-                workspace : workspace
+                workspace : workspace,
+                sort : sort
+               
             });
 
         },
