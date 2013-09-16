@@ -1,6 +1,8 @@
+var Tools = require('./tools');
 var config = require('./config');
 
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -21,10 +23,18 @@ module.exports = function(app) {
         return data;
     }
 
+    app.get('/api/auth/user', function(req, res) {
+        if (req.user) {
+            res.json(req.user);
+        } else {
+            res.json({});
+        }
+
+    });
+
     app.get('/api/auth/done', function(req, res) {
 
-        console.log('User: ', req.user);
-        // console.log(res.user);
+        // console.log('User: ', req.user);
         if (!req.user) {
             res.redirect("/");
             return;
@@ -43,6 +53,29 @@ module.exports = function(app) {
     });
 
     console.log(app.locals.baseUrl);
+
+    /* ------------------------------------------------------------ */
+    // Local
+    passport.use(new LocalStrategy(function(username, password, done) {
+        if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
+            return done(null, false, {
+                message : 'Incorrect username or password'
+            });
+        }
+
+        var user = newUser({
+            displayName : auth.alone.username,
+            email : auth.alone.email || ""
+        });
+
+        return done(undefined, user);
+    }));
+    app.post("/api/login", passport.authenticate('local', {
+        successRedirect : '/api/auth/done',
+        failureRedirect : '/login',
+        failureFlash : true
+    }));
+
     /* ------------------------------------------------------------ */
     // Google-based
     passport.use(new GoogleStrategy({

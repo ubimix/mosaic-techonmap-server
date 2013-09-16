@@ -13,6 +13,22 @@
 			<ul class="nav">
 				<li><a href="/techonmap">Tableau de bord</a></li>
 			</ul>
+
+			<ul class="nav-user">
+			<% if (user != 'Anonymous') { %>
+			<li><a href="/api/logout">Logout</a></li>
+			<% } else { %>
+			<li><a href="/login">Login</a></li>
+			<% } %>
+			</ul>
+
+            <ul class="nav-user">
+            <% if (user != 'Anonymous') { %>
+                 <li><a href="/profile"><%=user%></a></li>
+            <% } %>
+            </ul>
+
+			
 		</div>
 	</div>
 	<div class="container">

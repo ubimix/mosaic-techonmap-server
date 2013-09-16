@@ -1,17 +1,17 @@
 ---
-  # Configuration sample file for Jingo (YAML)
+  # Configuration sample file for Djinko (YAML)
   application:
-    title: "TechOnMap"
-    repository: "/home/arkub/git/ubimix.jingo/data-1/"
+    title: "djinko"
+    repository: "/home/arkub/git/djinko.data/data-1/"
     docSubdir: ""
     remote: ""
     pushInterval: 30
-    secret: "change me"
+    secret: "lksjdfada0010101DNNQSDKdd27?2101"
   server:
     hostname: "umxdev.com"
-    port: 3000
+    port: 8000
     localOnly: false
-    baseUrl: "http://umxdev.com:3000"
+    baseUrl: "http://umxdev.com:8000"
   authorization:
     anonRead: true
     validMatches: ".+"
@@ -30,13 +30,13 @@
         clientSecret : 'cd05173cecc60189b5ad96bc18dce6b3'
     alone:
       enabled: true
-      username: "jingo"
-      passwordHash: "3d223b7b934e7e0000da171740f53252905be2cf"
+      username: "arkub"
+      passwordHash: "63c1c7896a0588291c41c50087a7e1b9fe2124ed"
       email: "slauriere@ubimix.com"
   accessRules:
     - roles: [ "admin", "owner" ]
       allows:
-        - resources: ["wiki", "pages"]
+        - resources: ["api", "resources"]
           permissions: [ "get", "put", "delete" ]
     - roles: ["guest"]
       allows:
@@ -45,10 +45,11 @@
   userRoles:
      Anonymous: [ "guest" ]
      Stéphane Laurière: [ "admin" ]
+     arkub: [ "admin" ]
+     Mikhail Kotelnikov: [ "admin" ]
      Loïc Haÿ: ["admin"]
   twitterClient:
         consumerKey : 'fytCW2YVtV3QYClAIV8vA'
         consumerSecret : 'dnXAumqDkGr5p3gKm9CIC4EPbaV5OkWPpDYU2xVNg'
         accessTokenKey : '10078002-PlycJAuvnnRfhNyPQBxwIyqvnhHYAHOSTFHngi1ow'
         accessTokenSecret : '3zqJDH51aCuZxrhMnEmLjrmQPkUPxij0GB0oF3UM'
-      

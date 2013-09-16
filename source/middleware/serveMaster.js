@@ -9,11 +9,14 @@ function skipMaster (req) {
 
 function hander(title, mainJs, mainCss) {
 	return function (req, res, next) {
-		if (skipMaster(req)) {
+	    console.log('user: ', req.user);
+	    if (skipMaster(req)) {
+	        //TODO: what is next
 			return next();
 		}
 
-		res.render('master', { title: title, mainJs: mainJs, mainCss: mainCss});
+	    var displayName = req.user ? req.user.displayName : 'Anonymous';
+		res.render('master', { title: title, mainJs: mainJs, mainCss: mainCss, user: displayName});
 	};
 }
 
