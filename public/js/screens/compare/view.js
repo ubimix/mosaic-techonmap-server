@@ -10,7 +10,7 @@ define([ 'Backbone', 'diff_match_patch', 'text!./view.html' ], function(Backbone
             var text2 = JSON.stringify(this.options.v2, null, 2);
             dmp.Diff_Timeout = parseFloat(1);
             //TODO: see how to avoid this switch
-            var d = dmp.diff_main(text2, text1);
+            var d = dmp.diff_main(text1, text2);
             //d = d.replace('coor','');
             dmp.diff_cleanupSemantic(d);
             var ds = dmp.diff_prettyHtml(d);

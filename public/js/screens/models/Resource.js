@@ -22,6 +22,12 @@ define([ 'Backbone' ], function(Backbone) {
                 id : '',
                 tags : [],
                 category : ''
+            },
+            system : {
+                date : '',
+                version: '',
+                author: ''
+                
             }
         }
 
