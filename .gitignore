@@ -1,0 +1,5 @@
+node_modules
+public/components
+.project
+npm-debug.log
+public/build

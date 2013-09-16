@@ -1,0 +1,26 @@
+<div>
+
+	<h1>{{=resource.properties.name}}</h1>
+
+	<p>
+		<span>Version: {{=version}}</span>
+	</p>
+	<p>
+		<span>Back to current version : <a
+			href="/{{=workspace}}/{{=path}}">current</a></span>
+	</p>
+
+
+	<div class="form-actions">
+		<input id="version" type="hidden" value="{{=version}}" />
+		<button class="submit btn btn-primary">Restore</button>
+	</div>
+
+
+	<p>
+	<pre>
+	Resource: {{=JSON.stringify(resource, null, 2)}}
+	</pre>
+	</p>
+</div>
+

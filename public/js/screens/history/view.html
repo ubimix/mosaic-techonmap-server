@@ -1,0 +1,29 @@
+
+<h1><a href="/{{=workspace}}/{{=path}}">{{=current.properties.name}}</a></h1>
+
+
+<table
+	class="history table table-striped table-bordered table-hover table-condensed">
+	<tbody>
+		{{ for (var i =0; i<history.length; i++) { }}
+
+		<tr style="color: black;">
+			<td><input type="checkbox"
+				value="{{=history[i].version}}"></td>
+				<td>Author...</td>
+				<td>Date...</td>
+			{{ if (history[i].version != '0') }} 
+			<td><a href="/{{=workspace }}/{{=current.properties.id }}/history/{{=history[i].version}}">{{=history[i].version }}</a></td>
+			{{ else { }}
+			<td><a href="/{{=workspace }}/{{=current.properties.id }}">CURRENT</a></td>
+			{{ } }}
+			
+		</tr>
+
+		{{ } }}
+	</tbody>
+</table>
+
+<div class="form-actions">
+    <button class="compare btn">Compare</button>
+</div>
