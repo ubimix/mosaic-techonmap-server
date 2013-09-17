@@ -3,3 +3,4 @@ public/components
 .project
 npm-debug.log
 public/build
+config.yaml

@@ -160,6 +160,31 @@ var resources = function(app) {
     });
     
 
+    app.get('/api/typeahead', function(req, res) {
+       console.log('Request params: ', req.query);
+       var query = req.query.query;
+       var match = [];
+       if (!query) {
+           res.json({options: match});
+           return;
+       }
+       query = query.toLowerCase();
+       
+       _.each(container, function(item, index) {
+           var name = item.properties.name.toLowerCase();
+           // console.log(name);
+           // console.log(query);
+           var idx = name.indexOf(query);
+           // console.log('Index: ', idx);
+           if (idx==0) {
+               match.push({name: item.properties.name, id: item.properties.id});
+           }
+       });
+       
+       res.json(match);
+       
+       
+    });
     
     container = loadData('./data/geoitems.json');
     //

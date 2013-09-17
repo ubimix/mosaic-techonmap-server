@@ -9,7 +9,6 @@ function skipMaster (req) {
 
 function hander(title, mainJs, mainCss) {
 	return function (req, res, next) {
-	    console.log('user: ', req.user);
 	    if (skipMaster(req)) {
 	        //TODO: what is next
 			return next();

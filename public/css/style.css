@@ -42,3 +42,12 @@ body {
 .nav-user>li>a {
 	display: block;
 }
+
+.form-search {
+	float: right;
+	padding-top:5px;
+	padding-right:10px;
+	margin-bottom:0px;
+	
+	
+}
