@@ -24,9 +24,16 @@
 
             <ul class="nav-user">
             <% if (user != 'Anonymous') { %>
-                 <li><a href="/profile"><%=user%></a></li>
+                 <li><a href="/"><%=user%></a></li>
             <% } %>
             </ul>
+            
+            <form class="form-search" action="/search" method="get">
+            <div class="input-append">
+                <input type="text" class="span2 search-query" name="q">
+                <button type="submit" class="btn"><i class="icon-search"></i></button>
+            </div>
+            </form>
 
 			
 		</div>

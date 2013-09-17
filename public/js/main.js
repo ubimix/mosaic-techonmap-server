@@ -32,6 +32,10 @@ require.config({
         
         'BootstrapModal' : {
             exports : 'BootstrapModal'
+        },
+        
+        'BootstrapTypeahead' : {
+            exports: 'BootstrapTypeahead'
         }
         
     },
@@ -45,7 +49,8 @@ require.config({
         text : './../components/requirejs-text/text',
         diff_match_patch: './../components/diff-match-patch/diff_match_patch',
         BootstrapModal: './../components/bootstrap/js/bootstrap-modal' ,
-        moment: './../components/momentjs/moment' 
+        moment: './../components/momentjs/moment',
+        BootstrapTypeahead: './../components/bootstrap/js/bootstrap-typeahead'
     }
 });
 
