@@ -7,18 +7,20 @@
 	<tbody>
 		{{ _.each(_.sortBy(history, function (elt) { return elt.timestamp; }).reverse(), function(item, index) { }}
 
-		<tr style="color: black;">
-			<td><input type="checkbox"
-				value="{{=item.version}}"></td>
-				<td>Author...</td>
-				<td>{{ var day = moment(item.timestamp); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
-			{{ if (index >0) }} 
-			<td><a href="/{{=workspace }}/{{=path}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>
-			{{ else { }}
-			<td><a href="/{{=workspace }}/{{=path}}">CURRENT</a></td>
-			{{ } }}
-			
-		</tr>
+            {{if (index < (history.length-1)) { }}
+			<tr style="color: black;">
+				<td><input type="checkbox"
+					value="{{=item.versionId}}"></td>
+					<td>Author...</td>
+					<td>{{ var day = moment(item.timestamp); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
+				{{ if (index > 0) { }} 
+				<td><a href="/{{=workspace }}/{{=path}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>
+				{{ } else if (index == 0) { }}
+				<td><a href="/{{=workspace }}/{{=path}}">CURRENT</a></td>
+				{{ } }}
+				
+			</tr>
+		    {{ } }}
 
 		{{ }) }}
 	</tbody>

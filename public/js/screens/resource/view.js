@@ -1,5 +1,5 @@
-define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', 'yaml' ], function(Backbone, template,
-        viewManager, BootstrapModal, YAML) {
+define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', 'utils' ], function(Backbone, template,
+        viewManager, BootstrapModal, Utils) {
 
     var ResourceRowView = Backbone.View.extend({
         template : _.template(template),
@@ -19,13 +19,13 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', '
             var view = this;
             this.$el.html(this.template({
                 data : this.model.toJSON(),
-                yaml : this.toYaml(),
+                yaml : Utils.toYaml(this.model.attributes),
                 workspace : this.options.workspace,
                 path : this.options.path
             }));
 
             this.$el.keydown(function(event) {
-//                console.log(event.which);
+                // console.log(event.which);
                 if (event.altKey) {
                     if (event.which == 83) {
                         // alt+S
@@ -41,16 +41,6 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', '
             return this;
         },
 
-        toYaml : function() {
-            var copy = _.extend({}, this.model.attributes);
-            var description = copy.properties.description;
-            delete copy.properties.description;
-            var dataYaml = YAML.stringify(copy.properties, 1, 2);
-            var text = description + "\n\n----\n" + dataYaml;
-            return text;
-
-        },
-
         historyScreen : function() {
             // TODO: a link would be better than a button so that the
             // history
@@ -64,36 +54,16 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', '
         },
 
         submitResource : function() {
+
             var content = this.$el.find('textarea[name="content"]').val();
-            var idx = content.indexOf('----\n');
-            var yaml = '';
-            var description = '';
-            if (idx >= 0) {
-                yaml = content.substring(idx + '----\n'.length);
-                description = content.substring(0, idx).trim();
-            }
-            try {
-                var obj = YAML.parse(yaml);
-            } catch (e) {
-                $('#dialog-save-not-ok').modal()
-                return;
-            }
-
-            obj.description = description;
-
+            // TODO: handle error when yaml invalid: show notification
             // TODO: is this ok?
             // NB: the model won't fire a change event in this case (a
             // change is
             // probably fired only when doing 'model.set(...)')
-            // this.model = _.extend(this.model, {
-            // attributes : {
-            // properties : obj
-            // }
-            // });
-
             // quid if the client changes the sys.path attribute on the client
             // side ?
-            this.model.attributes.properties = obj;
+            this.model.attributes.properties = Utils.toJSON(content);
 
             // this.model = _.extend(this.model, {
             // attributes : JSON.parse(content)
@@ -102,24 +72,54 @@ define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', '
             // console.log('Model updated: ', this.model);
 
             var self = this;
-            this.model.save(null, {
-                success : function(model, response) {
-                    // console.log('saved: ' + JSON.stringify(data,
-                    // null, 2));
-                    // var obj = JSON.parse(data);
-                    // var obj = data;
-                    // self.model.set('system.version',
-                    // response.system.version);
-                    // self.model.set('system.date',
-                    // response.system.date);
+            if (this.model.attributes.sys.path) {
+                this.model.save(null, {
+                    success : function(model, response) {
+                        // console.log('saved: ' + JSON.stringify(data,
+                        // null, 2));
+                        // var obj = JSON.parse(data);
+                        // var obj = data;
+                        // self.model.set('system.version',
+                        // response.system.version);
+                        // self.model.set('system.date',
+                        // response.system.date);
 
-                    self.render();
-                    // TODO: add bootstrap short message: resource saved
-                    $('#dialog-save-ok').modal()
+                        self.render();
+                        // TODO: add bootstrap short message: resource saved
+                        //self.$el.find('#dialog-save-ok').modal();
+                         $('#dialog-save-ok').modal();
 
-                    // TODO: add error callback
-                }
-            });
+                        // TODO: add error callback
+                    }
+                });
+            } else {
+                var path = this.$el.find('#path').val();
+                if (!path)
+                    path = Math.random().toString(36).substring(7);
+
+                $.ajax({
+                    url : '/api/resources/new',
+                    type : 'POST',
+                    data : {
+                        path : path,
+                        resource : this.model.attributes
+                    },
+                    dataType : 'json',
+                    success : function(result) {
+                        if (result.error) {
+                            //TODO: notification
+                            console.log(result.error);
+                        } else {
+                            self.remove();
+                            Backbone.history.navigate('/techonmap/' + path, true);
+                        }
+
+                    },
+                    error : function(error) {
+                        console.log(error);
+                    }
+                });
+            }
         },
 
         // do not call this method 'resource' or it will interfere with

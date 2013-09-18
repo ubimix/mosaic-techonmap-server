@@ -1,7 +1,5 @@
 
-
-Data Publica
-AACC
+Faire le géocodage au moment de l'import ou bien après
 
 Gestion des JS dans le master.ejs
 

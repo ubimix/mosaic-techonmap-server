@@ -1,4 +1,4 @@
-define([ 'Backbone', 'diff_match_patch', 'text!./view.html' ], function(Backbone, DiffMatchPatch, template) {
+define([ 'Backbone', 'diff_match_patch', 'text!./view.html', 'utils' ], function(Backbone, DiffMatchPatch, template, Utils) {
     var View = Backbone.View.extend({
         template : _.template(template),
         render : function() {
@@ -6,8 +6,8 @@ define([ 'Backbone', 'diff_match_patch', 'text!./view.html' ], function(Backbone
 
             var dmp = new DiffMatchPatch();
 
-            var text1 = JSON.stringify(this.options.v1, null, 2);
-            var text2 = JSON.stringify(this.options.v2, null, 2);
+            var text1 = Utils.toYaml(this.options.v1);
+            var text2 = Utils.toYaml(this.options.v2);
             dmp.Diff_Timeout = parseFloat(1);
             //TODO: see how to avoid this switch
             var d = dmp.diff_main(text2, text1);

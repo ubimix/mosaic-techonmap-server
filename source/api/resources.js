@@ -117,6 +117,31 @@ var resources = function(app) {
              
         });
     });
+    
+    app.post('/api/resources/new', function(req, res) {
+        var data = req.body;
+        var path = data.path;
+        var resource = data.resource;
+        // TODO: validate input
+        console.log('POST: ', data);
+        project.loadResource(path, {create: true}, function (err, entry) {
+            if (err)
+                return handleError(res, err);
+            if (!isNewResource(entry)) {
+                res.json({error: 'A resource already exists at the given path ("'+path+'").'});
+                return;
+            }
+            entry = _.extend(entry, { properties: resource.properties, type : resource.type, geometry : resource.geometry});
+            project.storeResource(entry, {}, function(error, stored) {
+                if (error)
+                    return handleError(res, error);
+                console.log('Path: ', stored.sys.path)
+                res.json(stored);
+            });
+        });
+        
+    });
+    
 
     // TODO: actually id will be a path (see router.js) -> how to handle it on
     // the server ?
@@ -124,7 +149,9 @@ var resources = function(app) {
     app.put('/api/resources/:id', function(req, res) {
         var id = req.params.id;
         var resource = req.body;
-        console.log('Resource: ', resource);
+        // TODO: validate resource: in particular, the resource should have a
+        // path
+        console.log('PUT: ', resource);
         // TODO: ici on peut mettre à jour n'importe quelle ressource en fait,
         // pas spécialement
         // celle ayant l'id de l'URL
@@ -173,7 +200,11 @@ var resources = function(app) {
         project.loadResourceRevisions(resourceId, {versions: [version]}, function (error, result) {
            if (error)
                return handleError(res, error);
-           res.json(result);
+           // TODO: what it result length ==0 or result undefined
+           // TODO: do we handle a copy of the resource, or the actual resource
+            // ?
+           // delete result[0].sys;
+           res.json(result[0]);
         });
     });
 

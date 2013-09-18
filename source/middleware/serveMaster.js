@@ -21,10 +21,10 @@ function hander(title, mainJs, mainCss) {
 
 module.exports = {
 	development: function () {
-		return hander('Wikicli | Development', '/js/main.js', '/css/main.css');
+		return hander('TechOnMap', '/js/main.js', '/css/main.css');
 	},
 
 	production: function () {
-		return hander('Wikicli | Production', client.js, client.css);
+		return hander('TechOnMap', client.js, client.css);
 	}
 };
