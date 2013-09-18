@@ -19,6 +19,10 @@ Launch the server:
 
   node ./app.js -c config.yaml
 
+  or a shortcut:
+
+  npm start
+
 ##Client installation
 
   bower install
