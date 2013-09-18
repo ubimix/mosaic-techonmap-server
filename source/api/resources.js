@@ -17,23 +17,19 @@ var resources = function(app) {
         
         function storeResource(project, item) {
             project.loadResource(item.properties.id, {create: true}, function (error, resource) {
-                if (error) {
-                    console.log('Store err: ', error);
-                    console.log('Store resource: ', resource);
-                    throw new Error();
-                } else {
-                    resource.properties = _.extend(item.properties, {type: item.type, geometry:item.geometry});
-                    project.storeResource(resource, {}, function(error, entry) {
-                       if (error)
-                           throw new Error();
-                       project.loadResourceHistory(item.properties.id,  {}, function (error, history) {
-                           console.log(item.properties.id + ' history: ', history);    
-                       });
-                    });
-// project.loadResourceHistory('trendeo',  {}, function (error, history) {
-// console.log('Trendeo history: ', history);
+                if (error)
+                    throw error;
+                resource.properties = item.properties;
+                resource.type = item.type;
+                resource.geometry = item.geometry;
+                project.storeResource(resource, {}, function(error, entry) {
+                   if (error)
+                       throw error;
+// project.loadResourceHistory(item.properties.id,  {}, function (error,
+// history) {
+// console.log(item.properties.id + ' history: ', history);
 // });
-                }
+                    });
             });
         }
         
@@ -51,34 +47,33 @@ var resources = function(app) {
             storeResource(project, item);
         });
         
-        
-        
         return project;
     }
     
-    var project;
-    
     app.get('/api/resources', function(req, res) {
-        project.loadChildResources('', {}, function(err, entry) {
-            if (!err) {
-                res.json(_.values(entry));
-                return;
-            } else {
-                throw new Error();
-            }
+        project.loadChildResources('', {}, function(err, entries) {
+            if (err) 
+               return handleError(res, err);
+            res.json(_.values(entries));
         });
     });
-
+    
+    app.get('/api/resources/export', function(req, res) {
+        project.loadChildResources('', {}, function(err, entries) {
+            if (err) 
+               return handleError(res, err);
+            res.json(_.map(entries, function(entry) { delete entry.sys; return entry;}));
+        });
+    });
     
     app.get('/api/resources/:id', function(req, res) {
         var id = req.params.id;
         var resource = project.loadResource(id, {}, function(error, result) {
-            if (!error) {
-                res.json(result);
-                return;
-            } else {
-                throw new Error();
-            }
+            if (error)
+                // TODO: is this the proper way ?
+                return handleError(res, error);
+            res.json(result);
+             
         });
     });
 
@@ -94,11 +89,9 @@ var resources = function(app) {
         // celle ayant l'id de l'URL
         project.storeResource(resource, {}, function (error, result) {
            console.log('Result: ', JSON.stringify(result, null, 2));
-           if (error) {
-               throw new Error();
-           } else {
-               res.json(result);    
-           }
+           if (error)
+              return handleError(res, error);
+           res.json(result);    
         });
         
     });
@@ -106,11 +99,9 @@ var resources = function(app) {
     app.delete ("/api/resources/:id", function(req, res) {
         var id = req.params.id;
         project.deleteResource(id, {}, function (error, result) {
-            if (error) {
-                throw new Error();
-            } else {
-                res.json(result);
-            }
+            if (error) 
+                return handleError(res, error);
+            res.json(result);
         });
     });
 
@@ -135,21 +126,17 @@ var resources = function(app) {
         return UmxApi.version({ versionId: req.params.version });   
     }
     
-    
     app.get('/api/resources/:id/history/:version', function(req, res) {
         var resourceId = req.params.id;
         var version = getVersion(req);
-        console.log('Version: ', version);
         project.loadResourceRevisions(resourceId, {versions: [version]}, function (error, result) {
            if (error)
-               throw new Error();
+               return handleError(res, error);
            res.json(result);
         });
     });
-    
 
     app.get('/api/typeahead', function(req, res) {
-       console.log('Request params: ', req.query);
        var query = req.query.query;
        var match = [];
        if (!query) {
@@ -160,7 +147,7 @@ var resources = function(app) {
        
        project.loadChildResources('', {}, function(err, entry) {
            if (err)
-               throw new Error();
+               return handleError(res, err);
            
            _.each(_.values(entry), function(item, index) {
                var name = item.properties.name.toLowerCase();
@@ -171,11 +158,9 @@ var resources = function(app) {
            });
            res.json(match);
        });
-       
     });
-    
-    project = loadData('./data/geoitems.json');
-    //
+
+    var project = loadData('./data/geoitems.json');
 };
 
 module.exports = resources;
