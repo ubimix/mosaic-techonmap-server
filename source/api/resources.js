@@ -15,6 +15,28 @@ var resources = function(app) {
         var workspace = connection.newWorkspace();
         var project = workspace.newProject();
         
+        function storeResource(project, item) {
+            project.loadResource(item.properties.id, {create: true}, function (error, resource) {
+                if (error) {
+                    console.log('Store err: ', error);
+                    console.log('Store resource: ', resource);
+                    throw new Error();
+                } else {
+                    resource.properties = _.extend(item.properties, {type: item.type, geometry:item.geometry});
+                    project.storeResource(resource, {}, function(error, entry) {
+                       if (error)
+                           throw new Error();
+                       project.loadResourceHistory(item.properties.id,  {}, function (error, history) {
+                           console.log(item.properties.id + ' history: ', history);    
+                       });
+                    });
+// project.loadResourceHistory('trendeo',  {}, function (error, history) {
+// console.log('Trendeo history: ', history);
+// });
+                }
+            });
+        }
+        
         var fileName = Path.basename(inputFile);
         var content = Fs.readFileSync(inputFile).toString();
         var items = JSON.parse(content);
@@ -26,21 +48,10 @@ var resources = function(app) {
             if (!item.properties.id) {
                 item.properties.id = Namer.normalize(item.properties.name);
             }
-            
-            var resource = project.loadResource(item.properties.id, {create: true}, function (error, resource) {
-                if (error) {
-                    console.log('Store err: ', error);
-                    console.log('Store resource: ', resource);
-                    throw new Error();
-                } else {
-                    resource.properties = _.extend(item.properties, {type: item.type, geometry:item.geometry});
-                    project.storeResource(resource, {}, function(error, entry) {
-                       if (error)
-                           throw new Error();
-                    });
-                }
-            });
+            storeResource(project, item);
         });
+        
+        
         
         return project;
     }
@@ -105,29 +116,34 @@ var resources = function(app) {
 
     app.get('/api/resources/:id/history', function(req, res) {
         var resourceId = req.params.id;
-        project.loadResourceHistory(resourceId, {}, function(error, result) {
+        project.loadResourceHistory(resourceId, {}, function(error, history) {
            if (error)
-               throw new Error();
-           else {
-               project.loadResource(resourceId, {}, function (error, resource) {
-                   if (error)
-                       throw new Error();
-                   
-                   res.json({name: resource.properties.name, history: result});
-               });
-           }
+               return handleError(res, error);
+           project.loadResource(resourceId, {}, function (error, resource) {
+               if (error)
+                   return handleError(res, error);
+               res.json({name: resource.properties.name, history: history});
+           });
         });
     });
     
+    function handleError(res, error) {
+        res.json({error : error.toString()});
+    }
+
+    function getVersion(req) {
+        return UmxApi.version({ versionId: req.params.version });   
+    }
+    
+    
     app.get('/api/resources/:id/history/:version', function(req, res) {
         var resourceId = req.params.id;
-        var versionId = req.params.version;
-        project.loadResourceRevisions(resourceId, {versions: [versionId]}, function (error, result) {
+        var version = getVersion(req);
+        console.log('Version: ', version);
+        project.loadResourceRevisions(resourceId, {versions: [version]}, function (error, result) {
            if (error)
                throw new Error();
-           else {
-               res.json(result);
-           }
+           res.json(result);
         });
     });
     
