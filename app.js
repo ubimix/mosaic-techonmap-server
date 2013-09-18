@@ -64,5 +64,5 @@ require('./source/api/resources')(app);
 
 http.createServer(app).listen(app.get('port'), function() {
     var environment = process.env.NODE_ENV || 'development';
-    console.log('Wikicli started: ' + app.get('port') + ' (' + environment + ')');
+    console.log('Server started: ' + app.get('port') + ' (' + environment + ')');
 });
