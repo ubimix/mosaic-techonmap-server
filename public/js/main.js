@@ -4,6 +4,10 @@ require.config({
         'jQuery' : {
             exports : '$'
         },
+        
+        'jQueryCsv' : {
+            exports : '$.csv'
+        },
 
         'Underscore' : {
             exports : '_',
@@ -47,6 +51,7 @@ require.config({
 
     paths : {
         jQuery : './../components/jquery/jquery',
+        jQueryCsv : './../components/jquery-csv/src/jquery.csv',
         Underscore : './../components/underscore/underscore',
         Backbone : './../components/backbone/backbone',
         i18nprecompile : './../components/require-handlebars-plugin/hbs/i18nprecompile',

@@ -58,6 +58,47 @@ var resources = function(app) {
         });
     });
     
+    function isNewResource(resource) {
+        // TODO: it seems getCreated does not return a Version object but a JSON
+        // one
+        var created = resource.getCreated().timestamp;
+        var updated = resource.getUpdated().timestamp;
+        return created == updated;
+        
+    }
+    
+    app.post('/api/resources/import', function(req, res) {
+        var data = req.body.data;
+        var errors = [];
+        var created = [];
+        var updated = [];
+        
+        _.each(data, function(entry) {
+            // TODO: remove http(s):// in case there is
+            var entryId = entry.properties.url;
+            project.loadResource(entryId, {create: true}, function (error, resource) {
+                if (error)
+                    throw error;
+                resource.properties = entry.properties;
+                resource.type = entry.type;
+                resource.geometry = entry.geometry;
+                project.storeResource(resource, {}, function(err, entry) {
+                    if (err)
+                        errors.push[{id:entryId, error: err, resource: entry}];
+                    else {
+                        if (isNewResource(entry)) {
+                            created.push({id: entry.properties.id, name: entry.properties.name});
+                        } else {
+                            updated.push({id: entry.properties.id, name: entry.properties.name});
+                        }
+                    }
+                });
+            });
+        });
+        
+        res.json({errors:errors, created: created, updated: updated});
+    });
+    
     app.get('/api/resources/export', function(req, res) {
         project.loadChildResources('', {}, function(err, entries) {
             if (err) 

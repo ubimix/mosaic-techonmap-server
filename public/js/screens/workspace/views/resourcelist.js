@@ -18,13 +18,22 @@ define([ 'Backbone', './resourcerow', 'text!./resourcelist.html' ], function(Bac
             // TODO: do we need to remove the view when rendering it again ?
             this.$el.html(this.template(this.options));
 
+            // TODO:
+            // http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
+            function getDotProperty(obj, dotNotation) {
+                var arr = dotNotation.split(".");
+                while (arr.length && (obj = obj[arr.shift()]))
+                    ;
+                return obj;
+            }
+
             var resourceElt = this.$('.resources');
             var sortField = 'sys.updated.timestamp';
             if (this.options.sort)
                 sortField = this.options.sort;
-            var sortProperty = sortField.split('.');
             var models = _.sortBy(this.collection.models, function(resource) {
-                return resource.attributes[sortProperty[0]][sortProperty[1]];
+                // TODO: how to avoid accessing the attributes
+                return getDotProperty(resource.attributes, sortField);
             });
 
             if (sortField == 'sys.updated.timestamp')
