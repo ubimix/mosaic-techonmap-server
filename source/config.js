@@ -3,6 +3,7 @@ var ChildProcess = require('child_process');
 var Fs = require("fs");
 var program = require('commander');
 var Yaml = require('yamljs');
+var Tools = require('./tools');
 
 module.exports = (function() {
 
