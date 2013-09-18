@@ -1,21 +1,21 @@
 
-<h1><a href="/{{=workspace}}/{{=path}}">{{=current.properties.name}}</a></h1>
+<h1><a href="/{{=workspace}}/{{=path}}">{{=name}}</a></h1>
 
 
 <table
 	class="history table table-striped table-bordered table-hover table-condensed">
 	<tbody>
-		{{ _.each(_.sortBy(history, function (elt) { return elt.system.date; }).reverse(), function(item, index) { }}
+		{{ _.each(_.sortBy(history, function (elt) { return elt.timestamp; }).reverse(), function(item, index) { }}
 
 		<tr style="color: black;">
 			<td><input type="checkbox"
-				value="{{=item.system.version}}"></td>
+				value="{{=item.version}}"></td>
 				<td>Author...</td>
-				<td>{{ var day = moment(item.system.date); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
+				<td>{{ var day = moment(item.timestamp); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
 			{{ if (index >0) }} 
-			<td><a href="/{{=workspace }}/{{=current.properties.id }}/history/{{=item.system.version}}">{{=item.system.version }}</a></td>
+			<td><a href="/{{=workspace }}/{{=path}}/history/{{=item.version}}">{{=item.version }}</a></td>
 			{{ else { }}
-			<td><a href="/{{=workspace }}/{{=current.properties.id }}">CURRENT</a></td>
+			<td><a href="/{{=workspace }}/{{=path}}">CURRENT</a></td>
 			{{ } }}
 			
 		</tr>

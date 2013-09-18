@@ -1,8 +1,8 @@
 var Path = require("path");
 var ChildProcess = require('child_process');
 var Fs = require("fs");
-var yaml = require('yaml-js');
 var program = require('commander');
+var Yaml = require('yamljs');
 
 module.exports = (function() {
 
@@ -25,7 +25,7 @@ module.exports = (function() {
         process.exit(-1);
     }
 
-    var config = yaml.load(Fs.readFileSync(program.config).toString());
+    var config = Yaml.parse(Fs.readFileSync(program.config).toString());
 
     if (!config.application || !config.server) {
         console.log("Error: a problem exists in the config file. Cannot continue.");

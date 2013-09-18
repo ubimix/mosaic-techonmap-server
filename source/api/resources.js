@@ -5,15 +5,20 @@ var Fs = require('fs');
 var Utils = require('../lib/yaml.utils');
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
+var UmxApi = require('umx-api');
 
 var resources = function(app) {
 
     function loadData(inputFile) {
+        
+        var connection = new UmxApi.Implementation.Memory.WorkspaceConnection({});
+        var workspace = connection.newWorkspace();
+        var project = workspace.newProject();
+        
         var fileName = Path.basename(inputFile);
         var content = Fs.readFileSync(inputFile).toString();
         var items = JSON.parse(content);
         // initialize dates and versions
-        
         _.each(items, function(item) {
             item.system = {};
             item.system.version = uuid.v1();
@@ -21,66 +26,49 @@ var resources = function(app) {
             if (!item.properties.id) {
                 item.properties.id = Namer.normalize(item.properties.name);
             }
+            
+            var resource = project.loadResource(item.properties.id, {create: true}, function (error, resource) {
+                if (error) {
+                    console.log('Store err: ', error);
+                    console.log('Store resource: ', resource);
+                    throw new Error();
+                } else {
+                    resource.properties = _.extend(item.properties, {type: item.type, geometry:item.geometry});
+                    project.storeResource(resource, {}, function(error, entry) {
+                       if (error)
+                           throw new Error();
+                    });
+                }
+            });
         });
         
-        return items;
-
+        return project;
     }
     
-    var container;
-    var history = [];
-
-    function getResourceIndex(resourceId) {
-        // TODO: use underscore
-        for ( var i = 0; i < container.length; i++) {
-            var itemId = container[i].properties.id;
-            if (itemId == resourceId) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    function getResourceVersionIndex(resourceId, versionId) {
-        // TODO: use underscore
-        for ( var i = 0; i < history.length; i++) {
-            var itemId = history[i].properties.id;
-            if (itemId == resourceId && history[i].system && history[i].system.version == versionId) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    
-    function archiveResource(index, current) {
-        var old = container[index];
-        history.push(old);
-        
-        var version = uuid.v1();
-        current.system = current.system || {}; 
-        current.system.version = version;
-        current.system.date = Date.now();
-        // update the container with the current resource
-        container[index] = current;
-        
-    }
+    var project;
     
     app.get('/api/resources', function(req, res) {
-      
-        res.json(container);
-        
+        project.loadChildResources('', {}, function(err, entry) {
+            if (!err) {
+                res.json(_.values(entry));
+                return;
+            } else {
+                throw new Error();
+            }
+        });
     });
 
     
     app.get('/api/resources/:id', function(req, res) {
         var id = req.params.id;
-        var idx = getResourceIndex(id);
-        if (idx >= 0) {
-            res.json(container[idx]);
-        } else {
-            res.json({});
-        }
+        var resource = project.loadResource(id, {}, function(error, result) {
+            if (!error) {
+                res.json(result);
+                return;
+            } else {
+                throw new Error();
+            }
+        });
     });
 
     // TODO: actually id will be a path (see router.js) -> how to handle it on
@@ -89,74 +77,58 @@ var resources = function(app) {
     app.put('/api/resources/:id', function(req, res) {
         var id = req.params.id;
         var resource = req.body;
-        console.log('Updating resource: ' + id);
-        var idx = getResourceIndex(id);
-        if (idx >= 0) {
-            // store old resource in history
-            archiveResource(idx, resource);
-            // send it back with its new version id and date
-            res.json(resource);
-        } else {
-            throw new Error();
-        }
+        console.log('Resource: ', resource);
+        // TODO: ici on peut mettre à jour n'importe quelle ressource en fait,
+        // pas spécialement
+        // celle ayant l'id de l'URL
+        project.storeResource(resource, {}, function (error, result) {
+           console.log('Result: ', JSON.stringify(result, null, 2));
+           if (error) {
+               throw new Error();
+           } else {
+               res.json(result);    
+           }
+        });
+        
     });
     
     app.delete ("/api/resources/:id", function(req, res) {
         var id = req.params.id;
-        console.log('Deleting resource: ' + id);
-        var idx = getResourceIndex(id);
-        if (idx >= 0) {
-            history.push(container[idx]);
-            container.splice(idx,1);
-            res.json({
-                message : 'ok'
-            });
-        } else {
-            throw new Error();
-        }
+        project.deleteResource(id, {}, function (error, result) {
+            if (error) {
+                throw new Error();
+            } else {
+                res.json(result);
+            }
+        });
     });
 
     app.get('/api/resources/:id/history', function(req, res) {
         var resourceId = req.params.id;
-        var resourceHistory = [];
-        // add current resource object to the resourceHistory, then its real
-        // history, if any
-        var idx = getResourceIndex(resourceId);
-        if (idx >=0) {
-            resourceHistory.push(container[idx]);
-        }
-        
-        for ( var i = 0; i < history.length; i++) {
-            var itemId = history[i].properties.id;
-            if (itemId == resourceId) {
-                resourceHistory.push(history[i]);
-            }
-        }
-        
-        if (resourceHistory.length > 0) {
-            res.json(resourceHistory);
-        } else {
-            throw new Error();
-        }
+        project.loadResourceHistory(resourceId, {}, function(error, result) {
+           if (error)
+               throw new Error();
+           else {
+               project.loadResource(resourceId, {}, function (error, resource) {
+                   if (error)
+                       throw new Error();
+                   
+                   res.json({name: resource.properties.name, history: result});
+               });
+           }
+        });
     });
     
     app.get('/api/resources/:id/history/:version', function(req, res) {
         var resourceId = req.params.id;
         var versionId = req.params.version;
-        // check first if this is the current version
-        var ridx = getResourceIndex(resourceId);
-        if (ridx >= 0 && container[ridx].system.version == versionId) {
-            res.json(container[ridx]);
-            return;
-        }  else {
-            // then check if the version is found in the history array
-            var idx = getResourceVersionIndex(resourceId, versionId);
-            if (idx >= 0) {
-                res.json(history[idx]);
-            } else {
-                throw new Error();
-            }
-        }
+        project.loadResourceRevisions(resourceId, {versions: [versionId]}, function (error, result) {
+           if (error)
+               throw new Error();
+           else {
+               res.json(result);
+           }
+        });
     });
     
 
@@ -170,23 +142,23 @@ var resources = function(app) {
        }
        query = query.toLowerCase();
        
-       _.each(container, function(item, index) {
-           var name = item.properties.name.toLowerCase();
-           // console.log(name);
-           // console.log(query);
-           var idx = name.indexOf(query);
-           // console.log('Index: ', idx);
-           if (idx==0) {
-               match.push({name: item.properties.name, id: item.properties.id});
-           }
+       project.loadChildResources('', {}, function(err, entry) {
+           if (err)
+               throw new Error();
+           
+           _.each(_.values(entry), function(item, index) {
+               var name = item.properties.name.toLowerCase();
+               var idx = name.indexOf(query);
+               if (idx==0) {
+                   match.push({name: item.properties.name, id: item.properties.id});
+               }    
+           });
+           res.json(match);
        });
-       
-       res.json(match);
-       
        
     });
     
-    container = loadData('./data/geoitems.json');
+    project = loadData('./data/geoitems.json');
     //
 };
 

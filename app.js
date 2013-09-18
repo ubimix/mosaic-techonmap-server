@@ -9,16 +9,6 @@ var configAccessControl = require('./source/config.access');
 // needed by Passport LocalStrategy
 var Flash = require('connect-flash');
 
-//var requirejs = require('requirejs');
-//requirejs.config({
-//    //Pass the top-level main.js/index.js require
-//    //function to requirejs so that node modules
-//    //are loaded relative to the top-level JS file.
-//    nodeRequire: require
-//});
-//global.define = require('requirejs').define;
-//
-
 var app = express();
 
 

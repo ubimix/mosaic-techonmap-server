@@ -3,7 +3,7 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
         template : _.template(template),
         render : function() {
             this.$el.html(this.template({
-                current : this.options.current,
+                name : this.options.name,
                 history : this.options.history,
                 workspace : this.options.workspace,
                 path : this.options.path

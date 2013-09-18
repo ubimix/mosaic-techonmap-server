@@ -14,12 +14,12 @@ define([ 'Backbone', './resourcerow', 'text!./resourcelist.html' ], function(Bac
         // TODO: use backgrid.js ?
 
         render : function() {
-            //TODO add loading indicator
-            //TODO: do we need to remove the view when rendering it again ?
+            // TODO add loading indicator
+            // TODO: do we need to remove the view when rendering it again ?
             this.$el.html(this.template(this.options));
 
             var resourceElt = this.$('.resources');
-            var sortField = 'system.date';
+            var sortField = 'sys.updated.timestamp';
             if (this.options.sort)
                 sortField = this.options.sort;
             var sortProperty = sortField.split('.');
@@ -27,7 +27,7 @@ define([ 'Backbone', './resourcerow', 'text!./resourcelist.html' ], function(Bac
                 return resource.attributes[sortProperty[0]][sortProperty[1]];
             });
 
-            if (sortField == 'system.date')
+            if (sortField == 'sys.updated.timestamp')
                 models.reverse();
 
             models.forEach(function(resource) {
@@ -38,14 +38,10 @@ define([ 'Backbone', './resourcerow', 'text!./resourcelist.html' ], function(Bac
                 resourceElt.append(view.render().el);
                 this.subviews.push(view);
             }, this);
-            
 
             return this;
         }
-        
-        
-        
-        
+
     });
 
     return View;

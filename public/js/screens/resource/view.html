@@ -4,7 +4,7 @@
 <fieldset>
 	<div class="control-group">
 		<textarea class="input-block-level" name="content"
-			id="resource-content" placeholder="Content..." rows="20">{{=JSON.stringify(data,null, 2)}}</textarea>
+			id="resource-content" placeholder="Content..." rows="20">{{=yaml}}</textarea>
 	</div>
 </fieldset>
 
@@ -43,6 +43,23 @@
     </div>
     <div class="modal-body">
         <p>The resource has been saved successfully.</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal"
+            aria-hidden="true">Ok</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="dialog-save-not-ok" class="modal hide fade" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Save Dialog</h3>
+    </div>
+    <div class="modal-body">
+        <p>An error occurred while saving the resource. Please check the YAML syntax.</p>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" data-dismiss="modal"

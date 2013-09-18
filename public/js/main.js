@@ -25,19 +25,24 @@ require.config({
         'ApplicationRouter' : {
             deps : [ 'jQuery', 'Underscore', 'Backbone' ]
         },
-        
+
         'diff_match_patch' : {
             exports : 'diff_match_patch'
         },
-        
+
+        'yaml' : {
+            exports : 'YAML'
+        },
+
         'BootstrapModal' : {
             exports : 'BootstrapModal'
         },
-        
+
         'BootstrapTypeahead' : {
-            exports: 'BootstrapTypeahead'
+            //TODO: why does it work
+            exports : 'BootstrapTypeahead'
         }
-        
+
     },
 
     paths : {
@@ -47,10 +52,11 @@ require.config({
         i18nprecompile : './../components/require-handlebars-plugin/hbs/i18nprecompile',
         json2 : './../components/require-handlebars-plugin/hbs/json2',
         text : './../components/requirejs-text/text',
-        diff_match_patch: './../components/diff-match-patch/diff_match_patch',
-        BootstrapModal: './../components/bootstrap/js/bootstrap-modal' ,
-        moment: './../components/momentjs/moment',
-        BootstrapTypeahead: './../components/bootstrap/js/bootstrap-typeahead'
+        diff_match_patch : './../components/diff-match-patch/diff_match_patch',
+        yaml : './../components/yamljs/bin/yaml',
+        BootstrapModal : './../components/bootstrap/js/bootstrap-modal',
+        moment : './../components/momentjs/moment',
+        BootstrapTypeahead : './../components/bootstrap/js/bootstrap-typeahead'
     }
 });
 

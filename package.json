@@ -24,7 +24,6 @@
     "passport-google": "*",
     "passport-twitter": "*",
     "passport-facebook": "*",
-    "yaml-js": "*",
     "acl": "0.2.5", 
     "step": "*"
   },

@@ -4,6 +4,9 @@
 		<title><%= title %></title>
 		<link rel="stylesheet" type="text/css" href="<%= mainCss %>">
 		<script type="text/javascript" src="/components/requirejs/require.js" data-main="<%= mainJs %>"></script>
+		<!-- TODO: remove this! -->
+		<script type="text/javascript" src="/components/jquery/jquery.js"></script>
+		<script type="text/javascript" src="/components/bootstrap/js/bootstrap-typeahead.js"></script>
 		
 	</head>
 	<body>
@@ -13,7 +16,6 @@
 			<ul class="nav">
 				<li><a href="/techonmap">Tableau de bord</a></li>
 			</ul>
-
 			<ul class="nav-user">
 			<% if (user != 'Anonymous') { %>
 			<li><a href="/api/logout">Logout</a></li>
@@ -21,19 +23,20 @@
 			<li><a href="/login">Login</a></li>
 			<% } %>
 			</ul>
-
             <ul class="nav-user">
             <% if (user != 'Anonymous') { %>
                  <li><a href="/"><%=user%></a></li>
             <% } %>
             </ul>
-            
-            <form class="form-search" action="/search" method="get">
+
+            <div class="form-search" action="" method="get">
             <div class="input-append">
-                <input type="text" class="span2 search-query" name="q">
-                <button type="submit" class="btn"><i class="icon-search"></i></button>
+                <input type="text" class="span2 search-query type-ahead" autocomplete="off">
+                <input type="hidden" id="resource-id" name="id" />
+                
+                <button type="submit" id="go" class="btn"><i class="icon-chevron-right"></i></button>
             </div>
-            </form>
+            </div>
 
 			
 		</div>
@@ -41,6 +44,66 @@
 	<div class="container">
 		<div id="app" class="container" data-transition="fadeOutLeft"></div>
 	</div>
+	
+	<script type="text/javascript">
+	
+    $('.type-ahead').typeahead({
+                source : function(query, process) {
+                    return $.get('/api/typeahead', {
+                        query : query
+                    }, function(items) {
+                        data = items;
+                        return process(_.pluck(items, 'name'));
+                    });
+                },
+                updater : function(item) {
+                    var found = _.find(data, function(it) {
+                        return it.name == item
+                    });
+                    // console.log('ID: ', nameIdMap[item]);
+                    // console.log('Found: ', found.id);
+                    $('#resource-id').val(found.id);
+                    return item;
+                },
+                items: 20,
+            });	
+            
+            $('.type-ahead').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#go').click();
+                    return false;
+                }
+            });
+                
+            $('#go').on('click', function() {
+                if ($('#resource-id').val())
+                    document.location = '/techonmap/'+$('#resource-id').val();
+                else
+                    document.location = '/techonmap/search?q='+$('.type-ahead').val();
+            });
+            
+            $('body').keypress(function (e) {
+                //http://api.jquery.com/focus-selector/
+                var $focused = $( document.activeElement );
+                var tagName = $focused.prop('tagName').toLowerCase();
+                if (tagName == 'body') {
+                    $('.type-ahead').focus();
+                }
+            });
+            
+            $('body').keydown(function(event) {
+                if (event.altKey) {
+                    if (event.which == 76) {
+                        // alt+L
+                        $('.type-ahead').focus();
+                    }
+                }
+
+            });
+            
+	
+	</script>
+	
 	</body>
 	
 	 
