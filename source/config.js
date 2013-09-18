@@ -37,42 +37,42 @@ module.exports = (function() {
     // Dumps a sample config file
     function sampleConfig() {
         return "\
-	---\n\
-	  # Configuration sample file for Jingo (YAML)\n\
-	  application:\n\
-	    title: \"Jingo\"\n\
-	    repository: \"/absolute/path/to/your/repo\"\n\
-	    docSubdir: \"\"\n\
-	    remote: \"\"\n\
-	    pushInterval: 30\n\
-	    secret: \"change me\"\n\
-	  server:\n\
-	    hostname: \"localhost\"\n\
-	    port: 6067\n\
-	    localOnly: false\n\
-	    baseUrl: \"http://localhost:6067\"\n\
-	  authorization:\n\
-	    anonRead: true\n\
-	    validMatches: \".+\"\n\
-	  authentication:\n\
-	    google:\n\
-	      enabled: true\n\
-		twitter:\n\
-		  enabled: true\n\
-		  oauthkeys:\n\
-            consumerKey : ''\n\
-            consumerSecret : ''\n\
-		facebook:\n\
-		  enabled: true\n\
-		  oauthkeys:\n\
-            clientID : ''\n\
-            clientSecret : ''\n\
-	    alone:\n\
-	      enabled: false\n\
-	      username: \"\"\n\
-	      passwordHash: \"\"\n\
-	      email: \"\"\n\
-	";
+---\n\
+# Configuration sample file for Jingo (YAML)\n\
+application:\n\
+    title: \"Jingo\"\n\
+    repository: \"/absolute/path/to/your/repo\"\n\
+    docSubdir: \"\"\n\
+    remote: \"\"\n\
+    pushInterval: 30\n\
+    secret: \"change me\"\n\
+server:\n\
+    hostname: \"localhost\"\n\
+    port: 6067\n\
+    localOnly: false\n\
+    baseUrl: \"http://localhost:6067\"\n\
+authorization:\n\
+    anonRead: true\n\
+    validMatches: \".+\"\n\
+authentication:\n\
+    google:\n\
+      enabled: true\n\
+	twitter:\n\
+	  enabled: true\n\
+	  oauthkeys:\n\
+        consumerKey : ''\n\
+        consumerSecret : ''\n\
+	facebook:\n\
+	  enabled: true\n\
+	  oauthkeys:\n\
+        clientID : ''\n\
+        clientSecret : ''\n\
+    alone:\n\
+      enabled: false\n\
+      username: \"\"\n\
+      passwordHash: \"\"\n\
+      email: \"\"\n\
+";
     }
 
 })();
