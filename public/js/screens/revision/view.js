@@ -1,4 +1,4 @@
-define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
+define([ 'Backbone', 'text!./view.html', 'utils' ], function(Backbone, template, Utils) {
     var View = Backbone.View.extend({
         template : _.template(template),
         events : {
@@ -8,6 +8,7 @@ define([ 'Backbone', 'text!./view.html' ], function(Backbone, template) {
         render : function() {
             this.$el.html(this.template({
                 resource : this.options.resource,
+                yaml : Utils.toYaml(this.options.resource),
                 workspace : this.options.workspace,
                 path : this.options.path
             }));

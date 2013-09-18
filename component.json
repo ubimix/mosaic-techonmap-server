@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "underscore": "~1.4.4",
-    "jquery": "~2.0.0",
+    "jquery": "latest",
     "jquery-csv":"latest",
     "backbone": "~1.0.0",
-    "bootstrap": "~2.3.1",
+    "bootstrap": "2.3.2",
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
     "require-handlebars-plugin": "~0.4.0",
