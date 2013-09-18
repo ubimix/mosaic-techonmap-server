@@ -3,9 +3,8 @@
 Data Publica
 AACC
 
+Gestion des JS dans le master.ejs
 
-
-Search widget
 Create entity : /workspace/new -> view with ID / textarea. Actions : SAVE / CANCEL. SAVE -> resourceScreen
 i18n
 

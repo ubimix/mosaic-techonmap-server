@@ -4,12 +4,14 @@ define([ '../models/Resource', './view'], function(Resource, ResourceView) {
             var resource = new Resource({
                 id : options.path
             });
-            
             resource.fetch({
-                //TODO: handle errors when no resource found with given id
-                success : function(res) {
+                // TODO: handle errors when no resource found with given id
+                success : function(model, object) {
+                    //TODO: why both model + object are returned ? where is it documented ?
+                    //console.log('Success a: ', model);
+                    //console.log('Success b: ', object);
                     var view = new ResourceView({
-                        model : res,
+                        model : model,
                         path : options.path,
                         workspace : options.workspace
                     });

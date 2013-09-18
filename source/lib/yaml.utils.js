@@ -1,7 +1,7 @@
 var Fs = require('fs');
 var Glob = require('glob');
 var Path = require('path');
-var Yaml = require('yamljs');
+var Yaml = require('js-yaml');
 var Namer = require("./namer");
 var _ = require('underscore')._;
 
@@ -57,7 +57,7 @@ var utils = {
         var content = Fs.readFileSync(inputFile).toString();
         var parts = this.getParts(content, fileName);
         // console.log(parts.yaml);
-        var yaml = Yaml.parse(parts.yaml);
+        var yaml = Yaml.load(parts.yaml);
         yaml.name = parts.title;
         yaml.description = parts.description;
         var geo = yaml.geo;

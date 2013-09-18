@@ -4,11 +4,10 @@ define([ './view' ], function(HistoryView) {
             // why is jQuery available while not in the defines ? because
             // Backbone depends on it ?
             $.get('/api/resources/' + options.path + '/history', function(data) {
-                var current = data[0];
-                current['version'] = 0;
-                var history = data;
+                var history = data.history;
+                var resourceName = data.name;
                 var view = new HistoryView({
-                    current : current,
+                    name : resourceName,
                     history : history,
                     path : options.path,
                     workspace : options.workspace

@@ -3,11 +3,7 @@ define([ 'Backbone' ], function(Backbone) {
     var Resource = Backbone.Model.extend({
         urlRoot : '/api/resources',
         defaults : {
-            type : 'Feature',
-            geometry : {
-                type : 'Point',
-                coordinates : []
-            },
+            instanceID : 0,
             properties : {
                 name : '',
                 description : '',
@@ -21,13 +17,25 @@ define([ 'Backbone' ], function(Backbone) {
                 viadeo : '',
                 id : '',
                 tags : [],
-                category : ''
+                category : '',
+                type : '',
+                geometry : {
+                    type : '',
+                    coordinates : []
+                }
             },
-            system : {
-                date : '',
-                version: '',
-                author: ''
-                
+            sys : {
+                path : '',
+                created : {
+                    instanceID : 0,
+                    timestamp : 0,
+                    version : 0
+                },
+                updated : {
+                    instanceID : 0,
+                    timestamp : 0,
+                    version : 0
+                }
             }
         }
 

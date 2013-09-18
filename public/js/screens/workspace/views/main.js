@@ -17,6 +17,8 @@ define([ 'Backbone', './resourcelist' ], function(Backbone, ResourceListView) {
                 });
                 this.$el.append(view.render().el);
                 this.subviews.push(view);
+                
+                
             }
             return this;
         }
