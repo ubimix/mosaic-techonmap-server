@@ -7,11 +7,12 @@ define(function(require) {
             'login' : 'loginScreen',
             'search' : 'searchScreen',
             ':workspace/search' : 'searchScreen',
+            ':workspace/import' : 'importScreen',
             ':workspace' : 'workspaceScreen',
             ':workspace/' : 'workspaceScreen',
             ':workspace/sort/:sort' : 'workspaceScreen',
             ':workspace/*path/history/compare/:version1/with/:version2' : 'compareScreen',
-            ':workspace/*path/history/:version' : 'versionScreen',
+            ':workspace/*path/history/:version' : 'revisionScreen',
             ':workspace/*path/history' : 'historyScreen',
             ':workspace/*path' : 'resourceScreen'
         },
@@ -23,6 +24,11 @@ define(function(require) {
         },
         searchScreen : function(workspace) {
             require('./../screens/search/app').run(viewManager, {
+                workspace : workspace
+            });
+        },
+        importScreen : function(workspace) {
+            require('./../screens/import/app').run(viewManager, {
                 workspace : workspace
             });
         },
@@ -52,8 +58,8 @@ define(function(require) {
                 path : path
             });
         },
-        versionScreen : function(workspace, path, version) {
-            require('./../screens/version/app').run(viewManager, {
+        revisionScreen : function(workspace, path, version) {
+            require('./../screens/revision/app').run(viewManager, {
                 workspace : workspace,
                 path : path,
                 version : version

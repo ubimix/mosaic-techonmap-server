@@ -13,7 +13,7 @@
 				<td>Author...</td>
 				<td>{{ var day = moment(item.timestamp); print(day.format('YYYY-MM-DD HH:mm:ss')); }}</td>
 			{{ if (index >0) }} 
-			<td><a href="/{{=workspace }}/{{=path}}/history/{{=item.version}}">{{=item.version }}</a></td>
+			<td><a href="/{{=workspace }}/{{=path}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>
 			{{ else { }}
 			<td><a href="/{{=workspace }}/{{=path}}">CURRENT</a></td>
 			{{ } }}
