@@ -1,7 +1,7 @@
 var Fs = require('fs');
 var Glob = require('glob');
 var Path = require('path');
-var Yaml = require('js-yaml');
+var Yaml = require('yamljs');
 var Namer = require("./namer");
 var _ = require('underscore')._;
 
