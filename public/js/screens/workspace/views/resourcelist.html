@@ -4,18 +4,16 @@
 
 <h2>Resources</h2>
 
-<div style='margin-bottom:2em;'>
-<a href="/{{=workspace}}/new" class="btn btn-primary">New</a>
+<div style='margin-bottom:1em;'>
+<a href="/{{=workspace}}/new" class="btn btn-primary">New Resource</a>
 </div>
 
-<table class="table table-hover">
-	<thead>
-		<th></th>
-		<th><a class="sort" href="/{{=workspace}}/sort/properties.name">Name</a></th>
-		<th><a class="sort" href="/{{=workspace}}/sort/properties.category">Category</a></th>
-		<th>Author</th>
-		<th><a class="sort" href="/{{=workspace}}/sort/sys.updated.timestamp">Date</a></th>
-	</thead>
-	<tbody class="resources">
-	</tbody>
-</table>
+<div style='margin-bottom:1em; float:right; display:block;'>
+Sort by : <a class="sort" href="/{{=workspace}}/sort/properties.name">Name</a>
+<a class="sort" href="/{{=workspace}}/sort/properties.category">Category</a>
+<a class="sort" href="/{{=workspace}}/sort/sys.updated.timestamp">Date</a>
+</div>
+
+<div class="resources" style="clear:right;">
+
+</div>
