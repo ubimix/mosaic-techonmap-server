@@ -21,10 +21,10 @@ function hander(title, mainJs, mainCss) {
 
 module.exports = {
 	development: function () {
-		return hander('TechOnMap', '/js/main.js', '/css/main.css');
+		return hander('jscr-webui', '/js/main.js', '/css/main.css');
 	},
 
 	production: function () {
-		return hander('TechOnMap', client.js, client.css);
+		return hander('jscr-webui', client.js, client.css);
 	}
 };
