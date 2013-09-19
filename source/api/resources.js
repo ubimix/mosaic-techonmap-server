@@ -5,7 +5,9 @@ var Fs = require('fs');
 var Utils = require('../lib/yaml.utils');
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
-var UmxApi = require('umx-api');
+
+var UmxApi = require('jscr-api');
+// require('jscr-memory');
 
 var resources = function(app) {
 

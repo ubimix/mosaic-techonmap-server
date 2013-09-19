@@ -24,7 +24,8 @@
     "passport-google": "*",
     "passport-twitter": "*",
     "passport-facebook": "*",
-    "acl": "0.2.5", 
+    "acl": "0.2.5",
+    "jscr-api": "git://github.com/ubimix/jscr-api.git",
     "step": "*"
   },
   "devDependencies": {
