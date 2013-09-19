@@ -1,5 +1,5 @@
 {
-  "name": "djinko",
+  "name": "jscr-webui",
   "version": "0.0.1",
   "dependencies": {
     "underscore": "~1.4.4",
@@ -11,6 +11,7 @@
     "requirejs-text": "latest",
     "require-handlebars-plugin": "~0.4.0",
     "animate.css": "latest",
-    "momentjs":"latest"
+    "momentjs":"latest",
+    "pnotify":"latest"
   }
 }

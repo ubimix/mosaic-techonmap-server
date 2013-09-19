@@ -41,7 +41,7 @@ module.exports = (function() {
 ---\n\
 # Configuration sample file for Jingo (YAML)\n\
 application:\n\
-    title: \"Jingo\"\n\
+    title: \"jscr-webui\"\n\
     repository: \"/absolute/path/to/your/repo\"\n\
     docSubdir: \"\"\n\
     remote: \"\"\n\
