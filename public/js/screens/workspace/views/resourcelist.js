@@ -1,5 +1,4 @@
-define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ], function(Backbone, Utils, ResourceRowView,
-        template) {
+define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ], function(Backbone, Utils, ResourceRowView, template) {
 
     function loadEntry(id, callback) {
         $.get('/api/resources' + id + '?' + Math.random(), function(data) {
@@ -59,14 +58,13 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
 
             return this;
         },
-        
-        
+
         sort : function(event) {
-            
+
             console.log('begin');
-            this.$el.css('background-color','blue');
+            this.$el.css('background-color', 'blue');
             this.render();
-            this.$el.css('background-color','white');
+            this.$el.css('background-color', 'white');
             console.log('end');
         },
 

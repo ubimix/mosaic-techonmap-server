@@ -6,12 +6,10 @@
     "jquery": "latest",
     "jquery-csv":"latest",
     "backbone": "~1.0.0",
+    "backbone.paginator": "latest",
     "bootstrap": "2.3.2",
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
-    "require-handlebars-plugin": "~0.4.0",
-    "animate.css": "latest",
-    "momentjs":"latest",
-    "pnotify":"latest"
+    "momentjs":"latest"
   }
 }

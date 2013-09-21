@@ -10,8 +10,9 @@ a {
 .media-top {
 	cursor: pointer;
 }
+
 .media-top:hover {
- background-color: #f6f6f6;	
+	background-color: #f6f6f6;
 }
 
 .media-content {
@@ -93,7 +94,7 @@ h1.media-heading {
 
 .media-url {
 	float: right;
-	padding-right:1em;
+	padding-right: 1em;
 }
 
 .favicon {
@@ -165,3 +166,4 @@ body {
 	padding-right: 10px;
 	margin-bottom: 0px;
 }
+

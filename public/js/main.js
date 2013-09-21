@@ -8,6 +8,10 @@ require.config({
         'jQueryCsv' : {
             exports : '$.csv'
         },
+        
+        'jQueryToast' : {
+            exports : '$.toast'
+        },
 
         'Underscore' : {
             exports : '_',
@@ -46,12 +50,12 @@ require.config({
             //TODO: why does it work
             exports : 'BootstrapTypeahead'
         }
-
     },
 
     paths : {
         jQuery : './../components/jquery/jquery',
         jQueryCsv : './../components/jquery-csv/src/jquery.csv',
+        jQueryToast : './../components/jquery-toast/jquery.toast',
         Underscore : './../components/underscore/underscore',
         Backbone : './../components/backbone/backbone',
         i18nprecompile : './../components/require-handlebars-plugin/hbs/i18nprecompile',
