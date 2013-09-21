@@ -10,11 +10,17 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
         template : _.template(template),
 
         initialize : function() {
-            this.subviews = [];
+            //this.subviews = [];
+            
+            this.collection.on('reset', function() {
+                //TODO: why does 'this' refer to the view while we're in a function
+                this.$el.empty();
+                this.render();
+            }, this);
+            
         },
 
         events : {
-            'click .sort' : 'sort',
             'click .media .media-top' : 'handleEntryClick'
         },
 
@@ -36,36 +42,27 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
             }
 
             var resourceElt = this.$('.resources');
-            var sortField = 'sys.updated.timestamp';
-            if (this.options.sort)
-                sortField = this.options.sort;
-            var models = _.sortBy(this.collection.models, function(resource) {
-                // TODO: how to avoid accessing the attributes
-                return getDotProperty(resource.attributes, sortField);
-            });
-
-            if (sortField == 'sys.updated.timestamp')
-                models.reverse();
-
-            models.forEach(function(resource) {
+//            var sortField = 'sys.updated.timestamp';
+//            if (this.options.sort)
+//                sortField = this.options.sort;
+//            var models = _.sortBy(this.collection.models, function(resource) {
+//                // TODO: how to avoid accessing the attributes
+//                return getDotProperty(resource.attributes, sortField);
+//            });
+//
+//            if (sortField == 'sys.updated.timestamp')
+//                models.reverse();
+            
+            this.collection.forEach(function(resource) {
                 var view = new ResourceRowView({
                     model : resource,
                     workspace : this.options.workspace
                 });
                 resourceElt.append(view.render().el);
-                this.subviews.push(view);
+                //this.subviews.push(view);
             }, this);
 
             return this;
-        },
-
-        sort : function(event) {
-
-            console.log('begin');
-            this.$el.css('background-color', 'blue');
-            this.render();
-            this.$el.css('background-color', 'white');
-            console.log('end');
         },
 
         handleEntryClick : function(event) {

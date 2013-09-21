@@ -29,6 +29,11 @@ require.config({
             deps : [ 'Underscore', 'jQuery' ],
             exports : 'Backbone'
         },
+        
+        'BackbonePaginator' : {
+            deps : ['Backbone'],
+            exports : 'Backbone.Paginator'
+        },
 
         'ApplicationRouter' : {
             deps : [ 'jQuery', 'Underscore', 'Backbone' ]
@@ -58,6 +63,7 @@ require.config({
         jQueryToast : './../components/jquery-toast/jquery.toast',
         Underscore : './../components/underscore/underscore',
         Backbone : './../components/backbone/backbone',
+        BackbonePaginator : './../components/backbone.paginator/lib/backbone.paginator',
         i18nprecompile : './../components/require-handlebars-plugin/hbs/i18nprecompile',
         json2 : './../components/require-handlebars-plugin/hbs/json2',
         text : './../components/requirejs-text/text',
