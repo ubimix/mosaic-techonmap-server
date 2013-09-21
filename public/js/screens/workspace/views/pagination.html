@@ -1,0 +1,52 @@
+
+         <div class="breadcrumb">
+
+            <span class="cell last pages">
+                {{ if (currentPage != 1) { }}
+                    <a href="#" class="first">First</a>
+                    <a href="#" class="prev">Previous</a>
+                {{ } }}
+                {{ _.each (pageSet, function (p) { }}
+                    {{ if (currentPage == p) { }}
+                        <span class="page selected">{{= p }}</span>
+                    {{ } else { }}
+                        <a href="#" class="page">{{= p }}</a>
+                    {{ } }}
+                {{ }); }}
+                {{ if (lastPage != currentPage && lastPage != 0) { }}
+                    <a href="#" class="next">Next</a>
+                    <a href="#" class="last">Last</a>
+                {{ } }}
+            </span>
+
+            <span class="divider">/</span>
+
+
+            <span class="cell howmany">
+                Show
+                <a href="#" class="selected">10</a>
+                |
+                <a href="#" class="">20</a>
+                |
+                <a href="#" class="">50</a>
+                |
+                <a href="#" class="">100</a>
+            </span>
+
+            <span class="cell first records">
+                <span class="current">{{= startRecord }}</span>
+                -
+                <span class="perpage">{{= endRecord }}</span>
+                of
+                <span class="total">{{= totalRecords }}</span>
+                            shown
+            </span>
+
+            <span class="divider">/</span>
+
+            Sort by: 
+            <a href="#" class="sort" data-sort="attributes.properties.name">Name</a>
+            <a href="#" class="sort" data-sort="attributes.properties.category">Category</a>
+            <a href="#" class="sort" data-sort="attributes.sys.updated.timestamp" data-sort-order="desc">Date</a>
+
+          </div>

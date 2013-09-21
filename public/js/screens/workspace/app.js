@@ -3,8 +3,12 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
     return {
         run : function(viewManager, options) {
             var coll = new ResourceCollection();
+            
+            
             coll.fetch({
                 success : function(coll) {
+                    coll.setSort('attributes.sys.updated.timestamp', 'desc');
+                    //coll.pager();
                     var view = new MainView({
                         collection : coll,
                         workspace : options.workspace,
