@@ -1,3 +1,4 @@
 @import url('../components/bootstrap/docs/assets/css/bootstrap.css');
-@import url('../components/animate.css/animate.css');
+@import url('../components/jquery-pnotify/jquery.pnotify.default.css');
+@import url('../components/jquery-toast/jquery.toast.css');
 @import url('style.css');
