@@ -9,7 +9,7 @@
 
 //TODO: why do we need to specify 'theme-techonmap' below (while we don't in the fractalstudio)
 
-define([ 'jQuery', 'Underscore', 'Backbone', 'text!theme-techonmap/umx.app.templates.html' ],
+define([ 'jQuery', 'Underscore', 'Backbone', 'text!theme-default/umx.app.templates.html' ],
 
 function($, _, Backbone, HtmlTemplate) {
 

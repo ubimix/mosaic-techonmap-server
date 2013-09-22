@@ -3,7 +3,7 @@ define(function(require) {
     var viewManager = require('./viewManager');
     var Router = Backbone.Router.extend({
         routes : {
-            '' : 'homeScreen',
+            '' : 'workspaceScreen',
             'login' : 'loginScreen',
             'search' : 'searchScreen',
             ':workspace/search' : 'searchScreen',

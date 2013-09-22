@@ -1,8 +1,46 @@
 <div>
-	<script type="text/template" id="HeaderView">
+
+<script type="text/template" id="HeaderView">
+ <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">{{= title }}</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/workspace/import">Import</a></li>
+           
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
+            {{ if (user != 'Anonymous') { }}
+                 <li><a href="/">{{=user}}</a></li>
+            {{ } }}
+
+            {{ if (user != 'Anonymous') { }}
+            <li><a href="/api/logout">Logout</a></li>
+            {{ } else { }}
+            <li><a href="/login">Login</a></li>
+            {{ } }}
+
+          </ul>
+
+           <form class="navbar-form navbar-right">
+             <input type="text" class="form-control col-lg-8 search" placeholder="Search">
+           </form>
+
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+</script>
+
+	<script type="text/template" id="HeaderViewBlah">
 		<div class="navbar">
         <div class="navbar-inner">
-            <a class="brand" href="/">TechOnMap {{= title }}</a>
+            <a class="brand" href="/">TechOnMap </a>
             <ul class="nav">
                 <li><a href="/techonmap">Tableau de bord</a></li>
                 <li><a href="/techonmap/import">Import</a></li>

@@ -48,6 +48,7 @@ h1.media-heading,.media-summary,.media-summary * {
 h1.media-heading {
 	font-size: 1em;
 	padding-left: 1em;
+	font-weight: bold;
 }
 
 .media-summary {

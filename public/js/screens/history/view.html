@@ -5,6 +5,13 @@
 <table
 	class="history table table-striped table-bordered table-hover table-condensed">
 	<tbody>
+            <tr style="color: black;">
+                <th></th>
+                    <th>Author</th>
+                    <th>Date</th>
+                    <th>Version</th>
+                </tr>	
+	
 		{{ _.each(_.sortBy(history, function (elt) { return elt.timestamp; }).reverse(), function(item, index) { }}
 
             {{if (index < (history.length-1)) { }}
@@ -27,5 +34,5 @@
 </table>
 
 <div class="form-actions">
-    <button class="compare btn">Compare</button>
+    <button class="compare btn btn-primary">Compare</button>
 </div>

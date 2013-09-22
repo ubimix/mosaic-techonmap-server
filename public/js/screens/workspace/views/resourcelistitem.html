@@ -2,16 +2,16 @@
 <li class="media" data-id="{{=data.sys.path}}">
     <div class="media-body">
     <div class="media-top">
-        <div class="row-fluid">
-            <div class="span8 header">
+        <div class="row">
+            <div class="col-md-8 header">
                 <h1 class="media-heading">{{=data.properties.name}}</h1>
                 <div class="media-summary">{{=data.properties.description}}</div>
             </div>
-            <div class="span4 header">
+            <div class="col-md-4 header">
                 <span class="category">{{-data.properties.category}}</span>
                 <span class="published-date">{{= moment(data.sys.updated.timestamp).format("YYYY-MM-DD HH:mm:ss") }}</span>
                 <span
-                    class="media-url"><a href="/{{=workspace }}{{=data.sys.path }}" title="{{=data.properties.name}}"><i class=" icon-edit"></i></a>
+                    class="media-url"><a href="/{{=workspace }}{{=data.sys.path }}" title="{{=data.properties.name}}"><i class="glyphicon glyphicon-edit"></i></a>
                 </span>
             </div>
         </div>

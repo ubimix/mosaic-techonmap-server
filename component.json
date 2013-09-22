@@ -6,8 +6,8 @@
     "jquery": "latest",
     "jquery-csv":"latest",
     "backbone": "~1.0.0",
-    //"backbone.paginator": "latest",
-    "bootstrap": "2.3.2",
+    "bootstrap": "3.0.0",
+    "bootstrap-growl" : "latest",
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
     "momentjs":"latest"

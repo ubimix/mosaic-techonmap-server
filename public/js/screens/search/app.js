@@ -1,4 +1,4 @@
-define([ './view', 'BootstrapTypeahead'], function(SearchView, BootstrapTypeahead) {
+define([ './view'], function(SearchView) {
     return {
         run : function(viewManager, options) {
             var view = new SearchView(options);
