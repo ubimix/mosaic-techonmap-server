@@ -11,12 +11,11 @@ Identifier: <input type='text' id='path' name='path' value=''/>
 
 <fieldset>
 	<div class="control-group">
-		<textarea class="input-block-level" name="content"
-			id="resource-content" placeholder="Content..." rows="20">{{=yaml}}</textarea>
+	<textarea class="form-control" rows="20" name="content" id="resource-content" >{{=yaml}}</textarea>
 	</div>
 </fieldset>
 
-<div class="form-actions">
+<div style="margin-top:1em;">
 	<button class="submit btn btn-primary">Save</button>
 	{{ if (data.sys.path) { }}
 	<button class="history btn">History</button>
@@ -24,38 +23,25 @@ Identifier: <input type='text' id='path' name='path' value=''/>
 	{{ } }}
 </div>
 
-<div id="dialog-delete-confirm" class="modal hide fade" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Confirmation</h3>
-	</div>
-	<div class="modal-body">
-		<p>Do you really want to delete this resource ?</p>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-primary" data-dismiss="modal"
-			aria-hidden="true">Cancel</button>
-		<button class="delete btn" data-dismiss="modal">Confirm</button>
-	</div>
-</div>
 
-<div id="dialog-save-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Save Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>The resource has been saved successfully.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
-</div>
+<div class="modal fade" id="dialog-delete-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        <p>Please confirm the removal of this resource.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="delete btn btn-default">Confirm</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <div id="dialog-save-not-ok" class="modal hide fade" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true">

@@ -47,13 +47,9 @@ require.config({
             exports : 'YAML'
         },
 
+        //TODO: which export
         'BootstrapModal' : {
             exports : 'BootstrapModal'
-        },
-
-        'BootstrapTypeahead' : {
-            //TODO: why does it work
-            exports : 'BootstrapTypeahead'
         }
     },
 
@@ -69,10 +65,10 @@ require.config({
         text : './../components/requirejs-text/text',
         diff_match_patch : './../components/diff-match-patch/diff_match_patch',
         yaml : './../components/yamljs/bin/yaml',
-        BootstrapModal : './../components/bootstrap/js/bootstrap-modal',
+        BootstrapModal : './../components/bootstrap/js/modal',
+        BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         moment : './../components/momentjs/moment',
-        BootstrapTypeahead : './../components/bootstrap/js/bootstrap-typeahead',
-        UmxAppTemplates : './theme-techonmap/umx.app.templates'
+        UmxAppTemplates : './theme-default/umx.app.templates'
     }
 });
 
