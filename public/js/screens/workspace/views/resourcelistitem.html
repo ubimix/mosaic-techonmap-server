@@ -3,11 +3,11 @@
     <div class="media-body">
     <div class="media-top">
         <div class="row">
-            <div class="col-md-8 header">
+            <div class="col-md-8 media-header">
                 <h1 class="media-heading">{{=data.properties.name}}</h1>
                 <div class="media-summary">{{=data.properties.description}}</div>
             </div>
-            <div class="col-md-4 header">
+            <div class="col-md-4 media-header">
                 <span class="category">{{-data.properties.category}}</span>
                 <span class="published-date">{{= moment(data.sys.updated.timestamp).format("YYYY-MM-DD HH:mm:ss") }}</span>
                 <span

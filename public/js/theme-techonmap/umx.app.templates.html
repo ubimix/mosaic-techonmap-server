@@ -1,34 +1,56 @@
 <div>
-	<script type="text/template" id="HeaderView">
-		<div class="navbar">
-        <div class="navbar-inner">
-            <a class="brand" href="/">TechOnMap {{= title }}</a>
-            <ul class="nav">
-                <li><a href="/techonmap">Tableau de bord</a></li>
-                <li><a href="/techonmap/import">Import</a></li>
-            </ul>
-            <ul class="nav-user">
-            {{ if (user != 'Anonymous') { }}
-            <li><a href="/api/logout">Logout</a></li>
-            {{ } else { }}
-            <li><a href="/login">Login</a></li>
-            {{ } }}
-            </ul>
-            <ul class="nav-user">
-            {{ if (user != 'Anonymous') { }}
-                 <li><a href="/">{{=user}}</a></li>
-            {{ } }}
-            </ul>
 
-            <div class="form-search" action="" method="get">
-            <div class="input-append">
-                <input type="text" class="span2 search-query type-ahead" autocomplete="off">
-                <input type="hidden" id="resource-id" name="id" />
-                
-                <button type="submit" id="go" class="btn"><i class="icon-chevron-right"></i></button>
+	<script type="text/template" id="HeaderView">
+<div id="topbar">
+        <div class="social">
+            <div class="left">
             </div>
+            <div class="right">
             </div>
         </div>
 
-	</script>
+        <div class="header">
+            <div class="aside">
+               
+            </div>
+
+            <div class="ban">
+                <div class="left">
+                    <h1>
+                        <a href=""><img src="/js/theme-techonmap/images/banner.png" alt="Techonmap"></a>
+                    </h1>
+                    <h2>La carte des acteurs du numérique en
+                        Île-de-France</h2>
+                </div>
+                <div class="right">
+                    {{ if (user != 'Anonymous') { }}
+                    <ul class="menu">
+                        <li><input type="text" class="typeahead" autocomplete="off" placeholder="Search..."></li>                        
+                        <li><a href="/workspace/new" class="btn btn-primary">New</a></li>
+                        <li><a href="/workspace/import" class="btn btn-primary">Import</a></li>
+                        <!--<li><a href="/map" class="btn btn-primary">Map</a></li> -->
+                        {{ if (user != 'Anonymous') { }}
+                        <li><a href="/">{{=user}}</a></li>
+                        {{ } }}
+                        {{ if (user != 'Anonymous') { }}
+                        <li><a href="/api/logout">Logout</a></li>
+                        {{ } else { }}
+                        <li><a href="/login">Login</a></li>
+                        {{ } }}
+
+                    </ul>
+                    {{ } }}
+                </div>
+
+            </div><!-- end ban -->
+
+
+        </div><!-- end header -->
+</div> <!-- end topbar -->
+
+<div style="clear:both;">
+<hr style="margin-top:0px; margin-bottom:0px;"/>
+</div>
+</script>
+
 </div>

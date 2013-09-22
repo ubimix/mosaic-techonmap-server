@@ -1,32 +1,22 @@
-<div>
-	<h1>Authentication</h1>
-</div>
-
-
-<div>
+<div style="margin-top:5em; text-align:center;">
 
 	{{ if (user.displayName) { }} {{=user.displayName}} <a
 		href="/api/logout">Logout</a> {{ } else { }}
 
-	<hr />
 	<p>
-		<b>Authenticate via</b> <a href="/api/auth/google"
-			class="btn btn-primary">Google</a>
+		<a href="/api/auth/google"
+			class="btn btn-primary btn-login">Login with Google</a>
 
 	</p>
-
-	<hr />
 	<p>
-		<b>Authenticate via</b> <a href="/api/auth/twitter"
-			class="btn btn-primary">Twitter</a>
+		<a href="/api/auth/twitter"
+			class="btn btn-primary btn-login">Login with Twitter</a>
 	</p>
-	<hr />
 	<p>
-		<b>Authenticate via</b> <a href="/api/auth/facebook"
-			class="btn btn-primary">Facebook</a>
+		<a href="/api/auth/facebook"
+			class="btn btn-primary btn-login">Login with Facebook</a>
 	</p>
-	<hr />
-
+    <!-- 
 	<p>
 	<form action='/api/login' method='post'>
 
@@ -44,3 +34,5 @@
 			{{ } }}
 
 		</div>
+    </form>
+	-->

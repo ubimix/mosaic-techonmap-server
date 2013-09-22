@@ -1,5 +1,5 @@
-define([ 'Backbone', 'jQueryToast', 'core/viewManager', 'BootstrapModal', 'BootstrapGrowl','utils', 'text!./view.html' ], function(Backbone,
-        jQueryToast, viewManager, BootstrapModal, BootstrapGrowl, Utils, template) {
+define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'core/viewManager', 'utils', 'text!./view.html' ], function(Backbone,
+        BootstrapModal, BootstrapGrowl, viewManager, Utils, template) {
 
     var ResourceRowView = Backbone.View.extend({
         template : _.template(template),
@@ -107,27 +107,33 @@ define([ 'Backbone', 'jQueryToast', 'core/viewManager', 'BootstrapModal', 'Boots
                         // console.log(notices.length);
                         // notices.length = 0;
 
-//                        $.toast.config.align = 'center';
-//                        // $.toast.config.width = 200;
-//                        var message = 'Successfully saved';
-//                        var options = {
-//                            duration : 1000,
-//                            sticky : false,
-//                            type : 'success'
-//                        };
-//                        $.toast(message, options);
+                        // $.toast.config.align = 'center';
+                        // // $.toast.config.width = 200;
+                        // var message = 'Successfully saved';
+                        // var options = {
+                        // duration : 1000,
+                        // sticky : false,
+                        // type : 'success'
+                        // };
+                        // $.toast(message, options);
 
                         $.bootstrapGrowl("Successfully saved", {
-                            ele: 'body', // which element to append to
-                            type: 'success', // (null, 'info', 'error', 'success')
-                            offset: {from: 'top', amount: 40}, // 'top', or 'bottom'
-                            align: 'center', // ('left', 'right', or 'center')
-                            width: 'auto', // (integer, or 'auto')
-                            delay: 1500,
-                            allow_dismiss: false,
-                            stackup_spacing: 10 // spacing between consecutively stacked growls.
-                          });
-                        
+                            ele : 'body', // which element to append to
+                            type : 'success', // (null, 'info', 'error',
+                                                // 'success')
+                            offset : {
+                                from : 'top',
+                                amount : 40
+                            }, // 'top', or 'bottom'
+                            align : 'center', // ('left', 'right', or
+                                                // 'center')
+                            width : 'auto', // (integer, or 'auto')
+                            delay : 1500,
+                            allow_dismiss : false,
+                            stackup_spacing : 10
+                        // spacing between consecutively stacked growls.
+                        });
+
                         // TODO: add error
                         // callback
                     }
