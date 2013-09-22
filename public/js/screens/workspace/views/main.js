@@ -7,7 +7,8 @@ define([ 'Backbone', './resourcelist', './paginator' ], function(Backbone, Resou
 
         render : function() {
             if (this.options.error) {
-                this.$el.append('You are not authorized to perform this action. Please <a href="/login">login</a>.');
+                //this.$el.append('You are not authorized to perform this action. Please <a href="/login">login</a>.');
+                Backbone.history.navigate('/login', true);
             } else {
                 
                 var view = new ResourceListView({

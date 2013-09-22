@@ -1,4 +1,4 @@
-define([ 'Backbone', 'text!./view.html','jQueryCsv','utils'], function(Backbone, template, jQueryCsv, Utils) {
+define([ 'Backbone', 'jQueryCsv','text!./view.html','utils'], function(Backbone, jQueryCsv, template, Utils) {
     
     var View = Backbone.View.extend({
         template : _.template(template),

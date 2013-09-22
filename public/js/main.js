@@ -6,11 +6,13 @@ require.config({
         },
         
         'jQueryCsv' : {
-            exports : '$.csv'
+            exports : '$.csv',
+            deps: ['jQuery']
         },
         
-        'jQueryToast' : {
-            exports : '$.toast'
+        'BootstrapGrowl' : {
+            deps: ['jQuery']
+            
         },
 
         'Underscore' : {
@@ -73,7 +75,7 @@ require.config({
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         Typeahead: './../components/typeahead.js/dist/typeahead',
         moment : './../components/momentjs/moment',
-        UmxAppTemplates : './theme-default/umx.app.templates'
+        UmxAppTemplates : './theme-techonmap/umx.app.templates'
     }
 });
 
