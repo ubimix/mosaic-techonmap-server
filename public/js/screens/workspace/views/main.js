@@ -24,8 +24,8 @@ define([ 'Backbone', './resourcelist', './paginator' ], function(Backbone, Resou
                 
                 this.$el.append(paginationView.render().el);
                 
-                //this.subviews.push(view);
-                //this.subviews.push(paginationView);
+                this.subviews.push(view);
+                this.subviews.push(paginationView);
                 
                 
             }

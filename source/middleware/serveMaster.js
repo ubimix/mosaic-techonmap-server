@@ -15,7 +15,7 @@ function hander(title, mainJs, mainCss) {
 		}
 
 	    var displayName = req.user ? req.user.displayName : 'Anonymous';
-		res.render('master', { title: title, mainJs: mainJs, mainCss: mainCss, user: displayName});
+		res.render('index', { title: title, mainJs: mainJs, mainCss: mainCss, user: displayName});
 	};
 }
 

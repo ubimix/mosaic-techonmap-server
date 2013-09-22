@@ -4,3 +4,6 @@ public/components
 npm-debug.log
 public/build
 config.yaml
+public/client
+public/data
+public/simple-reqjs

@@ -71,7 +71,8 @@ require.config({
         yaml : './../components/yamljs/bin/yaml',
         BootstrapModal : './../components/bootstrap/js/bootstrap-modal',
         moment : './../components/momentjs/moment',
-        BootstrapTypeahead : './../components/bootstrap/js/bootstrap-typeahead'
+        BootstrapTypeahead : './../components/bootstrap/js/bootstrap-typeahead',
+        UmxAppTemplates : './theme-techonmap/umx.app.templates'
     }
 });
 
