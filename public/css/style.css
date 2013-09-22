@@ -222,6 +222,7 @@ border-bottom:none;
 	padding: 3px 20px;
 	font-size: 1em;
 	line-height: 24px;
+	text-align: left;
 }
 
 .tt-suggestion.tt-is-under-cursor {
