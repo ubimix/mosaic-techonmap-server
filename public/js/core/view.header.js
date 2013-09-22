@@ -1,8 +1,19 @@
-define([ 'Backbone', 'UmxAppTemplates' ], function(Backbone, templates) {
+define([ 'jQuery', 'Backbone', 'Typeahead', 'UmxAppTemplates' ], function($, Backbone, Typeahead, templates) {
     var View = Backbone.View.extend({
         template : templates['HeaderView'],
         render : function() {
             this.$el.html(this.template(this.options));
+            
+            $('.typeahead').typeahead({
+                remote: '/api/typeahead/?query=%QUERY',
+                limit: 15
+              });
+            
+            
+            $('body').on('typeahead:selected', function(event, datum) {
+                Backbone.history.navigate('/workspace/' + datum.id, true);
+            });
+            
             // TODO: check if not adding listener each time the view is rendered
 //            $('.type-ahead').typeahead({
 //                source : function(query, process) {
@@ -44,7 +55,7 @@ define([ 'Backbone', 'UmxAppTemplates' ], function(Backbone, templates) {
                 var $focused = $(document.activeElement);
                 var tagName = $focused.prop('tagName').toLowerCase();
                 if (tagName == 'body') {
-                    $('.search').focus();
+                    $('.typeahead').focus();
                 }
             });
 
@@ -52,7 +63,7 @@ define([ 'Backbone', 'UmxAppTemplates' ], function(Backbone, templates) {
                 if (event.altKey) {
                     if (event.which == 76) {
                         // alt+L
-                        $('.search').focus();
+                        $('.typeahead').focus();
                     }
                 }
 

@@ -50,6 +50,10 @@ require.config({
         //TODO: which export
         'BootstrapModal' : {
             exports : 'BootstrapModal'
+        },
+        
+        'Typeahead' : {
+            deps : ['jQuery']
         }
     },
 
@@ -67,6 +71,7 @@ require.config({
         yaml : './../components/yamljs/bin/yaml',
         BootstrapModal : './../components/bootstrap/js/modal',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
+        Typeahead: './../components/typeahead.js/dist/typeahead',
         moment : './../components/momentjs/moment',
         UmxAppTemplates : './theme-default/umx.app.templates'
     }

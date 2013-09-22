@@ -225,7 +225,8 @@ var resources = function(app) {
                var name = item.properties.name.toLowerCase();
                var idx = name.indexOf(query);
                if (idx==0) {
-                   match.push({name: item.properties.name, id: item.properties.id});
+                   //TypeaheadJS Datum objects https://github.com/twitter/typeahead.js#datum
+                   match.push({value: item.properties.name, tokens: [item.properties.name], id: item.properties.id});
                }    
            });
            res.json(match);

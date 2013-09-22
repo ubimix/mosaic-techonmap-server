@@ -27,7 +27,7 @@
           </ul>
 
            <form class="navbar-form navbar-right">
-             <input type="text" class="form-control col-lg-8 search" placeholder="Search">
+             <input type="text" class="typeahead" autocomplete="off" placeholder="Search...">
            </form>
 
 
@@ -37,36 +37,4 @@
 
 </script>
 
-	<script type="text/template" id="HeaderViewBlah">
-		<div class="navbar">
-        <div class="navbar-inner">
-            <a class="brand" href="/">TechOnMap </a>
-            <ul class="nav">
-                <li><a href="/techonmap">Tableau de bord</a></li>
-                <li><a href="/techonmap/import">Import</a></li>
-            </ul>
-            <ul class="nav-user">
-            {{ if (user != 'Anonymous') { }}
-            <li><a href="/api/logout">Logout</a></li>
-            {{ } else { }}
-            <li><a href="/login">Login</a></li>
-            {{ } }}
-            </ul>
-            <ul class="nav-user">
-            {{ if (user != 'Anonymous') { }}
-                 <li><a href="/">{{=user}}</a></li>
-            {{ } }}
-            </ul>
-
-            <div class="form-search" action="" method="get">
-            <div class="input-append">
-                <input type="text" class="span2 search-query type-ahead" autocomplete="off">
-                <input type="hidden" id="resource-id" name="id" />
-                
-                <button type="submit" id="go" class="btn"><i class="icon-chevron-right"></i></button>
-            </div>
-            </div>
-        </div>
-
-	</script>
 </div>
