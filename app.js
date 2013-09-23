@@ -11,11 +11,11 @@ var Flash = require('connect-flash');
 
 var app = express();
 
-
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
 // baseUrl is used as the public url
-app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
+app.locals.baseUrl = config.server.baseUrl
+        || ("http://" + app.locals.hostname + ":" + app.locals.port)
 
 var oneMonth = 30 * 24 * 60 * 60 * 1000;
 
@@ -60,9 +60,13 @@ app.configure('production', function() {
 configPassport(app);
 configAccessControl(app);
 
-require('./source/api/resources')(app);
-
-http.createServer(app).listen(app.get('port'), function() {
-    var environment = process.env.NODE_ENV || 'development';
-    console.log('Server started: ' + app.get('port') + ' (' + environment + ')');
+var promise = require('./source/api/resources')(app);
+promise.then(function() {
+    http.createServer(app).listen(
+            app.get('port'),
+            function() {
+                var environment = process.env.NODE_ENV || 'development';
+                console.log('Server started: ' + app.get('port') + ' ('
+                        + environment + ')');
+            });
 });

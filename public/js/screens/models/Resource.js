@@ -4,7 +4,7 @@ define([ 'Backbone' ], function(Backbone) {
         //TODO: why do we need to define a urlRoot while there is a 'url' field
         //in the collection
         //http://backbonejs.org/#Model-urlRoot
-        urlRoot : '/api/resources',
+        urlRoot : '/api/resources/',
         defaults : {
             instanceID : 0,
             properties : {
