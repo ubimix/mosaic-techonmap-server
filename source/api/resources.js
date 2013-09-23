@@ -35,7 +35,7 @@ var resources = function(app) {
         
         var fileName = Path.basename(inputFile);
         var content = Fs.readFileSync(inputFile).toString();
-        var items = JSON.parse(content);
+        var items = JSON.parse(content).features;
         // initialize dates and versions
         _.each(items, function(item) {
             item.system = {};
@@ -155,12 +155,27 @@ var resources = function(app) {
         // TODO: ici on peut mettre à jour n'importe quelle ressource en fait,
         // pas spécialement
         // celle ayant l'id de l'URL
-        project.storeResource(resource, {}, function (error, result) {
-           console.log('Result: ', JSON.stringify(result, null, 2));
-           if (error)
-              return handleError(res, error);
-           res.json(result);    
-        });
+        project.loadResource(id, {create: true}, function(error, resource) {
+            if (!resource.properties)
+                resource.properties = {};
+            if (!resource.type)
+                resource.type = 'Feature';
+            _.each(req.body.properties, function(value, key) {
+                resource.properties[key] = value;  
+            });
+            if (!resource.geometry)
+                resource.geometry = {};
+            _.each(req.body.geometry, function(value, key) {
+                resource.geometry[key] = value;
+            });
+            
+            project.storeResource(resource, {}, function (error, result) {
+                console.log('Result: ', JSON.stringify(result, null, 2));
+                if (error)
+                   return handleError(res, error);
+                res.json(result);    
+             });
+        })  
         
     });
     
@@ -187,6 +202,7 @@ var resources = function(app) {
     });
     
     function handleError(res, error) {
+        console.log('Error: ', error);
         res.json({error : error.toString()});
     }
 
@@ -225,7 +241,8 @@ var resources = function(app) {
                var name = item.properties.name.toLowerCase();
                var idx = name.indexOf(query);
                if (idx==0) {
-                   //TypeaheadJS Datum objects https://github.com/twitter/typeahead.js#datum
+                   // TypeaheadJS Datum objects
+                    // https://github.com/twitter/typeahead.js#datum
                    match.push({value: item.properties.name, tokens: [item.properties.name], id: item.properties.id});
                }    
            });
@@ -233,7 +250,7 @@ var resources = function(app) {
        });
     });
 
-    var project = loadData('./data/geoitems.json');
+    var project = loadData('./data/data.json');
 };
 
 module.exports = resources;
