@@ -59,13 +59,16 @@ module.exports = function(app) {
         var method = req.method.toLowerCase();
         // method = method === 'get' ? 'read' : 'write';
         Step(function checkAccess() {
-            //console.log("USER: ", userId, userRoles[userId])
+            // console.log("USER: ", userId, userRoles[userId])
             acl.isAllowed(userId, path, method, this);
         }, function(err, allowed) {
-            //console.log('Access "' + path + '": ' + err, allowed)
+            // console.log('Access "' + path + '": ' + err, allowed)
             if (err || !allowed) {
-                //TODO: we should probably send an HTTP UNAUTHORIZED error
-                throw new Error();
+                res.send('Access denied. User: "' + userId + '". Resource: "'
+                        + path + '".', 403);
+                return;
+                // TODO: we should probably send an HTTP UNAUTHORIZED error
+                // throw new Error();
             } else {
                 next();
             }
@@ -78,4 +81,3 @@ module.exports = function(app) {
     // app.all("/search", requireAuthentication);
     // }
 }
-

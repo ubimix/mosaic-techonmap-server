@@ -5,252 +5,339 @@ var Fs = require('fs');
 var Utils = require('../lib/yaml.utils');
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
-var UmxApi = require('umx-api');
+var Q = require('q');
 
-var resources = function(app) {
+var JSCR = require('jscr-api/jscr-api');
+require('jscr-api/jscr-memory');
 
-    function loadData(inputFile) {
-        
-        var connection = new UmxApi.Implementation.Memory.WorkspaceConnection({});
-        var workspace = connection.newWorkspace();
-        var project = workspace.newProject();
-        
-        function storeResource(project, item) {
-            project.loadResource(item.properties.id, {create: true}, function (error, resource) {
-                if (error)
-                    throw error;
-                resource.properties = item.properties;
-                resource.type = item.type;
-                resource.geometry = item.geometry;
-                project.storeResource(resource, {}, function(error, entry) {
-                   if (error)
-                       throw error;
-// project.loadResourceHistory(item.properties.id,  {}, function (error,
-// history) {
-// console.log(item.properties.id + ' history: ', history);
-// });
-                    });
+/* ========================================================================== */
+/* Data transformation utilities */
+/* -------------------------------------------------------------------------- */
+
+/** Updates the given resource with values from the GeoJSON object */
+function updateResourceFields(resource, geoJson) {
+    _.each([ 'properties', 'geometry' ], function(name) {
+        var from = geoJson[name] || {};
+        var to = resource[name] = resource[name] || {};
+        _.each(from, function(value, key) {
+            to[key] = value;
+        })
+    })
+    return resource;
+}
+
+/** Copies all required fields from the specified resource */
+function getGeoJsonFromResource(resource, showSystemProperties) {
+    var id = resource.getPath();
+    var coordinates = resource.geometry ? _
+            .clone(resource.geometry.coordinates) : [];
+    // console.log(' * ' + id);
+    // console.log(JSON.stringify(resource));
+    var properties = _.clone(resource.properties);
+    var result = {
+        _id : id,
+        type : "Feature",
+        geometry : {
+            "type" : "Point",
+            "coordinates" : coordinates
+        },
+        properties : properties
+    };
+    if (showSystemProperties !== false) {
+        result.sys = _.clone(resource.sys);
+    }
+    return result;
+}
+
+/**
+ * Detects and returns path of a resource corresponding to the given GeoJSON
+ * object
+ */
+function getPathFromGeoJson(geoJson) {
+    var result = geoJson.id;
+    if (!result) {
+        var properties = geoJson.properties = (geoJson.properties || {});
+        result = properties.id = (properties.id || Namer
+                .normalize(properties.name));
+    }
+    return result;
+}
+
+/* ========================================================================== */
+/* HTTP request-response utilities */
+/* -------------------------------------------------------------------------- */
+
+/* HttpError wrapper */
+function HttpError(code, msg) {
+    Error.call(this, msg);
+    this.errorCode = code;
+}
+_.extend(HttpError.prototype, Error.prototype);
+HttpError.notFound = function(path) {
+    return new HttpError(404, 'Resource "' + path + '" not found.');
+}
+
+/** Send the results returned by the given promise. */
+function reply(req, res, promise) {
+    return promise
+    //
+    .then(function(result) {
+        res.json(result);
+        // Return something to avoid blocking
+        return true;
+    })
+    // 
+    .fail(function(error) {
+        console.log(error);
+        if (error instanceof HttpError) {
+            res.send(error.message, error.errorCode);
+        } else {
+            res.json({
+                errors : error
             });
         }
-        
-        var fileName = Path.basename(inputFile);
-        var content = Fs.readFileSync(inputFile).toString();
-        var items = JSON.parse(content).features;
-        // initialize dates and versions
-        _.each(items, function(item) {
-            item.system = {};
-            item.system.version = uuid.v1();
-            item.system.date = Date.now();
-            if (!item.properties.id) {
-                item.properties.id = Namer.normalize(item.properties.name);
-            }
-            storeResource(project, item);
-        });
-        
-        return project;
-    }
-    
-    app.get('/api/resources', function(req, res) {
-        project.loadChildResources('', {}, function(err, entries) {
-            if (err) 
-               return handleError(res, err);
-            res.json(_.values(entries));
-        });
+        return true;
     });
-    
-    function isNewResource(resource) {
-        // TODO: it seems getCreated does not return a Version object but a JSON
-        // one
-        var created = resource.getCreated().timestamp;
-        var updated = resource.getUpdated().timestamp;
-        return created == updated;
-        
-    }
-    
+}
+
+/** Returns resource path from the specified HTTP request */
+function getRequestedPath(req) {
+    var result = req.params.path || req.params.id || '';
+    return JSCR.normalizePath(result);
+}
+
+/** Transforms the specified request parameter to a valid version number */
+function getVersionIdFromRequest(req, param) {
+    var result = req.params[param];
+    return JSCR.version({
+        versionId : result
+    });
+}
+
+/** Reads JSON object from the request body, parse it and returns the results */
+function loadJsonFromRequest(req) {
+    var data = req.body;
+    return Q(data);
+}
+
+/* ========================================================================== */
+/* Main application functions */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Import and stores the given GeoJSON object in the resource with the specified
+ * path.
+ */
+function importGeoJSONItem(project, itemPath, item) {
+    return project.loadResource(itemPath, {
+        create : true
+    }).then(function(resource) {
+        resource = updateResourceFields(resource, item);
+        return project.storeResource(resource);
+    });
+}
+
+/** Import an array of GeoJSON items in the specified project */
+function importGeoJSON(project, json) {
+    var items = _.isArray(json.features) ? json.features
+            : _.isArray(json) ? json : [ json ];
+    return Q.all(_.map(items, function(item) {
+        var itemPath = getPathFromGeoJson(item);
+        return importGeoJSONItem(project, itemPath, item);
+    }));
+}
+
+/**
+ * Initializes and returns a new project. This method uses the specified data
+ * file to import it in the repository
+ * 
+ * @param inputFile
+ *            data file to import in the repository
+ * @returns a promise for an initialized project
+ */
+function loadData(inputFile) {
+    var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+    var projectName = 'djingo'
+    var project = null;
+
+    return connection.connect()
+    // Create a project
+    .then(function(workspace) {
+        return workspace.loadProject(projectName, {
+            create : true
+        });
+    })
+    // Set the newly created project in a variable
+    .then(function(p) {
+        project = p;
+    })
+    // Load file with data
+    .then(function() {
+        return Q.nfcall(Fs.readFile, inputFile, 'UTF-8');
+    })
+    // Parse JSON
+    .then(function(data) {
+        var json = JSON.parse(data);
+        var jsonItems = _.isArray(json.features) ? json.features : json;
+        return jsonItems;
+    })
+    // Store the JSON content as project resources
+    .then(function(json) {
+        return importGeoJSON(project, json);
+    })
+    // Shows imported resources. Just in case...
+    .then(function(resource) {
+        // console.log('Stored:', JSON.stringify(resource, null, 2));
+        return true;
+    })
+    // Return the project for the next operations
+    .then(function() {
+        return project;
+    });
+}
+
+/** Binds request handling to the specified application */
+function initializeApplication(app, project) {
+
+    /** Loads and returns all root resources from the storage */
+    app.get('/api/resources', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadChildResources(path).then(
+                function(results) {
+                    return _.map(results, function(resource) {
+                        return getGeoJsonFromResource(resource);
+                    })
+                }));
+    });
+
+    /**
+     * Loads and returns all resources in the 'exporing' format (without system
+     * properties)
+     */
+    app.get('/api/resources/export', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadChildResources(path).then(
+                function(results) {
+                    return _.map(results, function(resource) {
+                        return getGeoJsonFromResource(resource, false);
+                    })
+                }));
+    });
+
+    /** Returns individual resource by its path */
+    app.get('/api/resources/:path', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadResource(path).then(function(resource) {
+            if (!resource) {
+                throw HttpError.notFound(path);
+            }
+            return getGeoJsonFromResource(resource);
+        }));
+    });
+
+    /** Import 'in-batch' an array of GeoJSON items */
     app.post('/api/resources/import', function(req, res) {
-        var data = req.body.data;
-        var errors = [];
-        var created = [];
-        var updated = [];
-        
-        _.each(data, function(entry) {
-            // TODO: remove http(s):// in case there is
-            var entryId = entry.properties.url;
-            project.loadResource(entryId, {create: true}, function (error, resource) {
-                if (error)
-                    throw error;
-                resource.properties = entry.properties;
-                resource.type = entry.type;
-                resource.geometry = entry.geometry;
-                project.storeResource(resource, {}, function(err, entry) {
-                    if (err)
-                        errors.push[{id:entryId, error: err, resource: entry}];
-                    else {
-                        if (isNewResource(entry)) {
-                            created.push({id: entry.properties.id, name: entry.properties.name});
-                        } else {
-                            updated.push({id: entry.properties.id, name: entry.properties.name});
-                        }
+        reply(req, res, loadJsonFromRequest(req).then(function(json) {
+            return importGeoJSON(project, json);
+        }));
+    });
+
+    /** Stores a new resource in the repository */
+    function saveResource(req, res) {
+        reply(req, res, loadJsonFromRequest(req).then(
+                function(json) {
+                    var path = getRequestedPath(req);
+                    if (path == '') {
+                        path = getPathFromGeoJson(json);
                     }
+                    console.log('Try to save the following resource "' + path
+                            + '": ', json)
+                    return importGeoJSONItem(project, path, json);
+                }));
+    }
+    app.post('/api/resources/:path', saveResource);
+    app.put('/api/resources/:path', saveResource);
+
+    /** Removes a resource with the specified path. */
+    app['delete']('/api/resources/:path', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.deleteResource(path).then(function(success) {
+            return {
+                result : 'OK'
+            };
+        }));
+    });
+
+    /** Returns a list of versions for the specified resource */
+    app.get('/api/resources/:path/history', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadResourceHistory(path).then(
+                function(history) {
+                    if (!history || !history.length) {
+                        throw HttpError.notFound(path);
+                    }
+                    return history;
+                }));
+    });
+
+    /**
+     * Returns resource content for the specified version.
+     */
+    app.get('/api/resources/:path/history/:version', function(req, res) {
+        var path = getRequestedPath(req);
+        var versionId = getVersionIdFromRequest(req, 'version');
+        reply(req, res, project.loadResourceRevisions(path, {
+            versions : [ versionId ]
+        }).then(function(revisions) {
+            if (!revisions || !revisions.length) {
+                throw HttpError.notFound(path);
+            }
+            return _.map(revisions, function(resource) {
+                return getGeoJsonFromResource(resource);
+            })
+        }));
+    });
+
+    /* --------------------------------------------------------------- */
+
+    /** Provides search results for autocompletion */
+    app.get('/api/typeahead/:path', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadChildResources(path)
+        // Filter resources
+        .then(function(results) {
+            var query = req.query.query;
+            var match = [];
+            if (!query)
+                return match;
+            query = query.toLowerCase();
+            _.each(results, function(item) {
+                var name = item.properties.name.toLowerCase();
+                var idx = name.indexOf(query);
+                if (idx < 0)
+                    return;
+                match.push({
+                    name : item.properties.name,
+                    id : item.properties.id
                 });
             });
-        });
-        
-        res.json({errors:errors, created: created, updated: updated});
-    });
-    
-    app.get('/api/resources/export', function(req, res) {
-        project.loadChildResources('', {}, function(err, entries) {
-            if (err) 
-               return handleError(res, err);
-            res.json(_.map(entries, function(entry) { delete entry.sys; return entry;}));
-        });
-    });
-    
-    app.get('/api/resources/:id', function(req, res) {
-        var id = req.params.id;
-        var resource = project.loadResource(id, {}, function(error, result) {
-            if (error)
-                // TODO: is this the proper way ?
-                return handleError(res, error);
-            res.json(result);
-             
-        });
-    });
-    
-    app.post('/api/resources/new', function(req, res) {
-        var data = req.body;
-        var path = data.path;
-        var resource = data.resource;
-        // TODO: validate input
-        console.log('POST: ', data);
-        project.loadResource(path, {create: true}, function (err, entry) {
-            if (err)
-                return handleError(res, err);
-            if (!isNewResource(entry)) {
-                res.json({error: 'A resource already exists at the given path ("'+path+'").'});
-                return;
+            return match;
+        })
+        // Returns the final results to the client
+        .then(function(match) {
+            return {
+                options : match
             }
-            entry = _.extend(entry, { properties: resource.properties, type : resource.type, geometry : resource.geometry});
-            project.storeResource(entry, {}, function(error, stored) {
-                if (error)
-                    return handleError(res, error);
-                console.log('Path: ', stored.sys.path)
-                res.json(stored);
-            });
-        });
-        
+        }));
     });
-    
+}
 
-    // TODO: actually id will be a path (see router.js) -> how to handle it on
-    // the server ?
-    // TODO: what if multiple concurrent access
-    app.put('/api/resources/:id', function(req, res) {
-        var id = req.params.id;
-        var resource = req.body;
-        // TODO: validate resource: in particular, the resource should have a
-        // path
-        console.log('PUT: ', resource);
-        // TODO: ici on peut mettre à jour n'importe quelle ressource en fait,
-        // pas spécialement
-        // celle ayant l'id de l'URL
-        project.loadResource(id, {create: true}, function(error, resource) {
-            if (!resource.properties)
-                resource.properties = {};
-            if (!resource.type)
-                resource.type = 'Feature';
-            _.each(req.body.properties, function(value, key) {
-                resource.properties[key] = value;  
-            });
-            if (!resource.geometry)
-                resource.geometry = {};
-            _.each(req.body.geometry, function(value, key) {
-                resource.geometry[key] = value;
-            });
-            
-            project.storeResource(resource, {}, function (error, result) {
-                console.log('Result: ', JSON.stringify(result, null, 2));
-                if (error)
-                   return handleError(res, error);
-                res.json(result);    
-             });
-        })  
-        
-    });
-    
-    app.delete ("/api/resources/:id", function(req, res) {
-        var id = req.params.id;
-        project.deleteResource(id, {}, function (error, result) {
-            if (error) 
-                return handleError(res, error);
-            res.json(result);
-        });
-    });
+/* ========================================================================== */
+/* The main exported module (the 'main' function) */
+/* -------------------------------------------------------------------------- */
+module.exports = function(app) {
+    loadData('./data/geoitems.json').then(function(project) {
+        initializeApplication(app, project);
+    }).done();
 
-    app.get('/api/resources/:id/history', function(req, res) {
-        var resourceId = req.params.id;
-        project.loadResourceHistory(resourceId, {}, function(error, history) {
-           if (error)
-               return handleError(res, error);
-           project.loadResource(resourceId, {}, function (error, resource) {
-               if (error)
-                   return handleError(res, error);
-               res.json({name: resource.properties.name, history: history});
-           });
-        });
-    });
-    
-    function handleError(res, error) {
-        console.log('Error: ', error);
-        res.json({error : error.toString()});
-    }
-
-    function getVersion(req) {
-        return UmxApi.version({ versionId: req.params.version });   
-    }
-    
-    app.get('/api/resources/:id/history/:version', function(req, res) {
-        var resourceId = req.params.id;
-        var version = getVersion(req);
-        project.loadResourceRevisions(resourceId, {versions: [version]}, function (error, result) {
-           if (error)
-               return handleError(res, error);
-           // TODO: what it result length ==0 or result undefined
-           // TODO: do we handle a copy of the resource, or the actual resource
-            // ?
-           // delete result[0].sys;
-           res.json(result[0]);
-        });
-    });
-
-    app.get('/api/typeahead', function(req, res) {
-       var query = req.query.query;
-       var match = [];
-       if (!query) {
-           res.json({options: match});
-           return;
-       }
-       query = query.toLowerCase();
-       
-       project.loadChildResources('', {}, function(err, entry) {
-           if (err)
-               return handleError(res, err);
-           
-           _.each(_.values(entry), function(item, index) {
-               var name = item.properties.name.toLowerCase();
-               var idx = name.indexOf(query);
-               if (idx==0) {
-                   // TypeaheadJS Datum objects
-                    // https://github.com/twitter/typeahead.js#datum
-                   match.push({value: item.properties.name, tokens: [item.properties.name], id: item.properties.id});
-               }    
-           });
-           res.json(match);
-       });
-    });
-
-    var project = loadData('./data/data.json');
-};
-
-module.exports = resources;
+}
