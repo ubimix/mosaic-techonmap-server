@@ -1,7 +1,7 @@
 define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ], function(Backbone, Utils, ResourceRowView, template) {
 
     function loadEntry(id, callback) {
-        $.get('/api/resources' + id + '?' + Math.random(), function(data) {
+        $.get('/api/resources/' + id + '?' + Math.random(), function(data) {
             callback(data);
         });
     }

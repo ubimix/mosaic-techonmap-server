@@ -301,7 +301,7 @@ function initializeApplication(app, project) {
     /* --------------------------------------------------------------- */
 
     /** Provides search results for autocompletion */
-    app.get('/api/typeahead/:path', function(req, res) {
+    app.get('/api/typeahead', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path)
         // Filter resources
@@ -311,10 +311,10 @@ function initializeApplication(app, project) {
             if (!query)
                 return match;
             query = query.toLowerCase();
+            var regexp = new RegExp('\\b' + query, 'gi'); 
             _.each(results, function(item) {
                 var name = item.properties.name.toLowerCase();
-                var idx = name.indexOf(query);
-                if (idx < 0)
+                if (!name.match(regexp))
                     return;
                 match.push({
                     name : item.properties.name,
@@ -336,8 +336,10 @@ function initializeApplication(app, project) {
 /* The main exported module (the 'main' function) */
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
-    loadData('./data/geoitems.json').then(function(project) {
+    return loadData('./data/geoitems.json')
+    //
+    .then(function(project) {
         initializeApplication(app, project);
-    }).done();
-
+        return true;
+    });
 }
