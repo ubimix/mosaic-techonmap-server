@@ -1,8 +1,6 @@
-var uuid = require('node-uuid');
 var Path = require('path');
 var Fs = require('fs');
 // TODO: when to use relative paths, absolute paths in node ?
-var Utils = require('../lib/yaml.utils');
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 var Q = require('q');
@@ -311,23 +309,19 @@ function initializeApplication(app, project) {
             if (!query)
                 return match;
             query = query.toLowerCase();
-            var regexp = new RegExp('\\b' + query, 'gi'); 
+            var regexp = new RegExp('\\b' + query, 'gi');
             _.each(results, function(item) {
                 var name = item.properties.name.toLowerCase();
                 if (!name.match(regexp))
                     return;
+                // https://github.com/twitter/typeahead.js#datum
                 match.push({
-                    name : item.properties.name,
+                    value : item.properties.name,
+                    tokens : [ item.properties.name ],
                     id : item.properties.id
                 });
             });
             return match;
-        })
-        // Returns the final results to the client
-        .then(function(match) {
-            return {
-                options : match
-            }
         }));
     });
 }
