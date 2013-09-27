@@ -45,7 +45,10 @@ app.configure(function() {
 
 app.configure('development', function() {
     app.use(express.errorHandler());
+    //(express.static(path.join(__dirname, 'public/map')));
+    //app.use('backoffice', express.static(path.join(__dirname, 'public')));
     app.use(express.static(path.join(__dirname, 'public')));
+    
     app.use(middleware.serveMaster.development());
 });
 
