@@ -63,6 +63,7 @@ authentication:\n\
 	  oauthkeys:\n\
         consumerKey : ''\n\
         consumerSecret : ''\n\
+      cacheExpire: 3600000\n\
 	facebook:\n\
 	  enabled: true\n\
 	  oauthkeys:\n\
@@ -73,6 +74,11 @@ authentication:\n\
       username: \"\"\n\
       passwordHash: \"\"\n\
       email: \"\"\n\
+twitterClient:\n\
+    consumerKey : ''\n\
+    consumerSecret : ''\n\
+    accessTokenKey : ''\n\
+    accessTokenSecret : ''\n\
 ";
     }
 

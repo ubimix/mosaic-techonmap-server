@@ -36,7 +36,9 @@ module.exports = function(app) {
 
         // console.log('User: ', req.user);
         if (!req.user) {
-            res.redirect("/");
+            var dst = req.session.destination || "/";
+            delete req.session.destination;
+            res.redirect(dst);
             return;
         } else {
             var dst = req.session.destination || "/";
@@ -108,10 +110,17 @@ module.exports = function(app) {
             });
             return done(undefined, user);
         }));
-        app.get("/api/auth/twitter", passport.authenticate('twitter'));
+        
+        //http://stackoverflow.com/questions/9885711/custom-returnurl-on-node-js-passports-google-strategy
+        app.get("/api/auth/twitter", function(req, res, next) {
+            req.session.destination = req.query.redirect;
+            passport.authenticate('twitter', function(err, user, info) {
+                next();
+            })(req, res, next);
+        });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
             successRedirect : '/api/auth/done',
-            failureRedirect : '/login'
+            failureRedirect : '/api/auth/done'
         }));
     }
 

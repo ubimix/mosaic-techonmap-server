@@ -1,18 +1,20 @@
-define([ 'Backbone', 'text!./view.html', 'utils' ], function(Backbone, template, Utils) {
+define([ 'Backbone', 'utils', '../resource/contentView', 'text!../resource/contentView.html' ],
+
+function(Backbone, Utils, ResourceContentView, ResourceContentTemplate) {
     var View = Backbone.View.extend({
-        template : _.template(template),
+        template : _.template(ResourceContentTemplate),
         events : {
             'click .submit' : 'restoreVersion'
         },
 
         render : function() {
-            this.$el.html(this.template({
-                resource : this.options.resource,
-                yaml : Utils.toYaml(this.options.resource),
-                workspace : this.options.workspace,
-                path : this.options.path
-            }));
-
+            console.log(this.options);
+            var contentView = new ResourceContentView(this.options);
+            var html = this.template({
+                content : contentView.render().$el,
+                view : this
+            })
+            this.$el.html(html);
             return this;
         },
 
@@ -24,7 +26,7 @@ define([ 'Backbone', 'text!./view.html', 'utils' ], function(Backbone, template,
                 data : this.options.resource
             }).done(function(msg) {
                 $('#dialog-restore-ok').modal()
-                //TODO: handle errors
+                // TODO: handle errors
             });
         }
 

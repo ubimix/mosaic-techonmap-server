@@ -15,7 +15,7 @@ define(['Backbone','BackbonePaginator', './../models/Resource'], function (Backb
             // the URL (or base URL) for the service
             //url: 'https://api.github.com/repos/twitter/bootstrap/issues?'
             //url: 'https://api.github.com/repos/twbs/bootstrap/issues?'
-            url: '/api/resources/'
+            url: '/api/resources'
         },
         
         paginator_ui: {

@@ -2,32 +2,22 @@ define([ 'yaml' ], function(YAML) {
     'use strict';
     var Utils = {};
 
-    Utils.toYaml = function(attr) {
+    Utils.toStructuredContent = function(attr) {
         var copy = _.extend({}, attr);
         var description = copy.properties.description || '';
         delete copy.properties.description;
         copy.properties = _.extend(copy.properties, {geometry: copy.geometry || '', type: copy.type || ''});        
         var dataYaml = YAML.stringify(copy.properties, 4, 2);
-        var text = description + "\n\n----\n" + dataYaml;
-        return text;
+        // var text = description + "\n\n----\n" + dataYaml;
+        return {yaml:dataYaml, content: description};
 
     }
 
-    Utils.toJSON = function(content) {
-        var idx = content.indexOf('----\n');
-        var yaml = '';
-        var description = '';
-        if (idx >= 0) {
-            yaml = content.substring(idx + '----\n'.length);
-            description = content.substring(0, idx).trim();
-        }
-        try {
-            var obj = YAML.parse(yaml);
-            obj.description = description;
-            return obj
-        } catch (e) {
-            throw e;
-        }
+    Utils.toJSON = function(description, yaml) {
+        description = (description || '').trim();
+        var obj = YAML.parse(yaml || '');
+        obj.description = description;
+        return obj;
 
     }
     

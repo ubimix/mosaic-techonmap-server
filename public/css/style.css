@@ -184,10 +184,13 @@ border-bottom:none;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 	outline: none;
+	margin-top:0.5em;
 }
 
 .typeahead {
 	background-color: #fff;
+	margin-right:1em;
+	margin-top:0.5em;
 }
 
 .typeahead:focus {
@@ -288,7 +291,6 @@ margin-top: 1em;
 margin-right:1em;
 padding: 0;
 list-style-type: none;
-text-align: center;
 }
 
 ul.menu li { display: inline; }

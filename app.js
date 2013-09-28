@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var fs = require("fs");
 var middleware = require('./source/middleware');
 var passport = require('passport');
 var config = require('./source/config');
@@ -14,10 +15,24 @@ var app = express();
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
 // baseUrl is used as the public url
-app.locals.baseUrl = config.server.baseUrl
-        || ("http://" + app.locals.hostname + ":" + app.locals.port)
+app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
 
 var oneMonth = 30 * 24 * 60 * 60 * 1000;
+
+function listFolders(folderPath, callback) {
+
+    fs.readdir(folderPath, function(err, files) {
+        if (err) {
+            return callback(err, null);
+        }
+        folders = files.map(function(file) {
+            return path.join(folderPath, file);
+        }).filter(function(file) {
+            return fs.statSync(file).isDirectory();
+        });
+        callback(null, folders);
+    });
+}
 
 app.configure(function() {
     app.set('port', app.locals.port);
@@ -45,10 +60,18 @@ app.configure(function() {
 
 app.configure('development', function() {
     app.use(express.errorHandler());
-    //(express.static(path.join(__dirname, 'public/map')));
-    //app.use('backoffice', express.static(path.join(__dirname, 'public')));
+    app.use('/map', express.static(path.join(__dirname, 'public/map')));
+//    listFolders(path.join(__dirname, 'public'), function(err, folders) {
+//        folders.forEach(function(folder, array, index) {
+//            app.use('/backoffice/' + path.basename(folder), express.static(path
+//                    .join(__dirname, 'public/' + path.basename(folder))));
+//        });
+//
+//    });
+
+
     app.use(express.static(path.join(__dirname, 'public')));
-    
+
     app.use(middleware.serveMaster.development());
 });
 
@@ -65,11 +88,8 @@ configAccessControl(app);
 
 var promise = require('./source/api/resources')(app);
 promise.then(function() {
-    http.createServer(app).listen(
-            app.get('port'),
-            function() {
-                var environment = process.env.NODE_ENV || 'development';
-                console.log('Server started: ' + app.get('port') + ' ('
-                        + environment + ')');
-            });
+    http.createServer(app).listen(app.get('port'), function() {
+        var environment = process.env.NODE_ENV || 'development';
+        console.log('Server started: ' + app.get('port') + ' (' + environment + ')');
+    });
 });

@@ -1,7 +1,13 @@
 <div>
 	<h3>{{=view.getTitle()}}</h3>
 	<div>{{=content.html()}}</div>
-	<div>
-		<button>Hello</button>
+
+	<div style="margin-top: 1em;">
+		<button class="submit btn btn-primary">Save</button>
+		{{ if (data.sys.path) { }}
+		<button class="history btn">History</button>
+		<button href="#dialog-delete-confirm" role="button" class="btn"
+			data-toggle="modal">Delete</button>
+		{{ } }}
 	</div>
 </div>

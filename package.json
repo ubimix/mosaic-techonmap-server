@@ -27,7 +27,9 @@
     "acl": "0.2.5", 
     "jscr-api" : "git://github.com/ubimix/jscr-api.git#a9deec1985dcd5311a15c160f0856bacaaf20fe1",
     "step": "*",
-    "q":"*"
+    "q":"*",
+    "ntwitter":"*",
+    "lru-cache":"2.3.1"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.8",

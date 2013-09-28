@@ -1,12 +1,15 @@
 define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, template) {
+
+    var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
     var View = Backbone.View.extend({
         template : _.template(template),
         render : function() {
             this.$el.html(this.template({
-                name : this.options.name,
-                history : this.options.history,
+                resource : this.options.resource,
+                history : this.options.history.attributes,
                 workspace : this.options.workspace,
-                path : this.options.path
+                path : this.options.path,
+                view : this
             }));
 
             var $hCol1 = this.$el.find('.history td:first-child');
@@ -56,6 +59,17 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
             }
 
             return this;
+        },
+
+        getTitle : function() {
+            return this.options.resource.attributes.properties.name;
+        },
+
+        getFormattedDate : function(timestamp) {
+            if (!timestamp)
+                return moment().format(DATE_FORMAT);
+            var day = moment(timestamp);
+            return day.format(DATE_FORMAT);
         }
     });
     return View;

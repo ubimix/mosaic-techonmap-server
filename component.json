@@ -12,6 +12,6 @@
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
     "momentjs":"latest",
-    "codemirror":"latest"
+    "codemirror":"~3.18.0"
   }
 }
