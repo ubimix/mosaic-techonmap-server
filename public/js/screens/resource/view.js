@@ -1,9 +1,43 @@
-define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'core/viewManager', 'utils', 'text!./view.html' ], function(Backbone,
-        BootstrapModal, BootstrapGrowl, viewManager, Utils, template) {
+define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/viewManager', 'utils', 'text!./contentView.html',
+        'text!./view.html' ],
+
+function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Utils, ResourceContentViewTemplate, ResourceRowViewTemplate) {
+
+    var ResourceContentView = Backbone.View.extend({
+        template : _.template(ResourceContentViewTemplate),
+        render : function() {
+             var html = this.template({
+                view : this,
+                data : this.model.toJSON()
+            });
+            console.log(html);
+            this.$el.html(html);
+            
+            return this;
+        },
+
+        /* Utility methods called by the template */
+        getFormattedProperties : function() {
+            var properties = this.model.attributes;
+            
+            return Utils.toYaml(properties);
+        },
+
+        getFormattedContent : function() {
+            var properties = this._getProperties();
+            return properties.description;
+        },
+
+        _getProperties : function() {
+            var properties = this.model.attributes.properties || {};
+            return properties;
+        }
+
+    })
 
     var ResourceRowView = Backbone.View.extend({
-        template : _.template(template),
 
+        template : _.template(ResourceRowViewTemplate),
         events : {
             'click .submit' : 'submitResource',
             'click .history' : 'historyScreen',
@@ -16,15 +50,18 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'core/viewManager', 'ut
         },
 
         render : function() {
-            var view = this;
-            this.$el.html(this.template({
-                data : this.model.toJSON(),
-                yaml : Utils.toYaml(this.model.attributes),
-                workspace : this.options.workspace,
-                path : this.options.path
-            }));
-
+            var options = _.clone(this.options);
+            var contentView = new ResourceContentView(options);
+            var html = this.template({
+                content : contentView.render().$el,
+                view : this
+            })
+            this.$el.html(html);
             return this;
+        },
+
+        getTitle : function() {
+            return this.model.attributes.properties.name;
         },
 
         onKeydown : function(event) {
@@ -120,13 +157,13 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'core/viewManager', 'ut
                         $.bootstrapGrowl("Successfully saved", {
                             ele : 'body', // which element to append to
                             type : 'success', // (null, 'info', 'error',
-                                                // 'success')
+                            // 'success')
                             offset : {
                                 from : 'top',
                                 amount : 40
                             }, // 'top', or 'bottom'
                             align : 'center', // ('left', 'right', or
-                                                // 'center')
+                            // 'center')
                             width : 'auto', // (integer, or 'auto')
                             delay : 1500,
                             allow_dismiss : false,

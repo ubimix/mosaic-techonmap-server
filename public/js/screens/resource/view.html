@@ -1,60 +1,7 @@
-
-<h1>{{=data.properties.name}}</h1>
-
-{{ if (data.sys.path) { }}
-<label>Path: {{=data.sys.path }}</label>
-{{ } else { }}
-Identifier: <input type='text' id='path' name='path' value=''/>
-{{ } }}
-
-
-
-<fieldset>
-	<div class="control-group">
-	<textarea class="form-control" rows="20" name="content" id="resource-content" >{{=yaml}}</textarea>
+<div>
+	<h3>{{=view.getTitle()}}</h3>
+	<div>{{=content.html()}}</div>
+	<div>
+		<button>Hello</button>
 	</div>
-</fieldset>
-
-<div style="margin-top:1em;">
-	<button class="submit btn btn-primary">Save</button>
-	{{ if (data.sys.path) { }}
-	<button class="history btn">History</button>
-	<button href="#dialog-delete-confirm" role="button" class="btn" data-toggle="modal">Delete</button>
-	{{ } }}
-</div>
-
-
-<div class="modal fade" id="dialog-delete-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Confirmation</h4>
-      </div>
-      <div class="modal-body">
-        <p>Please confirm the removal of this resource.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="delete btn btn-default">Confirm</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div id="dialog-save-not-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Save Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>An error occurred while saving the resource. Please check the YAML syntax.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
 </div>
