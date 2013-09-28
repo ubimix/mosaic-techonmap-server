@@ -310,6 +310,8 @@ function initializeApplication(app, project) {
             query = query.toLowerCase();
             var regexp = new RegExp('\\b' + query, 'gi');
             _.each(results, function(item) {
+                if (!item.properties || !item.properties.name)
+                    return;
                 var name = item.properties.name.toLowerCase();
                 if (!name.match(regexp))
                     return;
