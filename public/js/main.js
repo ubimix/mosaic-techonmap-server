@@ -4,15 +4,15 @@ require.config({
         'jQuery' : {
             exports : '$'
         },
-        
+
         'jQueryCsv' : {
             exports : '$.csv',
-            deps: ['jQuery']
+            deps : [ 'jQuery' ]
         },
-        
+
         'BootstrapGrowl' : {
-            deps: ['jQuery']
-            
+            deps : [ 'jQuery' ]
+
         },
 
         'Underscore' : {
@@ -31,9 +31,9 @@ require.config({
             deps : [ 'Underscore', 'jQuery' ],
             exports : 'Backbone'
         },
-        
+
         'BackbonePaginator' : {
-            deps : ['Backbone'],
+            deps : [ 'Backbone' ],
             exports : 'Backbone.Paginator'
         },
 
@@ -49,13 +49,16 @@ require.config({
             exports : 'YAML'
         },
 
-        //TODO: which export
+        // TODO: which export
         'BootstrapModal' : {
             exports : 'BootstrapModal'
         },
-        
+
         'Typeahead' : {
-            deps : ['jQuery']
+            deps : [ 'jQuery' ]
+        },
+        'CodeMirror' : {
+            exports : 'CodeMirror'
         }
     },
 
@@ -73,9 +76,10 @@ require.config({
         yaml : './../components/yamljs/bin/yaml',
         BootstrapModal : './../components/bootstrap/js/modal',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
-        Typeahead: './../components/typeahead.js/dist/typeahead',
+        Typeahead : './../components/typeahead.js/dist/typeahead',
         moment : './../components/momentjs/moment',
-        UmxAppTemplates : './theme-techonmap/umx.app.templates'
+        UmxAppTemplates : './theme-techonmap/umx.app.templates',
+        CodeMirror: './../components/codemirror/lib/codemirror'
     }
 });
 

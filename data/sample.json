@@ -1,0 +1,341 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.28628,
+          48.866089
+        ]
+      },
+      "properties": {
+        "name": "123 Venture",
+        "description": "123Venture est une société de gestion indépendante avec plus de 800M€ investis dans le capital-investissement et l'immobilier.",
+        "address": "42 avenue Raymond Poincaré",
+        "postcode": "75016",
+        "city": "Paris",
+        "creationyear": "2000",
+        "url": "www.123venture.com",
+        "twitter": "123Venture",
+        "linkedin": "http://www.linkedin.com/company/79342",
+        "viadeo": "http://fr.viadeo.com/fr/company/123venture",
+        "id": "www.123venture.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.34584,
+          48.87104
+        ]
+      },
+      "properties": {
+        "name": "360° Capital Partners",
+        "description": "360° Capital Partners regroupe des investisseurs dynamiques et agiles, profondément passionnés par la création de sociétés durables et offrant aux entrepreneurs un soutien de tous les instants.",
+        "address": "16 boulevard Poissonnière",
+        "postcode": "75009",
+        "city": "Paris",
+        "url": "www.360capitalpartners.com",
+        "twitter": "360CP",
+        "linkedin": "http://www.linkedin.com/company/360-capital-partners",
+        "id": "www.360capitalpartners.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.341908,
+          48.869508
+        ]
+      },
+      "properties": {
+        "name": "5M Ventures",
+        "description": "Fonds de \"Media for Equity\", 5M Ventures propose à des sociétés B2C en forte croissance de l'espace publicitaire dans des médias de premier plan en échange d'une ouverture de leur capital.",
+        "address": "28 place de la Bourse",
+        "postcode": "75002",
+        "city": "Paris",
+        "url": "www.5M-ventures.com",
+        "id": "www.5m-ventures.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33481,
+          48.863708
+        ]
+      },
+      "properties": {
+        "name": "Alven Capital",
+        "description": "Alven Capital est un fonds de venture capital indépendant qui investit principalement dans les secteurs d'internet, des médias et de l’IT.",
+        "address": "1 place André Malraux",
+        "postcode": "75001",
+        "city": "Paris",
+        "creationyear": "2000",
+        "url": "www.alvencapital.com",
+        "twitter": "alvencap",
+        "linkedin": "http://www.linkedin.com/company/2177951",
+        "id": "www.alvencapital.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33599,
+          48.872349
+        ]
+      },
+      "properties": {
+        "name": "Banexi Ventures Partners",
+        "description": "Banexi Ventures Partners est une société de gestion indépendante qui investit à partir de fonds de venture capital dans des entreprises hightech à fort potentiel de croissance.",
+        "address": "13 rue Taitbout",
+        "postcode": "75009",
+        "city": "Paris",
+        "url": "www.banexiventures.com",
+        "linkedin": "http://www.linkedin.com/company/137667",
+        "id": "www.banexiventures.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33333,
+          48.868301
+        ]
+      },
+      "properties": {
+        "name": "CapHorn Invest",
+        "description": "Caphorn Invest est un fonds d'investissement et d'accompagnement qui a pour vocation d’accélérer le  développement commercial de jeunes PME à fort potentiel.",
+        "address": "32 avenue de l'Opéra",
+        "postcode": "75002",
+        "city": "Paris",
+        "creationyear": "2009",
+        "url": "www.caphorninvest.fr",
+        "twitter": "CapHornInvest",
+        "linkedin": "http://www.linkedin.com/company/caphorn-invest",
+        "id": "www.caphorninvest.fr",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.25095,
+          48.887192
+        ]
+      },
+      "properties": {
+        "name": "Cleantech Business Angels",
+        "description": "Cleantech Business Angels est une association dont la mission est de faciliter l’investissement dans les startups cleantech et greentech.",
+        "address": "8 terrasse Bellini",
+        "postcode": "92800",
+        "city": "Puteaux",
+        "creationyear": "2008",
+        "url": "www.cleantechbusinessangels.com",
+        "twitter": "CleantechBA",
+        "linkedin": "http://www.linkedin.com/company/285538",
+        "id": "www.cleantechbusinessangels.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.30638,
+          48.8717
+        ]
+      },
+      "properties": {
+        "name": "Elaia Partners",
+        "description": "Elaia Partners est une société indépendante de capital investissement focalisée sur l'économie numérique.",
+        "address": "54 rue de Ponthieu",
+        "postcode": "75008",
+        "city": "Paris",
+        "creationyear": "2002",
+        "url": "www.elaia.com",
+        "twitter": "Elaia_Partners",
+        "linkedin": "http://www.linkedin.com/company/114482",
+        "id": "www.elaia.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.29889,
+          48.87257
+        ]
+      },
+      "properties": {
+        "name": "IdInvest Partners",
+        "description": "Idinvest Partners est un des leaders européens du financement et de l'investissement dans des entreprises de taille moyenne non cotées.",
+        "address": "117 avenue des Champs Elysées",
+        "postcode": "75008",
+        "city": "Paris",
+        "creationyear": "1997",
+        "url": "www.idinvest.com",
+        "linkedin": "http://www.linkedin.com/company/1223140",
+        "id": "www.idinvest.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.23779,
+          48.841808
+        ]
+      },
+      "properties": {
+        "name": "Investessor",
+        "description": "Les Angels d'Investessor accompagnent et financent des startups innovantes de tous secteurs d’activité à Paris et en Ile-de-France.",
+        "address": "146 rue du Château",
+        "postcode": "92100",
+        "city": "Boulogne Billancourt",
+        "url": "www.investessor.fr",
+        "twitter": "investessor",
+        "googleplus": "https://plus.google.com/+investessor",
+        "linkedin": "http://www.linkedin.com/company/682652",
+        "id": "www.investessor.fr",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.30357,
+          48.869629
+        ]
+      },
+      "properties": {
+        "name": "Iris Capital",
+        "description": "Iris Capital est un investisseur en capital risque, spécialisé en économie numérique, surtout actif en Europe.",
+        "address": "62 rue Pierre Charron",
+        "postcode": "75008",
+        "city": "Paris",
+        "creationyear": "1986",
+        "url": "www.iriscapital.com",
+        "linkedin": "http://www.linkedin.com/company/117523",
+        "id": "www.iriscapital.com",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.292473,
+          48.874884
+        ]
+      },
+      "properties": {
+        "name": "ISAI Capital",
+        "description": "ISAI est un fonds d'entrepreneurs qui a pour vocation de financer et accompagner des sociétés Internet à fort potentiel.",
+        "address": "10 avenue de la Grande Armée",
+        "postcode": "75017",
+        "city": "Paris",
+        "url": "www.isai.fr",
+        "twitter": "isai_fr",
+        "linkedin": "http://www.linkedin.com/company/755069",
+        "id": "www.isai.fr",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.35278,
+          48.893959
+        ]
+      },
+      "properties": {
+        "name": "IT Angels",
+        "description": "IT Angels finance l'excellence et l'innovation dans le secteur des technologies de l'information et de la communication en France.",
+        "address": "110 rue des Poissonniers",
+        "postcode": "75018",
+        "city": "Paris",
+        "url": "www.itangels.fr",
+        "twitter": "Itangelsparis",
+        "id": "www.itangels.fr",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.30959,
+          48.865238
+        ]
+      },
+      "properties": {
+        "name": "Jaïna Capital",
+        "description": "Jaïna Capital est un fonds d'investissement qui accompagne les nouveaux entrepreneurs talentueux dans la réussite de leur entreprise.",
+        "address": "1 rue François 1er",
+        "postcode": "75008",
+        "city": "Paris",
+        "creationyear": "2010",
+        "url": "www.jaina.fr",
+        "twitter": "jainacapital",
+        "facebook": "https://www.facebook.com/pages/Ja%C3%AFna-Capital/119217028094570",
+        "linkedin": "http://www.linkedin.com/company/847524",
+        "id": "www.jaina.fr",
+        "category": "investor"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.32112,
+          48.871311
+        ]
+      },
+      "properties": {
+        "name": "Kima Ventures",
+        "description": "Kima Ventures est un fonds d'investissement destiné à financer et à soutenir les entreprises internet et hightech les plus talentueuses.",
+        "address": "8 rue de la ville l'Evèque",
+        "postcode": "75008",
+        "city": "Paris",
+        "creationyear": "2010",
+        "url": "www.kimaventures.com",
+        "twitter": "kimaventures",
+        "facebook": "https://www.facebook.com/KimaVentures",
+        "id": "www.kimaventures.com",
+        "category": "investor"
+      }
+    }
+  ]
+}

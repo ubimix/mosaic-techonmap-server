@@ -11,6 +11,7 @@
     "bootstrap-growl" : "latest",
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
-    "momentjs":"latest"
+    "momentjs":"latest",
+    "codemirror":"latest"
   }
 }
