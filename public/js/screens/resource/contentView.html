@@ -11,26 +11,23 @@
 }
 
 .CodeMirror-gutters {
-  border-right: 0px;
-  background-color: #fff;
-  white-space: nowrap;
-  width:1px;
+	border-right: 0px;
+	background-color: #fff;
+	white-space: nowrap;
+	width: 1px;
 }
+
 .CodeMirror-linenumber {
-    color:transparent;
+	color: transparent;
 }
 </style>
 
 <div class="row">
 	<div class="col-md-8">
-		<textarea id="content" name="content">
-		{{=view.getFormattedContent()}}
-	</textarea>
+		<textarea id="content" name="content">{{=view.getFormattedContent()}}</textarea>
 	</div>
 	<div class="col-md-4">
-		<textarea id="properties">
-	{{=view.getFormattedProperties()}}
-	</textarea>
+		<textarea id="properties" name="properties">{{=view.getFormattedProperties()}}</textarea>
 	</div>
 </div>
 
@@ -47,7 +44,7 @@
         lineNumbers : true,
         viewportMargin : Infinity,
         lineWrapping : true,
-        mode: 'yaml',
-        gutters: []
+        mode : 'yaml',
+        gutters : []
     });
 </script>

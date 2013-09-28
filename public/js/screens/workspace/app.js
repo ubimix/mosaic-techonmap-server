@@ -4,7 +4,7 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
         run : function(viewManager, options) {
             function showError(error) {
                 var view = new MainView({
-                    error : err,
+                    error : error,
                     workspace : options.workspace
                 });
                 viewManager.show(view);
@@ -39,11 +39,11 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
                 error : showError
             })
 
-            $.get('/api/validation', function(data) {
-                var timestamp = data.properties.timestamp;
-                var verifiedResources = data.properties.verified;
-
-            }, 'json');
+//            $.get('/api/validation', function(data) {
+//                var timestamp = data.properties.timestamp;
+//                var verifiedResources = data.properties.verified;
+//
+//            }, 'json');
 
         }
     };

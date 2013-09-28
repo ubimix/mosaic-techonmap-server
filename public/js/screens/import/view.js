@@ -1,5 +1,5 @@
-define([ 'Backbone', 'jQueryCsv','text!./view.html','utils'], function(Backbone, jQueryCsv, template, Utils) {
-    
+define([ 'Backbone', 'jQueryCsv', 'text!./view.html', 'utils' ], function(Backbone, jQueryCsv, template, Utils) {
+
     var View = Backbone.View.extend({
         template : _.template(template),
         events : {
@@ -19,23 +19,45 @@ define([ 'Backbone', 'jQueryCsv','text!./view.html','utils'], function(Backbone,
             var category = this.$el.find('#category').val();
             var array = jQueryCsv.toArrays(data);
             var geoitems = Utils.toGeoJson(category, array);
-            // TODO: why can't we send plain arrays . Why do we need a map ?
+            // TODO: why can't we send plain arrays . Why do we need a
+            // map ?
             $.ajax({
-                type: 'POST',
-                url: '/api/resources/import',
-                data: {data: geoitems},
-                success: onImport,
-                dataType: 'json'
-              });
-            
-            function onImport(result) {
-                console.log(result);
+                type : 'POST',
+                url : '/api/resources/import',
+                data : {
+                    data : geoitems
+                },
+                success : onImported,
+                dataType : 'json',
+                error : onImportedError
+            });
+
+            function onImported(result) {
+                //clear previous reports
+                $('#import-report').html('');
+                $('#import-report').append(createReport(result.created, 'created')).append(
+                        createReport(result.updated, 'updated'));
+                $('#dialog-import-ok').modal();
             }
-            
+
+            function createReport(entryList, term) {
+                var buffer = '';
+                _.each(entryList, function(item, index) {
+                    if (index > 0)
+                        buffer += ' -';
+                    buffer += ' <a href="/workspace/' + item.id + '">' + item.name + '</a>';
+                });
+                if (entryList.length > 0)
+                    return $('<li>' + entryList.length + ' entities have been ' + term + ':' + buffer + '.</li>');
+                return $('<li>' + entryList.length + ' entities have been ' + term + '.</li>');
+
+            }
+
+            function onImportedError(error) {
+                console.log(error);
+            }
+
         }
-        
-        
-        
 
     });
     return View;

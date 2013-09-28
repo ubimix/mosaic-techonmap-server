@@ -51,7 +51,12 @@ require.config({
 
         // TODO: which export
         'BootstrapModal' : {
-            exports : 'BootstrapModal'
+            exports : 'BootstrapModal',
+            deps : [ 'jQuery' ]
+        },
+        'BootstrapDropdown' : {
+            exports : 'BootstrapDropdown',
+            deps : [ 'jQuery' ]
         },
 
         'Typeahead' : {
@@ -75,6 +80,7 @@ require.config({
         diff_match_patch : './../components/diff-match-patch/diff_match_patch',
         yaml : './../components/yamljs/bin/yaml',
         BootstrapModal : './../components/bootstrap/js/modal',
+        BootstrapDropdown : './../components/bootstrap/js/dropdown',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         Typeahead : './../components/typeahead.js/dist/typeahead',
         moment : './../components/momentjs/moment',

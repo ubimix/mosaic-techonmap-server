@@ -1,39 +1,7 @@
-define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/viewManager', 'utils', 'text!./contentView.html',
+define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/viewManager', 'utils', './contentView',
         'text!./view.html' ],
 
-function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Utils, ResourceContentViewTemplate, ResourceRowViewTemplate) {
-
-    var ResourceContentView = Backbone.View.extend({
-        template : _.template(ResourceContentViewTemplate),
-        render : function() {
-             var html = this.template({
-                view : this,
-                data : this.model.toJSON()
-            });
-            console.log(html);
-            this.$el.html(html);
-            
-            return this;
-        },
-
-        /* Utility methods called by the template */
-        getFormattedProperties : function() {
-            var properties = this.model.attributes;
-            
-            return Utils.toYaml(properties);
-        },
-
-        getFormattedContent : function() {
-            var properties = this._getProperties();
-            return properties.description;
-        },
-
-        _getProperties : function() {
-            var properties = this.model.attributes.properties || {};
-            return properties;
-        }
-
-    })
+function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Utils, ResourceContentView, ResourceRowViewTemplate) {
 
     var ResourceRowView = Backbone.View.extend({
 
@@ -54,6 +22,7 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
             var contentView = new ResourceContentView(options);
             var html = this.template({
                 content : contentView.render().$el,
+                data : this.model.toJSON(),
                 view : this
             })
             this.$el.html(html);
@@ -96,7 +65,8 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
 
         submitResource : function() {
 
-            var content = this.$el.find('textarea[name="content"]').val();
+            var description = contentEditor.getValue();
+            var properties = propertiesEditor.getValue();
             // TODO: handle error when yaml invalid: show
             // notification
             // TODO: is this ok?
@@ -107,7 +77,19 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
             // quid if the client changes the sys.path attribute
             // on the client
             // side ?
-            this.model.attributes.properties = Utils.toJSON(content);
+
+            // iterate over the properties and set them to the model
+
+            // TODO:
+            // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
+            // var props = Utils.toJSON(description, properties);
+            // var model = this.model;
+            // _.each(props, function(value, key) {
+            // console.log(key, value);
+            // model.set('properties.'+key, value);
+            // });
+
+            this.model.attributes.properties = Utils.toJSON(description, properties);
 
             // this.model = _.extend(this.model, {
             // attributes : JSON.parse(content)
@@ -119,41 +101,8 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
             if (this.model.attributes.sys.path) {
                 this.model.save(null, {
                     success : function(model, response) {
-                        // console.log('saved: '
-                        // +
-                        // JSON.stringify(data,
-                        // null, 2));
-                        // var obj =
-                        // JSON.parse(data);
-                        // var obj = data;
-                        // self.model.set('system.version',
-                        // response.system.version);
-                        // self.model.set('system.date',
-                        // response.system.date);
 
                         self.render();
-                        // TODO: add bootstrap
-                        // short message:
-                        // resource saved
-                        // self.$el.find('#dialog-save-ok').modal();
-                        // $('#dialog-save-ok').modal();
-
-                        // show_stack_bar_bottom('info');
-                        // var notices =
-                        // $(window).data("pnotify");
-                        // console.log(notices.length);
-                        // notices.length = 0;
-
-                        // $.toast.config.align = 'center';
-                        // // $.toast.config.width = 200;
-                        // var message = 'Successfully saved';
-                        // var options = {
-                        // duration : 1000,
-                        // sticky : false,
-                        // type : 'success'
-                        // };
-                        // $.toast(message, options);
-
                         $.bootstrapGrowl("Successfully saved", {
                             ele : 'body', // which element to append to
                             type : 'success', // (null, 'info', 'error',

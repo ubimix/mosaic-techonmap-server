@@ -17,26 +17,29 @@
             <div class="ban">
                 <div class="left">
                     <h1>
-                        <a href=""><img src="/js/theme-techonmap/images/banner.png" alt="Techonmap"></a>
+                        <a href="/"><img src="/js/theme-techonmap/images/banner.png" alt="Techonmap"></a>
                     </h1>
                     <h2>La carte des acteurs du numérique en
                         Île-de-France</h2>
                 </div>
                 <div class="right">
                     {{ if (user != 'Anonymous') { }}
-                    <ul class="menu">
+                    <ul class="menu nav navbar-nav navbar-right">
                         <li><input type="text" class="typeahead" autocomplete="off" placeholder="Search..."></li>                        
-                        <li><a href="/workspace/new" class="btn btn-primary">New</a></li>
-                        <li><a href="/workspace/import" class="btn btn-primary">Import</a></li>
-                        <!--<li><a href="/map" class="btn btn-primary">Map</a></li> -->
+                        <li><a href="/workspace/new">New</a></li>
+                        <li><a href="/workspace/import">Import</a></li>
+                        <li><a href="/map">Map</a></li>
                         {{ if (user != 'Anonymous') { }}
-                        <li><a href="/">{{=user}}</a></li>
-                        {{ } }}
-                        {{ if (user != 'Anonymous') { }}
-                        <li><a href="/api/logout">Logout</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{=user}} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/api/logout">Logout</a></li>
+                            </ul>
+                        </li>
                         {{ } else { }}
                         <li><a href="/login">Login</a></li>
                         {{ } }}
+
 
                     </ul>
                     {{ } }}

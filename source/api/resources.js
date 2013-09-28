@@ -5,6 +5,7 @@ var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 var Q = require('q');
 
+var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
 require('jscr-api/jscr-memory');
 
@@ -340,6 +341,14 @@ function initializeApplication(app, project) {
        loadResource(req, res, '.admin-timestamp');
 
     });
+    
+    app.get('/api/twitter/last', function(req, res) {
+        var twitt = Twitter.fetchLastTweet('TechOnMap', function(err, data) {
+            res.json(data);    
+        });
+        
+    });    
+    
 }
 
 /* ========================================================================== */

@@ -1,4 +1,6 @@
-define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ], function(Backbone, Utils, ResourceRowView, template) {
+define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html', 'text!./resource.html' ],
+
+function(Backbone, Utils, ResourceRowView, template, resourceTemplate) {
 
     function loadEntry(id, callback) {
         $.get('/api/resources/' + id + '?' + Math.random(), function(data) {
@@ -8,16 +10,18 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
 
     var View = Backbone.View.extend({
         template : _.template(template),
+        resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
             this.subviews = [];
-            
+
             this.collection.on('reset', function() {
-                //TODO: why does 'this' refer to the view while we're in a function
+                // TODO: why does 'this' refer to the view while we're in a
+                // function
                 this.$el.empty();
                 this.render();
             }, this);
-            
+
         },
 
         events : {
@@ -42,7 +46,7 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
             }
 
             var resourceElt = this.$('.resources');
-            
+
             this.collection.forEach(function(resource) {
                 var view = new ResourceRowView({
                     model : resource,
@@ -84,9 +88,11 @@ define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ]
                 content.html('Loading...');
                 media.toggleClass('expanded');
                 content.toggle();
+                var that = this;
                 loadEntry(id, function(data) {
-                    var xYaml = Utils.toYaml(data);
-                    content.html('<pre>' + xYaml + '</pre>');
+                    var xYaml = Utils.toStructuredContent(data);
+                    // TODO: escape html
+                    content.html(that.resourceTemplate(xYaml));
                 })
             } else {
                 content.toggle();
