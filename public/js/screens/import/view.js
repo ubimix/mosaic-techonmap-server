@@ -1,4 +1,4 @@
-define([ 'Backbone', 'jQueryCsv', 'text!./view.html', 'utils' ], function(Backbone, jQueryCsv, template, Utils) {
+define([ 'Backbone', 'jQueryCsv', 'CodeMirror', 'text!./view.html', 'utils' ], function(Backbone, jQueryCsv, CodeMirror, template, Utils) {
 
     var View = Backbone.View.extend({
         template : _.template(template),
@@ -15,10 +15,10 @@ define([ 'Backbone', 'jQueryCsv', 'text!./view.html', 'utils' ], function(Backbo
         },
 
         importCsv : function() {
-            var data = this.$el.find('#csv').val();
-            var category = this.$el.find('#category').val();
+            //var data = this.$el.find('#content').val();
+            var data = editor.getValue();
             var array = jQueryCsv.toArrays(data);
-            var geoitems = Utils.toGeoJson(category, array);
+            var geoitems = Utils.toGeoJson('', array);
             // TODO: why can't we send plain arrays . Why do we need a
             // map ?
             $.ajax({
@@ -33,6 +33,7 @@ define([ 'Backbone', 'jQueryCsv', 'text!./view.html', 'utils' ], function(Backbo
             });
 
             function onImported(result) {
+                console.log(result);
                 //clear previous reports
                 $('#import-report').html('');
                 $('#import-report').append(createReport(result.created, 'created')).append(

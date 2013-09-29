@@ -16,9 +16,6 @@ define(function(require) {
             ':workspace/*path/history' : 'historyScreen',
             ':workspace/*path' : 'resourceScreen'
         },
-        homeScreen : function() {
-            require('./../screens/home/app').run(viewManager, {});
-        },
         loginScreen : function() {
             require('./../screens/login/app').run(viewManager, {});
         },

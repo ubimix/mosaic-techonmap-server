@@ -39,12 +39,6 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
                 error : showError
             })
 
-//            $.get('/api/validation', function(data) {
-//                var timestamp = data.properties.timestamp;
-//                var verifiedResources = data.properties.verified;
-//
-//            }, 'json');
-
         }
     };
 });

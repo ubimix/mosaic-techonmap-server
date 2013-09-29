@@ -7,3 +7,4 @@ config.yaml
 public/client
 public/data
 public/simple-reqjs
+test/sandbox.txt

@@ -238,7 +238,10 @@ function initializeApplication(app, project) {
     /** Import 'in-batch' an array of GeoJSON items */
     app.post('/api/resources/import', function(req, res) {
         reply(req, res, loadJsonFromRequest(req).then(function(json) {
-            return importGeoJSON(project, json);
+            console.log(json);
+            var result = importGeoJSON(project, json);
+            console.log(result);
+            return result;
         }));
     });
 

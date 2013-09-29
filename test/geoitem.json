@@ -1,0 +1,24 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      2.28628,
+      48.866089
+    ]
+  },
+  "properties": {
+    "name": "AlphaBeta",
+    "description": "AlphaBeta...",
+    "address": "42 avenue Raymond Poincaré",
+    "postcode": "75016",
+    "city": "Paris",
+    "creationyear": "2000",
+    "url": "www.alphabeta.com",
+    "twitter": "alphabeta",
+    "linkedin": "http://www.linkedin.com/company/79342",
+    "viadeo": "http://fr.viadeo.com/fr/company/alphabeta",
+    "id": "alphabeta",
+    "category": "investor"
+  }
+}
