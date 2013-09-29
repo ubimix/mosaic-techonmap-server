@@ -8,7 +8,7 @@ function(Backbone, Utils, ResourceContentView, ResourceContentTemplate) {
         },
 
         render : function() {
-            console.log(this.options);
+            console.log('revision-view', this.options);
             var contentView = new ResourceContentView(this.options);
             var html = this.template({
                 content : contentView.render().$el,

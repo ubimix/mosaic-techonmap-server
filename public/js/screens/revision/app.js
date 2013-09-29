@@ -6,7 +6,8 @@ define([ 'Backbone', './view' ], function(Backbone, RevisionView) {
 
             revision.fetch({
                 success : function(model, object) {
-                    //FIXME
+                    // FIXME
+                    console.log('revision-app', model);
                     var view = new RevisionView({
                         model : model,
                         path : options.path,

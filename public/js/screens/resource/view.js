@@ -19,6 +19,7 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
 
         render : function() {
             var options = _.clone(this.options);
+            console.log('resource-view', options);
             var contentView = new ResourceContentView(options);
             var html = this.template({
                 content : contentView.render().$el,
