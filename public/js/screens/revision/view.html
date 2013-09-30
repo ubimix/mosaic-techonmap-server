@@ -1,34 +1,22 @@
-<div>
-	<h3>{{=model.getTitle()}}</h3>
-	 <h2>
-        <span>Version: {{=model.getVersionId()}}</span>
-    </h2>
-    <h2>
-        <span>Back to current version : <a
-            href="/{{=workspace}}/{{=model.getPath()}}">current</a></span>
-    </h2>
-	
-	
-	
-	<div>{{=content.html()}}</div>
-	
-	
-	
-
-	<div style="margin-top: 1em;">
-		<button class="submit btn btn-primary">Save as new version</button>
-		<button class="history btn">History</button>
-		<button href="#dialog-delete-confirm" role="button" class="btn"
-			data-toggle="modal">Delete</button>
-	</div>
+<div style='margin-bottom:1em;'>
+	<h1>{{=model.getTitle()}}</h1>
+	<span>Version: {{=model.getVersionId()}}</span> <span>Back to
+		current version : <a href="/{{=workspace}}/{{=model.getPath()}}">current</a>
+	</span>
 </div>
 
+<div>{{=content.html()}}</div>
 
+<div style="margin-top: 1em;">
+	<a href="#" class="submit btn btn-primary">Restore</a>
+	<a href="/{{=workspace}}/{{=model.getPath()}}/history" class="history btn">History</a>
+	
+</div>
 
 
 <!-- Modal -->
 <div id="dialog-restore-ok" class="modal hide fade" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	role="dialog" aria-labelledby="restore-resource" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">×</button>

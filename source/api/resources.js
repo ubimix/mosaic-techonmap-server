@@ -299,7 +299,7 @@ function initializeApplication(app, project) {
             if (!revisions || !revisions.length) {
                 throw HttpError.notFound(path);
             }
-            return getGeoJsonList(revisions, false);
+            return getGeoJsonList(revisions, true);
         }));
     });
 

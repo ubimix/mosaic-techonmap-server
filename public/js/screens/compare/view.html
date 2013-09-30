@@ -1,11 +1,13 @@
 <div>
-	<h1><a href="/{{=workspace}}/{{=path}}">{{=v1.properties.name}}</a></h1>
-	<p>Version 1: {{=v1.sys.updated.versionId}}</p>
-	<p>Version 2: {{=v2.sys.updated.versionId}}</p>
-    <p><a href="/{{=workspace}}/{{=path}}/history">History</a>
+	<h1><a href="/{{=workspace}}/{{=revision1.getPath()}}">{{=revision1.getTitle()}}</a></h1>
+	<p>Version 1: {{=revision1.getVersionId()}} - Version 2: {{=revision2.getVersionId()}}</p>
 <pre>
 <div id="outputdiv">
 
 </div>
 </pre>
+<div style="margin-top: 1em;">
+    <a href="/{{=workspace}}/{{=revision1.getPath()}}/history" class="history btn">History</a>    
+</div>
+
 </div>
