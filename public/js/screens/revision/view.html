@@ -1,42 +1,46 @@
 <div>
+	<h3>{{=model.getTitle()}}</h3>
+	 <h2>
+        <span>Version: {{=model.getVersionId()}}</span>
+    </h2>
+    <h2>
+        <span>Back to current version : <a
+            href="/{{=workspace}}/{{=model.getPath()}}">current</a></span>
+    </h2>
+	
+	
+	
+	<div>{{=content.html()}}</div>
+	
+	
+	
 
-	<h1>{{=view.getTitle()}}</h1>
-
-	<p>
-		<span>Version: {{=resource.sys.updated.versionId}}</span>
-	</p>
-	<p>
-		<span>Back to current version : <a
-			href="/{{=workspace}}/{{=path}}">current</a></span>
-	</p>
-
-
-	<div class="form-actions">
-		<input id="version" type="hidden" value="{{=resource.sys.updated.versionId}}" />
-		<button class="submit btn btn-primary">Restore</button>
+	<div style="margin-top: 1em;">
+		<button class="submit btn btn-primary">Save as new version</button>
+		<button class="history btn">History</button>
+		<button href="#dialog-delete-confirm" role="button" class="btn"
+			data-toggle="modal">Delete</button>
 	</div>
-
-
-	<p>
-	<pre>{{=yaml}}</pre>
-	</p>
 </div>
 
+
+
+
 <!-- Modal -->
-<div id="dialog-restore-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Restore Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>The resource has been restored successfully.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
+<div id="dialog-restore-ok" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Restore Dialog</h3>
+	</div>
+	<div class="modal-body">
+		<p>The resource has been restored successfully.</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal"
+			aria-hidden="true">Ok</button>
+	</div>
 </div>
 
 

@@ -1,16 +1,16 @@
-define([ 'Backbone', './view' ], function(Backbone, RevisionView) {
+define([ 'Backbone', '../models/Resource', './view' ], function(Backbone, ResourceModel, RevisionView) {
     return {
         run : function(viewManager, options) {
-            var revision = new Backbone.Model();
-            revision.url = '/api/resources/' + options.path + '/history/' + options.version;
+            var revisions = new Backbone.Collection();
+            revisions.model = ResourceModel;
+            revisions.url = '/api/resources/' + options.path + '/history/' + options.version;
 
-            revision.fetch({
-                success : function(model, object) {
-                    // FIXME
-                    console.log('revision-app', model);
+            revisions.fetch({
+                success : function(collection, object) {
+                    // TODO : note that the console points to an object which is
+                    // introspected when expanding it
                     var view = new RevisionView({
-                        model : model,
-                        path : options.path,
+                        model : collection.at(0),
                         workspace : options.workspace
                     });
                     viewManager.show(view);

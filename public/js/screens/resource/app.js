@@ -1,4 +1,4 @@
-define([ '../models/Resource', './view'], function(Resource, ResourceView) {
+define([ '../models/Resource', './view'], function(Resource, ResourceContainerView) {
     return {
         run : function(viewManager, options) {
             var resource = new Resource({
@@ -10,7 +10,7 @@ define([ '../models/Resource', './view'], function(Resource, ResourceView) {
                     //TODO: why both model + object are returned ? where is it documented ?
                     //console.log('Success a: ', model);
                     //console.log('Success b: ', object);
-                    var view = new ResourceView({
+                    var view = new ResourceContainerView({
                         model : model,
                         path : options.path,
                         workspace : options.workspace

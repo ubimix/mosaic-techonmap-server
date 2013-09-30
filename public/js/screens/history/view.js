@@ -5,10 +5,9 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
         template : _.template(template),
         render : function() {
             this.$el.html(this.template({
-                resource : this.options.resource,
+                model : this.model,
                 history : this.options.history.attributes,
                 workspace : this.options.workspace,
-                path : this.options.path,
                 view : this
             }));
 
@@ -32,7 +31,7 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
                         }).toArray().join('/with/');
                         // TODO: is this really needed ?
                         self.remove();
-                        Backbone.history.navigate('/' + self.options.workspace + '/' + self.options.path + '/history/compare/'
+                        Backbone.history.navigate('/' + self.options.workspace + '/' + self.model.getPath() + '/history/compare/'
                                 + xx, true);
                         return false;
                     });
@@ -59,10 +58,6 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
             }
 
             return this;
-        },
-
-        getTitle : function() {
-            return this.options.resource.attributes.properties.name;
         },
 
         getFormattedDate : function(timestamp) {

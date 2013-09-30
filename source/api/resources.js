@@ -192,7 +192,6 @@ function loadData(inputFile) {
     });
 }
 
-
 /** Binds request handling to the specified application */
 function initializeApplication(app, project) {
 
@@ -203,16 +202,26 @@ function initializeApplication(app, project) {
             }
             return getGeoJsonFromResource(resource);
         }));
-        
+
+    }
+
+    function getGeoJsonList(resources, keepSystemProperties) {
+        var list = [];
+        _.each(resources, function(resource) {
+            var path = resource.getPath();
+            if (path.indexOf('.') == 0)
+                return;
+            var json = getGeoJsonFromResource(resource, keepSystemProperties);
+            list.push(json)
+        });
+        return list;
     }
 
     /** Loads and returns all root resources from the storage */
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path).then(function(results) {
-            return _.map(results, function(resource) {
-                return getGeoJsonFromResource(resource);
-            })
+            return getGeoJsonList(results, true);
         }));
     });
 
@@ -223,9 +232,7 @@ function initializeApplication(app, project) {
     app.get('/api/resources/export', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path).then(function(results) {
-            return _.map(results, function(resource) {
-                return getGeoJsonFromResource(resource, false);
-            })
+            return getGeoJsonList(results, false);
         }));
     });
 
@@ -292,9 +299,7 @@ function initializeApplication(app, project) {
             if (!revisions || !revisions.length) {
                 throw HttpError.notFound(path);
             }
-            return _.map(revisions, function(resource) {
-                return getGeoJsonFromResource(resource);
-            })
+            return getGeoJsonList(revisions, false);
         }));
     });
 
@@ -331,29 +336,23 @@ function initializeApplication(app, project) {
 
     app.post('/api/validation', function(req, res) {
         reply(req, res, loadJsonFromRequest(req).then(function(json) {
-            // var r = new JSCR.Resource();
-            // var properties = r.getProperties();
-            // properties.timestamp = 123;
-            // properties.verified = [];
             var path = '.admin-timestamp';
             return importGeoJSONItem(project, path, json);
         }));
 
     });
-    
-    
-    app.get('/api/validation', function(req, res) {
-       loadResource(req, res, '.admin-timestamp');
 
+    app.get('/api/validation', function(req, res) {
+        loadResource(req, res, '.admin-timestamp');
     });
-    
+
     app.get('/api/twitter/last', function(req, res) {
         var twitt = Twitter.fetchLastTweet('TechOnMap', function(err, data) {
-            res.json(data);    
+            res.json(data);
         });
-        
-    });    
-    
+
+    });
+
 }
 
 /* ========================================================================== */

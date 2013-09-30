@@ -24,23 +24,21 @@
 
 <div class="row">
 	<div class="col-md-8">
-		<textarea id="content" name="content">{{=view.getFormattedContent()}}</textarea>
+		<textarea class="content">{{=view.getFormattedContent()}}</textarea>
 	</div>
 	<div class="col-md-4">
-		<textarea id="properties" name="properties">{{=view.getFormattedProperties()}}</textarea>
+		<textarea class="properties">{{=view.getFormattedProperties()}}</textarea>
 	</div>
 </div>
 
-<script src="/components/codemirror/mode/yaml/yaml.js"></script>
-
 <script>
-    var contentEditor = CodeMirror.fromTextArea(document.getElementById("content"), {
+    var contentEditor = CodeMirror.fromTextArea($(".content").get(0), {
         lineNumbers : true,
         viewportMargin : Infinity,
         lineWrapping : true
     });
 
-    var propertiesEditor = CodeMirror.fromTextArea(document.getElementById("properties"), {
+    var propertiesEditor = CodeMirror.fromTextArea($(".properties").get(0), {
         lineNumbers : true,
         viewportMargin : Infinity,
         lineWrapping : true,
@@ -48,3 +46,4 @@
         gutters : []
     });
 </script>
+
