@@ -1,11 +1,11 @@
 define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/viewManager', 'utils', './contentView',
-        'text!./view.html' ],
+        'text!./view.html', 'CodeMirrorYaml' ],
 
-function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Utils, ResourceContentView, ResourceRowViewTemplate) {
+function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
 
-    var ResourceRowView = Backbone.View.extend({
+    var ResourceContainerView = Backbone.View.extend({
 
-        template : _.template(ResourceRowViewTemplate),
+        template : _.template(ResourceContainerTemplate),
         events : {
             'click .submit' : 'submitResource',
             'click .history' : 'historyScreen',
@@ -14,19 +14,24 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
         },
 
         initialize : function() {
-            // this.model.on('change', this.render, this);
+            // var options = _.clone(this.options);
+            var copy = this.model.getCopy();
+            this.contentView = new ResourceContentView({
+                model : copy
+            });
+            // TODO: use Marionette for unsubscribing from changes when the view
+            // disappears
+            this.model.on('change', this.render, this);
         },
 
         render : function() {
-            var options = _.clone(this.options);
-            console.log('resource-view', options);
-            var contentView = new ResourceContentView(options);
             var html = this.template({
-                content : contentView.render().$el,
+                content : this.contentView.render().$el,
                 data : this.model.toJSON(),
-                view : this
+                model : this.model
             })
             this.$el.html(html);
+
             return this;
         },
 
@@ -66,65 +71,30 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
 
         submitResource : function() {
 
-            var description = contentEditor.getValue();
-            var properties = propertiesEditor.getValue();
             // TODO: handle error when yaml invalid: show
             // notification
-            // TODO: is this ok?
-            // NB: the model won't fire a change event in this
-            // case (a
-            // change is
-            // probably fired only when doing 'model.set(...)')
-            // quid if the client changes the sys.path attribute
-            // on the client
-            // side ?
-
-            // iterate over the properties and set them to the model
-
             // TODO:
             // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
-            // var props = Utils.toJSON(description, properties);
-            // var model = this.model;
-            // _.each(props, function(value, key) {
-            // console.log(key, value);
-            // model.set('properties.'+key, value);
-            // });
-
-            this.model.attributes.properties = Utils.toJSON(description, properties);
-
-            // this.model = _.extend(this.model, {
-            // attributes : JSON.parse(content)
-            // });
-
-            // console.log('Model updated: ', this.model);
 
             var self = this;
             if (this.model.attributes.sys.path) {
-                this.model.save(null, {
-                    success : function(model, response) {
-
-                        self.render();
-                        $.bootstrapGrowl("Successfully saved", {
-                            ele : 'body', // which element to append to
-                            type : 'success', // (null, 'info', 'error',
-                            // 'success')
-                            offset : {
-                                from : 'top',
-                                amount : 40
-                            }, // 'top', or 'bottom'
-                            align : 'center', // ('left', 'right', or
-                            // 'center')
-                            width : 'auto', // (integer, or 'auto')
-                            delay : 1500,
-                            allow_dismiss : false,
-                            stackup_spacing : 10
-                        // spacing between consecutively stacked growls.
-                        });
-
-                        // TODO: add error
-                        // callback
-                    }
+                var updatedModel = this.contentView.updateModel();
+                this.model.updateAndSave(updatedModel.get('properties'), function(updatedResource) {
+                    $.bootstrapGrowl("Successfully saved", {
+                        ele : 'body',
+                        type : 'success',
+                        offset : {
+                            from : 'top',
+                            amount : 40
+                        },
+                        align : 'center',
+                        width : 'auto',
+                        delay : 1500,
+                        allow_dismiss : false,
+                        stackup_spacing : 10
+                    });
                 });
+
             } else {
                 var path = this.$el.find('#path').val();
                 if (!path)
@@ -181,5 +151,5 @@ function(Backbone, BootstrapModal, BootstrapGrowl, CodeMirror, viewManager, Util
 
     });
 
-    return ResourceRowView;
+    return ResourceContainerView;
 });

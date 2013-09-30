@@ -64,6 +64,9 @@ require.config({
         },
         'CodeMirror' : {
             exports : 'CodeMirror'
+        },
+        'CodeMirrorYaml' : {
+            deps : [ 'CodeMirror',  ]
         }
     },
 
@@ -85,7 +88,8 @@ require.config({
         Typeahead : './../components/typeahead.js/dist/typeahead',
         moment : './../components/momentjs/moment',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
-        CodeMirror: './../components/codemirror/lib/codemirror'
+        CodeMirror : './../components/codemirror/lib/codemirror',
+        CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml'
     }
 });
 

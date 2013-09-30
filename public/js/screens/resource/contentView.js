@@ -1,6 +1,6 @@
-define([ 'Backbone', 'utils', 'text!./contentView.html' ],
+define([ 'Backbone', '../models/Resource', 'utils', 'text!./contentView.html' ],
 
-function(Backbone, Utils, ContentViewTemplate) {
+function(Backbone, ResourceModel, Utils, ContentViewTemplate) {
 
     var ResourceContentView = Backbone.View.extend({
         template : _.template(ContentViewTemplate),
@@ -10,13 +10,17 @@ function(Backbone, Utils, ContentViewTemplate) {
             });
             this.$el.html(html);
 
+            setTimeout(this.doLayout(this.$el), 10);
             return this;
+
         },
 
         /* Utility methods called by the template */
         getFormattedProperties : function() {
+            // FIXME
             var properties = this.model.attributes;
-            return Utils.toStructuredContent(properties).yaml;
+            var yaml = Utils.toStructuredContent(properties).yaml;
+            return yaml;
         },
 
         getFormattedContent : function() {
@@ -27,6 +31,20 @@ function(Backbone, Utils, ContentViewTemplate) {
         _getProperties : function() {
             var properties = this.model.attributes.properties || {};
             return properties;
+        },
+
+        updateModel : function() {
+            // var yaml = this.propertiesEditor.getValue();
+            // var description = this.contentEditor.getValue();
+            var yaml = propertiesEditor.getValue();
+            var description = contentEditor.getValue();
+            var json = Utils.toJSON(description, yaml);
+            this.model.set('properties', json);
+            return this.model;
+        },
+
+        doLayout : function($el) {
+            // TODO: create editors here instead of having them in the template
         }
 
     });

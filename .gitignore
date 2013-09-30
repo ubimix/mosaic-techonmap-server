@@ -7,4 +7,5 @@ config.yaml
 public/client
 public/data
 public/simple-reqjs
-test/sandbox.txt
+sandbox.txt
+Gruntfile.0.js

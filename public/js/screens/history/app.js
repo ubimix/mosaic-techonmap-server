@@ -21,9 +21,8 @@ define([ '../models/Resource', './view' ], function(Resource, HistoryView) {
                     resource.fetch({
                         success : function(resource) {
                             var view = new HistoryView({
-                                resource : resource,
+                                model : resource,
                                 history : history,
-                                path : options.path,
                                 workspace : options.workspace
                             });
                             viewManager.show(view);
@@ -38,16 +37,6 @@ define([ '../models/Resource', './view' ], function(Resource, HistoryView) {
             // why is jQuery available while not in the defines ? because
             // Backbone depends on it ?
             // $.get('/api/resources/' + options.path + '/history',
-            // function(data) {
-            // console.log(data);
-            // var view = new HistoryView({
-            // name : resourceName,
-            // history : history,
-            // path : options.path,
-            // workspace : options.workspace
-            // });
-            // viewManager.show(view);
-            // }, 'json');
 
         }
     };

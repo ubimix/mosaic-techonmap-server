@@ -1,18 +1,21 @@
-define([ 'Backbone', 'utils', '../resource/contentView', 'text!../resource/contentView.html' ],
+define([ 'Backbone', 'utils', '../resource/contentView', 'text!./view.html' ],
 
-function(Backbone, Utils, ResourceContentView, ResourceContentTemplate) {
+function(Backbone, Utils, ResourceContentView, RevisionContainerTemplate) {
     var View = Backbone.View.extend({
-        template : _.template(ResourceContentTemplate),
+        template : _.template(RevisionContainerTemplate),
         events : {
             'click .submit' : 'restoreVersion'
         },
 
         render : function() {
-            console.log('revision-view', this.options);
-            var contentView = new ResourceContentView(this.options);
+            // TODO: create a copy ?
+            // TODO: to be moved to initialize
+            var contentView = new ResourceContentView({
+                model : this.model
+            });
             var html = this.template({
                 content : contentView.render().$el,
-                view : this
+                model : this.model
             })
             this.$el.html(html);
             return this;

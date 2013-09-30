@@ -3,7 +3,9 @@ define([ 'yaml' ], function(YAML) {
     var Utils = {};
 
     Utils.toStructuredContent = function(attr) {
-        var copy = _.extend({}, attr);
+        //var copy = _.extend({}, attr);
+        //deep copy
+        var copy = JSON.parse(JSON.stringify(attr));
         var description = copy.properties.description || '';
         delete copy.properties.description;
         copy.properties = _.extend(copy.properties, {geometry: copy.geometry || '', type: copy.type || ''});        
