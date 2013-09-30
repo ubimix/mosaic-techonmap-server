@@ -5,8 +5,8 @@ define([ 'Backbone', 'diff_match_patch', 'text!./view.html', 'utils' ], function
             this.$el.html(this.template(this.options));
 
             var dmp = new DiffMatchPatch();
-            var obj1 = Utils.toYaml(this.options.v1);
-            var obj2 = Utils.toYaml(this.options.v2)
+            var obj1 = Utils.toStructuredContent(this.options.revision1);
+            var obj2 = Utils.toStructuredContent(this.options.revision2)
             var text1 = obj1.content+'\n----\n'+obj1.yaml;
             var text2 = obj2.content+'\n----\n'+obj2.yaml;
             dmp.Diff_Timeout = parseFloat(1);

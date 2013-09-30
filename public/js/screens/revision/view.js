@@ -15,22 +15,28 @@ function(Backbone, Utils, ResourceContentView, RevisionContainerTemplate) {
             });
             var html = this.template({
                 content : contentView.render().$el,
-                model : this.model
+                model : this.model,
+                workspace : this.options.workspace
             })
             this.$el.html(html);
             return this;
         },
 
         restoreVersion : function() {
-            var version = this.$el.find('#version').val();
-            $.ajax({
-                type : 'PUT',
-                url : '/api/resources/' + this.options.path,
-                data : this.options.resource
-            }).done(function(msg) {
-                $('#dialog-restore-ok').modal()
-                // TODO: handle errors
+            this.model.save(null, function(updatedModel) {
+                success: $('#dialog-restore-ok').modal()
+
             });
+
+            // var version = this.$el.find('#version').val();
+            // $.ajax({
+            // type : 'PUT',
+            // url : '/api/resources/' + this.options.path,
+            // data : this.options.resource
+            // }).done(function(msg) {
+            // $('#dialog-restore-ok').modal()
+            // // TODO: handle errors
+            // });
         }
 
     });
