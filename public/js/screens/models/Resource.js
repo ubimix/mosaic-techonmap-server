@@ -39,6 +39,14 @@ define([ 'Backbone' ], function(Backbone) {
             return this.getProperties().name;
         },
 
+        getDescription : function() {
+            return this.getProperties().description;
+        },
+
+        getCategory : function() {
+            return this.getProperties().category || '';
+        },
+
         getId : function() {
             return this.getProperties().id;
         },
@@ -46,13 +54,20 @@ define([ 'Backbone' ], function(Backbone) {
         getProperties : function() {
             return this.get('properties');
         },
-        
+
         getSys : function() {
             return this.get('sys');
         },
 
+        getUpdated : function() {
+            return this.getSys().updated || {};
+        },
+        getCreated : function() {
+            return this.getSys().created || {};
+        },
+
         getVersionId : function() {
-            return this.getSys().updated.versionId;
+            return this.getUpdated().versionId;
         },
 
         updateAndSave : function(properties, callback) {

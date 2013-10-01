@@ -1,4 +1,6 @@
-define([ '../collections/ResourceCollection', './views/main' ], function(ResourceCollection, MainView) {
+define([ '../collections/ResourceCollection', '../models/Validator', './views/main' ],
+
+function(ResourceCollection, Validator, MainView) {
 
     return {
         run : function(viewManager, options) {
@@ -10,34 +12,24 @@ define([ '../collections/ResourceCollection', './views/main' ], function(Resourc
                 viewManager.show(view);
             }
             var coll = new ResourceCollection();
-            
-            var verified = new Backbone.Model();
-            verified.url = '/api/validation';
-            verified.save = function(timestamp, resourceList) {
-                this.timestamp = timestamp;
-                this.verified =  resourceList;
-                this.post();
-            }
-            
-            verified.fetch({
-                success : function(verified) {
-                    coll.fetch({
-                        success : function(coll) {
-                            coll.setSort('attributes.sys.updated.timestamp', 'desc');
-                            // coll.pager();
-                            var view = new MainView({
-                                collection : coll,
-                                workspace : options.workspace,
-                                sort : options.sort,
-                                verified : verified
-                            });
-                            viewManager.show(view);
-                        },
-                        error : showError
-                    });
-                },
-                error : showError
-            })
+
+            var validator = Validator.getInstance();
+
+            validator.onReady(function() {
+                coll.fetch({
+                    success : function(coll) {
+                        coll.setSort('attributes.sys.updated.timestamp', 'desc');
+                        // coll.pager();
+                        var view = new MainView({
+                            collection : coll,
+                            workspace : options.workspace,
+                            sort : options.sort
+                        });
+                        viewManager.show(view);
+                    },
+                    error : showError
+                });
+            });
 
         }
     };

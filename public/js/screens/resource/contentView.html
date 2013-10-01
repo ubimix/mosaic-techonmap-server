@@ -1,8 +1,13 @@
 
 <style type="text/css">
 .CodeMirror {
-	border: 1px solid #eee;
+	border: none;
 	height: auto;
+}
+
+.CodeMirror.properties {
+	border-left: 3px solid #f5f5f5;
+	padding-left: 6px;
 }
 
 .CodeMirror-scroll {
@@ -21,23 +26,23 @@
 	color: transparent;
 }
 </style>
+<div class="row">
+	<div class="col-md-12">
+		<div id="editor"></div>
+	</div>
+</div>
+
 
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-7">
 		<textarea class="content">{{=view.getFormattedContent()}}</textarea>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-5">
 		<textarea class="properties">{{=view.getFormattedProperties()}}</textarea>
 	</div>
 </div>
 
 <script>
-    var contentEditor = CodeMirror.fromTextArea($(".content").get(0), {
-        lineNumbers : true,
-        viewportMargin : Infinity,
-        lineWrapping : true
-    });
-
     var propertiesEditor = CodeMirror.fromTextArea($(".properties").get(0), {
         lineNumbers : true,
         viewportMargin : Infinity,
@@ -45,5 +50,13 @@
         mode : 'yaml',
         gutters : []
     });
+
+    var contentEditor = CodeMirror.fromTextArea($('.content').get(0), {
+        lineNumbers : true,
+        viewportMargin : Infinity,
+        lineWrapping : true
+    });
+
+    $(propertiesEditor.getWrapperElement()).addClass('properties');
 </script>
 

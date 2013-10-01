@@ -195,16 +195,6 @@ function loadData(inputFile) {
 /** Binds request handling to the specified application */
 function initializeApplication(app, project) {
 
-    function loadResource(req, res, path) {
-        reply(req, res, project.loadResource(path).then(function(resource) {
-            if (!resource) {
-                throw HttpError.notFound(path);
-            }
-            return getGeoJsonFromResource(resource);
-        }));
-
-    }
-
     function getGeoJsonList(resources, keepSystemProperties) {
         var list = [];
         _.each(resources, function(resource) {
@@ -239,7 +229,13 @@ function initializeApplication(app, project) {
     /** Returns individual resource by its path */
     app.get('/api/resources/:path', function(req, res) {
         var path = getRequestedPath(req);
-        loadResource(req, res, path);
+        reply(req, res, project.loadResource(path).then(function(resource) {
+            if (!resource) {
+                throw HttpError.notFound(path);
+            }
+            return getGeoJsonFromResource(resource);
+        }));
+
     });
 
     /** Import 'in-batch' an array of GeoJSON items */
@@ -343,7 +339,18 @@ function initializeApplication(app, project) {
     });
 
     app.get('/api/validation', function(req, res) {
-        loadResource(req, res, '.admin-timestamp');
+        reply(req, res, project.loadResource('.admin-timestamp').then(function(resource) {
+            if (!resource) {
+                return importGeoJSONItem(project, '.admin-timestamp', {
+                    properties : {
+                        validated : [],
+                        timestamp : new Date().getTime()
+                    }
+                });
+            }
+            return getGeoJsonFromResource(resource);
+        }));
+
     });
 
     app.get('/api/twitter/last', function(req, res) {
