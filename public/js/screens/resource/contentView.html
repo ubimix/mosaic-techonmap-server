@@ -35,29 +35,10 @@
 
 <div class="row">
 	<div class="col-md-7">
-		<textarea class="content">{{=view.getFormattedContent()}}</textarea>
+		<div class="content"></div>
 	</div>
 	<div class="col-md-5">
-		<textarea class="properties">{{=view.getFormattedProperties()}}</textarea>
+		<div class="properties"></div>
 	</div>
 </div>
-
-<script>
-    var propertiesEditor = CodeMirror.fromTextArea($(".properties").get(0), {
-        lineNumbers : true,
-        viewportMargin : Infinity,
-        lineWrapping : true,
-        mode : 'yaml',
-        gutters : []
-    });
-
-    var contentEditor = CodeMirror.fromTextArea($('.content').get(0), {
-        lineNumbers : true,
-        viewportMargin : Infinity,
-        mode : 'text',
-        lineWrapping : true
-    });
-
-    $(propertiesEditor.getWrapperElement()).addClass('properties');
-</script>
 

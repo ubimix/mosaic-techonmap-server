@@ -1,6 +1,14 @@
 
-<h1><a href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></h1>
-
+<nav class="navbar" style="padding-top: 1em;">
+    <div class="navbar-header">
+        <span class="navbar-brand"><a href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></span>
+    </div>
+    <ul class="nav navbar-nav right">
+        <li><div class="btn-group">
+         <button class="compare btn btn-primary">Compare</button>
+         </div></li>
+    </ul>
+</nav>
 
 <table
 	class="history table table-striped table-bordered table-hover table-condensed">
@@ -33,6 +41,3 @@
 	</tbody>
 </table>
 
-<div class="form-actions">
-    <button class="compare btn btn-primary">Compare</button>
-</div>
