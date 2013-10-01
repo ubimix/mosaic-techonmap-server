@@ -133,7 +133,7 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 var id = item.data('id');
                 var resource = collection.getById(id);
                 console.log(id, resource);
-                item.find('.validation').removeAttr('checked');
+                item.find('.validation').remove();
                 var el = item.find('.media-top');
                 el.removeClass('validated');
                 el.removeClass('not-validated');

@@ -50,22 +50,52 @@ module.exports = function(app) {
             userId = 'Anonymous';
         return userId;
     }
+    
+    function getLogicalPath(path) {
+         if (path.match(/^\/api\/resources\/export\/?$/)){
+             return 'resources/export';
+         } else if (path.match(/^\/api\/resources\/import\/?$/)){
+             return 'resources/import';
+         } else if (path.match(/^\/api\/resources\/?.*$/)){
+             return 'resources';
+         } else if (path.match(/^\/api\/typeahead\/?.*$/)){
+             return 'typeahead';
+         } else if (path.match(/^\/api\/validation\/?.*$/)){
+             return 'validation';
+         } else {
+             return '';
+         }
+    }
 
     function requireAuthentication(req, res, next) {
         var userId = getUserId(req, res);
-        var path = req.url.split('?')[0];
-        path = path.split('/')[1];
-        // path = path.split('/').slice(1, path.length).join('/');
+        var path = getLogicalPath(req.url.split('?')[0]);
         var method = req.method.toLowerCase();
-        // method = method === 'get' ? 'read' : 'write';
-        Step(function checkAccess() {
-            // console.log("USER: ", userId, userRoles[userId])
-            acl.isAllowed(userId, path, method, this);
-        }, function(err, allowed) {
-            // console.log('Access "' + path + '": ' + err, allowed)
+        Step(
+        // Check access for logged users
+        function() {
+            var next = this;
+            if (userId != 'Anonymous') {
+                acl.isAllowed('LoggedUser', path, method, next);
+            } else {
+                next(null, false);
+            }
+        },
+        // Check access using the user names
+        function(err, allowed) {
+            var next = this;
+            if (allowed) {
+                next(null, allowed);
+            } else {
+                // console.log("USER: ", userId, userRoles[userId])
+                acl.isAllowed(userId, path, method, next);
+            }
+        },
+        // 
+        function(err, allowed) {
+             console.log('Access "' + path + '": ' + err, allowed)
             if (err || !allowed) {
-                res.send('Access denied. User: "' + userId + '". Resource: "'
-                        + path + '".', 403);
+                res.send('Access denied. User: "' + userId + '". Resource: "' + path + '".', 403);
                 return;
                 // TODO: we should probably send an HTTP UNAUTHORIZED error
                 // throw new Error();
@@ -74,8 +104,10 @@ module.exports = function(app) {
             }
         })
     }
-    app.all("/api/resources", requireAuthentication);
-    app.all("/api/resources/*", requireAuthentication);
+    
+    
+    app.all('/api/*', requireAuthentication);
+    
     // if (!app.locals.authorization.anonRead) {
     // app.all("/wiki/*", requireAuthentication);
     // app.all("/search", requireAuthentication);
