@@ -7,9 +7,13 @@
                 <h1 class="media-heading">{{=model.getTitle()}}</h1>
                 <div class="media-summary">{{=model.getDescription()}}</div>
             </div>
-            <div class="col-md-4 media-header">
+            <div class="col-md-1 media-header">
                 <span class="category">{{-model.getCategory()}}</span>
+                </div>
+            <div class="col-md-2 media-header">    
                 <span class="published-date">{{= moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss") }}</span>
+            </div>
+            <div class="col-md-1 media-header">
                 {{ if (!validator.isValidated(model)) { }}
                 <input type="checkbox" class="validation" data-id="{{=model.getPath()}}"/>
                 {{ } }}

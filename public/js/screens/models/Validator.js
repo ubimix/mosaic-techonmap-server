@@ -33,6 +33,7 @@ define([ 'Backbone' ], function(Backbone) {
                 this._readyListeners = null;
                 this.ready = true;
             }
+            this.trigger('loaded');
         },
 
         isValidated : function(resource) {
@@ -55,7 +56,7 @@ define([ 'Backbone' ], function(Backbone) {
                     validated.splice(idx, 0, path);
                 }
             }, this);
-            this.save({
+            this.save(null, {
                 success : this._onLoad
             });
 
@@ -65,7 +66,7 @@ define([ 'Backbone' ], function(Backbone) {
             var props = this._getProperties();
             props.validated = [];
             props.timestamp = new Date().getTime();
-            this.save({
+            this.save(null, {
                 success : this._onLoad
             })
         },
@@ -90,6 +91,10 @@ define([ 'Backbone' ], function(Backbone) {
         }
 
     });
+
+    Validator.clearInstance = function() {
+        delete Validator.instance;
+    }
 
     Validator.getInstance = function() {
         if (!Validator.instance) {

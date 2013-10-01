@@ -256,7 +256,19 @@ function initializeApplication(app, project) {
                 path = getPathFromGeoJson(json);
             }
             console.log('Try to save the following resource "' + path + '": ', json)
-            return importGeoJSONItem(project, path, json);
+            return importGeoJSONItem(project, path, json).then(function(value) {
+                // remove the resource from the validation object
+                var timestampPath = '.admin-timestamp';
+                return project.loadResource(timestampPath).then(function(resource) {
+                    // Change it 
+                    var properties= resource.getProperties();
+                    var list = properties.validated|| [];
+                    properties.validated = _.without(list, path);
+                    return project.storeResource(resource);
+                }).then(function() {
+                    return value;
+                })
+            });
         }));
     }
     app.post('/api/resources/:path', saveResource);
@@ -344,7 +356,7 @@ function initializeApplication(app, project) {
                 return importGeoJSONItem(project, '.admin-timestamp', {
                     properties : {
                         validated : [],
-                        timestamp : new Date().getTime()
+                        timestamp : 0
                     }
                 });
             }

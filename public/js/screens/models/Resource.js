@@ -1,4 +1,4 @@
-define([ 'Backbone' ], function(Backbone) {
+define([ 'Backbone','./Validator' ], function(Backbone, Validator) {
 
     var Resource = Backbone.Model.extend({
         urlRoot : '/api/resources/',
@@ -82,6 +82,8 @@ define([ 'Backbone' ], function(Backbone) {
                     throw new Error('The resource could not be saved successfully.');
                 },
                 success : function(model) {
+                    //FIXME
+                    Validator.clearInstance();
                     callback(model);
 
                 }
