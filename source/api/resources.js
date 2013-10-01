@@ -117,6 +117,12 @@ function loadJsonFromRequest(req) {
     return Q(data);
 }
 
+function loadJsonMapFromRequest(req) {
+    var data = req.body.data;
+    return Q(data);
+    
+}
+
 /* ========================================================================== */
 /* Main application functions */
 /* -------------------------------------------------------------------------- */
@@ -139,6 +145,7 @@ function importGeoJSON(project, json) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
     return Q.all(_.map(items, function(item) {
         var itemPath = getPathFromGeoJson(item);
+        console.log('* ITEM: ', itemPath, item)
         return importGeoJSONItem(project, itemPath, item);
     }));
 }
@@ -240,10 +247,8 @@ function initializeApplication(app, project) {
 
     /** Import 'in-batch' an array of GeoJSON items */
     app.post('/api/resources/import', function(req, res) {
-        reply(req, res, loadJsonFromRequest(req).then(function(json) {
-            console.log(json);
+        reply(req, res, loadJsonMapFromRequest(req).then(function(json) {
             var result = importGeoJSON(project, json);
-            console.log(result);
             return result;
         }));
     });
@@ -260,9 +265,9 @@ function initializeApplication(app, project) {
                 // remove the resource from the validation object
                 var timestampPath = '.admin-timestamp';
                 return project.loadResource(timestampPath).then(function(resource) {
-                    // Change it 
-                    var properties= resource.getProperties();
-                    var list = properties.validated|| [];
+                    // Change it
+                    var properties = resource.getProperties();
+                    var list = properties.validated || [];
                     properties.validated = _.without(list, path);
                     return project.storeResource(resource);
                 }).then(function() {

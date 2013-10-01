@@ -3,7 +3,6 @@ define([ 'Backbone', 'Underscore', 'utils', '../../models/Resource', './resource
 
 function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
 
-    // TODO: use backbone model
     function loadEntry(id, callback) {
         var resource = new Resource({
             id : id

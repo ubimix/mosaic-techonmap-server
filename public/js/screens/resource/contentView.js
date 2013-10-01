@@ -4,18 +4,17 @@ function(Backbone, ResourceModel, Utils, ContentViewTemplate) {
 
     var ResourceContentView = Backbone.View.extend({
         initialize : function(options) {
-            _.bindAll(this, 'beforeRender', 'render', 'afterRender');
-            var _this = this;
-            this.render = _.wrap(this.render, function(render) {
-                _this.beforeRender();
-                render();
-                _this.afterRender();
-                return _this;
-            });
+//            _.bindAll(this, 'beforeRender', 'render', 'afterRender');
+//            var _this = this;
+//            this.render = _.wrap(this.render, function(render) {
+//                _this.beforeRender();
+//                render();
+//                _this.afterRender();
+//                return _this;
+//            });
         },
         template : _.template(ContentViewTemplate),
         render : function() {
-            console.log('in render');
             var html = this.template({
                 view : this
             });
@@ -58,10 +57,8 @@ function(Backbone, ResourceModel, Utils, ContentViewTemplate) {
 
         },
         beforeRender : function() {
-            console.log('beforeRender');
         },
         afterRender : function() {
-            console.log('afterRender');
             console.log(this.$el.find('.content'));
 //            var contentEditor = CodeMirror.fromTextArea(this.$el.find('.content').get(0), {
 //                lineNumbers : true,

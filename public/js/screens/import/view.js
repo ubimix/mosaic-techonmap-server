@@ -1,6 +1,12 @@
-define([ 'Backbone', 'jQueryCsv', 'CodeMirror', 'text!./view.html', 'utils' ], function(Backbone, jQueryCsv, CodeMirror, template, Utils) {
+define([ 'Backbone', 'Underscore', 'jQueryCsv', 'CodeMirror', 'utils', '../commons/Dialog', 'text!./view.html' ],
+
+function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
 
     var View = Backbone.View.extend({
+
+        initialize : function() {
+            _.bindAll(this, 'onImported');
+        },
         template : _.template(template),
         events : {
             'click .import' : 'importCsv'
@@ -14,49 +20,64 @@ define([ 'Backbone', 'jQueryCsv', 'CodeMirror', 'text!./view.html', 'utils' ], f
             return this;
         },
 
+        showOkDialog : function(title, message) {
+            var dialog = new Dialog({
+                title : title,
+                content : message,
+                actions : [ {
+                    label : 'Ok',
+                    primary : true,
+                    action : function() {
+                        dialog.hide();
+                    }
+                } ]
+            });
+            dialog.show();
+        },
+
         importCsv : function() {
-            //var data = this.$el.find('#content').val();
+            // var data = this.$el.find('#content').val();
             var data = editor.getValue();
-            var array = jQueryCsv.toArrays(data);
-            var geoitems = Utils.toGeoJson('', array);
+            var geoitems;
+            try {
+                var array = jQueryCsv.toArrays(data);
+                geoitems = Utils.toGeoJson(array);
+            } catch (e) {
+                return this.showOkDialog('Error', 'An error occurred, please check your CSV input.');
+
+            }
+
             // TODO: why can't we send plain arrays . Why do we need a
             // map ?
-            $.ajax({
-                type : 'POST',
-                url : '/api/resources/import',
-                data : {
-                    data : geoitems
-                },
-                success : onImported,
-                dataType : 'json',
-                error : onImportedError
+
+            // TODO: use a Backbone collection so that the returned objects
+            // are
+            // Resources
+            $.post('/api/resources/import', {
+                data : geoitems
+            }).done(this.onImported).fail(function(err) {
+                return this.showOkDialog('Error', 'An error occurred while saving the data : ' + err.name + ' - ' + err.message);
             });
 
-            function onImported(result) {
-                console.log(result);
-                //clear previous reports
-                $('#import-report').html('');
-                $('#import-report').append(createReport(result.created, 'created')).append(
-                        createReport(result.updated, 'updated'));
-                $('#dialog-import-ok').modal();
-            }
+        },
 
-            function createReport(entryList, term) {
-                var buffer = '';
-                _.each(entryList, function(item, index) {
-                    if (index > 0)
-                        buffer += ' -';
-                    buffer += ' <a href="/workspace/' + item.id + '">' + item.name + '</a>';
-                });
-                if (entryList.length > 0)
-                    return $('<li>' + entryList.length + ' entities have been ' + term + ':' + buffer + '.</li>');
-                return $('<li>' + entryList.length + ' entities have been ' + term + '.</li>');
+        onImported : function(result) {
+            // createReport(result.updated, 'updated'));
+            var title = this.$el.find('.dialog-import .title').html();
+            var content = this.createReport(result, 'created or updated').html();
+            return this.showOkDialog(title, content);
+        },
 
-            }
-
-            function onImportedError(error) {
-                console.log(error);
-            }
+        createReport : function(entryList, term) {
+            var buffer = '';
+            _.each(entryList, function(item, index) {
+                if (index > 0)
+                    buffer += ' -';
+                buffer += ' <a href="/workspace/' + item.properties.id + '">' + item.properties.name + '</a>';
+            });
+            if (entryList.length > 0)
+                return $('<div>' + entryList.length + ' entities have been ' + term + ':' + buffer + '.</div>');
+            return $('<div>' + entryList.length + ' entities have been ' + term + '.</div>');
 
         }
 
