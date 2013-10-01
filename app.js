@@ -60,7 +60,7 @@ app.configure(function() {
 
 app.configure('development', function() {
     app.use(express.errorHandler());
-    app.use('/map', express.static(path.join(__dirname, 'public/map')));
+    app.use('/map/', express.static(path.join(__dirname, 'public/map')));
 //    listFolders(path.join(__dirname, 'public'), function(err, folders) {
 //        folders.forEach(function(folder, array, index) {
 //            app.use('/backoffice/' + path.basename(folder), express.static(path

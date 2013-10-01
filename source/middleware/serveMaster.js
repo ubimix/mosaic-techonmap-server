@@ -2,7 +2,7 @@ var _ = require('underscore');
 var client = require('./../client');
 
 function skipMaster(req) {
-    return _.any([ '/api', '/components', '/css', '/js', '/build', '/map' ], function(url) {
+    return _.any([ '/api', '/components', '/css', '/js', '/build', '/map/' ], function(url) {
         return req.url.substr(0, url.length) === url;
     });
 }

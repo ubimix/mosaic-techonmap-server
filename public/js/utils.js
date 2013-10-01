@@ -3,8 +3,8 @@ define([ 'yaml' ], function(YAML) {
     var Utils = {};
 
     Utils.toStructuredContent = function(attr) {
-        //var copy = _.extend({}, attr);
-        //deep copy
+        // var copy = _.extend({}, attr);
+        // deep copy
         var copy = JSON.parse(JSON.stringify(attr));
         var description = copy.properties.description || '';
         delete copy.properties.description;
@@ -24,7 +24,7 @@ define([ 'yaml' ], function(YAML) {
     }
     
     
-    // TODO: externalize this script
+    // TODO: externalize this script and these mappings
     var fieldMapping = {
             'Nom' : 'name',
             'Description' : 'description',
@@ -42,8 +42,20 @@ define([ 'yaml' ], function(YAML) {
             'Url page Facebook' : 'facebook',
             'Url page Google +' : 'googleplus',
             'Url page Linkedin' : 'linkedin',
-            'Url page Viadeo' : 'viadeo'
+            'Url page Viadeo' : 'viadeo',
+            'Catégorie' : 'category'
         }
+    
+    var categoryMapping = {
+            'tiers-lieu' : 'third-place',
+            'communauté' : 'communauty',
+            'investisseur' : 'investor',
+            'entreprise' : 'entreprise',
+            'incubateur' : 'incubator',
+            'prestataire': 'prestataire',
+            'école' : 'school',
+            'acteur public' : 'public-actor'
+    }
          
     function isEmpty(str) {
         if (!str)
@@ -117,6 +129,11 @@ define([ 'yaml' ], function(YAML) {
             }
             properties.tags = tags;
         }
+        
+        if (properties && properties.category) {
+            properties.category = categoryMapping[properties.category.toLowerCase()] || properties.category;
+        }
+        
         var point = {
             type : "Feature",
             geometry : {
@@ -129,12 +146,11 @@ define([ 'yaml' ], function(YAML) {
         return point;
     }
 
-    Utils.toGeoJson =  function(category, array) {
+    Utils.toGeoJson =  function(array) {
         var features = [];
         var fields = getFieldsFromHeader(fieldMapping, array[0]);
         for ( var i = 1; i < array.length; i++) {
             var point = toGeoJsonPoint(fields, array[i]);
-            point.properties.category = category;
             features.push(point);
         }
         return features;
