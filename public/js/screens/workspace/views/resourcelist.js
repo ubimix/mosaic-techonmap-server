@@ -1,7 +1,7 @@
-define([ 'Backbone', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/contentView',
+define([ 'Backbone', 'Underscore', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/contentView',
         '../../commons/Dialog', '../../models/Validator', 'text!./resourcelist.html' ],
 
-function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
+function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
 
     // TODO: use backbone model
     function loadEntry(id, callback) {
@@ -23,6 +23,7 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
         // resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
+            _.bindAll(this, '_updateListStatus');
             this.subviews = [];
 
             this.collection.on('reset', function() {
@@ -37,8 +38,7 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
         events : {
             'click .media .media-top' : 'handleEntryClick',
             'click .action-validate' : 'handleValidateClick',
-            'click .validation' : 'handleSelectionClick',
-            'click .delete' : 'removeResource'
+            'click .validation' : 'handleSelectionClick'
         },
 
         // TODO: use backgrid.js ?
@@ -124,6 +124,26 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
 
         },
 
+        _updateListStatus : function() {
+            var validator = Validator.getInstance();
+            var selection = this.$('.media');
+            var collection = this.collection;
+            selection.each(function() {
+                var item = $(this);
+                var id = item.data('id');
+                var resource = collection.getById(id);
+                console.log(id, resource);
+                item.find('.validation').removeAttr('checked');
+                var el = item.find('.media-top');
+                el.removeClass('validated');
+                el.removeClass('not-validated');
+                if (resource && !validator.isValidated(resource)) {
+                } else {
+                    el.addClass('validated');
+                }
+            });
+        },
+
         handleValidateClick : function(event) {
             var selection = this.$('.validation:checked');
             var list = [];
@@ -136,8 +156,7 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
                     list.push(resource);
             });
 
-            console.log(list);
-            
+            var that = this;
             if (!list || list.length == 0) {
                 var dialog = new Dialog({
                     title : this.$el.find('.dialog-validation .title').html(),
@@ -146,6 +165,7 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
                         label : 'Yes',
                         primary : true,
                         action : function() {
+                            validator.once('loaded', that._updateListStatus);
                             validator.validateAll();
                             dialog.hide();
                         }
@@ -158,8 +178,8 @@ function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog
                 });
                 dialog.show();
             } else {
+                validator.once('loaded', that._updateListStatus);
                 validator.validateResources(list);
-
             }
 
         },
