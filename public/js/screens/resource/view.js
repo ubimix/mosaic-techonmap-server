@@ -28,16 +28,21 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
 
                 render : function() {
                     var html = this.template({
-                        content : this.contentView.render().$el,
+                        // content : this.contentView.render().$el,
                         data : this.model.toJSON(),
                         model : this.model
                     })
                     this.$el.html(html);
+                    
+                    this.$('#editors').append(this.contentView.$el);
+                    this.contentView.render();
 
                     return this;
                 },
 
                 onKeydown : function(event) {
+                    
+                    
                     if (event.altKey) {
                         if (event.which == 83) {
                             // alt+S
@@ -77,7 +82,11 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                     var self = this;
                     // TODO: check how to check empty string in all browsers
                     if (this.model.getPath() && this.model.getPath().length > 0) {
+                        try {
                         var updatedModel = this.contentView.updateModel();
+                        } catch (e) {
+                            return Utils.showOkDialog('Error', 'An error occurred, please check the content entered.'); 
+                        }
                         this.updateModel(this.model, updatedModel);
 
                     } else {

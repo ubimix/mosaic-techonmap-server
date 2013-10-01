@@ -20,21 +20,6 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
             return this;
         },
 
-        showOkDialog : function(title, message) {
-            var dialog = new Dialog({
-                title : title,
-                content : message,
-                actions : [ {
-                    label : 'Ok',
-                    primary : true,
-                    action : function() {
-                        dialog.hide();
-                    }
-                } ]
-            });
-            dialog.show();
-        },
-
         importCsv : function() {
             // var data = this.$el.find('#content').val();
             var data = editor.getValue();
@@ -43,7 +28,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
                 var array = jQueryCsv.toArrays(data);
                 geoitems = Utils.toGeoJson(array);
             } catch (e) {
-                return this.showOkDialog('Error', 'An error occurred, please check your CSV input.');
+                return Utils.showOkDialog('Error', 'An error occurred, please check your CSV input.');
 
             }
 
@@ -56,7 +41,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
             $.post('/api/resources/import', {
                 data : geoitems
             }).done(this.onImported).fail(function(err) {
-                return this.showOkDialog('Error', 'An error occurred while saving the data : ' + err.name + ' - ' + err.message);
+                return Utils.showOkDialog('Error', 'An error occurred while saving the data : ' + err.name + ' - ' + err.message);
             });
 
         },
@@ -65,7 +50,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
             // createReport(result.updated, 'updated'));
             var title = this.$el.find('.dialog-import .title').html();
             var content = this.createReport(result, 'created or updated').html();
-            return this.showOkDialog(title, content);
+            return Utils.showOkDialog(title, content);
         },
 
         createReport : function(entryList, term) {

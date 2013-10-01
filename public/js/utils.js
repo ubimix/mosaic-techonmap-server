@@ -1,4 +1,4 @@
-define([ 'yaml' ], function(YAML) {
+define([ 'yaml','./screens/commons/Dialog' ], function(YAML, Dialog) {
     'use strict';
     var Utils = {};
 
@@ -21,6 +21,21 @@ define([ 'yaml' ], function(YAML) {
         obj.description = description;
         return obj;
 
+    }
+    
+    Utils.showOkDialog = function(title, message) {
+        var dialog = new Dialog({
+            title : title,
+            content : message,
+            actions : [ {
+                label : 'Ok',
+                primary : true,
+                action : function() {
+                    dialog.hide();
+                }
+            } ]
+        });
+        dialog.show();
     }
     
     

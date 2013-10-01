@@ -1,13 +1,19 @@
-<div>
-	<h1><a href="/{{=workspace}}/{{=revision1.getPath()}}">{{=revision1.getTitle()}}</a></h1>
-	<p>Version 1: {{=revision1.getVersionId()}} - Version 2: {{=revision2.getVersionId()}}</p>
+<nav class="navbar" style="padding-top: 1em;">
+    <div class="navbar-header">
+        <span class="navbar-brand"><a href="/{{=workspace}}/{{=revision1.getPath()}}">{{=revision1.getTitle()}}</a></span>
+    </div>
+    <ul class="nav navbar-nav right">
+        <li><div class="btn-group">
+         <a href="/{{=workspace}}/{{=revision1.getPath()}}/history"><button class="btn btn-primary">History</button></a>
+         </div></li>
+    </ul>
+</nav>
+
+<p>Version 1: {{=revision1.getVersionId()}} - Version 2: {{=revision2.getVersionId()}}</p>
+
 <pre>
 <div id="outputdiv">
 
 </div>
 </pre>
-<div style="margin-top: 1em;">
-    <a href="/{{=workspace}}/{{=revision1.getPath()}}/history" class="history btn">History</a>    
-</div>
 
-</div>

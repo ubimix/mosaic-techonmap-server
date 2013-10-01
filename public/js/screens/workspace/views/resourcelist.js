@@ -94,7 +94,6 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
             });
 
             var content = e.find('.media-content');
-            console.log(content);
             // if (!content.attr('data-loaded')) {
             var id = e.attr('data-id');
             content.attr('data-loaded', true);
@@ -108,10 +107,15 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 // TODO: escape html
                 // content.html(that.resourceTemplate(xYaml));
                 var contentView = new ResourceContentView({
-                    model : data
+                    model : data,
+                    readOnly : true
                 });
 
-                content.html(contentView.render().$el.html());
+                //content.html(contentView.render().$el.html());
+                content.html('');
+                content.append(contentView.$el);
+                contentView.render();
+                
                 // $('#cmcontent').html(contentView.render().$el.html());
 
             })
