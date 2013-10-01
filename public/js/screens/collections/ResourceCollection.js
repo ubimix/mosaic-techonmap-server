@@ -57,6 +57,12 @@ function(Backbone, Paginator, Resource) {
         parse : function(response) {
             var issues = response;
             return issues;
+        },
+
+        getById : function(id) {
+            return this.find(function(item) {
+                return (item.getPath() == id);
+            });
         }
 
     });

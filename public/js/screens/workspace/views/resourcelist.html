@@ -1,12 +1,21 @@
 <div>
-<!-- 	<h1>{{=workspace}}</h1>  -->
-{{ if (!workspace) { var workspace = 'workspace'; } }}
+	<!-- 	<h1>{{=workspace}}</h1>  -->
+	{{ if (!workspace) { var workspace = 'workspace'; } }}
 </div>
+<nav class="navbar" style="padding-top: 1em;">
+	<div class="navbar-header">
+		<span class="navbar-brand">Tableau de bord</span>
+	</div>
+	<ul class="nav navbar-nav right">
+		<li><div class="btn-group">
+				<a href="#" class="btn btn-primary action-validate">Validate</a>
+			</div></li>
+	</ul>
+</nav>
+<div class="resources" style="clear: right;"></div>
 
-<div class="page-header">
-<h3>Tableau de bord</h3>
-</div>
-
-<div class="resources" style="clear:right;">
-
+<div class="dialog-validation hide">
+	<div class="title">Validation</div>
+	<div class="message">No element is selected. Do you want to
+		validate all?</div>
 </div>

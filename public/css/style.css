@@ -15,11 +15,17 @@ a {
 	background-color: #f6f6f6;
 }
 
+.media-top.validated {
+	background-color: #efefef;
+	color:grey;
+}
+
 .media-content {
 	margin-left: 0em;
 	padding-left: 2em;
 	padding-right: 2em;
 	padding-bottom: 1em;
+	padding-top: 1em;
 }
 
 .media {
@@ -79,8 +85,7 @@ h1.media-heading {
 
 .media-content pre {
 	border: none;
-	background-color: white;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background: transparent;
 }
 
 .media-meta {
@@ -162,8 +167,8 @@ body {
 }
 
 .page-header {
-margin: 0px 0 20px;
-border-bottom:none;
+	margin: 0px 0 20px;
+	border-bottom: none;
 }
 
 .form-search {
@@ -184,13 +189,13 @@ border-bottom:none;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 	outline: none;
-	margin-top:0.5em;
+	margin-top: 0.5em;
 }
 
 .typeahead {
 	background-color: #fff;
-	margin-right:1em;
-	margin-top:0.5em;
+	margin-right: 1em;
+	margin-top: 0.5em;
 }
 
 .typeahead:focus {
@@ -241,18 +246,14 @@ border-bottom:none;
 	font-size: 1em;
 }
 
-
 .btn-login {
-	width:30%;
+	width: 30%;
 	background: #385f98;
-	
 }
-
 
 /******************************************************************
  ************************** TECHONMAP *****************************
  ******************************************************************/
-
 #topbar .social {
 	height: 25px;
 	line-height: 25px;
@@ -279,18 +280,20 @@ border-bottom:none;
 }
 
 .left {
-float: left;
+	float: left;
 }
 
 .right {
-float: right;
+	float: right;
 }
 
 ul.menu {
-margin-top: 1em;
-margin-right:1em;
-padding: 0;
-list-style-type: none;
+	margin-top: 1em;
+	margin-right: 1em;
+	padding: 0;
+	list-style-type: none;
 }
 
-ul.menu li { display: inline; }
+ul.menu li {
+	display: inline;
+}

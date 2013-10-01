@@ -1,16 +1,26 @@
-define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html', 'text!./resource.html' ],
+define([ 'Backbone', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/contentView',
+        '../../commons/Dialog', '../../models/Validator', 'text!./resourcelist.html' ],
 
-function(Backbone, Utils, ResourceRowView, template, resourceTemplate) {
+function(Backbone, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
 
+    // TODO: use backbone model
     function loadEntry(id, callback) {
-        $.get('/api/resources/' + id + '?' + Math.random(), function(data) {
-            callback(data);
+        var resource = new Resource({
+            id : id
         });
+
+        resource.fetch({
+            // TODO: handle errors when no resource found with given id
+            success : function(model, object) {
+                callback(model);
+            }
+        });
+
     }
 
     var View = Backbone.View.extend({
-        template : _.template(template),
-        resourceTemplate : _.template(resourceTemplate),
+        template : _.template(ResourceListTemplate),
+        // resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
             this.subviews = [];
@@ -25,7 +35,10 @@ function(Backbone, Utils, ResourceRowView, template, resourceTemplate) {
         },
 
         events : {
-            'click .media .media-top' : 'handleEntryClick'
+            'click .media .media-top' : 'handleEntryClick',
+            'click .action-validate' : 'handleValidateClick',
+            'click .validation' : 'handleSelectionClick',
+            'click .delete' : 'removeResource'
         },
 
         // TODO: use backgrid.js ?
@@ -70,6 +83,7 @@ function(Backbone, Utils, ResourceRowView, template, resourceTemplate) {
 
             this.$el.find('.media-content').each(function(i) {
                 if ($(this).parent().parent().attr('data-id') != e.attr('data-id')) {
+                    $(this).html('');
                     $(this).hide();
                 }
             });
@@ -81,25 +95,77 @@ function(Backbone, Utils, ResourceRowView, template, resourceTemplate) {
             });
 
             var content = e.find('.media-content');
-            if (!content.attr('data-loaded')) {
-                var id = e.attr('data-id');
-                content.attr('data-loaded', true);
-                var media = content.parent().parent();
-                content.html('Loading...');
-                media.toggleClass('expanded');
-                content.toggle();
-                var that = this;
-                loadEntry(id, function(data) {
-                    var xYaml = Utils.toStructuredContent(data);
-                    // TODO: escape html
-                    content.html(that.resourceTemplate(xYaml));
-                })
+            console.log(content);
+            // if (!content.attr('data-loaded')) {
+            var id = e.attr('data-id');
+            content.attr('data-loaded', true);
+            var media = content.parent().parent();
+            content.html('Loading...');
+            media.toggleClass('expanded');
+            content.toggle();
+            var that = this;
+            loadEntry(id, function(data) {
+                // var xYaml = Utils.toStructuredContent(data);
+                // TODO: escape html
+                // content.html(that.resourceTemplate(xYaml));
+                var contentView = new ResourceContentView({
+                    model : data
+                });
+
+                content.html(contentView.render().$el.html());
+                // $('#cmcontent').html(contentView.render().$el.html());
+
+            })
+            // } else {
+            // content.toggle();
+            // var media = content.parent().parent();
+            // media.toggleClass('expanded');
+            // }
+
+        },
+
+        handleValidateClick : function(event) {
+            var selection = this.$('.validation:checked');
+            var list = [];
+            var validator = Validator.getInstance();
+            var collection = this.collection;
+            selection.each(function() {
+                var id = $(this).data('id');
+                var resource = collection.getById(id);
+                if (resource && !validator.isValidated(resource))
+                    list.push(resource);
+            });
+
+            console.log(list);
+            
+            if (!list || list.length == 0) {
+                var dialog = new Dialog({
+                    title : this.$el.find('.dialog-validation .title').html(),
+                    content : this.$el.find('.dialog-validation .message').html(),
+                    actions : [ {
+                        label : 'Yes',
+                        primary : true,
+                        action : function() {
+                            validator.validateAll();
+                            dialog.hide();
+                        }
+                    }, {
+                        label : 'No',
+                        action : function() {
+                            dialog.hide();
+                        }
+                    } ]
+                });
+                dialog.show();
             } else {
-                content.toggle();
-                var media = content.parent().parent();
-                media.toggleClass('expanded');
+                validator.validateResources(list);
+
             }
 
+        },
+
+        handleSelectionClick : function(event) {
+            event.stopPropagation();
         }
 
     });

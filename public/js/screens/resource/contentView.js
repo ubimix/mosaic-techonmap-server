@@ -3,14 +3,24 @@ define([ 'Backbone', '../models/Resource', 'utils', 'text!./contentView.html' ],
 function(Backbone, ResourceModel, Utils, ContentViewTemplate) {
 
     var ResourceContentView = Backbone.View.extend({
+        initialize : function(options) {
+            _.bindAll(this, 'beforeRender', 'render', 'afterRender');
+            var _this = this;
+            this.render = _.wrap(this.render, function(render) {
+                _this.beforeRender();
+                render();
+                _this.afterRender();
+                return _this;
+            });
+        },
         template : _.template(ContentViewTemplate),
         render : function() {
+            console.log('in render');
             var html = this.template({
                 view : this
             });
             this.$el.html(html);
 
-            setTimeout(this.doLayout(this.$el), 10);
             return this;
 
         },
@@ -45,6 +55,23 @@ function(Backbone, ResourceModel, Utils, ContentViewTemplate) {
 
         doLayout : function($el) {
             // TODO: create editors here instead of having them in the template
+
+        },
+        beforeRender : function() {
+            console.log('beforeRender');
+        },
+        afterRender : function() {
+            console.log('afterRender');
+            console.log(this.$el.find('.content'));
+//            var contentEditor = CodeMirror.fromTextArea(this.$el.find('.content').get(0), {
+//                lineNumbers : true,
+//                viewportMargin : Infinity,
+//                lineWrapping : true
+//            });
+           
+            
+            
+            
         }
 
     });
