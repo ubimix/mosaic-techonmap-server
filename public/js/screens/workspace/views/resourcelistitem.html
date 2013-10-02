@@ -4,17 +4,17 @@
 		<div
 			class="media-top {{= validator.wasCreated(model) ? 'created' : validator.wasUpdated(model) ? 'updated' : 'validated' }}">
 			<div class="row">
-				<div class="col-md-7 media-header">
+				<div class="col-md-7 col-xs-6 media-header">
 					<h1 class="media-heading"><i class='glyphicon glyphicon-flash'></i> {{=model.getTitle()}}</h1>
 					<div class="media-summary">{{=model.getDescription()}}</div>
 				</div>
-				<div class="col-md-1 media-header">
+				<div class="col-md-1 col-xs-1 media-header">
 					<span class="category">{{-model.getCategory()}}</span>
 				</div>
-				<div class="col-md-2 media-header">
+				<div class="col-md-2 col-xs-2 media-header">
 					<span class="published-date">{{=moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss")}}</span>
 				</div>
-				<div class="col-md-2 media-header">
+				<div class="col-md-2 col-xs-3 media-header">
 					{{ if (!validator.isValidated(model)) { }} <input type="checkbox"
 						class="validation" data-id="{{=model.getPath()}}" /> {{ } }} <span
 						class="media-url"><a

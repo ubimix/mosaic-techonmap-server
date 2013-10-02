@@ -11,7 +11,6 @@
 
         <div class="header">
             <div class="aside">
-               
             </div>
 
             <div class="ban">
@@ -22,28 +21,29 @@
                     <h2>La carte des acteurs du numérique en
                         Île-de-France</h2>
                 </div>
-                <div class="right">
+                <div class="right" style="margin-right:5em;">
                     {{ if (user != 'Anonymous') { }}
                     <ul class="menu nav navbar-nav navbar-right">
                         <li><input type="text" class="typeahead" autocomplete="off" placeholder="Rechercher..."></li>                        
-                        <li><a href="/workspace/new" class="btn btn-default">Créer</a></li>
-                        <li><a href="/workspace/import" class="btn btn-default">Importer</a></li>
-                        <li><a target="blank" href="/map/" class="btn btn-default">Carte</a></li>
-                        {{ if (user != 'Anonymous') { }}
-                        <li>
-                            <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            {{=user}} <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                            <li><a href="/api/logout">Se déconnecter</a></li>
-                            </ul>
-                            </div>
-                        </li>
-                  
-                        {{ } else { }}
-                        <li><a href="/login">Login</a></li>
-                        {{ } }}
+<li>
+<div class="btn-group">
+  <button type="button" class="btn btn-default"><a href="/workspace/new">Créer</a></button>
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+   <li><a href="/workspace/import">Importer</a></li>
+    <li><a target="blank" href="/map/">Voir la carte</a></li>
+    <li class="divider"></li>
+    {{ if (user != 'Anonymous') { }}
+    <li><a href="/api/logout">Se déconnecter ({{=user}})</a></li>
+    {{ } }}
+  </ul>
+</div>
+</li>
+
+                        
+                     
 
 
                     </ul>
