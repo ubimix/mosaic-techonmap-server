@@ -20,12 +20,16 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
 
             var self = this;
 
+            this.$('.compare').attr('disabled', 'disabled');
             this.$el.find('.compare').on(
                     'click',
                     function() {
                         if ($hCol1.find(':checked').length < 2) {
                             return false;
                         }
+                        
+                       
+                        
                         var xx = $hCol1.find(':checked').map(function() {
                             return $(this).val();
                         }).toArray().join('/with/');
@@ -50,10 +54,12 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
                     $hCol1.find(':checked').parents('tr').css({
                         'color' : 'black'
                     });
+                    this.$('.compare').removeAttr('disabled');
                 } else {
                     $hCol1.find('input').show().parents('tr').css({
                         'color' : 'black'
                     });
+                    this.$('.compare').attr('disabled','disabled');
                 }
             }
 

@@ -8,13 +8,11 @@
 			</ol>
 			</span>
 	</div>
-	<span class="navbar-brand right">
-	<ul class="nav navbar-nav right">
+	<ul class="navbar-brand nav navbar-nav right">
 		<li><div class="btn-group">
 				<button class="compare btn btn-primary">Comparer</button>
 			</div></li>
 	</ul>
-	</span>
 </nav>
 
 <table
@@ -22,7 +20,7 @@
 	<tbody>
             <tr style="color: black;">
                 <th></th>
-                    <th>Author</th>
+                    <th>Auteur</th>
                     <th>Date</th>
                     <th>Version</th>
                 </tr>	
@@ -33,7 +31,7 @@
 			<tr style="color: black;">
 				<td><input type="checkbox"
 					value="{{=item.versionId}}"></td>
-					<td>Author...</td>
+					<td></td>
 					<td>{{=view.getFormattedDate(item.timestamp)}}</td>
 				{{ if (index > 0) { }} 
 				<td><a href="/{{=workspace }}/{{=model.getPath()}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>

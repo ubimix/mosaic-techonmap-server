@@ -305,3 +305,7 @@ ul.menu li {
 body {
 	overflow-x:hidden;
 }
+
+.navbar {
+margin-bottom: 0px;
+}
