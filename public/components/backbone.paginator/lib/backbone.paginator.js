@@ -339,7 +339,7 @@ Backbone.Paginator = (function ( Backbone, _, $ ) {
       models = models.sort(function (a, b) {
           
           function getDotProperty(obj, dotNotation) {
-              var arr = dotNotation.split(".");
+              var arr = dotNotation.split('.');
               while (arr.length && (obj = obj[arr.shift()]))
                   ;
               return obj;

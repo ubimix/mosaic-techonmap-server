@@ -21,6 +21,16 @@ define([ 'Backbone', 'text!./pagination.html' ], function(Backbone, template) {
         initialize : function() {
             this.collection.on('reset', this.render, this);
             // this.$el.appendTo('#pagination');
+            var _this =  this;
+            Backbone.pubSub.on('sort', function(action) {
+                _this.collection.setSort(action.sort, action.sortOrder);
+            }, this);
+            
+            Backbone.pubSub.on('pagecount', function(pageCount) {
+                console.log('hhhhhh');
+                _this.collection.howManyPer(pageCount);
+            }, this);
+            
 
         },
         render : function() {
@@ -72,7 +82,6 @@ define([ 'Backbone', 'text!./pagination.html' ], function(Backbone, template) {
             var sort = $(e.target).data('sort');
             var sortOrder = $(e.target).data('sort-order');
             sortOrder = sortOrder || 'asc';
-            console.log('sortOrder:', sortOrder);
             this.collection.setSort(sort, sortOrder);
         },
 

@@ -1,13 +1,20 @@
 
 <nav class="navbar" style="padding-top: 1em;">
-    <div class="navbar-header">
-        <span class="navbar-brand"><a href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></span>
-    </div>
-    <ul class="nav navbar-nav right">
-        <li><div class="btn-group">
-         <button class="compare btn btn-primary">Compare</button>
-         </div></li>
-    </ul>
+	<div class="navbar-header">
+		<span class="navbar-brand">
+			<ol class="breadcrumb">
+				<li><a href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></li>
+				<li class="active">Historique</li>
+			</ol>
+			</span>
+	</div>
+	<span class="navbar-brand right">
+	<ul class="nav navbar-nav right">
+		<li><div class="btn-group">
+				<button class="compare btn btn-primary">Comparer</button>
+			</div></li>
+	</ul>
+	</span>
 </nav>
 
 <table
@@ -31,7 +38,7 @@
 				{{ if (index > 0) { }} 
 				<td><a href="/{{=workspace }}/{{=model.getPath()}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>
 				{{ } else if (index == 0) { }}
-				<td><a href="/{{=workspace }}/{{=model.getPath()}}">CURRENT</a></td>
+				<td><a href="/{{=workspace }}/{{=model.getPath()}}">{{=item.versionId}}</a></td>
 				{{ } }}
 				
 			</tr>

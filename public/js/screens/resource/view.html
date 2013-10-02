@@ -1,18 +1,24 @@
 
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
-		<span class="navbar-brand">{{=model.getTitle()}}</span>
+		<span class="navbar-brand">
+			<ol class="breadcrumb">
+				<li>{{=model.getTitle()}}</li>
+			</ol>
+		</span>
 	</div>
+	<span class="navbar-brand right">
 	<ul class="nav navbar-nav right">
-		<li><div class="btn-group">
-        <button class="submit btn btn-primary">Save</button>
-        {{ if (data.sys.path) { }}
-        <button class="history btn">History</button>
-        <button href="#dialog-delete-confirm" role="button" class="btn"
-            data-toggle="modal">Delete</button>
-        {{ } }}
-			</div></li>
+		<li>
+				<button class="submit btn btn-primary">Enregistrer</button>
+				{{ if (data.sys.path) { }}
+				<button class="history btn btn-default">Voir l'historique</button>
+				<button href="#dialog-delete-confirm" role="button" class="btn btn-default"
+					data-toggle="modal">Supprimer</button>
+				{{ } }}
+			</li>
 	</ul>
+	</span>
 </nav>
 
 <div id='editors'></div>

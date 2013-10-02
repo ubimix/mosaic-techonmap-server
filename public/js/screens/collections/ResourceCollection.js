@@ -29,7 +29,7 @@ function(Backbone, Paginator, Resource) {
             currentPage : 1,
 
             // how many items per page should be shown
-            perPage : 10,
+            perPage : 15,
 
             // a default number of total pages to query in case the API or
             // service you are using does not support providing the total

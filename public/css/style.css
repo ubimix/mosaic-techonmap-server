@@ -300,3 +300,8 @@ ul.menu li {
 
 .media-heading .glyphicon-flash { visibility: hidden; }
 .created .media-heading .glyphicon-flash { visibility: visible; }
+
+/** FIXME */
+body {
+	overflow-x:hidden;
+}

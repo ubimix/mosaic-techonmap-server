@@ -37,7 +37,9 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
         events : {
             'click .media .media-top' : 'handleEntryClick',
             'click .action-validate' : 'handleValidateClick',
-            'click .validation' : 'handleSelectionClick'
+            'click .validation' : 'handleSelectionClick',
+            'click a.sort' : 'handleSortClick',
+            'click .howmany a' : 'handlePageCountClick'
         },
 
         // TODO: use backgrid.js ?
@@ -124,6 +126,19 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
             // media.toggleClass('expanded');
             // }
 
+        },
+
+        handleSortClick : function(e) {
+            var sort = $(e.currentTarget).data('sort');
+            Backbone.pubSub.trigger('sort', {
+                sort : sort,
+                sortOrder : 'asc'
+            });
+        },
+        
+        handlePageCountClick : function(e) {
+            var per = $(e.target).text();
+            Backbone.pubSub.trigger('pagecount', per);
         },
 
         _updateListStatus : function() {
