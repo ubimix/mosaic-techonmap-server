@@ -309,3 +309,11 @@ body {
 .navbar {
 margin-bottom: 0px;
 }
+
+.navbar-nav li a.btn, .navbar-nav li button {
+	margin-top:5px;
+	margin-right:5px;
+	padding-top:6px;
+	padding-bottom:6px;
+	
+}
