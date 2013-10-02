@@ -13,6 +13,8 @@ function($, Backbone, Dropdown, Typeahead, templates) {
 
             $('body').on('typeahead:selected', function(event, datum) {
                 Backbone.history.navigate('/workspace/' + datum.id, true);
+                //FIXME:does not work
+                $('.typeahead').val('');
             });
 
             // TODO: check if not adding listener each time the view is rendered
@@ -44,13 +46,7 @@ function($, Backbone, Dropdown, Typeahead, templates) {
             // }
             // });
 
-            $('#go').on('click', function() {
-                if ($('#resource-id').val())
-                    Backbone.history.navigate('/techonmap/' + $('#resource-id').val(), true);
-                else
-                    Backbone.history.navigate('/techonmap/search?q=' + $('.type-ahead').val(), true);
-            });
-
+        
             $('body').keypress(function(e) {
                 // http://api.jquery.com/focus-selector/
                 var $focused = $(document.activeElement);
