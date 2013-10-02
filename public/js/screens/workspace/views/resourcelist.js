@@ -92,7 +92,6 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 }
             });
 
-            
             var content = e.find('.media-content');
             // if (!content.attr('data-loaded')) {
             var id = e.attr('data-id');
@@ -135,8 +134,9 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 var item = $(this);
                 var id = item.data('id');
                 var resource = collection.getById(id);
-                console.log(id, resource);
-                item.find('.validation:checked').remove();
+                if (validator.isValidated(resource)) {
+                    item.find('.validation').remove();
+                }
                 var el = item.find('.media-top');
                 el.removeClass('validated');
                 if (resource && validator.isValidated(resource)) {
