@@ -1,28 +1,42 @@
 
 <li class="media" data-id="{{=model.getPath()}}">
-    <div class="media-body">
-    <div class="media-top {{= validator.isValidated(model) ? 'validated' : 'not-validated' }}">
-        <div class="row">
-            <div class="col-md-8 media-header">
-                <h1 class="media-heading">{{=model.getTitle()}}</h1>
-                <div class="media-summary">{{=model.getDescription()}}</div>
-            </div>
-            <div class="col-md-1 media-header">
-                <span class="category">{{-model.getCategory()}}</span>
+	<div class="media-body">
+		<div
+			class="media-top {{= validator.wasCreated(model) ? 'created' : validator.wasUpdated(model) ? 'updated' : 'validated' }}">
+			<div class="row">
+				<div class="col-md-8 media-header">
+					<h1 class="media-heading"><i class='glyphicon glyphicon-flash'></i> {{=model.getTitle()}}</h1>
+					<div class="media-summary">{{=model.getDescription()}}</div>
+				</div>
+				<div class="col-md-1 media-header">
+					<span class="category">{{-model.getCategory()}}</span>
+				</div>
+				<div class="col-md-2 media-header">
+					<span class="published-date">{{=moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss")}}</span>
+				</div>
+				<div class="col-md-1 media-header">
+					{{ if (!validator.isValidated(model)) { }} <input type="checkbox"
+						class="validation" data-id="{{=model.getPath()}}" /> {{ } }} <span
+						class="media-url"><a
+						href="/{{=workspace }}/{{=model.getPath() }}"
+						title="{{=model.getTitle()}}"><i
+							class="glyphicon glyphicon-edit"></i></a> 
+							<a
+                        href="/map/edition.html#{{=model.getPath()}}"
+                        title="{{=model.getTitle()}}"><i
+                            class="glyphicon glyphicon-list-alt"></i></a>
+							
+							</span>
+				</div>
+			</div>
+		</div>
+		<div class="media-content">
+		<div class="row">
+                <div class="col-md-10 resource">
                 </div>
-            <div class="col-md-2 media-header">    
-                <span class="published-date">{{= moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss") }}</span>
-            </div>
-            <div class="col-md-1 media-header">
-                {{ if (!validator.isValidated(model)) { }}
-                <input type="checkbox" class="validation" data-id="{{=model.getPath()}}"/>
-                {{ } }}
-                <span
-                    class="media-url"><a href="/{{=workspace }}/{{=model.getPath() }}" title="{{=model.getTitle()}}"><i class="glyphicon glyphicon-edit"></i></a>
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="media-content"></div>
-</div>
+                <div class="col-md-2 actions">
+                fgfngfn
+                </div>
+		</div>
+	</div>
 </li>

@@ -79,7 +79,6 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 return;
 
             var e = target.parent().parent();
-
             this.$el.find('.media-content').each(function(i) {
                 if ($(this).parent().parent().attr('data-id') != e.attr('data-id')) {
                     $(this).html('');
@@ -93,6 +92,7 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 }
             });
 
+            
             var content = e.find('.media-content');
             // if (!content.attr('data-loaded')) {
             var id = e.attr('data-id');
@@ -111,11 +111,11 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                     readOnly : true
                 });
 
-                //content.html(contentView.render().$el.html());
+                // content.html(contentView.render().$el.html());
                 content.html('');
                 content.append(contentView.$el);
                 contentView.render();
-                
+
                 // $('#cmcontent').html(contentView.render().$el.html());
 
             })
@@ -136,12 +136,12 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 var id = item.data('id');
                 var resource = collection.getById(id);
                 console.log(id, resource);
-                item.find('.validation').remove();
+                item.find('.validation:checked').remove();
                 var el = item.find('.media-top');
                 el.removeClass('validated');
-                el.removeClass('not-validated');
-                if (resource && !validator.isValidated(resource)) {
-                } else {
+                if (resource && validator.isValidated(resource)) {
+                    el.removeClass('created');
+                    el.removeClass('updated');
                     el.addClass('validated');
                 }
             });

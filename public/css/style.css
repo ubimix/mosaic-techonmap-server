@@ -297,3 +297,6 @@ ul.menu {
 ul.menu li {
 	display: inline;
 }
+
+.media-heading .glyphicon-flash { visibility: hidden; }
+.created .media-heading .glyphicon-flash { visibility: visible; }
