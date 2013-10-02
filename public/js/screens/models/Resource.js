@@ -38,7 +38,7 @@ define([ 'Backbone','./Validator' ], function(Backbone, Validator) {
         getTitle : function() {
             var title = this.getProperties().name;
             if (!title)
-                title = 'New Entity';
+                title = 'Nouvelle entité';
             return title;
         },
 
