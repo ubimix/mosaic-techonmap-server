@@ -1,26 +1,24 @@
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
-		<span class="navbar-brand"><a
-			href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></span>
+		<span class="navbar-brand">
+			<ol class="breadcrumb">
+				<li><a href="/{{=workspace}}/{{=model.getPath()}}">{{=model.getTitle()}}</a></li>
+				<li><a href="/{{=workspace}}/{{=model.getPath()}}/history">Historique</a></li>
+				<li class="active">Version {{=model.getVersionId()}}</li>
+			</ol>
+		</span>
 	</div>
+	<span class="navbar-brand right">
 	<ul class="nav navbar-nav right">
 		<li><div class="btn-group">
-				<a href="#" class="submit btn btn-primary">Restore</a> <a
-					href="/{{=workspace}}/{{=model.getPath()}}/history"
-					class="history btn">History</a>
+				<a href="#" class="submit btn btn-primary">Restaurer</a>
 			</div></li>
 
 	</ul>
+	</span>
 </nav>
 
-	    <p>
-            <span>Version: {{=model.getVersionId()}}</span> <span>Back to
-                current version : <a href="/{{=workspace}}/{{=model.getPath()}}">current</a>
-            </span>
-        </p>
-
 <div id="editors"></div>
-
 
 <!-- Modal -->
 <div id="dialog-restore-ok" class="modal hide fade" tabindex="-1"

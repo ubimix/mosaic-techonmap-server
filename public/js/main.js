@@ -66,7 +66,7 @@ require.config({
             exports : 'CodeMirror'
         },
         'CodeMirrorYaml' : {
-            deps : [ 'CodeMirror',  ]
+            deps : [ 'CodeMirror', ]
         }
     },
 
@@ -93,14 +93,16 @@ require.config({
     }
 });
 
-require([ 'core/router', 'core/client', 'Backbone' ], function(Router, client, Backbone) {
+require([ 'core/router', 'core/client', 'Backbone', 'Underscore' ],
+
+function(Router, client, Backbone, _) {
     var app = {
         root : '/'
     };
 
     window.Router = new Router();
     client.setup(window, app);
-
+    Backbone.pubSub = _.extend({}, Backbone.Events);
     Backbone.history.start({
         pushState : true
     });
