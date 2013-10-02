@@ -11,14 +11,18 @@ function(Backbone, Utils, ResourceContentView, RevisionContainerTemplate) {
             // TODO: create a copy ?
             // TODO: to be moved to initialize
             var contentView = new ResourceContentView({
-                model : this.model
+                model : this.model,
+                readOnly : true
             });
             var html = this.template({
-                content : contentView.render().$el,
                 model : this.model,
                 workspace : this.options.workspace
             })
             this.$el.html(html);
+            
+            this.$('#editors').append(contentView.$el);
+            contentView.render();
+            
             return this;
         },
 

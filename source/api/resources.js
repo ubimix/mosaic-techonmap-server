@@ -8,6 +8,7 @@ var Q = require('q');
 var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
 require('jscr-api/jscr-memory');
+//require('jscr-git/jscr-git');
 
 /* ========================================================================== */
 /* Data transformation utilities */
@@ -120,7 +121,7 @@ function loadJsonFromRequest(req) {
 function loadJsonMapFromRequest(req) {
     var data = req.body.data;
     return Q(data);
-    
+
 }
 
 /* ========================================================================== */
@@ -159,7 +160,10 @@ function importGeoJSON(project, json) {
  * @returns a promise for an initialized project
  */
 function loadData(inputFile) {
-    var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+     var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+//    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
+//        rootDir : './tmp'
+//    });
     var projectName = 'djingo'
     var project = null;
 
@@ -383,7 +387,7 @@ function initializeApplication(app, project) {
 /* The main exported module (the 'main' function) */
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
-    return loadData('./data/sample.json')
+    return loadData('./data/data.json')
     //
     .then(function(project) {
         initializeApplication(app, project);

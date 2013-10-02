@@ -36,8 +36,21 @@ define([ 'Backbone' ], function(Backbone) {
             this.trigger('loaded');
         },
 
+        wasUpdated : function(resource) {
+            return !this._checkResource(resource, resource.getUpdated());
+        },
+
+        // returns true if the resource has been created after the last
+        // validation timestamp
+        wasCreated : function(resource) {
+            return !this._checkResource(resource, resource.getCreated());
+        },
+
         isValidated : function(resource) {
-            var version = resource.getUpdated();
+            return !this.wasUpdated(resource) && !this.wasCreated(resource);
+        },
+
+        _checkResource : function(resource, version) {
             var versionTimestamp = version.timestamp || 0;
             var timestamp = this._getTimestamp();
             if (timestamp > versionTimestamp)

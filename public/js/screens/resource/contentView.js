@@ -5,11 +5,12 @@ function(Backbone, _, ResourceModel, Utils, ContentViewTemplate) {
     function newCodeMirror(elt, options, readOnly, value) {
         options = options || {};
         var defaultOptions = {
-            lineNumbers : false,
+            lineNumbers : true,
             viewportMargin : Infinity,
             lineWrapping : true,
             mode : 'text',
-            readOnly : readOnly
+            readOnly : readOnly,
+            height : '100%'
         };
         options = _.extend(defaultOptions, options);
         var editor = new CodeMirror(elt, options);
@@ -28,12 +29,18 @@ function(Backbone, _, ResourceModel, Utils, ContentViewTemplate) {
             });
             this.$el.html(html);
 
-            this.contentEditor = newCodeMirror($('.content').get(0), null, this.readOnly, this.getFormattedContent());
+            var formattedContent = this.getFormattedContent();
+            // FIXME: put readOnly in options directly
+            this.contentEditor = newCodeMirror($('.content').get(0), null, this.readOnly, formattedContent);
             this.propertiesEditor = newCodeMirror($('.properties').get(0), {
-                mode : 'yaml'
+                mode : 'yaml',
+                lineNumbers : false
             }, this.readOnly, this.getFormattedProperties());
             $(this.propertiesEditor.getWrapperElement()).addClass('properties');
 
+            var lineNumbers  =formattedContent.split('\n').length;
+            this.contentEditor.focus();
+            this.contentEditor.setCursor(lineNumbers);    
             return this;
 
         },
