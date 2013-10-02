@@ -146,7 +146,6 @@ function importGeoJSON(project, json) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
     return Q.all(_.map(items, function(item) {
         var itemPath = getPathFromGeoJson(item);
-        console.log('* ITEM: ', itemPath, item)
         return importGeoJSONItem(project, itemPath, item);
     }));
 }
