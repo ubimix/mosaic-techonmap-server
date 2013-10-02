@@ -27,7 +27,6 @@ define([ 'Backbone', 'text!./pagination.html' ], function(Backbone, template) {
             }, this);
             
             Backbone.pubSub.on('pagecount', function(pageCount) {
-                console.log('hhhhhh');
                 _this.collection.howManyPer(pageCount);
             }, this);
             

@@ -25,17 +25,22 @@
                 <div class="right">
                     {{ if (user != 'Anonymous') { }}
                     <ul class="menu nav navbar-nav navbar-right">
-                        <li><input type="text" class="typeahead" autocomplete="off" placeholder="Search..."></li>                        
-                        <li><a href="/workspace/new">Créer</a></li>
-                        <li><a href="/workspace/import">Importer</a></li>
-                        <li><a target="blank" href="/map/">Carte</a></li>
+                        <li><input type="text" class="typeahead" autocomplete="off" placeholder="Rechercher..."></li>                        
+                        <li><a href="/workspace/new" class="btn btn-default">Créer</a></li>
+                        <li><a href="/workspace/import" class="btn btn-default">Importer</a></li>
+                        <li><a target="blank" href="/map/" class="btn btn-default">Carte</a></li>
                         {{ if (user != 'Anonymous') { }}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{=user}} <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/api/logout">Déconnexion</a></li>
+                        <li>
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            {{=user}} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a href="/api/logout">Se déconnecter</a></li>
                             </ul>
+                            </div>
                         </li>
+                  
                         {{ } else { }}
                         <li><a href="/login">Login</a></li>
                         {{ } }}
