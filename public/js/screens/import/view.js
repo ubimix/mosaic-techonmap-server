@@ -28,7 +28,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
                 var array = jQueryCsv.toArrays(data);
                 geoitems = Utils.toGeoJson(array);
             } catch (e) {
-                return Utils.showOkDialog('Error', 'An error occurred, please check your CSV input.');
+                return Utils.showOkDialog('Erreur', 'Une erreur s\'est produite, merci de vérifier le contenu CSV.');
 
             }
 
@@ -41,7 +41,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
             $.post('/api/resources/import', {
                 data : geoitems
             }).done(this.onImported).fail(function(err) {
-                return Utils.showOkDialog('Error', 'An error occurred while saving the data : ' + err.name + ' - ' + err.message);
+                return Utils.showOkDialog('Erreur', 'Une erreur s\'est produite lors de l\'enregistrement : ' + err.name + ' - ' + err.message);
             });
 
         },
@@ -49,7 +49,7 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
         onImported : function(result) {
             // createReport(result.updated, 'updated'));
             var title = this.$el.find('.dialog-import .title').html();
-            var content = this.createReport(result, 'created or updated').html();
+            var content = this.createReport(result, 'créées ou mises à jour').html();
             return Utils.showOkDialog(title, content);
         },
 
@@ -61,8 +61,8 @@ function(Backbone, _, jQueryCsv, CodeMirror, Utils, Dialog, template) {
                 buffer += ' <a href="/workspace/' + item.properties.id + '">' + item.properties.name + '</a>';
             });
             if (entryList.length > 0)
-                return $('<div>' + entryList.length + ' entities have been ' + term + ':' + buffer + '.</div>');
-            return $('<div>' + entryList.length + ' entities have been ' + term + '.</div>');
+                return $('<div>' + entryList.length + ' entités ont été ' + term + ' :' + buffer + '.</div>');
+            return $('<div>' + entryList.length + ' entités ont été ' + term + '.</div>');
 
         }
 

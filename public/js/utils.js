@@ -36,6 +36,24 @@ define([ 'yaml','./screens/commons/Dialog' ], function(YAML, Dialog) {
             } ]
         });
         dialog.show();
+        return dialog;
+    }
+    
+    Utils.showYesNoDialog = function(title, message, yesCallback, noCallback) {
+        var dialog = new Dialog({
+            title : title,
+            content : message,
+            actions : [ {
+                label : 'Oui',
+                primary : true,
+                action : yesCallback
+            }, {
+                label : 'Non',
+                action : noCallback 
+            } ]
+        });
+        dialog.show();
+        return dialog;
     }
     
     
