@@ -135,7 +135,7 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 sortOrder : 'asc'
             });
         },
-        
+
         handlePageCountClick : function(e) {
             var per = $(e.target).text();
             Backbone.pubSub.trigger('pagecount', per);
@@ -176,25 +176,15 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
 
             var that = this;
             if (!list || list.length == 0) {
-                var dialog = new Dialog({
-                    title : this.$el.find('.dialog-validation .title').html(),
-                    content : this.$el.find('.dialog-validation .message').html(),
-                    actions : [ {
-                        label : 'Yes',
-                        primary : true,
-                        action : function() {
-                            validator.once('loaded', that._updateListStatus);
-                            validator.validateAll();
-                            dialog.hide();
-                        }
-                    }, {
-                        label : 'No',
-                        action : function() {
-                            dialog.hide();
-                        }
-                    } ]
+                var title = this.$('.dialog-validation .title').html();
+                var content = this.$('.dialog-validation .message').html();
+                var dialog = Utils.showYesNoDialog(title, content, function() {
+                    validator.once('loaded', that._updateListStatus);
+                    validator.validateAll();
+                    dialog.hide();
+                }, function() {
+                    dialog.hide();
                 });
-                dialog.show();
             } else {
                 validator.once('loaded', that._updateListStatus);
                 validator.validateResources(list);

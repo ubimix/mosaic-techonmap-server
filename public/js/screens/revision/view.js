@@ -19,28 +19,21 @@ function(Backbone, Utils, ResourceContentView, RevisionContainerTemplate) {
                 workspace : this.options.workspace
             })
             this.$el.html(html);
-            
             this.$('#editors').append(contentView.$el);
             contentView.render();
-            
+
             return this;
         },
 
         restoreVersion : function() {
-            this.model.save(null, function(updatedModel) {
-                success: $('#dialog-restore-ok').modal()
-
+            var _this = this;
+            this.model.save(null, {
+                success : function(updatedModel) {
+                    _this.remove();
+                    Backbone.history.navigate('/' + _this.options.workspace + '/' + _this.model.getPath() + '/history', true);
+                }
             });
 
-            // var version = this.$el.find('#version').val();
-            // $.ajax({
-            // type : 'PUT',
-            // url : '/api/resources/' + this.options.path,
-            // data : this.options.resource
-            // }).done(function(msg) {
-            // $('#dialog-restore-ok').modal()
-            // // TODO: handle errors
-            // });
         }
 
     });

@@ -12,7 +12,7 @@
 				<button class="submit btn btn-primary">Enregistrer</button>
 				{{ if (data.sys.path) { }}
 				<button class="history btn btn-default">Voir l'historique</button>
-				<button href="#dialog-delete-confirm" role="button" class="btn btn-default"
+				<button role="button" class="delete btn btn-default"
 					data-toggle="modal">Supprimer</button>
 				{{ } }}
 			</li>
@@ -44,27 +44,3 @@
 </div>
 <!-- /.modal -->
 
-
-<div class="modal fade" id="dialog-id-required" tabindex="-1"
-	role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Save Dialog</h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					Please fill in the <em>id</em> field before saving the resource.
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->

@@ -10,7 +10,7 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                 events : {
                     'click .submit' : 'submitResource',
                     'click .history' : 'historyScreen',
-                    'click .delete' : 'removeResource',
+                    'click .delete' : 'handleDeleteClick',
                     'keydown' : 'onKeydown'
                 },
 
@@ -85,7 +85,7 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                         try {
                         var updatedModel = this.contentView.updateModel();
                         } catch (e) {
-                            return Utils.showOkDialog('Error', 'An error occurred, please check the content entered.'); 
+                            return Utils.showOkDialog('Erreur', 'Une erreur s\'est produite, merci de vérifier le contenu saisi.'); 
                         }
                         this.updateModel(this.model, updatedModel);
 
@@ -95,7 +95,7 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                         var updatedModel = this.contentView.updateModel();
                         var id = updatedModel.getId();
                         if (!id || id.length == 0) {
-                            $('#dialog-id-required').modal();
+                            return Utils.showOkDialog('Erreur', 'Il est nécessaire de remplir le champ <em>id</em>.');
                         } else {
                             updatedModel.id = id;
                             this.updateModel(updatedModel, updatedModel);
@@ -111,7 +111,6 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                 // the
                 // 'remove' method of Backbone.View
                 removeResource : function() {
-                    $('#dialog-delete-confirm').modal('hide');
                     var self = this;
                     this.model.destroy({
                         success : function() {
@@ -132,7 +131,7 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
 
                 updateModel : function(currentModel, updatedModel) {
                     currentModel.updateAndSave(updatedModel.get('properties'), function(updatedResource) {
-                        $.bootstrapGrowl("Successfully saved", {
+                        $.bootstrapGrowl("Enregistrement effectué", {
                             ele : 'body',
                             type : 'success',
                             offset : {
@@ -146,6 +145,18 @@ define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', 'CodeMirror', 'core/vie
                             stackup_spacing : 10
                         });
                     });
+                },
+                
+                
+                handleDeleteClick : function() {
+                    var _this = this;
+                    var dialog = Utils.showYesNoDialog('Confirmation', 'Confirmer la suppression de l\'entité ?', function() {
+                        dialog.hide();
+                        _this.removeResource();
+                    }, function() {
+                        dialog.hide();
+                    });
+                    
                 }
 
             });
