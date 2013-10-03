@@ -7,8 +7,8 @@ var Q = require('q');
 
 var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
-require('jscr-api/jscr-memory');
-//require('jscr-git/jscr-git');
+// require('jscr-api/jscr-memory');
+require('jscr-git/jscr-git');
 
 /* ========================================================================== */
 /* Data transformation utilities */
@@ -105,11 +105,26 @@ function getRequestedPath(req) {
 }
 
 /** Transforms the specified request parameter to a valid version number */
-function getVersionIdFromRequest(req, param) {
+function getVersionFromRequest(req, param) {
     var result = req.params[param];
-    return JSCR.version({
+    result = JSCR.version({
         versionId : result
     });
+    return result;
+}
+
+/** Loads and returns information about the user from the current request */
+function getOptionsFromRequest(req) {
+    var user = req.user;
+    // console.log('user', user);
+    var email = user.displayName;
+    email = email.replace(/[\s]/, '_');
+    email = '<' + email + '@foo.bar>';
+    var author = user.displayName + ' ' + email;
+    var options = {
+        author : author
+    };
+    return options;
 }
 
 /** Reads JSON object from the request body, parse it and returns the results */
@@ -132,54 +147,68 @@ function loadJsonMapFromRequest(req) {
  * Import and stores the given GeoJSON object in the resource with the specified
  * path.
  */
-function importGeoJSONItem(project, itemPath, item) {
+function importGeoJSONItem(project, itemPath, item, options) {
     return project.loadResource(itemPath, {
         create : true
     }).then(function(resource) {
         resource = updateResourceFields(resource, item);
-        return project.storeResource(resource);
+        return project.storeResource(resource, options);
     });
 }
 
 /** Import an array of GeoJSON items in the specified project */
-function importGeoJSON(project, json) {
+function importGeoJSON(project, json, options) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
     return Q.all(_.map(items, function(item) {
         var itemPath = getPathFromGeoJson(item);
-        return importGeoJSONItem(project, itemPath, item);
+        return importGeoJSONItem(project, itemPath, item, options);
     }));
 }
 
 /**
- * Initializes and returns a new project. This method uses the specified data
- * file to import it in the repository
+ * Initializes and returns a new project. The following options fields are used:
  * 
- * @param inputFile
- *            data file to import in the repository
- * @returns a promise for an initialized project
+ * <pre>
+ *  - dir - a root workspace directory
+ *  - name - a name of the repository
+ * </pre>
  */
-function loadData(inputFile) {
-     var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
-//    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
-//        rootDir : './tmp'
-//    });
-    var projectName = 'djingo'
-    var project = null;
-
+function initProject(options) {
+    // var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
+        rootDir : options.dir
+    });
     return connection.connect()
     // Create a project
     .then(function(workspace) {
-        return workspace.loadProject(projectName, {
+        return workspace.loadProject(options.name, {
             create : true
         });
     })
+
+}
+
+/**
+ * Initializes and returns a new project. Used options fields:
+ * 
+ * <pre>
+ *  - dir - a root workspace directory
+ *  - name - a name of the repository
+ *  - inputFile - a data file to inject in the repository 
+ * </pre>
+ * 
+ * @returns a promise for an initialized project
+ */
+function loadData(options) {
+    var project;
+    return initProject(options)
     // Set the newly created project in a variable
     .then(function(p) {
         project = p;
     })
     // Load file with data
     .then(function() {
-        return Q.nfcall(Fs.readFile, inputFile, 'UTF-8');
+        return Q.nfcall(Fs.readFile, options.inputFile, 'UTF-8');
     })
     // Parse JSON
     .then(function(data) {
@@ -189,7 +218,7 @@ function loadData(inputFile) {
     })
     // Store the JSON content as project resources
     .then(function(json) {
-        return importGeoJSON(project, json);
+        return importGeoJSON(project, json, options);
     })
     // Shows imported resources. Just in case...
     .then(function(resource) {
@@ -251,7 +280,8 @@ function initializeApplication(app, project) {
     /** Import 'in-batch' an array of GeoJSON items */
     app.post('/api/resources/import', function(req, res) {
         reply(req, res, loadJsonMapFromRequest(req).then(function(json) {
-            var result = importGeoJSON(project, json);
+            var options = getOptionsFromRequest(req);
+            var result = importGeoJSON(project, json, options);
             return result;
         }));
     });
@@ -263,8 +293,9 @@ function initializeApplication(app, project) {
             if (path == '') {
                 path = getPathFromGeoJson(json);
             }
+            var options = getOptionsFromRequest(req);
             console.log('Try to save the following resource "' + path + '": ', json)
-            return importGeoJSONItem(project, path, json).then(function(value) {
+            return importGeoJSONItem(project, path, json, options).then(function(value) {
                 // remove the resource from the validation object
                 var timestampPath = '.admin-timestamp';
                 return project.loadResource(timestampPath).then(function(resource) {
@@ -272,7 +303,7 @@ function initializeApplication(app, project) {
                     var properties = resource.getProperties();
                     var list = properties.validated || [];
                     properties.validated = _.without(list, path);
-                    return project.storeResource(resource);
+                    return project.storeResource(resource, options);
                 }).then(function() {
                     return value;
                 })
@@ -308,9 +339,9 @@ function initializeApplication(app, project) {
      */
     app.get('/api/resources/:path/history/:version', function(req, res) {
         var path = getRequestedPath(req);
-        var versionId = getVersionIdFromRequest(req, 'version');
+        var version = getVersionFromRequest(req, 'version');
         reply(req, res, project.loadResourceRevisions(path, {
-            versions : [ versionId ]
+            versions : [ version ]
         }).then(function(revisions) {
             if (!revisions || !revisions.length) {
                 throw HttpError.notFound(path);
@@ -352,8 +383,9 @@ function initializeApplication(app, project) {
 
     app.post('/api/validation', function(req, res) {
         reply(req, res, loadJsonFromRequest(req).then(function(json) {
+            var options = getOptionsFromRequest(req);
             var path = '.admin-timestamp';
-            return importGeoJSONItem(project, path, json);
+            return importGeoJSONItem(project, path, json, options);
         }));
 
     });
@@ -361,12 +393,13 @@ function initializeApplication(app, project) {
     app.get('/api/validation', function(req, res) {
         reply(req, res, project.loadResource('.admin-timestamp').then(function(resource) {
             if (!resource) {
+                var options = getOptionsFromRequest(req);
                 return importGeoJSONItem(project, '.admin-timestamp', {
                     properties : {
                         validated : [],
                         timestamp : 0
                     }
-                });
+                }, options);
             }
             return getGeoJsonFromResource(resource);
         }));
@@ -386,7 +419,15 @@ function initializeApplication(app, project) {
 /* The main exported module (the 'main' function) */
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
-    return loadData('./data/data.json')
+    var options = {
+        dir : './tmp',
+        name : 'djingo',
+        inputFile : './data/data.json',
+        author : 'author <author>'
+    };
+    var promise = loadData(options);
+    //var promise = initProject(options);
+    return promise
     //
     .then(function(project) {
         initializeApplication(app, project);
