@@ -1,0 +1,26 @@
+Process:
+
+Conversion des fichiers CSV initiaux en JSON
+Trois fichiers : origin, clean, dirty
+Stockage de toutes les entités de chaque fichier dans des maps de type {ID, Feature}. Quand le champ id est absent: calcul de celui-ci à partir de l'URL (en supprimant les préfixes "http://" et "https://"). Ajout d'un champ "origin" indiquant d'où vient la donnée (fichier initial, fichier geoitems-not-dirty, fichier geoitems-dirty). 
+Fusion de toutes les entités ayant le même ID
+Calcul d'un nouvel ID à partir du nom (et ajout d'un index quand le nom est déjà présent pour une autre entité)
+Stockage de l'ancien ID dans un champ '
+Flag des entités venant du fichier dirty comme étant à valider.
+TODO: donner aux dates de modification des valeurs cohérentes par rapport à la réalité, ainsi qu'aux noms des auteurs.  
+
+Comparer les nombres d'entités avant / après
+
+Fichier d'origine:
+l'entité "Ministère chargé des PME, de l'Innovation et de l'Economie numérique" n'a pas d'ID ni d'URL
+-> ID temporaire : www.redressement-productif.gouv.fr 
+-> copié dans le fichier dirty-not
+
+Doublons dans geoitems-dirty-not
+motiontree
+voxe.org
+tigerlily
+cloudwatt
+  
+  
+  
