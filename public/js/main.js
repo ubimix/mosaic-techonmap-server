@@ -12,7 +12,11 @@ require.config({
 
         'BootstrapGrowl' : {
             deps : [ 'jQuery' ]
+        },
 
+        'Handsontable' : {
+            exports : 'Handsontable',
+            deps : [ 'jQuery' ]
         },
 
         'Underscore' : {
@@ -66,7 +70,7 @@ require.config({
             exports : 'CodeMirror'
         },
         'CodeMirrorYaml' : {
-            deps : [ 'CodeMirror', ]
+            deps : [ 'CodeMirror' ]
         }
     },
 
@@ -89,7 +93,8 @@ require.config({
         moment : './../components/momentjs/moment',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
-        CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml'
+        CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
+        Handsontable : './../components/handsontable/dist/jquery.handsontable.full'
     }
 });
 

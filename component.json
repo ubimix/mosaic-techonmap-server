@@ -12,6 +12,7 @@
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
     "momentjs":"latest",
-    "codemirror":"~3.18.0"
+    "codemirror":"~3.18.0",
+    "handsontable":"*"
   }
 }

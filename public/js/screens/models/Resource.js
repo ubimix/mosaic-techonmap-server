@@ -1,4 +1,4 @@
-define([ 'Backbone','./Validator' ], function(Backbone, Validator) {
+define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
 
     var Resource = Backbone.Model.extend({
         urlRoot : '/api/resources/',
@@ -73,19 +73,20 @@ define([ 'Backbone','./Validator' ], function(Backbone, Validator) {
             return this.getUpdated().versionId;
         },
 
-        updateAndSave : function(properties, callback) {
+        updateAndSave : function(properties, geometry, callback) {
             var copy = this.getCopy();
             this.set('properties', properties);
+            this.set('geometry', geometry);
 
             this.save(null, {
                 error : function(model, xhr) {
-                    console.log('error....');
                     // restore the model
                     this.set('properties', copy.get('properties'));
-                    throw new Error('The resource could not be saved successfully.');
+                    this.set('geometry', copy.get('geometry'));
+                    throw new Error('La resource n\'a pu être mise à jour correctement.');
                 },
                 success : function(model) {
-                    //FIXME
+                    // FIXME
                     Validator.clearInstance();
                     callback(model);
 

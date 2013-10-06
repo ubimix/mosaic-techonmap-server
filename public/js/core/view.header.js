@@ -6,15 +6,15 @@ function($, Backbone, Dropdown, Typeahead, templates) {
         render : function() {
             this.$el.html(this.template(this.options));
 
-            $('.typeahead').typeahead({
+            $('.umx-typeahead').typeahead({
                 remote : '/api/typeahead/?query=%QUERY',
                 limit : 15
             });
 
-            $('body').on('typeahead:selected', function(event, datum) {
+            $('body').on('umx-typeahead:selected', function(event, datum) {
                 Backbone.history.navigate('/workspace/' + datum.id, true);
                 //FIXME:does not work
-                $('.typeahead').val('');
+                $('.umx-typeahead').val('');
             });
 
             // TODO: check if not adding listener each time the view is rendered
@@ -52,7 +52,7 @@ function($, Backbone, Dropdown, Typeahead, templates) {
                 var $focused = $(document.activeElement);
                 var tagName = $focused.prop('tagName').toLowerCase();
                 if (tagName == 'body') {
-                    $('.typeahead').focus();
+                    $('.umx-typeahead').focus();
                 }
             });
 
@@ -60,7 +60,7 @@ function($, Backbone, Dropdown, Typeahead, templates) {
                 if (event.altKey) {
                     if (event.which == 76) {
                         // alt+L
-                        $('.typeahead').focus();
+                        $('.umx-typeahead').focus();
                     }
                 }
 

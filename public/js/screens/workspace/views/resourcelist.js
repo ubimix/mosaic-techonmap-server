@@ -1,4 +1,4 @@
-define([ 'Backbone', 'Underscore', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/contentView',
+define([ 'Backbone', 'Underscore', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/table-view',
         '../../commons/Dialog', '../../models/Validator', 'text!./resourcelist.html' ],
 
 function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
