@@ -17,7 +17,9 @@
 	</div>
 	<ul class="navbar-brand nav navbar-nav right">
 		<li><div class="btn-group">
-				<button class="import btn btn-primary">Importer</button>
+		        <button class="previous btn btn-default">Précédent</button>
+		        <button class="next btn btn-default btn-primary">Suivant</button>
+				<button class="import btn btn-default">Importer</button>
 			</div></li>
 	</ul>
 </nav>
@@ -25,8 +27,8 @@
 <h1></h1>
 
 <div class="row">
-	<div class="col-md-10">
-		<textarea id="content" name="content"></textarea>
+	<div class="col-md-12">
+		<div id="wizard"></div>
 	</div>
 </div>
 
@@ -34,10 +36,3 @@
 	<div class="title">Import Results</div>
 </div>
 
-<script>
-    var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
-        lineNumbers : true,
-        viewportMargin : Infinity,
-        lineWrapping : true
-    });
-</script>

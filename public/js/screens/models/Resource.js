@@ -50,6 +50,11 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             return this.getProperties().category || '';
         },
 
+        getCategoryLabel : function() {
+            var category = this.getCategory();
+            return Resource.categoryLabels[category] || category;
+        },
+
         getId : function() {
             return this.getProperties().id;
         },
@@ -92,9 +97,22 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
 
                 }
             });
-        }
+        },
 
     });
+
+    // TODO: turn to static function
+
+    Resource.categoryLabels = {
+        'entreprise' : 'Entreprise',
+        'third-place' : 'Tiers-lieu',
+        'incubator' : 'Incubateur',
+        'investor' : 'Investisseur',
+        'community' : 'Communauté',
+        'prestataire' : 'Prestataire',
+        'school' : 'École',
+        'public-actor' : 'Acteur public'
+    };
 
     return Resource;
 });

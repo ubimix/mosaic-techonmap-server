@@ -423,7 +423,7 @@ module.exports = function(app) {
         dir : './tmp',
         name : 'techonmap',
         //inputFile : './data/geoitems.1.json',
-        inputFile : './data/merged.json',
+        inputFile : './data/data.json',
         author : 'author <author>'
     };
     var promise = loadData(options);

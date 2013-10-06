@@ -64,17 +64,6 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
         validator : numberValidator
     } ];
 
-    var categoryMap = {
-        'Entreprise' : 'entreprise',
-        'Tiers-lieu' : 'third-place',
-        'Incubateur' : 'incubator',
-        'Investisseur' : 'investor',
-        'Communauté' : 'community',
-        'Prestataire' : 'prestataire',
-        'École' : 'school',
-        'Acteur public' : 'public-actor'
-    };
-
     function emailValidator(value, callback) {
         if (/.+@.+\..+/.test(value)) {
             callback(true);
@@ -118,26 +107,19 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
             } else if (item.property == 'lng') {
                 data.push([ item.title, attributes.geometry.coordinates[0] ]);
             } else if (item.property == 'category') {
-                var flag = false;
-                _.each(categoryMap, function(value, key) {
-                    if (value == props[item.property]) {
-                        flag = true;
-                        data.push([ item.title, key ]);
-                    }
-                });
-                if (!flag)
-                    data.push([ 'Catégorie', 'Entreprise' ]);
-
+                data.push([ item.title, ResourceModel.categoryLabels[props[item.property]] ]);
             } else {
                 data.push([ item.title, props[item.property] ]);
             }
             cellMetaMap[index] = item;
         });
 
-        var $container = $('#example1');
+        // TODO: the scope should be the elt, not the document ($elt.find(...)
+        // instead of $(...))
+        var $container = $('.property-table');
         $container.handsontable({
             data : data,
-            colWidths : [ 120, 300 ],
+            colWidths : [ 120, 400 ],
             cells : function(row, col, prop) {
                 var cellProperties = {};
                 if (col == 0 || readOnly) {
@@ -149,7 +131,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
 
                     if (cellMetaMap[row].property == 'category') {
                         cellProperties.type = 'autocomplete';
-                        cellProperties.source = _.keys(categoryMap);
+                        cellProperties.source = _.values(ResourceModel.categoryLabels);
                     }
 
                     if (cellMetaMap[row].validator)
@@ -164,7 +146,9 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
             }
         });
 
-        var ht = $('#example1').handsontable('getInstance');
+        // TODO: the scope should be the elt, not the document ($elt.find(...)
+        // instead of $(...))
+        var ht = $('.property-table').handsontable('getInstance');
         return ht;
 
     }
@@ -231,14 +215,17 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
                         newProps[item.property] = data[index];
                     }
                 } else if (item.property == 'category') {
-                    newProps[item.property] = categoryMap[data[index]];
+                    _.each(ResourceModel.categoryLabels, function(value, key) {
+                        if (value == data[index]) {
+                            newProps[item.property] = key;
+                        }
+                    });
 
                 } else {
                     newProps[item.property] = data[index];
                 }
             });
-            
-            console.log(geometry);
+
             this.model.set('properties', newProps);
             this.model.set('geometry', geometry);
             return this.model;

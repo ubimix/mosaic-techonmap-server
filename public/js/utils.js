@@ -1,4 +1,4 @@
-define([ 'yaml','./screens/commons/Dialog' ], function(YAML, Dialog) {
+define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Dialog) {
     'use strict';
     var Utils = {};
 
@@ -188,6 +188,22 @@ define([ 'yaml','./screens/commons/Dialog' ], function(YAML, Dialog) {
         }
         return features;
     }    
+    
+    Utils.newCodeMirror =  function(elt, options, readOnly, value) {
+        options = options || {};
+        var defaultOptions = {
+            lineNumbers : true,
+            viewportMargin : Infinity,
+            lineWrapping : true,
+            mode : 'text',
+            readOnly : readOnly,
+            height : '100%'
+        };
+        options = _.extend(defaultOptions, options);
+        var editor = new CodeMirror(elt, options);
+        editor.setValue(value);
+        return editor;
+    }
 
     return Utils;
 });
