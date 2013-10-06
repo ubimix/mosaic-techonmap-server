@@ -9,7 +9,7 @@
 					<div class="media-summary">{{=model.getDescription()}}</div>
 				</div>
 				<div class="col-md-1 col-xs-1 media-header">
-					<span class="category">{{-model.getCategory()}}</span>
+					<span class="category">{{-model.getCategoryLabel()}}</span>
 				</div>
 				<div class="col-md-2 col-xs-2 media-header">
 					<span class="published-date">{{=moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss")}}</span>
