@@ -6,336 +6,213 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.28628,
-          48.866089
+          2.34663,
+          48.86813
         ]
       },
       "properties": {
-        "name": "123 Venture",
-        "description": "123Venture est une société de gestion indépendante avec plus de 800M€ investis dans le capital-investissement et l'immobilier.",
-        "address": "42 avenue Raymond Poincaré",
-        "postcode": "75016",
-        "city": "Paris",
-        "creationyear": "2000",
-        "url": "www.123venture.com",
-        "twitter": "123Venture",
-        "linkedin": "http://www.linkedin.com/company/79342",
-        "viadeo": "http://fr.viadeo.com/fr/company/123venture",
-        "id": "www.123venture.com",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.34584,
-          48.87104
-        ]
-      },
-      "properties": {
-        "name": "360° Capital Partners",
-        "description": "360° Capital Partners regroupe des investisseurs dynamiques et agiles, profondément passionnés par la création de sociétés durables et offrant aux entrepreneurs un soutien de tous les instants.",
-        "address": "16 boulevard Poissonnière",
-        "postcode": "75009",
-        "city": "Paris",
-        "url": "www.360capitalpartners.com",
-        "twitter": "360CP",
-        "linkedin": "http://www.linkedin.com/company/360-capital-partners",
-        "id": "www.360capitalpartners.com",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.341908,
-          48.869508
-        ]
-      },
-      "properties": {
-        "name": "5M Ventures",
-        "description": "Fonds de \"Media for Equity\", 5M Ventures propose à des sociétés B2C en forte croissance de l'espace publicitaire dans des médias de premier plan en échange d'une ouverture de leur capital.",
-        "address": "28 place de la Bourse",
+        "name": "1001 Menus",
+        "email": "loic.hay@gmail.com",
+        "description": "1001 Menus propose une plate-forme en ligne, web et mobile, pour centraliser la communication digitale des restaurants.",
+        "category": "entreprise",
+        "address": "23 rue de Clery",
+        "creationyear": "2010",
+        "url": "www.1001menus.com",
+        "twitter": "1001menus",
+        "linkedin": "http://www.linkedin.com/company/1161449",
         "postcode": "75002",
         "city": "Paris",
-        "url": "www.5M-ventures.com",
-        "id": "www.5m-ventures.com",
-        "category": "investor"
-      }
+        "id": "1001-menus.txt",
+        "origin": "dirty",
+        "tags": [
+          "restaurants"
+        ],
+        "oldid": "www.1001menus.com"
+      },
+      "dirty": true,
+      "_id": "51b98e76a0a796ab04000001"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.33481,
-          48.863708
+          2.30872,
+          48.850651
         ]
       },
       "properties": {
-        "name": "Alven Capital",
-        "description": "Alven Capital est un fonds de venture capital indépendant qui investit principalement dans les secteurs d'internet, des médias et de l’IT.",
-        "address": "1 place André Malraux",
-        "postcode": "75001",
+        "name": "Etalab",
+        "email": "loic.hay@gmail.com",
+        "description": "Etalab est un service du Premier Ministre en charge de l'ouverture des données publiques et du développement de la plateforme Open Data de l'Etat français.",
+        "category": "public-actor",
+        "address": "20 avenue de Ségur",
+        "creationyear": "2011",
+        "url": "www.etalab.gouv.fr",
+        "twitter": "Etalab",
+        "facebook": "https://www.facebook.com/etalab",
+        "linkedin": "http://www.linkedin.com/company/2572583",
+        "postcode": "75007",
         "city": "Paris",
-        "creationyear": "2000",
-        "url": "www.alvencapital.com",
-        "twitter": "alvencap",
-        "linkedin": "http://www.linkedin.com/company/2177951",
-        "id": "www.alvencapital.com",
-        "category": "investor"
-      }
+        "id": "etalab.txt",
+        "origin": "dirty",
+        "tags": [
+          "opendata"
+        ],
+        "oldid": "www.etalab.gouv.fr"
+      },
+      "dirty": true,
+      "_id": "51ba04f3e044c3c459000001"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.33599,
-          48.872349
+          2.3356246948242188,
+          48.87261892829001
         ]
       },
       "properties": {
-        "name": "Banexi Ventures Partners",
-        "description": "Banexi Ventures Partners est une société de gestion indépendante qui investit à partir de fonds de venture capital dans des entreprises hightech à fort potentiel de croissance.",
-        "address": "13 rue Taitbout",
-        "postcode": "75009",
-        "city": "Paris",
-        "url": "www.banexiventures.com",
-        "linkedin": "http://www.linkedin.com/company/137667",
-        "id": "www.banexiventures.com",
-        "category": "investor"
-      }
+        "name": "La Thé Box",
+        "email": "julia.ulman@lathebox.com",
+        "description": "La Thé Box envoie des coffrets de thé,infusions&gourmandises tous les mois sur le pas de votre porte pour vous faire découvrir une sélection pointue autour d'un thème.Voyagez sans bouger;des surprises poétiques et sensuelles pour rire et s’évader !",
+        "category": "entreprise",
+        "address": "29 rue Dussoubs 75002 Paris",
+        "creationyear": "2013",
+        "url": "www.lathebox.com",
+        "twitter": "lathebox",
+        "facebook": "https://www.facebook.com/laTheBox",
+        "postcode": "",
+        "city": "",
+        "id": "la-the-box.txt",
+        "origin": "dirty",
+        "oldid": "www.lathebox.com"
+      },
+      "dirty": true,
+      "_id": "51bb8249e044c3c459000006"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.33333,
-          48.868301
+          2.42149,
+          48.85191
         ]
       },
       "properties": {
-        "name": "CapHorn Invest",
-        "description": "Caphorn Invest est un fonds d'investissement et d'accompagnement qui a pour vocation d’accélérer le  développement commercial de jeunes PME à fort potentiel.",
-        "address": "32 avenue de l'Opéra",
-        "postcode": "75002",
-        "city": "Paris",
-        "creationyear": "2009",
-        "url": "www.caphorninvest.fr",
-        "twitter": "CapHornInvest",
-        "linkedin": "http://www.linkedin.com/company/caphorn-invest",
-        "id": "www.caphorninvest.fr",
-        "category": "investor"
-      }
+        "name": "HETIC",
+        "email": "chomel@hetic.net",
+        "description": "HETIC (Hautes Etudes des Technologies de l'Information et de la Communication) est une école des métiers de l'internet qui propose un formation polyvalente croisant e-création, e-technologie et e-business.",
+        "category": "school",
+        "address": "27 bis rue du progrès",
+        "creationyear": "2001",
+        "url": "www.hetic.net",
+        "twitter": "hetic",
+        "facebook": "https://www.facebook.com/hetic.net",
+        "googleplus": "https://plus.google.com/+hetic",
+        "postcode": "93100",
+        "city": "Montreuil",
+        "id": "hetic.txt",
+        "origin": "dirty",
+        "tags": [
+          "creation",
+          "technologie",
+          "business"
+        ],
+        "oldid": "www.hetic.net"
+      },
+      "dirty": true,
+      "_id": "51bc62fbe044c3c45900000b"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.25095,
-          48.887192
+          2.368670004000421,
+          48.8614999990005
         ]
       },
       "properties": {
-        "name": "Cleantech Business Angels",
-        "description": "Cleantech Business Angels est une association dont la mission est de faciliter l’investissement dans les startups cleantech et greentech.",
-        "address": "8 terrasse Bellini",
-        "postcode": "92800",
-        "city": "Puteaux",
-        "creationyear": "2008",
-        "url": "www.cleantechbusinessangels.com",
-        "twitter": "CleantechBA",
-        "linkedin": "http://www.linkedin.com/company/285538",
-        "id": "www.cleantechbusinessangels.com",
-        "category": "investor"
-      }
+        "name": "bobomicro",
+        "email": "contact@bobomicro.fr",
+        "description": "le labo bomicro, acteur du numérique du futur",
+        "category": "entreprise",
+        "address": "1 bis passage saint sebastien",
+        "creationyear": "2001",
+        "url": "http://bobomicro.fr",
+        "twitter": "bobomicro",
+        "postcode": "75011",
+        "city": "paris",
+        "id": "bobomicro.txt",
+        "origin": "dirty",
+        "oldid": "bobomicro.fr"
+      },
+      "dirty": true,
+      "_id": "51bc6e35e044c3c45900000c"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.30638,
-          48.8717
+          2.5923376060004557,
+          48.83698844200046
         ]
       },
       "properties": {
-        "name": "Elaia Partners",
-        "description": "Elaia Partners est une société indépendante de capital investissement focalisée sur l'économie numérique.",
-        "address": "54 rue de Ponthieu",
-        "postcode": "75008",
-        "city": "Paris",
-        "creationyear": "2002",
-        "url": "www.elaia.com",
-        "twitter": "Elaia_Partners",
-        "linkedin": "http://www.linkedin.com/company/114482",
-        "id": "www.elaia.com",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.29889,
-          48.87257
-        ]
-      },
-      "properties": {
-        "name": "IdInvest Partners",
-        "description": "Idinvest Partners est un des leaders européens du financement et de l'investissement dans des entreprises de taille moyenne non cotées.",
-        "address": "117 avenue des Champs Elysées",
-        "postcode": "75008",
-        "city": "Paris",
-        "creationyear": "1997",
-        "url": "www.idinvest.com",
-        "linkedin": "http://www.linkedin.com/company/1223140",
-        "id": "www.idinvest.com",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.23779,
-          48.841808
-        ]
-      },
-      "properties": {
-        "name": "Investessor",
-        "description": "Les Angels d'Investessor accompagnent et financent des startups innovantes de tous secteurs d’activité à Paris et en Ile-de-France.",
-        "address": "146 rue du Château",
-        "postcode": "92100",
-        "city": "Boulogne Billancourt",
-        "url": "www.investessor.fr",
-        "twitter": "investessor",
-        "googleplus": "https://plus.google.com/+investessor",
-        "linkedin": "http://www.linkedin.com/company/682652",
-        "id": "www.investessor.fr",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.30357,
-          48.869629
-        ]
-      },
-      "properties": {
-        "name": "Iris Capital",
-        "description": "Iris Capital est un investisseur en capital risque, spécialisé en économie numérique, surtout actif en Europe.",
-        "address": "62 rue Pierre Charron",
-        "postcode": "75008",
-        "city": "Paris",
-        "creationyear": "1986",
-        "url": "www.iriscapital.com",
-        "linkedin": "http://www.linkedin.com/company/117523",
-        "id": "www.iriscapital.com",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.292473,
-          48.874884
-        ]
-      },
-      "properties": {
-        "name": "ISAI Capital",
-        "description": "ISAI est un fonds d'entrepreneurs qui a pour vocation de financer et accompagner des sociétés Internet à fort potentiel.",
-        "address": "10 avenue de la Grande Armée",
-        "postcode": "75017",
-        "city": "Paris",
-        "url": "www.isai.fr",
-        "twitter": "isai_fr",
-        "linkedin": "http://www.linkedin.com/company/755069",
-        "id": "www.isai.fr",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.35278,
-          48.893959
-        ]
-      },
-      "properties": {
-        "name": "IT Angels",
-        "description": "IT Angels finance l'excellence et l'innovation dans le secteur des technologies de l'information et de la communication en France.",
-        "address": "110 rue des Poissonniers",
-        "postcode": "75018",
-        "city": "Paris",
-        "url": "www.itangels.fr",
-        "twitter": "Itangelsparis",
-        "id": "www.itangels.fr",
-        "category": "investor"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.30959,
-          48.865238
-        ]
-      },
-      "properties": {
-        "name": "Jaïna Capital",
-        "description": "Jaïna Capital est un fonds d'investissement qui accompagne les nouveaux entrepreneurs talentueux dans la réussite de leur entreprise.",
-        "address": "1 rue François 1er",
-        "postcode": "75008",
-        "city": "Paris",
+        "name": "incubator Descartes",
+        "email": "jcdetauzia@incubateur-descartes.com",
+        "description": "ID est un incubateur territorial implanté au cœur du Cluster Descartes à Marne-la-Vallée. Adossé notamment aux établissements du PRES Université Paris-Est, nous accompagnons des projets dans les domaines ville durable et santé et société.",
+        "category": "incubator",
+        "address": "23 rue Alfred Nobel",
         "creationyear": "2010",
-        "url": "www.jaina.fr",
-        "twitter": "jainacapital",
-        "facebook": "https://www.facebook.com/pages/Ja%C3%AFna-Capital/119217028094570",
-        "linkedin": "http://www.linkedin.com/company/847524",
-        "id": "www.jaina.fr",
-        "category": "investor"
-      }
+        "url": "www.incubateur-descartes.com",
+        "twitter": "InfoDescartes",
+        "facebook": "https://www.facebook.com/incubatorDescartes",
+        "linkedin": "http://www.linkedin.com/company/incubator-descartes",
+        "postcode": "77420 Champs-sur-Marne",
+        "city": "",
+        "id": "incubateur-descartes.txt",
+        "origin": "dirty",
+        "tags": [
+          "technologie",
+          "coaching",
+          "hebergement"
+        ],
+        "oldid": "www.incubateur-descartes.com"
+      },
+      "dirty": true,
+      "_id": "51c188910ab9bc8a0c000002"
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.32112,
-          48.871311
+          2.57732482500046,
+          48.95705913900048
         ]
       },
       "properties": {
-        "name": "Kima Ventures",
-        "description": "Kima Ventures est un fonds d'investissement destiné à financer et à soutenir les entreprises internet et hightech les plus talentueuses.",
-        "address": "8 rue de la ville l'Evèque",
-        "postcode": "75008",
-        "city": "Paris",
-        "creationyear": "2010",
-        "url": "www.kimaventures.com",
-        "twitter": "kimaventures",
-        "facebook": "https://www.facebook.com/KimaVentures",
-        "id": "www.kimaventures.com",
-        "category": "investor"
-      }
+        "name": "SentiMonitor",
+        "email": "alexandre.bourlier@sentimonitor.com",
+        "description": "Solution de veille et d'analyse des médias sociaux.",
+        "category": "entreprise",
+        "address": "27 av la Fontaine",
+        "creationyear": "2013",
+        "url": "www.sentimonitor.com/fr",
+        "twitter": "Sentimonitor_fr",
+        "postcode": "93290",
+        "city": "Tremblay en France",
+        "id": "sentimonitor.txt",
+        "origin": "dirty",
+        "oldid": "www.sentimonitor.com/fr"
+      },
+      "dirty": true,
+      "_id": "51c1d2b2baff66a279000002"
     }
   ]
 }

@@ -178,7 +178,7 @@ body {
 	margin-bottom: 0px;
 }
 
-.typeahead,.tt-query,.tt-hint {
+.umx-typeahead,.tt-query,.tt-hint {
 	width: 180px;
 	height: 30px;
 	padding: 8px 12px;
@@ -192,13 +192,13 @@ body {
 	margin-top: 0.5em;
 }
 
-.typeahead {
+.umx-typeahead {
 	background-color: #fff;
 	margin-right: 1em;
 	margin-top: 0.5em;
 }
 
-.typeahead:focus {
+.umx-typeahead:focus {
 	border: 1px solid #0097cf;
 }
 
@@ -315,4 +315,20 @@ margin-bottom: 0px;
 	padding-top:6px;
 	padding-bottom:6px;
 	
+}
+
+.handsontable {
+	font-size:inherit;
+}
+
+.handsontable td {
+    font-size:inherit;
+}
+
+.handsontableInput {
+	font-size:inherit;
+}
+
+.handsontable .typeahead {
+	font-size:inherit;
 }

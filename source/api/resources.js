@@ -7,7 +7,7 @@ var Q = require('q');
 
 var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
-// require('jscr-api/jscr-memory');
+require('jscr-api/jscr-memory');
 require('jscr-git/jscr-git');
 
 /* ========================================================================== */
@@ -174,10 +174,10 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    // var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
-    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
-        rootDir : options.dir
-    });
+    var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+//    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
+//        rootDir : options.dir
+//    });
     return connection.connect()
     // Create a project
     .then(function(workspace) {
@@ -421,8 +421,9 @@ function initializeApplication(app, project) {
 module.exports = function(app) {
     var options = {
         dir : './tmp',
-        name : 'djingo',
-        inputFile : './data/data.json',
+        name : 'techonmap',
+        //inputFile : './data/geoitems.1.json',
+        inputFile : './data/merged.json',
         author : 'author <author>'
     };
     var promise = loadData(options);

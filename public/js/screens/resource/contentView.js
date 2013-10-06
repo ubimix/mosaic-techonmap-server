@@ -1,6 +1,6 @@
-define([ 'Backbone', 'Underscore', '../models/Resource', 'utils', 'text!./contentView.html' ],
+define([ 'Backbone', 'Underscore', 'CodeMirror', 'CodeMirrorYaml', '../models/Resource', 'utils', 'text!./contentView.html' ],
 
-function(Backbone, _, ResourceModel, Utils, ContentViewTemplate) {
+function(Backbone, _, CodeMirror, CodeMirrorYaml, ResourceModel, Utils, ContentViewTemplate) {
 
     function newCodeMirror(elt, options, readOnly, value) {
         options = options || {};
@@ -38,9 +38,9 @@ function(Backbone, _, ResourceModel, Utils, ContentViewTemplate) {
             }, this.readOnly, this.getFormattedProperties());
             $(this.propertiesEditor.getWrapperElement()).addClass('properties');
 
-            var lineNumbers  =formattedContent.split('\n').length;
+            var lineNumbers = formattedContent.split('\n').length;
             this.contentEditor.focus();
-            this.contentEditor.setCursor(lineNumbers);    
+            this.contentEditor.setCursor(lineNumbers);
             return this;
 
         },
@@ -67,6 +67,7 @@ function(Backbone, _, ResourceModel, Utils, ContentViewTemplate) {
             var description = this.contentEditor.getValue();
             var json = Utils.toJSON(description, yaml);
             this.model.set('properties', json);
+            //FIXME: geometry is not in the properties but in the attributes
             return this.model;
         }
 

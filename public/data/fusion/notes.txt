@@ -9,6 +9,8 @@ Stockage de l'ancien ID dans un champ '
 Flag des entités venant du fichier dirty comme étant à valider.
 TODO: donner aux dates de modification des valeurs cohérentes par rapport à la réalité, ainsi qu'aux noms des auteurs.  
 
+TODO: normaliser les catégories
+
 Comparer les nombres d'entités avant / après
 
 Fichier d'origine:

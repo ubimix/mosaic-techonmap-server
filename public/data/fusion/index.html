@@ -92,13 +92,38 @@
                 var id = name.toLowerCase();
                 id = id.replace(/\s/g, '-');
                 id = id.replace(/(-+)/g, '-');
-                id = id.replace('é','e');
-                id = id.replace('ê','e');
-                id = id.replace('è','e');
-                
+                id = id.replace('é', 'e');
+                id = id.replace('ê', 'e');
+                id = id.replace('è', 'e');
+
                 map[key].properties.oldid = map[key].properties.id;
                 map[key].properties.id = id + '.txt';
 
+            });
+        }
+
+        function updateCategories(map) {
+            var categoryMap = {
+                'Entreprise' : 'entreprise',
+                'Tiers-lieu' : 'third-place',
+                'Incubateur' : 'incubator',
+                'Investisseur' : 'investor',
+                'Communauté' : 'community',
+                'Prestataire' : 'prestataire',
+                'École' : 'school',
+                'Acteur public' : 'public-actor'
+            };
+            var categoryVal = _.map(categoryMap, function(val, key) {
+                return val;
+            });
+
+            _.each(map, function(val, key) {
+                var category = map[key].properties.category;
+                if (categoryVal.indexOf(category) < 0) {
+                    map[key].properties.category = categoryMap[category];
+                    if (!categoryMap[category])
+                        console.log('!!! category', key, category);
+                }
             });
         }
 
@@ -143,10 +168,11 @@
                         fusion = swapCoordinates(fusion);
 
                         updateIds(fusion);
+                        updateCategories(fusion);
                         var collection = {};
                         collection.type = 'FeatureCollection';
                         collection.features = _.map(fusion, function(val, key) {
-                            return val
+                            return val;
                         });
 
                         var str = JSON.stringify(collection, null, 2);

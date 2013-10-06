@@ -24,8 +24,9 @@
                     <th>Date</th>
                     <th>Version</th>
                 </tr>	
-	
-		{{ _.each(history, function(item, index) { }}
+
+        {{ _.each(_.sortBy(history, function (elt) { return elt.timestamp; }).reverse(), function(item, index) { }}
+        {{ //_.each(history, function(item, index) {  }}
 
             {{if (index < (_.keys(history).length -1)) { }}
 			<tr style="color: black;">
