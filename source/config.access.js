@@ -62,6 +62,8 @@ module.exports = function(app) {
              return 'typeahead';
          } else if (path.match(/^\/api\/validation\/?.*$/)){
              return 'validation';
+         } else if (path.match(/^\/api\/twitter\/?.*$/)){
+             return 'twitter';
          } else {
              return '';
          }
