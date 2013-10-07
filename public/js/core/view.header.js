@@ -6,45 +6,18 @@ function($, Backbone, Dropdown, Typeahead, templates) {
         render : function() {
             this.$el.html(this.template(this.options));
 
-            $('.umx-typeahead').typeahead({
+            this.$('.umx-typeahead').typeahead({
                 remote : '/api/typeahead/?query=%QUERY',
                 limit : 15
             });
 
-            $('body').on('umx-typeahead:selected', function(event, datum) {
+            // TODO: check if not adding listener each time the view is rendered
+            
+            $('body').on('typeahead:selected', function(event, datum) {
                 Backbone.history.navigate('/workspace/' + datum.id, true);
                 //FIXME:does not work
                 $('.umx-typeahead').val('');
             });
-
-            // TODO: check if not adding listener each time the view is rendered
-            // $('.type-ahead').typeahead({
-            // source : function(query, process) {
-            // return $.get('/api/typeahead', {
-            // query : query
-            // }, function(items) {
-            // data = items;
-            // return process(_.pluck(items, 'name'));
-            // });
-            // },
-            // updater : function(item) {
-            // var found = _.find(data, function(it) {
-            // return it.name == item
-            // });
-            // // console.log('ID: ', nameIdMap[item]);
-            // // console.log('Found: ', found.id);
-            // $('#resource-id').val(found.id);
-            // return item;
-            // },
-            // items : 20,
-            // });
-            //
-            // $('.type-ahead').keypress(function(e) {
-            // if (e.which == 13) {
-            // $('#go').click();
-            // return false;
-            // }
-            // });
 
         
             $('body').keypress(function(e) {
