@@ -12,14 +12,13 @@ function($, Backbone, Dropdown, Typeahead, templates) {
             });
 
             // TODO: check if not adding listener each time the view is rendered
-            
+
             $('body').on('typeahead:selected', function(event, datum) {
                 Backbone.history.navigate('/workspace/' + datum.id, true);
-                //FIXME:does not work
+                // FIXME:does not work
                 $('.umx-typeahead').val('');
             });
 
-        
             $('body').keypress(function(e) {
                 // http://api.jquery.com/focus-selector/
                 var $focused = $(document.activeElement);
