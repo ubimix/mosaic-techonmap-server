@@ -1,4 +1,6 @@
-define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Dialog) {
+define([ 'Underscore', 'yaml', './screens/models/Resource', './screens/commons/Dialog' ],
+        
+function(_, YAML, Resource, Dialog) {
     'use strict';
     var Utils = {};
 
@@ -78,17 +80,7 @@ define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Di
             'Url page Viadeo' : 'viadeo',
             'Catégorie' : 'category'
         }
-    
-    var categoryMapping = {
-            'tiers-lieu' : 'third-place',
-            'communauté' : 'communauty',
-            'investisseur' : 'investor',
-            'entreprise' : 'entreprise',
-            'incubateur' : 'incubator',
-            'prestataire': 'prestataire',
-            'école' : 'school',
-            'acteur public' : 'public-actor'
-    }
+  
          
     function isEmpty(str) {
         if (!str)
@@ -104,7 +96,7 @@ define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Di
 
     function buildId(str) {
         str = trim(str);
-        str = str.replace(/[\s,;\\/]+/gi, '_');
+        str = str.replace(/[\s,;\\/]+/gi, '-');
         str = str.replace(/^_+|_+$/g, '');
         str = str.toLowerCase();
         return str;
@@ -140,10 +132,10 @@ define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Di
             }
         }
         
-        var id = buildId(properties.url);
+        // var id = buildId(properties.url);
+        var id = buildId(properties.name);
         properties.id = id;
-        var coordinates = [ parseFloat(removeProp('lat'))||0,
-                parseFloat(removeProp('lng'))||0 ];
+        var coordinates = [ parseFloat(removeProp('lng'))||0, parseFloat(removeProp('lat'))||0 ];
         var tags = [];
         var tag;
         if (!isEmpty(tag = removeProp('tag1')))
@@ -164,7 +156,7 @@ define([ 'Underscore', 'yaml','./screens/commons/Dialog' ], function(_, YAML, Di
         }
         
         if (properties && properties.category) {
-            properties.category = categoryMapping[properties.category.toLowerCase()] || properties.category;
+            properties.category = Resource.mapCategory(properties.category) || properties.category;
         }
         
         var point = {

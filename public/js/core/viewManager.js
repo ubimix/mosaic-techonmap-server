@@ -37,8 +37,15 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
                     title : 'jscr-webui',
                     user : user
                 });
+                //TODO: pourquoi le html est dynamique
                 $('#umx-header').html(headerView.el);
                 headerView.render();
+                
+                this.$('.umx-typeahead').typeahead({
+                    remote : '/api/typeahead/?query=%QUERY',
+                    limit : 15
+                });
+                
                 $('#umx-header').data('loaded', 'true');
             }
 

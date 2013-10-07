@@ -215,12 +215,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
                         newProps[item.property] = data[index];
                     }
                 } else if (item.property == 'category') {
-                    _.each(ResourceModel.categoryLabels, function(value, key) {
-                        if (value == data[index]) {
-                            newProps[item.property] = key;
-                        }
-                    });
-
+                    newProps[item.property] = Resource.mapCategory(data[index]);
                 } else {
                     newProps[item.property] = data[index];
                 }

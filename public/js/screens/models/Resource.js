@@ -114,5 +114,16 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
         'public-actor' : 'Acteur public'
     };
 
+    Resource.mapCategory = function(label) {
+        var category = label;
+        _.each(Resource.categoryLabels, function(value, key) {
+            if (value.toLowerCase() == label.toLowerCase()) {
+                category = key;
+            }
+        });
+
+        return category;
+    }
+
     return Resource;
 });
