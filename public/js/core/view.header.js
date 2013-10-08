@@ -7,7 +7,7 @@ function($, _, Backbone, Typeahead, templates) {
         render : function() {
             this.$el.html(this.template(this.options));
             var searchInput = this.$el.find('.umx-typeahead');
-            var typeahead = searchInput.typeahead({
+            var typeahead = searchInput.twitterTypeahead({
                 remote : '/api/typeahead/?query=%QUERY',
                 limit : 15,
                 beforeSend : function(xhqr, settings) {

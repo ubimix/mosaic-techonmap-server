@@ -89,7 +89,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
         }
     }
 
-    function newHandsontable(attributes, readOnly, readOnlyId) {
+    function newHandsontable($el, attributes, readOnly, readOnlyId) {
         var props = attributes.properties;
 
         var propertyNameRenderer = function(instance, td, row, col, prop, value, cellProperties) {
@@ -116,7 +116,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
 
         // TODO: the scope should be the elt, not the document ($elt.find(...)
         // instead of $(...))
-        var $container = $('.property-table');
+        var $container = $el.find('.property-table');
         $container.handsontable({
             data : data,
             colWidths : [ 120, 400 ],
@@ -166,7 +166,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
 
             var readOnlyId = this._getProperties().id != '';
 
-            this.tableEditor = newHandsontable(this._getAttributes(), this.readOnly, readOnlyId);
+            this.tableEditor = newHandsontable(this.$el, this._getAttributes(), this.readOnly, readOnlyId);
 
             return this;
 
