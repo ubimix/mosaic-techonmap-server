@@ -54,18 +54,13 @@ require.config({
         },
 
         // TODO: which export
-        'BootstrapModal' : {
-            exports : 'BootstrapModal',
+        'Bootstrap' : {
+            exports : 'Bootstrap',
             deps : [ 'jQuery' ]
         },
-        'BootstrapDropdown' : {
-            exports : 'BootstrapDropdown',
-            deps : [ 'jQuery' ]
-        },
-
         'Typeahead' : {
             exports : 'Typeahead',
-            deps : [ 'jQuery' ]
+            deps : [ 'jQuery', 'Bootstrap' ]
         },
         'CodeMirror' : {
             exports : 'CodeMirror'
@@ -87,10 +82,9 @@ require.config({
         text : './../components/requirejs-text/text',
         diff_match_patch : './../components/diff-match-patch/diff_match_patch',
         yaml : './../components/yamljs/bin/yaml',
-        BootstrapModal : './../components/bootstrap/js/modal',
-        BootstrapDropdown : './../components/bootstrap/js/dropdown',
-        BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         Typeahead : './../components/typeahead.js/dist/typeahead',
+        Bootstrap : './../components/bootstrap/dist/js/bootstrap',
+        BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         moment : './../components/momentjs/min/moment+langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
