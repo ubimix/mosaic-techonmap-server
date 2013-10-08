@@ -12,7 +12,7 @@
 					<span class="category">{{-model.getCategoryLabel()}}</span>
 				</div>
 				<div class="col-md-2 col-xs-2 media-header">
-					<span class="published-date">{{=moment(model.getUpdated().timestamp).format("YYYY-MM-DD HH:mm:ss")}}</span>
+					<span class="published-date">{{=view.getFormattedUpdateTime()}}</span>
 				</div>
 				<div class="col-md-2 col-xs-3 media-header">
 					{{ if (!validator.isValidated(model)) { }} <input type="checkbox"

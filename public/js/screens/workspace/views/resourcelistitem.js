@@ -1,4 +1,6 @@
-define([ 'Backbone', '../../models/Validator', 'text!./resourcelistitem.html' ], function(Backbone, Validator, template) {
+define([ 'Backbone', 'utils', '../../models/Validator', 'text!./resourcelistitem.html' ],
+
+function(Backbone, Utils, Validator, template) {
 
     var ResourceRowView = Backbone.View.extend({
         template : _.template(template),
@@ -7,11 +9,16 @@ define([ 'Backbone', '../../models/Validator', 'text!./resourcelistitem.html' ],
             this.$el.html(this.template({
                 model : this.model,
                 validator : Validator.getInstance(),
-                workspace : this.options.workspace
+                workspace : this.options.workspace,
+                view : this
             }));
 
             this.$el.find('.media-content').hide().html('');
             return this;
+        },
+
+        getFormattedUpdateTime : function() {
+            return Utils.formatDate(this.model.getUpdated().timestamp);
         }
     });
 

@@ -91,7 +91,7 @@ require.config({
         BootstrapDropdown : './../components/bootstrap/js/dropdown',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         Typeahead : './../components/typeahead.js/dist/typeahead',
-        moment : './../components/momentjs/moment',
+        moment : './../components/momentjs/min/moment+langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
         CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',

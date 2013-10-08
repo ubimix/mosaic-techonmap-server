@@ -1,6 +1,6 @@
-define([ 'Underscore', 'yaml', './screens/models/Resource', './screens/commons/Dialog' ],
+define([ 'Underscore', 'yaml', 'moment', './screens/models/Resource', './screens/commons/Dialog' ],
         
-function(_, YAML, Resource, Dialog) {
+function(_, YAML, Moment, Resource, Dialog) {
     'use strict';
     var Utils = {};
 
@@ -195,6 +195,12 @@ function(_, YAML, Resource, Dialog) {
         var editor = new CodeMirror(elt, options);
         editor.setValue(value);
         return editor;
+    }
+    
+    Utils.formatDate = function(timestamp) {
+        if (!timestamp)
+            return '';
+        return moment(timestamp).lang('fr').calendar();
     }
 
     return Utils;
