@@ -1,4 +1,6 @@
-define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, template) {
+define([ 'Backbone', 'utils', 'text!./view.html' ],
+
+function(Backbone, Utils, template) {
 
     var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
     var View = Backbone.View.extend({
@@ -27,9 +29,7 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
                         if ($hCol1.find(':checked').length < 2) {
                             return false;
                         }
-                        
-                       
-                        
+
                         var xx = $hCol1.find(':checked').map(function() {
                             return $(this).val();
                         }).toArray().join('/with/');
@@ -59,18 +59,15 @@ define([ 'Backbone', 'moment', 'text!./view.html' ], function(Backbone, moment, 
                     $hCol1.find('input').show().parents('tr').css({
                         'color' : 'black'
                     });
-                    this.$('.compare').attr('disabled','disabled');
+                    this.$('.compare').attr('disabled', 'disabled');
                 }
             }
 
             return this;
         },
 
-        getFormattedDate : function(timestamp) {
-            if (!timestamp)
-                return moment().format(DATE_FORMAT);
-            var day = moment(timestamp);
-            return day.format(DATE_FORMAT);
+        getFormattedRevisionDate : function(timestamp) {
+            return Utils.formatDate(timestamp);
         }
     });
     return View;

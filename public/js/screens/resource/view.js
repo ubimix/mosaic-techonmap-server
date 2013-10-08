@@ -11,6 +11,7 @@ function(Backbone, BootstrapGrowl, viewManager, Utils, ResourceContentView, Reso
             'click .submit' : 'submitResource',
             'click .history' : 'historyScreen',
             'click .delete' : 'handleDeleteClick',
+            'click .validate' : 'handleValidateClick',
             'keydown' : 'onKeydown'
         },
 

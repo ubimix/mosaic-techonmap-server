@@ -85,7 +85,7 @@ require.config({
         Typeahead : './../components/typeahead.js/dist/typeahead',
         Bootstrap : './../components/bootstrap/dist/js/bootstrap',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
-        moment : './../components/momentjs/moment',
+        moment : './../components/momentjs/min/moment+langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
         CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
