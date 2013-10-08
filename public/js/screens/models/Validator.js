@@ -69,6 +69,8 @@ define([ 'Backbone' ], function(Backbone) {
                     validated.splice(idx, 0, path);
                 }
             }, this);
+            
+            
             this.save(null, {
                 success : this._onLoad
             });
