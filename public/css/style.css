@@ -333,3 +333,8 @@ margin-bottom: 0px;
 .handsontable .typeahead {
 	font-size:inherit;
 }
+
+
+.published-date {
+	font-size: smaller;
+}

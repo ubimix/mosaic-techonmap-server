@@ -433,8 +433,8 @@ module.exports = function(app) {
         inputFile : './data/data.json',
         author : 'author <author>'
     };
-    var promise = loadData(options);
-    // var promise = initProject(options);
+//    var promise = loadData(options);
+     var promise = initProject(options);
     return promise
     //
     .then(function(project) {

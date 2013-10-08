@@ -33,7 +33,7 @@
 				<td><input type="checkbox"
 					value="{{=item.versionId}}"></td>
 					<td>{{-item.author}}</td>
-					<td>{{=view.getFormattedDate(item.timestamp)}}</td>
+					<td>{{=view.getFormattedRevisionDate(item.timestamp)}}</td>
 				{{ if (index > 0) { }} 
 				<td><a href="/{{=workspace }}/{{=model.getPath()}}/history/{{=item.versionId}}">{{=item.versionId }}</a></td>
 				{{ } else if (index == 0) { }}
