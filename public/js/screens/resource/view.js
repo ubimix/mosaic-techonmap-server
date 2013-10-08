@@ -1,9 +1,9 @@
 //table-view / contentView
 
-define([ 'Backbone', 'BootstrapModal', 'BootstrapGrowl', '../models/Validator', 'core/viewManager', 'utils', './table-view',
+define([ 'Backbone', 'BootstrapGrowl', '../models/Validator', 'core/viewManager', 'utils', './table-view',
         'text!./view.html' ],
 
-        function(Backbone, BootstrapModal, BootstrapGrowl, Validator, viewManager, Utils, ResourceContentView,
+        function(Backbone, BootstrapGrowl, Validator, viewManager, Utils, ResourceContentView,
                 ResourceContainerTemplate) {
 
             var ResourceContainerView = Backbone.View.extend({

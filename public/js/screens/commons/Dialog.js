@@ -1,6 +1,6 @@
-define([ 'Backbone', 'Underscore', 'BootstrapModal', 'text!./dialog.html' ],
+define([ 'Backbone', 'Underscore', 'text!./dialog.html', 'Bootstrap' ],
 
-function(Backbone, _, BootstrapModal, Template) {
+function(Backbone, _, Template) {
 
     var DialogView = Backbone.View.extend({
 
