@@ -14,11 +14,6 @@ require.config({
             deps : [ 'jQuery' ]
         },
 
-        'Handsontable' : {
-            exports : 'Handsontable',
-            deps : [ 'jQuery' ]
-        },
-
         'Underscore' : {
             exports : '_',
             init : function() {
@@ -60,7 +55,17 @@ require.config({
         },
         'Typeahead' : {
             exports : 'Typeahead',
-            deps : [ 'jQuery', 'Bootstrap' ]
+            deps : [ 'jQuery', 'Bootstrap' ],
+            init : function() {
+                jQuery.fn.twitterTypeahead = jQuery.fn.typeahead;
+                return jQuery.fn.twitterTypeahead;
+            }
+        },
+        
+        //Fake dependency to force Handsontable to be loaded after Typeahead
+        'Handsontable' : {
+            exports : 'Handsontable',
+            deps : [ 'jQuery', 'Typeahead' ]
         },
         'CodeMirror' : {
             exports : 'CodeMirror'

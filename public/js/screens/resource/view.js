@@ -20,7 +20,7 @@ define([ 'Backbone', 'BootstrapGrowl', '../models/Validator', 'core/viewManager'
                 initialize : function() {
                     // var options = _.clone(this.options);
                     // this is to force a fake change event
-                    
+                    this.model.set('type','Feature');
                     var copy = this.model.getCopy();
                     this.contentView = new ResourceContentView({
                         model : copy
@@ -30,7 +30,6 @@ define([ 'Backbone', 'BootstrapGrowl', '../models/Validator', 'core/viewManager'
                     // disappears
                     this.model.on('change', this.render, this);
                     
-                    this.model.trigger('change');
                 },
 
                 render : function() {
@@ -137,10 +136,7 @@ define([ 'Backbone', 'BootstrapGrowl', '../models/Validator', 'core/viewManager'
                 },
 
                 updateModel : function(currentModel, updatedModel, callback) {
-                    if (!this.model.hasChanged()) {
-                        typeof callback === 'function' && callback();
-                        return;
-                    }
+                   
                     currentModel.updateAndSave(updatedModel.get('properties'), updatedModel.get('geometry'), function(
                             updatedResource) {
                         $.bootstrapGrowl("Enregistrement effectué", {

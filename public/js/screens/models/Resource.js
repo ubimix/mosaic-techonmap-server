@@ -26,6 +26,9 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             }
         },
 
+        initialize : function() {
+        },
+
         getCopy : function() {
             var copy = JSON.parse(JSON.stringify(this.attributes));
             return new Resource(copy);
@@ -82,7 +85,6 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             var copy = this.getCopy();
             this.set('properties', properties);
             this.set('geometry', geometry);
-
             this.save(null, {
                 error : function(model, xhr) {
                     // restore the model
