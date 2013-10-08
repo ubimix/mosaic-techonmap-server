@@ -5,11 +5,23 @@ function($, Backbone, Dropdown, Typeahead, templates) {
         template : templates['HeaderView'],
         render : function() {
             this.$el.html(this.template(this.options));
+            var umxTh = this.$el.find('.umx-typeahead');
 
-            this.$('.umx-typeahead').typeahead({
+            console.log('Typeahead', Typeahead);
+            
+            var typeahead = umxTh.typeahead({
                 remote : '/api/typeahead/?query=%QUERY',
-                limit : 15
+                limit : 15,
+                beforeSend : function(xhqr, settings) {
+                    console.log('beforesend', settings);
+                },
+                filter : function(response) {
+                    console.log('response:', response);
+                    return response;
+                }
             });
+            
+            console.log(typeahead);
 
             // TODO: check if not adding listener each time the view is rendered
 

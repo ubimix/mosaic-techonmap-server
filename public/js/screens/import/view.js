@@ -79,8 +79,6 @@ define(
                 showTextView : function() {
                     this.textView = new TextView();
                     this.$('#wizard').append(this.textView.$el);
-                    // TODO: actually this works as well
-                    // $("#wizard").html(this.textView.el);
                     this.textView.render();
                 },
 

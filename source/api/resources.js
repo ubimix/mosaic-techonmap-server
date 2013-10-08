@@ -153,16 +153,23 @@ function importGeoJSONItem(project, itemPath, item, options) {
     }).then(function(resource) {
         resource = updateResourceFields(resource, item);
         return project.storeResource(resource, options);
+    }).fail(function(error) {
+        console.log(error);
+        return null;
     });
 }
 
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
-    return Q.all(_.map(items, function(item) {
+    var promise = Q();
+    _.each(items, function(item) {
         var itemPath = getPathFromGeoJson(item);
-        return importGeoJSONItem(project, itemPath, item, options);
-    }));
+        promise = promise.then(function() {
+            return importGeoJSONItem(project, itemPath, item, options);
+        });
+    })
+    return promise;
 }
 
 /**
@@ -174,10 +181,10 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
-//    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
-//        rootDir : options.dir
-//    });
+//    var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
+    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
+        rootDir : options.dir
+    });
     return connection.connect()
     // Create a project
     .then(function(workspace) {
@@ -422,12 +429,12 @@ module.exports = function(app) {
     var options = {
         dir : './tmp',
         name : 'techonmap',
-        //inputFile : './data/geoitems.1.json',
+        // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',
         author : 'author <author>'
     };
     var promise = loadData(options);
-    //var promise = initProject(options);
+    // var promise = initProject(options);
     return promise
     //
     .then(function(project) {

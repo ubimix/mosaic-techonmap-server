@@ -29,7 +29,7 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
 
         function render(view) {
             currentView = view;
-            $('#app').html(currentView.el);
+            $('#app').html(currentView.$el);
             var headerLoaded = $('#umx-header').data('loaded');
             var user = $('#umx-header').data('user');
             if (!headerLoaded) {
@@ -38,9 +38,10 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
                     user : user
                 });
                 //TODO: pourquoi le html est dynamique
-                $('#umx-header').html(headerView.el);
+               
+                $('#umx-header').html(headerView.$el);
                 headerView.render();
-                                
+                
                 $('#umx-header').data('loaded', 'true');
             }
 
