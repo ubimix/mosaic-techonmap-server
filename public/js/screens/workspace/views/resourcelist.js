@@ -165,6 +165,9 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
         },
 
         handleValidateClick : function(event) {
+            //TODO: we should probably refresh the validator when hitting the validate button
+            //because the validated items may have changed in other tabs meantime
+            
             var selection = this.$('.validation:checked');
             var list = [];
             var validator = Validator.getInstance();
