@@ -1,15 +1,13 @@
-define([ 'jQuery', 'Backbone', 'BootstrapDropdown', 'Typeahead', 'UmxAppTemplates' ],
+define([ 'jQuery', 'Underscore', 'Backbone', 'Typeahead', 'UmxAppTemplates' ],
 
-function($, Backbone, Dropdown, Typeahead, templates) {
+function($, _, Backbone, Typeahead, templates) {
     var View = Backbone.View.extend({
         template : templates['HeaderView'],
+
         render : function() {
             this.$el.html(this.template(this.options));
-            var umxTh = this.$el.find('.umx-typeahead');
-
-            console.log('Typeahead', Typeahead);
-            
-            var typeahead = umxTh.typeahead({
+            var searchInput = this.$el.find('.umx-typeahead');
+            var typeahead = searchInput.typeahead({
                 remote : '/api/typeahead/?query=%QUERY',
                 limit : 15,
                 beforeSend : function(xhqr, settings) {
@@ -20,34 +18,29 @@ function($, Backbone, Dropdown, Typeahead, templates) {
                     return response;
                 }
             });
-            
-            console.log(typeahead);
 
-            // TODO: check if not adding listener each time the view is rendered
-
-            $('body').on('typeahead:selected', function(event, datum) {
-                Backbone.history.navigate('/workspace/' + datum.id, true);
-                // FIXME:does not work
-                $('.umx-typeahead').val('');
+            var body = $('body');
+            body.on('typeahead:selected', function(event, datum) {
+                if (datum && datum.id) {
+                    Backbone.history.navigate('/workspace/' + datum.id, true);
+                }
+                searchInput.val('');
             });
-
-            $('body').keypress(function(e) {
+            body.keypress(function(e) {
                 // http://api.jquery.com/focus-selector/
                 var $focused = $(document.activeElement);
                 var tagName = $focused.prop('tagName').toLowerCase();
                 if (tagName == 'body') {
-                    $('.umx-typeahead').focus();
+                    searchInput.focus();
                 }
             });
-
-            $('body').keydown(function(event) {
+            body.keydown(function(event) {
                 if (event.altKey) {
                     if (event.which == 76) {
                         // alt+L
-                        $('.umx-typeahead').focus();
+                        searchInput.focus();
                     }
                 }
-
             });
 
             return this;
