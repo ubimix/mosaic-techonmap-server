@@ -64,6 +64,7 @@ require.config({
         },
 
         'Typeahead' : {
+            exports : 'Typeahead',
             deps : [ 'jQuery' ]
         },
         'CodeMirror' : {

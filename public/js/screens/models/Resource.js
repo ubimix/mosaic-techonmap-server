@@ -115,9 +115,11 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
     };
 
     Resource.mapCategory = function(label) {
+        if (!label)
+            return '';
         var category = label;
         _.each(Resource.categoryLabels, function(value, key) {
-            if (value.toLowerCase() == label.toLowerCase()) {
+            if ((value.toLowerCase() == label.toLowerCase())) {
                 category = key;
             }
         });

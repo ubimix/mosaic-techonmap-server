@@ -298,8 +298,9 @@ ul.menu li {
 	display: inline;
 }
 
-.media-heading .glyphicon-flash { visibility: hidden; }
-.created .media-heading .glyphicon-flash { visibility: visible; }
+.media-heading .glyphicon { visibility: hidden; }
+.created .media-heading .glyphicon { visibility: visible; }
+.updated .media-heading .glyphicon { visibility: visible; }
 
 /** FIXME */
 body {

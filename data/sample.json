@@ -6,213 +6,28 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.34663,
-          48.86813
+          2.33762721900041,
+          48.89398598100047
         ]
       },
       "properties": {
-        "name": "1001 Menus",
-        "email": "loic.hay@gmail.com",
-        "description": "1001 Menus propose une plate-forme en ligne, web et mobile, pour centraliser la communication digitale des restaurants.",
+        "name": "My Precious Life",
+        "email": "contact@mypreciouslife.com",
+        "description": "MyPreciousLife est le carnet d'inspiration sur mobile, la plus belle manière de prendre des notes.\nDesign émotionnel et respect de la vie privée sont au cœur de la démarche de l'entreprise. www.mypreciouslife.com",
         "category": "entreprise",
-        "address": "23 rue de Clery",
-        "creationyear": "2010",
-        "url": "www.1001menus.com",
-        "twitter": "1001menus",
-        "linkedin": "http://www.linkedin.com/company/1161449",
-        "postcode": "75002",
-        "city": "Paris",
-        "id": "1001-menus.txt",
-        "origin": "dirty",
-        "tags": [
-          "restaurants"
-        ],
-        "oldid": "www.1001menus.com"
-      },
-      "dirty": true,
-      "_id": "51b98e76a0a796ab04000001"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.30872,
-          48.850651
-        ]
-      },
-      "properties": {
-        "name": "Etalab",
-        "email": "loic.hay@gmail.com",
-        "description": "Etalab est un service du Premier Ministre en charge de l'ouverture des données publiques et du développement de la plateforme Open Data de l'Etat français.",
-        "category": "public-actor",
-        "address": "20 avenue de Ségur",
-        "creationyear": "2011",
-        "url": "www.etalab.gouv.fr",
-        "twitter": "Etalab",
-        "facebook": "https://www.facebook.com/etalab",
-        "linkedin": "http://www.linkedin.com/company/2572583",
-        "postcode": "75007",
-        "city": "Paris",
-        "id": "etalab.txt",
-        "origin": "dirty",
-        "tags": [
-          "opendata"
-        ],
-        "oldid": "www.etalab.gouv.fr"
-      },
-      "dirty": true,
-      "_id": "51ba04f3e044c3c459000001"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.3356246948242188,
-          48.87261892829001
-        ]
-      },
-      "properties": {
-        "name": "La Thé Box",
-        "email": "julia.ulman@lathebox.com",
-        "description": "La Thé Box envoie des coffrets de thé,infusions&gourmandises tous les mois sur le pas de votre porte pour vous faire découvrir une sélection pointue autour d'un thème.Voyagez sans bouger;des surprises poétiques et sensuelles pour rire et s’évader !",
-        "category": "entreprise",
-        "address": "29 rue Dussoubs 75002 Paris",
-        "creationyear": "2013",
-        "url": "www.lathebox.com",
-        "twitter": "lathebox",
-        "facebook": "https://www.facebook.com/laTheBox",
+        "address": "cité Nollez - 75018 Paris",
+        "creationyear": "2012",
+        "url": "www.mypreciouslife.com",
+        "twitter": "M_PreciousLife",
+        "facebook": "https://www.facebook.com/my.precious.life",
         "postcode": "",
         "city": "",
-        "id": "la-the-box.txt",
+        "id": "my-precious-life.txt",
         "origin": "dirty",
-        "oldid": "www.lathebox.com"
+        "oldid": "www.mypreciouslife.com"
       },
       "dirty": true,
-      "_id": "51bb8249e044c3c459000006"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.42149,
-          48.85191
-        ]
-      },
-      "properties": {
-        "name": "HETIC",
-        "email": "chomel@hetic.net",
-        "description": "HETIC (Hautes Etudes des Technologies de l'Information et de la Communication) est une école des métiers de l'internet qui propose un formation polyvalente croisant e-création, e-technologie et e-business.",
-        "category": "school",
-        "address": "27 bis rue du progrès",
-        "creationyear": "2001",
-        "url": "www.hetic.net",
-        "twitter": "hetic",
-        "facebook": "https://www.facebook.com/hetic.net",
-        "googleplus": "https://plus.google.com/+hetic",
-        "postcode": "93100",
-        "city": "Montreuil",
-        "id": "hetic.txt",
-        "origin": "dirty",
-        "tags": [
-          "creation",
-          "technologie",
-          "business"
-        ],
-        "oldid": "www.hetic.net"
-      },
-      "dirty": true,
-      "_id": "51bc62fbe044c3c45900000b"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.368670004000421,
-          48.8614999990005
-        ]
-      },
-      "properties": {
-        "name": "bobomicro",
-        "email": "contact@bobomicro.fr",
-        "description": "le labo bomicro, acteur du numérique du futur",
-        "category": "entreprise",
-        "address": "1 bis passage saint sebastien",
-        "creationyear": "2001",
-        "url": "http://bobomicro.fr",
-        "twitter": "bobomicro",
-        "postcode": "75011",
-        "city": "paris",
-        "id": "bobomicro.txt",
-        "origin": "dirty",
-        "oldid": "bobomicro.fr"
-      },
-      "dirty": true,
-      "_id": "51bc6e35e044c3c45900000c"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.5923376060004557,
-          48.83698844200046
-        ]
-      },
-      "properties": {
-        "name": "incubator Descartes",
-        "email": "jcdetauzia@incubateur-descartes.com",
-        "description": "ID est un incubateur territorial implanté au cœur du Cluster Descartes à Marne-la-Vallée. Adossé notamment aux établissements du PRES Université Paris-Est, nous accompagnons des projets dans les domaines ville durable et santé et société.",
-        "category": "incubator",
-        "address": "23 rue Alfred Nobel",
-        "creationyear": "2010",
-        "url": "www.incubateur-descartes.com",
-        "twitter": "InfoDescartes",
-        "facebook": "https://www.facebook.com/incubatorDescartes",
-        "linkedin": "http://www.linkedin.com/company/incubator-descartes",
-        "postcode": "77420 Champs-sur-Marne",
-        "city": "",
-        "id": "incubateur-descartes.txt",
-        "origin": "dirty",
-        "tags": [
-          "technologie",
-          "coaching",
-          "hebergement"
-        ],
-        "oldid": "www.incubateur-descartes.com"
-      },
-      "dirty": true,
-      "_id": "51c188910ab9bc8a0c000002"
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.57732482500046,
-          48.95705913900048
-        ]
-      },
-      "properties": {
-        "name": "SentiMonitor",
-        "email": "alexandre.bourlier@sentimonitor.com",
-        "description": "Solution de veille et d'analyse des médias sociaux.",
-        "category": "entreprise",
-        "address": "27 av la Fontaine",
-        "creationyear": "2013",
-        "url": "www.sentimonitor.com/fr",
-        "twitter": "Sentimonitor_fr",
-        "postcode": "93290",
-        "city": "Tremblay en France",
-        "id": "sentimonitor.txt",
-        "origin": "dirty",
-        "oldid": "www.sentimonitor.com/fr"
-      },
-      "dirty": true,
-      "_id": "51c1d2b2baff66a279000002"
+      "_id": "52256a51597a759423000003"
     }
   ]
 }

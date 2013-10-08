@@ -130,9 +130,11 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
 
         handleSortClick : function(e) {
             var sort = $(e.currentTarget).data('sort');
+            var sortOrder = $(e.currentTarget).data('sort-order') || 'asc';
+
             Backbone.pubSub.trigger('sort', {
                 sort : sort,
-                sortOrder : 'asc'
+                sortOrder : sortOrder
             });
         },
 
