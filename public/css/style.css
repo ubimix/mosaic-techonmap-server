@@ -380,3 +380,27 @@ body {
 	background: none;
 	border: none;
 }
+
+.thumbnail {
+	border: none;
+}
+
+.thumbnail .caption {
+	padding: 9px 0px 0px 0px;
+	color: #333333;
+}
+
+.handsontable th,.handsontable td {
+	border: none;
+}
+
+.handsontable tr:last-child td {
+	border-bottom: 1px solid #CCC;;
+}
+
+
+.handsontable td:last-child
+    {
+    border-right: 1px solid #CCC;;
+}
+

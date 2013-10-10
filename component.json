@@ -15,6 +15,7 @@
     "codemirror":"~3.18.0",
     "handsontable":"*",
     "font-awesome":"*",
-    "leaflet-dist" : "*"
+    "leaflet-dist" : "*",
+    "x-editable" : "*"
   }
 }

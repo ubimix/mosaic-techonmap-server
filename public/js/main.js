@@ -57,6 +57,14 @@ require.config({
             exports : 'BootstrapDropdown',
             deps : [ 'jQuery' ]
         },
+        'BootstrapTooltip' : {
+            exports : 'BootstrapTooltip',
+            deps : [ 'jQuery' ]
+        },
+        'BootstrapPopover' : {
+            exports : 'BootstrapPopover',
+            deps : [ 'jQuery' ,'BootstrapTooltip']
+        },
         'Typeahead' : {
             exports : 'Typeahead',
             deps : [ 'jQuery' ],
@@ -79,6 +87,13 @@ require.config({
         },
         'Leaflet' : {
             exports : 'L'
+        },
+        'Xeditable' : {
+            deps : [ 'jQuery', 'BootstrapPopover' ],
+            init : function() {
+                jQuery.fn.editable.defaults.mode = 'inline';
+                return jQuery.fn.editable;
+            }
         }
     },
 
@@ -97,6 +112,8 @@ require.config({
         Typeahead : './../components/typeahead.js/dist/typeahead',
         BootstrapModal : './../components/bootstrap/js/modal',
         BootstrapDropdown : './../components/bootstrap/js/dropdown',
+        BootstrapTooltip : './../components/bootstrap/js/tooltip',
+        BootstrapPopover : './../components/bootstrap/js/popover',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         moment : './../components/momentjs/min/moment+langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
@@ -104,6 +121,7 @@ require.config({
         CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
         Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
         Leaflet : './../components/leaflet-dist/leaflet',
+        Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable'
     }
 });
 

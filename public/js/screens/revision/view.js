@@ -1,4 +1,4 @@
-define([ 'Backbone', 'utils', '../resource/contentView', 'text!./view.html' ],
+define([ 'Backbone', 'utils', '../resource/table-view', 'text!./view.html' ],
 
 function(Backbone, Utils, ResourceContentView, RevisionContainerTemplate) {
     var View = Backbone.View.extend({
