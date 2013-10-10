@@ -1,67 +1,80 @@
-define([ 'Backbone', 'Underscore', 'Handsontable', '../models/Resource', 'utils', 'text!./table-view.html' ],
+define([ 'Backbone', 'Underscore', 'Handsontable', 'Leaflet', '../models/Resource', 'utils', 'text!./table-view.html' ],
 
-function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
+function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTemplate) {
 
     // TODO:move this model information to the Resource model attributes ?
-    var dataModel = [ {
-        title : 'Identifiant',
-        property : 'id'
-    }, {
-        title : 'Nom',
-        property : 'name'
-    }, {
-        title : 'Description',
-        property : 'description'
-    }, {
-        title : 'Web',
-        property : 'url'
-    }, {
-        title : 'Catégorie',
-        property : 'category'
-    }, {
-        title : 'Tags',
-        property : 'tags'
-    }, {
+    var geoDataModel = [ {
         title : 'Adresse',
-        property : 'address'
+        property : 'properties.address'
     }, {
         title : 'Code postal',
-        property : 'postcode',
+        property : 'properties.postcode',
         validator : integerValidator
-    }, {
-        title : 'Email',
-        property : 'email',
-        validator : emailValidator
     }, {
         title : 'Ville',
-        property : 'city'
-    }, {
-        title : 'Date de création',
-        property : 'creationyear',
-        validator : integerValidator
-    }, {
-        title : 'Twitter',
-        property : 'twitter'
-    }, {
-        title : 'LinkedIn',
-        property : 'linkedin'
-    }, {
-        title : 'Google+',
-        property : 'googleplus'
-    }, {
-        title : 'Facebook',
-        property : 'facebook'
-    }, {
-        title : 'Viadeo',
-        property : 'viadeo'
+        property : 'properties.city'
     }, {
         title : 'Latitude',
-        property : 'lat',
+        property : 'geometry.coordinates.1',
         validator : numberValidator
     }, {
         title : 'Longitude',
-        property : 'lng',
+        property : 'geometry.coordinates.0',
         validator : numberValidator
+    }];
+
+    var dataModel = [ {
+        title : 'Web',
+        property : 'properties.url'
+    }, {
+        title : 'Catégorie',
+        property : 'properties.category',
+        getLabelFromValue: function(value) {
+            return ResourceModel.categoryLabels[value]||value;
+        },
+        getValueFromLabel: function(value) {
+            return ResourceModel.categoryLabels[value]||value;
+        },
+        getPossibleValues: function() {
+            return _.values(ResourceModel.categoryLabels);
+        }
+    }, {
+        title : 'Tags',
+        property : 'properties.tags',
+        getLabelFromValue: function(value) {
+            if (!_.isArray(value)) {
+                value = [];
+            }
+            return value.join(', ');
+        },
+        getValueFromLabel: function(value) {
+            value = value||'';
+            var array = value.split(/\s*[,;]\s*/);
+            return array;
+        },
+    },  {
+        title : 'Email',
+        property : 'properties.email',
+        validator : emailValidator
+    }, {
+        title : 'Date de création',
+        property : 'properties.creationyear',
+        validator : integerValidator
+    }, {
+        title : 'Twitter',
+        property : 'properties.twitter'
+    }, {
+        title : 'LinkedIn',
+        property : 'properties.linkedin'
+    }, {
+        title : 'Google+',
+        property : 'properties.googleplus'
+    }, {
+        title : 'Facebook',
+        property : 'properties.facebook'
+    }, {
+        title : 'Viadeo',
+        property : 'properties.viadeo'
     } ];
 
     function emailValidator(value, callback) {
@@ -89,70 +102,7 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
         }
     }
 
-    function newHandsontable($el, attributes, readOnly, readOnlyId) {
-        var props = attributes.properties;
-
-        var propertyNameRenderer = function(instance, td, row, col, prop, value, cellProperties) {
-            // var escaped = Handsontable.helper.stringify(value);
-            td.innerHTML = '<b>' + value + '</b>';
-            td.style.background = '#EEE';
-            return td;
-        };
-
-        var data = [];
-        var cellMetaMap = {};
-        _.each(dataModel, function(item, index) {
-            if (item.property == 'lat') {
-                data.push([ item.title, attributes.geometry.coordinates[1] ]);
-            } else if (item.property == 'lng') {
-                data.push([ item.title, attributes.geometry.coordinates[0] ]);
-            } else if (item.property == 'category') {
-                data.push([ item.title, ResourceModel.categoryLabels[props[item.property]] ]);
-            } else {
-                data.push([ item.title, props[item.property] ]);
-            }
-            cellMetaMap[index] = item;
-        });
-
-        // TODO: the scope should be the elt, not the document ($elt.find(...)
-        // instead of $(...))
-        var $container = $el.find('.property-table');
-        $container.handsontable({
-            data : data,
-            colWidths : [ 120, 400 ],
-            cells : function(row, col, prop) {
-                var cellProperties = {};
-                if (col == 0 || readOnly) {
-                    cellProperties.readOnly = true;
-                }
-                if (col == 0) {
-                    cellProperties.renderer = propertyNameRenderer;
-                } else if (col == 1) {
-
-                    if (cellMetaMap[row].property == 'category') {
-                        cellProperties.type = 'autocomplete';
-                        cellProperties.source = _.values(ResourceModel.categoryLabels);
-                    }
-
-                    if (cellMetaMap[row].validator)
-                        cellProperties.validator = cellMetaMap[row].validator;
-
-                    if (cellMetaMap[row].property == 'id' && readOnlyId) {
-                        cellProperties.readOnly = true;
-                    }
-
-                }
-                return cellProperties;
-            }
-        });
-
-        // TODO: the scope should be the elt, not the document ($elt.find(...)
-        // instead of $(...))
-        var ht = $('.property-table').handsontable('getInstance');
-        return ht;
-
-    }
-
+    
     var ResourceTableView = Backbone.View.extend({
         initialize : function(options) {
             this.readOnly = this.options.readOnly ? true : false;
@@ -163,13 +113,109 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
                 view : this
             });
             this.$el.html(html);
-
+            
+            var id = this.model.getPath();
+            if (!id || id=='')
+                this.$('.id').removeAttr('disabled');
+            
             var readOnlyId = this._getProperties().id != '';
 
-            this.tableEditor = newHandsontable(this.$el, this._getAttributes(), this.readOnly, readOnlyId);
+            var schema = dataModel;
+            this.tableEditor = this._newHandsontable('.property-table', schema);
+
+            var geoSchema = geoDataModel;
+            this.geoEditor = this._newHandsontable('.geo-table', geoSchema);
+
+            this.$('.dragdealer.horizontal').hide();
+            
+            var mapContainer = this.$('.map-container');
+            this.map = this._newMap(mapContainer);
 
             return this;
+        },
 
+        _newMap : function(mapContainer) {
+            var elm = mapContainer[0];
+            var geometry = this.model.get('geometry');
+            var map = Leaflet.map(elm, {
+                center: [ geometry.coordinates[1],geometry.coordinates[0]],
+                zoom: 13
+            });
+            
+            Leaflet.tileLayer('http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png', {
+                attribution: false,
+                maxZoom: 18
+            }).addTo(map);
+            
+            var marker = Leaflet.marker([geometry.coordinates[1], geometry.coordinates[0]]);
+            marker.addTo(map);
+            return map;
+        },
+        
+        _newHandsontable : function(selector, schema) {
+            var $container = this.$(selector);
+            var attributes = this.model.attributes;
+            
+            var props = this.model.get('properties');
+            var geometry = this.model.get('geometry');
+
+            var propertyNameRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+                // var escaped = Handsontable.helper.stringify(value);
+                td.innerHTML = '<b>' + value + '</b>';
+                td.style.background = '#EEE';
+                return td;
+            };
+
+            var data = [];
+            var cellMetaMap = {};
+            _.each(schema, function(item, index) {
+                var value = Utils.selectFromObject(attributes, item.property);
+                if (item.getLabelFromValue) {
+                    value = item.getLabelFromValue(value);
+                }
+                data.push([item.title, value]);
+                cellMetaMap[index] = item;
+            });
+
+            // TODO: the scope should be the elt, not the document
+            // ($elt.find(...)
+            // instead of $(...))
+            var that = this;
+            $container.handsontable({
+                data : data,
+                colWidths : [ 120 ],
+                stretchH : 'last',
+                cells : function(row, col, prop) {
+                    var cellProperties = {};
+                    if (col == 0 || that.readOnly) {
+                        cellProperties.readOnly = true;
+                    }
+                    if (col == 0) {
+                        cellProperties.renderer = propertyNameRenderer;
+                    } else if (col == 1) {
+                        var item = cellMetaMap[row];
+                        if (item.getPossibleValues) {
+                            cellProperties.type = 'autocomplete';
+                            cellProperties.source = item.getPossibleValues();
+                        }
+                        if (cellMetaMap[row].validator)
+                            cellProperties.validator = cellMetaMap[row].validator;
+                    }
+                    return cellProperties;
+                }
+            });
+            // TODO: the scope should be the elt, not the document
+            // ($elt.find(...)
+            // instead of $(...))
+            return $container.handsontable('getInstance');
+        },
+
+        getId : function() {
+            return this._getProperties().id || '';
+        },
+
+        getDescription : function() {
+            return this._getProperties().description || '';
         },
 
         getFormattedProperties : function() {
@@ -193,37 +239,39 @@ function(Backbone, _, Handsontable, ResourceModel, Utils, ContentViewTemplate) {
             return properties;
         },
 
-        updateModel : function() {
-            var data = this.tableEditor.getDataAtCol(1);
-            var newProps = {};
-            var geometry = {
-                type : 'Point',
-                coordinates : []
-            };
-            _.each(dataModel, function(item, index) {
-                if (item.property == 'lat') {
-                    geometry.coordinates[1] = data[index];
-                } else if (item.property == 'lng') {
-                    geometry.coordinates[0] = data[index];
-                } else if (item.property == 'tags') {
-                    // TODO: the switch from string to populateArray should be
-                    // handled through
-                    // event handling at the table level
-                    if (typeof data[index] == 'string') {
-                        newProps[item.property] = data[index] ? data[index].split(',') : [];
-                    } else {
-                        newProps[item.property] = data[index];
-                    }
-                } else if (item.property == 'category') {
-                    newProps[item.property] = ResourceModel.mapCategory(data[index]);
-                } else {
-                    newProps[item.property] = data[index];
+        _doUpdateModel : function(attributes, editor, schema) {
+            var data = editor.getDataAtCol(1);
+            var changed = false;
+            _.each(schema, function(item, index) {
+                var value = data[index];
+                if (item.getValueFromLabel) {
+                    value = item.getValueFromLabel(value);
                 }
+                changed |= Utils.updateObject(attributes, item.property, value);
             });
-
-            this.model.set('properties', newProps);
-            this.model.set('geometry', geometry);
-            return this.model;
+            return changed;
+        },
+        
+        updateModel : function() {
+            var copy = this.model.getCopy();
+            var attributes = copy.attributes;
+            var changed = false;
+            changed |= this._doUpdateModel(attributes, this.tableEditor, dataModel);
+            changed |= this._doUpdateModel(attributes, this.geoEditor, geoDataModel);
+            
+            var description = this.$('.description').val();
+            changed |= Utils.updateObject(attributes, 'properties.description', description);
+            
+            var id = this.$('.id').val();
+            changed |= Utils.updateObject(attributes, 'properties.id', id);
+            if (changed) {
+                // FIXME: use "validate" method to check that this field is
+                // valid
+            }
+            
+            console.log('attr', attributes);
+            
+            return copy;
         }
     });
 

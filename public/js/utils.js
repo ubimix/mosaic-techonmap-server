@@ -25,7 +25,7 @@ function(_, YAML, Moment, Resource, Dialog) {
 
     }
     
-    Utils.showOkDialog = function(title, message) {
+    Utils.showOkDialog = function(title, message, callback) {
         var dialog = new Dialog({
             title : title,
             content : message,
@@ -34,6 +34,9 @@ function(_, YAML, Moment, Resource, Dialog) {
                 primary : true,
                 action : function() {
                     dialog.hide();
+                    if (callback) {
+                        callback();
+                    }
                 }
             } ]
         });
@@ -61,6 +64,7 @@ function(_, YAML, Moment, Resource, Dialog) {
     
     // TODO: externalize this script and these mappings
     var fieldMapping = {
+            'Identifiant' : 'id',
             'Nom' : 'name',
             'Description' : 'description',
             'Tag 1' : 'tag1',
@@ -132,9 +136,12 @@ function(_, YAML, Moment, Resource, Dialog) {
             }
         }
         
-        // var id = buildId(properties.url);
-        var id = buildId(properties.name);
-        properties.id = id;
+        // build id only if not already present in properties
+        var id = properties.id;
+        if (!id) {
+            id = buildId(properties.name);
+            properties.id = id;
+        }
         var coordinates = [ parseFloat(removeProp('lng'))||0, parseFloat(removeProp('lat'))||0 ];
         var tags = [];
         var tag;
@@ -202,6 +209,45 @@ function(_, YAML, Moment, Resource, Dialog) {
             return '';
         return moment(timestamp).lang('fr').calendar();
     }
+    
+    
+    Utils.selectFromObject = function(node, path) {
+        var array = path.split('.');
+        var n = node;
+        _.each(array, function(segment) {
+            if (n) {
+                n = n[segment];
+            }
+        })
+        return n;
+    }
+    
+    Utils.updateObject = function(node, path, value) {
+        var array = path.split('.');
+        var n = node;
+        var container = n;
+        var len = array.length - 1;
+        for (var i=0; i<len;i++) {
+            var segment = array[i];
+            container = n[segment];
+            if (container == null) {
+                if (i  < len - 1 && array[i+1].match(/^\d+$/)) {
+                    container = [];
+                } else {
+                    container = {};
+                }
+                n[segment] = container;
+            }
+            n = container;
+        }
+        var result = false;
+        var prop = array[len];
+        if (container) {
+            container[prop] = value;
+            result = true;
+        }
+        return result;
+    } 
 
     return Utils;
 });

@@ -4,15 +4,15 @@
 </div>
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
-		<span class="navbar-brand">
+		<div class="navbar-brand">
 			<ol class="breadcrumb">
-				<li>Tableau de bord&nbsp;&nbsp;&nbsp;<span class="badge pull-right">{{= collection.info().totalRecords }}</span></li>
+				<li><i class="glyphicon glyphicon-home"></i> Tableau de bord&nbsp;&nbsp;&nbsp;<span class="badge pull-right">{{= collection.info().totalRecords }}</span></li>
 			</ol>
-		</span>
+		</div>
 	</div>
 	<ul class="navbar-brand nav navbar-nav right">
 
-		<div class="btn-group">
+		<li class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle"
 				data-toggle="dropdown">
 				Trier <span class="caret"></span>
@@ -26,9 +26,9 @@
 					data-sort="attributes.sys.updated.timestamp" data-sort-order="desc">Par
 						date</a></li>
 			</ul>
-		</div>
+		</li>
 
-		<div class="btn-group">
+		<li class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle"
 				data-toggle="dropdown">
 				Afficher <span class="caret"></span>
@@ -38,12 +38,10 @@
 				<li><a href="#">50</a></li>
 				<li><a href="#">100</a></li>
 			</ul>
-		</div>
-
+		</li>
+		<li>
 		<button type="button" class="btn btn-primary action-validate">Valider</button>
-
-
-
+        </li>
 	</ul>
 
 

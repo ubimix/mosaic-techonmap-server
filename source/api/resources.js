@@ -29,8 +29,7 @@ function updateResourceFields(resource, geoJson) {
 /** Copies all required fields from the specified resource */
 function getGeoJsonFromResource(resource, showSystemProperties) {
     var id = resource.getPath();
-    var coordinates = resource.geometry ? _
-            .clone(resource.geometry.coordinates) : [];
+    var coordinates = resource.geometry ? _.clone(resource.geometry.coordinates) : [];
     // console.log(' * ' + id);
     // console.log(JSON.stringify(resource));
     var properties = _.clone(resource.properties);
@@ -58,12 +57,10 @@ function getPathFromGeoJson(geoJson) {
     if (!result) {
         var properties = geoJson.properties = (geoJson.properties || {});
         if (!result) {
-            result = properties.path = (properties.path || Namer
-                    .normalize(properties.name));
+            result = properties.id = (properties.id || Namer.normalize(properties.name));
         }
         if (!result) {
-            result = properties.id = (properties.id || Namer
-                    .normalize(properties.name));
+            result = sys.path = (sys.path || Namer.normalize(properties.name));
         }
     }
     result = JSCR.normalizePath(result);
@@ -171,8 +168,7 @@ function importGeoJSONItem(project, itemPath, item, options) {
 
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
-    var items = _.isArray(json.features) ? json.features
-            : _.isArray(json) ? json : [ json ];
+    var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
     var promise = Q();
     var result = {};
     _.each(items, function(item) {
@@ -274,10 +270,9 @@ function initializeApplication(app, project) {
     /** Loads and returns all root resources from the storage */
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(
-                function(results) {
-                    return getGeoJsonList(results, true);
-                }));
+        reply(req, res, project.loadChildResources(path).then(function(results) {
+            return getGeoJsonList(results, true);
+        }));
     });
 
     /**
@@ -286,10 +281,9 @@ function initializeApplication(app, project) {
      */
     app.get('/api/resources/export', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(
-                function(results) {
-                    return getGeoJsonList(results, false);
-                }));
+        reply(req, res, project.loadChildResources(path).then(function(results) {
+            return getGeoJsonList(results, false);
+        }));
     });
 
     /** Returns individual resource by its path */
@@ -317,35 +311,33 @@ function initializeApplication(app, project) {
     function saveResource(req, res) {
         reply(req, res, loadJsonFromRequest(req)
 
-        .then(
-                function(json) {
-                    var path = getRequestedPath(req);
-                    if (path == '') {
-                        path = getPathFromGeoJson(json);
-                    }
-                    var options = getOptionsFromRequest(req);
-                    console.log('Try to save the following resource "' + path
-                            + '": ', json)
-                    return importGeoJSONItem(project, path, json, options)
+        .then(function(json) {
+            var path = getRequestedPath(req);
+            if (path == '') {
+                path = getPathFromGeoJson(json);
+            }
+            var options = getOptionsFromRequest(req);
+            console.log('Try to save the following resource "' + path + '": ', json)
+            return importGeoJSONItem(project, path, json, options)
 
-                    .then(function(value) {
-                        // remove the resource from the validation object
-                        var timestampPath = '.admin-timestamp';
-                        return project
+            .then(function(value) {
+                // remove the resource from the validation object
+                var timestampPath = '.admin-timestamp';
+                return project
 
-                        .loadResource(timestampPath)
+                .loadResource(timestampPath)
 
-                        .then(function(resource) {
-                            // Change it
-                            var properties = resource.getProperties();
-                            var list = properties.validated || [];
-                            properties.validated = _.without(list, path);
-                            return project.storeResource(resource, options);
-                        }).then(function() {
-                            return value;
-                        })
-                    });
-                }));
+                .then(function(resource) {
+                    // Change it
+                    var properties = resource.getProperties();
+                    var list = properties.validated || [];
+                    properties.validated = _.without(list, path);
+                    return project.storeResource(resource, options);
+                }).then(function() {
+                    return value;
+                })
+            });
+        }));
     }
     app.post('/api/resources/:path', saveResource);
     app.put('/api/resources/:path', saveResource);
@@ -353,7 +345,8 @@ function initializeApplication(app, project) {
     /** Removes a resource with the specified path. */
     app['delete']('/api/resources/:path', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.deleteResource(path).then(function(success) {
+        var options = getOptionsFromRequest(req);
+        reply(req, res, project.deleteResource(path, options).then(function(success) {
             return {
                 result : 'OK'
             };
@@ -363,13 +356,12 @@ function initializeApplication(app, project) {
     /** Returns a list of versions for the specified resource */
     app.get('/api/resources/:path/history', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadResourceHistory(path).then(
-                function(history) {
-                    if (!history || !history.length) {
-                        throw HttpError.notFound(path);
-                    }
-                    return history;
-                }));
+        reply(req, res, project.loadResourceHistory(path).then(function(history) {
+            if (!history || !history.length) {
+                throw HttpError.notFound(path);
+            }
+            return history;
+        }));
     });
 
     /**
@@ -429,19 +421,18 @@ function initializeApplication(app, project) {
     });
 
     app.get('/api/validation', function(req, res) {
-        reply(req, res, project.loadResource('.admin-timestamp').then(
-                function(resource) {
-                    if (!resource) {
-                        var options = getOptionsFromRequest(req);
-                        return importGeoJSONItem(project, '.admin-timestamp', {
-                            properties : {
-                                validated : [],
-                                timestamp : 0
-                            }
-                        }, options);
+        reply(req, res, project.loadResource('.admin-timestamp').then(function(resource) {
+            if (!resource) {
+                var options = getOptionsFromRequest(req);
+                return importGeoJSONItem(project, '.admin-timestamp', {
+                    properties : {
+                        validated : [],
+                        timestamp : 0
                     }
-                    return getGeoJsonFromResource(resource);
-                }));
+                }, options);
+            }
+            return getGeoJsonFromResource(resource);
+        }));
 
     });
 
@@ -468,7 +459,7 @@ module.exports = function(app) {
         name : 'techonmap',
         // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',
-        author : 'author <author>',
+        author : 'TechOnMap <admin@techonmap.fr>',
         cacheMaxSize : 300000,
         cacheMaxAge : 1 * YEAR
     };
@@ -479,5 +470,9 @@ module.exports = function(app) {
     .then(function(project) {
         initializeApplication(app, project);
         return true;
+    }).fail(function(err) {
+        console.log('error', err);
+        throw err;
     });
+
 }
