@@ -118,8 +118,8 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
             if (!id || id=='')
                 this.$('.id').removeAttr('disabled');
             
-            var readOnlyId = this._getProperties().id != '';
-
+            this.contentEditor = Utils.newCodeMirror($('.description').get(0), {lineNumbers : false}, this.options.readOnly, this.getDescription());
+            
             var schema = dataModel;
             this.tableEditor = this._newHandsontable('.property-table', schema);
 
@@ -161,10 +161,34 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
 
             var propertyNameRenderer = function(instance, td, row, col, prop, value, cellProperties) {
                 // var escaped = Handsontable.helper.stringify(value);
-                td.innerHTML = '<b>' + value + '</b>';
+                td.innerHTML = value;
                 td.style.background = '#EEE';
                 return td;
             };
+            
+            var linkRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+                if (value) {
+                    var href= value;
+                    if (value.indexOf('http')!=0) {
+                        href = 'http://'+value;
+                    }
+                    td.innerHTML = '<a href="' + href + '">'+value+'</a>';
+                }
+                return td;
+                
+            };
+            
+            var twitterRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+                if (value) {
+                    var href= value;
+                    if (value.indexOf('http')!=0) {
+                        href = 'https://twitter.com/'+value;
+                    }
+                    td.innerHTML = '<a href="' + href + '">'+value+'</a>';
+                }
+                return td;                
+                
+            }
 
             var data = [];
             var cellMetaMap = {};
@@ -185,6 +209,8 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
                 data : data,
                 colWidths : [ 120 ],
                 stretchH : 'last',
+                multiSelect : false,
+                fillHandle : false,
                 cells : function(row, col, prop) {
                     var cellProperties = {};
                     if (col == 0 || that.readOnly) {
@@ -194,7 +220,14 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
                         cellProperties.renderer = propertyNameRenderer;
                     } else if (col == 1) {
                         var item = cellMetaMap[row];
-                        if (item.getPossibleValues) {
+                        
+                        var linkProperties = ['properties.url','properties.linkedin','properties.viadeo','properties.facebook'];
+                        
+                        if (_.indexOf(linkProperties, item.property)>=0) {
+                            cellProperties.renderer = linkRenderer;    
+                        } else if (item.property=='properties.twitter') {
+                            cellProperties.renderer = twitterRenderer;
+                        } else if (item.getPossibleValues) {
                             cellProperties.type = 'autocomplete';
                             cellProperties.source = item.getPossibleValues();
                         }
@@ -259,7 +292,7 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
             changed |= this._doUpdateModel(attributes, this.tableEditor, dataModel);
             changed |= this._doUpdateModel(attributes, this.geoEditor, geoDataModel);
             
-            var description = this.$('.description').val();
+            var description = this.contentEditor.getValue();
             changed |= Utils.updateObject(attributes, 'properties.description', description);
             
             var id = this.$('.id').val();

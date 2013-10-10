@@ -1,8 +1,8 @@
 //table-view / contentView
 
-define([ 'Backbone', 'BootstrapGrowl', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
+define([ 'Backbone', 'BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
 
-function(Backbone, BootstrapGrowl, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
+function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
 
     var ResourceContainerView = Backbone.View.extend({
 
@@ -40,6 +40,8 @@ function(Backbone, BootstrapGrowl, Validator, viewManager, Utils, ResourceConten
 
             this.$('#editors').append(this.contentView.$el);
             this.contentView.render();
+            
+            this.$('.name').editable({showbuttons:false, highlight:false, emptytext:'Nom', unsavedclass:null});
 
             return this;
         },
@@ -85,7 +87,7 @@ function(Backbone, BootstrapGrowl, Validator, viewManager, Utils, ResourceConten
             // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
             var self = this;
             
-            var name = this.$('.name').val();
+            var name = this.$('.name').text();
             var updatedModel = this.contentView.updateModel();
             Utils.updateObject(updatedModel.attributes, 'properties.name', name);
             console.log('model', this.model);

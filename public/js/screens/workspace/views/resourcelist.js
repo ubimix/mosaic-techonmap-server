@@ -99,7 +99,7 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
             var id = e.attr('data-id');
             content.attr('data-loaded', true);
             var media = content.parent().parent();
-            content.html('Loading...');
+            content.html('Chargement...');
             media.toggleClass('expanded');
             content.toggle();
             var that = this;
