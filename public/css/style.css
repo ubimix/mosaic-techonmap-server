@@ -404,3 +404,6 @@ body {
     border-right: 1px solid #CCC;;
 }
 
+.name-control {
+	min-width:300px;
+}
