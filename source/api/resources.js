@@ -200,10 +200,9 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    // var connection = new JSCR.Implementation.Memory.WorkspaceConnection({});
-    var connection = new JSCR.Implementation.Git.WorkspaceConnection({
-        rootDir : options.dir
-    });
+    // var connection = new
+    // JSCR.Implementation.Memory.WorkspaceConnection(options);
+    var connection = new JSCR.Implementation.Git.WorkspaceConnection(options);
     return connection.connect()
     // Create a project
     .then(function(workspace) {
@@ -459,12 +458,19 @@ function initializeApplication(app, project) {
 /* The main exported module (the 'main' function) */
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
+    var SEC = 1000; // 1000 milliseconds
+    var MIN = 60 * SEC;
+    var HOUR = 60 * MIN;
+    var DAY = 24 * HOUR;
+    var YEAR = 365 * DAY;
     var options = {
         dir : './tmp',
         name : 'techonmap',
         // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',
-        author : 'author <author>'
+        author : 'author <author>',
+        cacheMaxSize : 300000,
+        cacheMaxAge : 1 * YEAR
     };
     // var promise = loadData(options);
     var promise = initProject(options);
