@@ -139,7 +139,7 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
             var geometry = this.model.get('geometry');
             var map = Leaflet.map(elm, {
                 center: [ geometry.coordinates[1],geometry.coordinates[0]],
-                zoom: 10
+                zoom: 12
             });
             
             Leaflet.tileLayer('http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png', {
