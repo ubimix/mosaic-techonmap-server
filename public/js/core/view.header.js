@@ -1,9 +1,14 @@
-define([ 'jQuery', 'Underscore', 'Backbone', 'Typeahead', 'UmxAppTemplates' ],
+define([ 'jQuery', 'Underscore', 'Backbone', 'Typeahead', 'UmxAppTemplates', '../screens/export/Export', 'BootstrapDropdown' ],
 
-function($, _, Backbone, Typeahead, templates) {
+function($, _, Backbone, Typeahead, templates, ExportDialog) {
     var View = Backbone.View.extend({
         template : templates['HeaderView'],
 
+        events : {
+            'click .export' : 'exportClicked'
+        },
+
+        
         render : function() {
             this.$el.html(this.template(this.options));
             var searchInput = this.$el.find('.umx-typeahead');
@@ -44,6 +49,23 @@ function($, _, Backbone, Typeahead, templates) {
             });
 
             return this;
+        },
+        
+        exportClicked : function(event) {
+            console.log('export clicked');
+            var dialog = new ExportDialog({
+                title : 'Hello',
+                content : 'Bonjour',
+                actions : [ {
+                    label : 'Fermer',
+                    primary : true,
+                    action : function() {
+                        dialog.hide();
+                    }
+                } ]
+            });
+            dialog.show();
+
         }
     });
     return View;

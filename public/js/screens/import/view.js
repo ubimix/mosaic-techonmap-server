@@ -27,7 +27,8 @@ define(
                         render : function() {
                             this.$el.html('<div class="content"></div>');
                             this.csvEditor = Utils.newCodeMirror(this.$el.find('.content').get(0), {}, false, '');
-                            this.setValue('Nom,Description,Tag 1,Tag 2,Tag 3,Latitude,Longitude,N° et nom de rue,CP,Ville,Année de création,Url site web,Nom compte Twitter,Url page Facebook,Url page Google +,Url page Linkedin,Url page Viadeo,Catégorie');
+                            this
+                                    .setValue('Identifiant,Nom,Description,Tag 1,Tag 2,Tag 3,Latitude,Longitude,N° et nom de rue,CP,Ville,Année de création,Url site web,Nom compte Twitter,Url page Facebook,Url page Google +,Url page Linkedin,Url page Viadeo,Catégorie');
                             return this;
                         },
 
@@ -111,14 +112,22 @@ define(
                 },
 
                 csvToArray : function() {
-                    var data = this.textView.getValue();
-                    this.csvValue = data;
-                    var array = jQueryCsv.toArrays(data);
+                    var options = {
+                        separator : this.$('.separator').val(),
+                        delimiter : this.$('.delimiter').val()
+                    };
+                    console.log('options', options);
+                    this.csvValue = this.textView.getValue();
+                    var array = jQueryCsv.toArrays(this.csvValue, options);
                     return array;
                 },
 
                 importCsv : function() {
                     var geoitems = Utils.toGeoJson(this.csvToArray());
+                    if (geoitems.length == 0) {
+                        return Utils.showOkDialog('Erreur',
+                                'Données insuffisantes. Veillez à ce que la première ligne contienne le nom des champs.');
+                    }
                     // TODO: why can't we send plain arrays . Why do we need a
                     // map ?
 
@@ -145,14 +154,17 @@ define(
 
                 createReport : function(entryList, term) {
                     var buffer = '';
-                    _.each(entryList, function(item, index) {
-                        if (index > 0)
+                    var counter = 0;
+                    _.each(entryList, function(item, key) {
+                        if (counter > 0)
                             buffer += ' -';
-                        buffer += ' <a href="/workspace/' + item.properties.id + '">' + item.properties.name + '</a>';
+                        buffer += '<a href="/workspace/' + item.properties.id + '">' + item.properties.name + '</a>';
+                        counter++;
                     });
-                    if (entryList.length > 0)
-                        return $('<div>' + entryList.length + ' entités ont été ' + term + ' :' + buffer + '.</div>');
-                    return $('<div>' + entryList.length + ' entités ont été ' + term + '.</div>');
+                    var length = _.keys(entryList).length;
+                    if (length > 0)
+                        return $('<div>' + length + ' entités ont été ' + term + ' :' + buffer + '.</div>');
+                    return $('<div>' + length + ' entités ont été ' + term + '.</div>');
 
                 }
 

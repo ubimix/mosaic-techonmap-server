@@ -1,4 +1,4 @@
-define([ 'Backbone', 'Underscore', 'text!./dialog.html', 'Bootstrap' ],
+define([ 'Backbone', 'Underscore', 'text!./dialog.html', 'BootstrapModal' ],
 
 function(Backbone, _, Template) {
 
@@ -23,10 +23,20 @@ function(Backbone, _, Template) {
 
         renderContent : function() {
             var content = this.options.content;
+            return this.prepareContent(content);
+        },
+
+        prepareContent : function(content) {
             if (_.isObject(content) && content.render) {
-                return content.render().$el;
+                var el = content.render().$el;
+                return el.html();
             }
             return content;
+        },
+
+        updateContent : function(content) {
+            content = this.prepareContent(content);
+            this.$el.find('.modal-body').html(content);
         },
 
         renderActionButtons : function() {

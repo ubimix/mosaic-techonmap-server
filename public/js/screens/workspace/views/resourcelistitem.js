@@ -12,7 +12,7 @@ function(Backbone, Utils, Validator, template) {
                 workspace : this.options.workspace,
                 view : this
             }));
-
+            
             this.$el.find('.media-content').hide().html('');
             return this;
         },

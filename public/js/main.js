@@ -49,20 +49,24 @@ require.config({
         },
 
         // TODO: which export
-        'Bootstrap' : {
-            exports : 'Bootstrap',
+        'BootstrapModal' : {
+            exports : 'BootstrapModal',
+            deps : [ 'jQuery' ]
+        },
+        'BootstrapDropdown' : {
+            exports : 'BootstrapDropdown',
             deps : [ 'jQuery' ]
         },
         'Typeahead' : {
             exports : 'Typeahead',
-            deps : [ 'jQuery', 'Bootstrap' ],
+            deps : [ 'jQuery' ],
             init : function() {
                 jQuery.fn.twitterTypeahead = jQuery.fn.typeahead;
                 return jQuery.fn.twitterTypeahead;
             }
         },
-        
-        //Fake dependency to force Handsontable to be loaded after Typeahead
+
+        // Fake dependency to force Handsontable to be loaded after Typeahead
         'Handsontable' : {
             exports : 'Handsontable',
             deps : [ 'jQuery', 'Typeahead' ]
@@ -72,6 +76,9 @@ require.config({
         },
         'CodeMirrorYaml' : {
             deps : [ 'CodeMirror' ]
+        },
+        'Leaflet' : {
+            exports : 'L'
         }
     },
 
@@ -88,13 +95,15 @@ require.config({
         diff_match_patch : './../components/diff-match-patch/diff_match_patch',
         yaml : './../components/yamljs/bin/yaml',
         Typeahead : './../components/typeahead.js/dist/typeahead',
-        Bootstrap : './../components/bootstrap/dist/js/bootstrap',
+        BootstrapModal : './../components/bootstrap/js/modal',
+        BootstrapDropdown : './../components/bootstrap/js/dropdown',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
         moment : './../components/momentjs/min/moment+langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
         CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
-        Handsontable : './../components/handsontable/dist/jquery.handsontable.full'
+        Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
+        Leaflet : './../components/leaflet-dist/leaflet',
     }
 });
 

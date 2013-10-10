@@ -13,6 +13,8 @@
     "requirejs-text": "latest",
     "momentjs":"latest",
     "codemirror":"~3.18.0",
-    "handsontable":"*"
+    "handsontable":"*",
+    "font-awesome":"*",
+    "leaflet-dist" : "*"
   }
 }

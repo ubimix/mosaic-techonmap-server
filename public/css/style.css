@@ -17,7 +17,7 @@ a {
 
 .media-top.validated {
 	background-color: #efefef;
-	color:grey;
+	color: grey;
 }
 
 .media-content {
@@ -298,43 +298,85 @@ ul.menu li {
 	display: inline;
 }
 
-.media-heading .glyphicon { visibility: hidden; }
-.created .media-heading .glyphicon { visibility: visible; }
-.updated .media-heading .glyphicon { visibility: visible; }
+.media-heading .glyphicon {
+	visibility: hidden;
+}
+
+.created .media-heading .glyphicon {
+	visibility: visible;
+}
+
+.updated .media-heading .glyphicon {
+	visibility: visible;
+}
 
 /** FIXME */
 body {
-	overflow-x:hidden;
+	overflow-x: hidden;
 }
 
 .navbar {
-margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
-.navbar-nav li a.btn, .navbar-nav li button {
-	margin-top:5px;
-	padding-top:6px;
-	padding-bottom:6px;
-	
+.navbar-nav li a.btn,.navbar-nav li button {
+	margin-top: 5px;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 
 .handsontable {
-	font-size:inherit;
+	font-size: inherit;
 }
 
 .handsontable td {
-    font-size:inherit;
+	font-size: inherit;
 }
 
 .handsontableInput {
-	font-size:inherit;
+	font-size: inherit;
 }
 
 .handsontable .typeahead {
-	font-size:inherit;
+	font-size: inherit;
 }
-
 
 .published-date {
 	font-size: smaller;
+}
+
+.spinner {
+	display: inline-block;
+	opacity: 0;
+	width: 0;
+	-webkit-transition: opacity 0.25s, width 0.25s;
+	-moz-transition: opacity 0.25s, width 0.25s;
+	-o-transition: opacity 0.25s, width 0.25s;
+	transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+	cursor: progress;
+}
+
+.has-spinner.active .spinner {
+	opacity: 1;
+	width: auto;
+}
+
+.has-spinner.btn.active .spinner {
+	width: 16px;
+}
+
+/** FIXME */
+.handsontable .dragdealer .handle {
+	position: absolute;
+	background: none;
+}
+
+.handsontable .dragdealer {
+	position: relative;
+	height: 0px;
+	background: none;
+	border: none;
 }

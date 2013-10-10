@@ -1,48 +1,26 @@
 
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
-		<span class="navbar-brand">
+		<div class="navbar-brand">
+
 			<ol class="breadcrumb">
-				<li>{{=model.getTitle()}}</li>
+				<li><a href="/{{=workspace}}/"><i
+						class="glyphicon glyphicon-home"></i></a></li>
+				<li><input class="name" value="{{-model.getTitle()}}" /></li>
 			</ol>
-		</span>
+		</div>
 	</div>
 	<ul class="navbar-brand nav navbar-nav right">
-	
+
 		<li>
-		        <button class="validate btn btn-primary">Valider</button>
-				<button class="submit btn btn-default">Enregistrer</button>
-				{{ if (data.sys.path) { }}
-				<button class="history btn btn-default">Voir l'historique</button>
-				<button role="button" class="delete btn btn-default"
-					data-toggle="modal">Supprimer</button>
-				{{ } }}
-			</li>
+			<button class="submit btn btn-primary">Enregistrer</button>
+			<button class="validate btn btn-default">Valider</button> 
+			{{ if (data.sys.path) { }}
+			<button class="history btn btn-default">Voir l'historique</button>
+			<button role="button" class="delete btn btn-default"
+				data-toggle="modal">Supprimer</button> {{ } }}
+		</li>
 	</ul>
 </nav>
 
 <div id='editors'></div>
-
-<div class="modal fade" id="dialog-delete-confirm" tabindex="-1"
-	role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Confirmation</h4>
-			</div>
-			<div class="modal-body">
-				<p>Please confirm the removal of this resource.</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-				<button type="button" class="delete btn btn-default">Confirm</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-

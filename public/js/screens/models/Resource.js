@@ -22,7 +22,7 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             type : 'Feature',
             geometry : {
                 type : 'Point',
-                coordinates : [ 0, 0 ]
+                coordinates : [ 2.34, 48.85 ]
             }
         },
 
@@ -70,6 +70,10 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             return this.get('sys');
         },
 
+        getGeometry : function() {
+            return this.get('geometry');
+        },
+
         getUpdated : function() {
             return this.getSys().updated || {};
         },
@@ -81,15 +85,16 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             return this.getUpdated().versionId;
         },
 
-        updateAndSave : function(properties, geometry, callback) {
+        updateAndSave : function(newModel, callback) {
             var copy = this.getCopy();
-            this.set('properties', properties);
-            this.set('geometry', geometry);
+            this.set('properties', newModel.getProperties());
+            this.set('geometry', newModel.getGeometry());
+            var that = this;
             this.save(null, {
                 error : function(model, xhr) {
                     // restore the model
-                    this.set('properties', copy.get('properties'));
-                    this.set('geometry', copy.get('geometry'));
+                    that.set('properties', copy.get('properties'));
+                    that.set('geometry', copy.get('geometry'));
                     throw new Error('La resource n\'a pu être mise à jour correctement.');
                 },
                 success : function(model) {
@@ -100,6 +105,13 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
                 }
             });
         },
+
+        deleteSysAttributes : function() {
+            delete this.attributes._id;
+            delete this.attributes.sys;
+            delete this.attributes.properties.oldid;
+            delete this.attributes.properties.origin;
+        }
 
     });
 
