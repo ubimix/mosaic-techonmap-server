@@ -57,7 +57,8 @@ function getPathFromGeoJson(geoJson) {
     if (!result) {
         var properties = geoJson.properties = (geoJson.properties || {});
         if (!result) {
-            result = properties.id = (properties.id || Namer.normalize(properties.name));
+            //FIXME in case of Git, ids need to be normalized
+            result = properties.id = (Namer.normalize(properties.id) || Namer.normalize(properties.name));
         }
         if (!result) {
             result = sys.path = (sys.path || Namer.normalize(properties.name));
@@ -196,8 +197,8 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    // var connection = new
-    // JSCR.Implementation.Memory.WorkspaceConnection(options);
+     //var connection = new
+     //JSCR.Implementation.Memory.WorkspaceConnection(options);
     var connection = new JSCR.Implementation.Git.WorkspaceConnection(options);
     return connection.connect()
     // Create a project
@@ -463,8 +464,8 @@ module.exports = function(app) {
         cacheMaxSize : 300000,
         cacheMaxAge : 1 * YEAR
     };
-    // var promise = loadData(options);
-    var promise = initProject(options);
+    var promise = loadData(options);
+    //var promise = initProject(options);
     return promise
     //
     .then(function(project) {
