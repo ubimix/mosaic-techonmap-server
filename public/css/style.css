@@ -394,16 +394,23 @@ body {
 	border: none;
 }
 
-.handsontable tr:last-child td {
-	border-bottom: 1px solid #CCC;;
+.handsontable th:first-child,.handsontable td:first-child,.handsontable .htNoFrame+th,.handsontable .htNoFrame+td
+	{
+	border-left: 1px solid transparent;
 }
 
+.handsontable tr:first-child th,.handsontable tr:first-child td {
+	border-top: 1px solid transparent;
+}
 
-.handsontable td:last-child
-    {
-    border-right: 1px solid #CCC;;
+.handsontable tr:last-child td { /** border-bottom: 1px solid #CCC; */
+	border: none;
+}
+
+.handsontable td:last-child { /** border-right: 1px solid #CCC; */
+	border: none;
 }
 
 .name-control {
-	min-width:300px;
+	min-width: 300px;
 }

@@ -25,7 +25,8 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
 
     var dataModel = [ {
         title : 'Web',
-        property : 'properties.url'
+        property : 'properties.url',
+        renderer : linkRenderer
     }, {
         title : 'Catégorie',
         property : 'properties.category',
@@ -62,20 +63,33 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
         validator : integerValidator
     }, {
         title : 'Twitter',
-        property : 'properties.twitter'
+        property : 'properties.twitter',
+        renderer : twitterRenderer
     }, {
         title : 'LinkedIn',
-        property : 'properties.linkedin'
+        property : 'properties.linkedin',
+        renderer : linkRenderer
     }, {
         title : 'Google+',
-        property : 'properties.googleplus'
+        property : 'properties.googleplus',
+        renderer : linkRenderer
     }, {
         title : 'Facebook',
-        property : 'properties.facebook'
+        property : 'properties.facebook',
+        renderer : linkRenderer
     }, {
         title : 'Viadeo',
-        property : 'properties.viadeo'
+        property : 'properties.viadeo',
+        renderer : linkRenderer
+    }, {
+        title:'Permalien',
+        property : 'permalink',
+        isPersistent : false,
+        renderer : linkRenderer
     } ];
+    
+    
+    /** -------------------------- VALIDATORS --------------------------------- */
 
     function emailValidator(value, callback) {
         if (/.+@.+\..+/.test(value)) {
@@ -102,6 +116,44 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
         }
     }
 
+    
+    /** -------------------------- RENDERERS --------------------------------- */
+    
+    function propertyNameRenderer(instance, td, row, col, prop, value, cellProperties) {
+        // var escaped = Handsontable.helper.stringify(value);
+        td.innerHTML = value;
+        // td.style.background = '#EEE';
+        td.style.color = 'gray';
+        return td;
+    }
+    
+    function linkRenderer(instance, td, row, col, prop, value, cellProperties) {
+        if (value) {
+            var href= value;
+            if (value.indexOf('http')!=0) {
+                href = 'http://'+value;
+            }
+            td.innerHTML = '<a href="' + href + '">'+value+'</a>';
+        }
+        return td;
+        
+    }
+    
+    
+    function twitterRenderer(instance, td, row, col, prop, value, cellProperties) {
+        if (value) {
+            var href= value;
+            if (value.indexOf('http')!=0) {
+                href = 'https://twitter.com/'+value;
+            }
+            td.innerHTML = '<a href="' + href + '">'+value+'</a>';
+        }
+        return td;                
+        
+    }
+    
+    
+    /** -------------------------- TABLE VIEW --------------------------------- */
     
     var ResourceTableView = Backbone.View.extend({
         initialize : function(options) {
@@ -159,47 +211,25 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
             var props = this.model.get('properties');
             var geometry = this.model.get('geometry');
 
-            var propertyNameRenderer = function(instance, td, row, col, prop, value, cellProperties) {
-                // var escaped = Handsontable.helper.stringify(value);
-                td.innerHTML = value;
-                td.style.background = '#EEE';
-                return td;
-            };
-            
-            var linkRenderer = function(instance, td, row, col, prop, value, cellProperties) {
-                if (value) {
-                    var href= value;
-                    if (value.indexOf('http')!=0) {
-                        href = 'http://'+value;
-                    }
-                    td.innerHTML = '<a href="' + href + '">'+value+'</a>';
-                }
-                return td;
-                
-            };
-            
-            var twitterRenderer = function(instance, td, row, col, prop, value, cellProperties) {
-                if (value) {
-                    var href= value;
-                    if (value.indexOf('http')!=0) {
-                        href = 'https://twitter.com/'+value;
-                    }
-                    td.innerHTML = '<a href="' + href + '">'+value+'</a>';
-                }
-                return td;                
-                
-            }
-
             var data = [];
+            var id = this.model.getPath();
             var cellMetaMap = {};
             _.each(schema, function(item, index) {
-                var value = Utils.selectFromObject(attributes, item.property);
-                if (item.getLabelFromValue) {
-                    value = item.getLabelFromValue(value);
+                var value = '';
+                if (item.isPersistent != undefined && !item.isPersistent) {
+                    value = 'http://techonmap.fr/#'+id;    
+                } else {
+                    value = Utils.selectFromObject(attributes, item.property);
+                    if (item.getLabelFromValue) {
+                        value = item.getLabelFromValue(value);
+                    }
+                    
                 }
                 data.push([item.title, value]);
                 cellMetaMap[index] = item;
             });
+            
+            // data.push(['Permalien', 'http://techonmap.fr/#'+id]);
 
             // TODO: the scope should be the elt, not the document
             // ($elt.find(...)
@@ -207,7 +237,7 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
             var that = this;
             $container.handsontable({
                 data : data,
-                colWidths : [ 120 ],
+                colWidths : [ 130 ],
                 stretchH : 'last',
                 multiSelect : false,
                 fillHandle : false,
@@ -220,19 +250,20 @@ function(Backbone, _, Handsontable, Leaflet, ResourceModel, Utils, ContentViewTe
                         cellProperties.renderer = propertyNameRenderer;
                     } else if (col == 1) {
                         var item = cellMetaMap[row];
-                        
-                        var linkProperties = ['properties.url','properties.linkedin','properties.viadeo','properties.facebook'];
-                        
-                        if (_.indexOf(linkProperties, item.property)>=0) {
-                            cellProperties.renderer = linkRenderer;    
-                        } else if (item.property=='properties.twitter') {
-                            cellProperties.renderer = twitterRenderer;
-                        } else if (item.getPossibleValues) {
-                            cellProperties.type = 'autocomplete';
-                            cellProperties.source = item.getPossibleValues();
-                        }
-                        if (cellMetaMap[row].validator)
-                            cellProperties.validator = cellMetaMap[row].validator;
+                        // item may be null for properties like 'permalink'
+                        // which are added only for display
+                            var linkProperties = ['permalink', 'properties.url','properties.linkedin','properties.viadeo','properties.facebook'];
+                            
+                            if (_.indexOf(linkProperties, item.property)>=0) {
+                                cellProperties.renderer = linkRenderer;    
+                            } else if (item.property=='properties.twitter') {
+                                cellProperties.renderer = twitterRenderer;
+                            } else if (item.getPossibleValues) {
+                                cellProperties.type = 'autocomplete';
+                                cellProperties.source = item.getPossibleValues();
+                            }
+                            if (cellMetaMap[row].validator)
+                                cellProperties.validator = cellMetaMap[row].validator;
                     }
                     return cellProperties;
                 }
