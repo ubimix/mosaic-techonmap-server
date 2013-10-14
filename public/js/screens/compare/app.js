@@ -1,15 +1,19 @@
-define([ 'Backbone', '../models/Resource', './view' ], function(Backbone, ResourceModel, CompareView) {
+define([ 'Backbone', '../models/Resource', './view' ],
+
+function(Backbone, ResourceModel, CompareView) {
     return {
         run : function(viewManager, options) {
 
             var revisions1 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : '/api/resources/' + options.path + '/history/' + options.v1
+                url : '/api/resources/' + options.path + '/history/'
+                        + options.v1
             });
 
             var revisions2 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : '/api/resources/' + options.path + '/history/' + options.v2
+                url : '/api/resources/' + options.path + '/history/'
+                        + options.v2
             });
 
             revisions1.fetch({

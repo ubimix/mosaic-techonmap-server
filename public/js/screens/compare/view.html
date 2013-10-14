@@ -1,10 +1,12 @@
+<!-- {{  var revision1 = view.getFirstRevision(); var revision2 = view.getSecondRevision(); var workspace = view.getWorkspace(); }} -->
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
 		<div class="navbar-brand">
 			<ol class="breadcrumb">
-			    <li><a href="/{{=workspace}}/"><i class="glyphicon glyphicon-home"></i></a></li>
-				<li><a href="/{{=workspace}}/{{=revision1.getPath()}}">{{=revision1.getTitle()}}</a></li>
-				<li><a href="/{{=workspace}}/{{=revision1.getPath()}}/history">Historique</a></li>
+				<li><a{{=view.renderLink('')}}><i
+						class="glyphicon glyphicon-home"></i></a></li>
+				<li><a{{=view.renderLink(revision1.getPath()) }}>{{=revision1.getTitle()}}</a></li>
+				<li><a{{=view.renderLink(revision1.getPath() + '/history') }}>Historique</a></li>
 				<li class="active">Comparaison</li>
 			</ol>
 		</div>
@@ -16,9 +18,4 @@
 <p>Version 1: {{=revision1.getVersionId()}} - Version 2:
 	{{=revision2.getVersionId()}}</p>
 
-<pre>
-<div id="outputdiv">
-
-</div>
-</pre>
-
+<pre{{=view.renderDiff()}}></pre>

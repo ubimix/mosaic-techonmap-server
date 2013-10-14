@@ -1,12 +1,8 @@
-<div>
-	<!-- 	<h1>{{=workspace}}</h1>  -->
-	{{ if (!workspace) { var workspace = 'workspace'; } }}
-</div>
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
 		<div class="navbar-brand">
 			<ol class="breadcrumb">
-				<li><i class="glyphicon glyphicon-home"></i> Tableau de bord&nbsp;&nbsp;&nbsp;<span class="badge pull-right">{{= collection.info().totalRecords }}</span></li>
+				<li><i class="glyphicon glyphicon-home"></i> Tableau de bord&nbsp;&nbsp;&nbsp;<span class="badge pull-right">{{= view.getTotalRecordsNumber() }}</span></li>
 			</ol>
 		</div>
 	</div>
@@ -46,7 +42,7 @@
 
 
 </nav>
-<div class="resources" style="clear: right;"></div>
+<div class="resources" style="clear: right;" {{=view.renderResources()}}></div>
 
 <div class="dialog-validation hide">
 	<div class="title">Validation</div>
