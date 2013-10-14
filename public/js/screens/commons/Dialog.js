@@ -1,29 +1,24 @@
-define([ 'Backbone', 'Underscore', 'text!./dialog.html', 'BootstrapModal' ],
+define([ 'Underscore', './UmxView', 'text!./Dialog.html', 'BootstrapModal' ],
 
-function(Backbone, _, Template) {
+function(_, UmxView, Template) {
 
-    var DialogView = Backbone.View.extend({
+    var DialogView = UmxView.extend({
 
         className : 'modal fade',
 
         template : _.template(Template),
 
-        render : function() {
-            var html = this.template({
-                view : this
-            })
-            this.$el.html(html);
-            this.renderActionButtons();
-            return this;
-        },
-
         renderTitle : function() {
-            return this.options.title;
+            return this.asyncElement(function(el) {
+                el.html(this.options.title);
+            })
         },
 
         renderContent : function() {
-            var content = this.options.content;
-            return this.prepareContent(content);
+            return this.asyncElement(function(el) {
+                this.contentElm = el;
+                this.updateContent(this.options.content);
+            })
         },
 
         prepareContent : function(content) {
@@ -36,26 +31,27 @@ function(Backbone, _, Template) {
 
         updateContent : function(content) {
             content = this.prepareContent(content);
-            this.$el.find('.modal-body').html(content);
+            this.contentElm.html(content)
         },
 
         renderActionButtons : function() {
-            var container = this.$('.modal-footer');
-            var list = this.options.actions;
-            _.each(list, function(item, index) {
-                var btn = $('<button class="btn"></button>');
-                if (item.primary) {
-                    btn.addClass('btn-primary');
-                }
-                btn.html(item.label);
-                var action = item.action;
-                if (action) {
-                    btn.click(function() {
-                        action();
-                    })
-                }
-                container.append(btn);
-            });
+            return this.asyncElement(function(container) {
+                var list = this.options.actions;
+                _.each(list, function(item, index) {
+                    var btn = $('<button class="btn"></button>');
+                    if (item.primary) {
+                        btn.addClass('btn-primary');
+                    }
+                    btn.html(item.label);
+                    var action = item.action;
+                    if (action) {
+                        btn.click(function() {
+                            action();
+                        })
+                    }
+                    container.append(btn);
+                });
+            })
         },
 
         show : function() {

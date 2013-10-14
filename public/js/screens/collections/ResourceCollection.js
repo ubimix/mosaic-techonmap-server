@@ -1,4 +1,4 @@
-define([ 'Backbone', 'BackbonePaginator', './../models/Resource' ],
+define([ 'Backbone', 'BackbonePaginator', '../models/Resource' ],
 
 function(Backbone, Paginator, Resource) {
 

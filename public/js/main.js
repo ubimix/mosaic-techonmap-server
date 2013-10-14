@@ -18,9 +18,9 @@ require.config({
             exports : '_',
             init : function() {
                 this._.templateSettings = {
-                    evaluate : /\{\{(.+?)\}\}/g,
-                    interpolate : /\{\{=(.+?)\}\}/g,
-                    escape : /\{\{-(.+?)\}\}/g
+                    evaluate : /\{\{(.+?)\}\}/gim,
+                    interpolate : /\{\{=(.+?)\}\}/gim,
+                    escape : /\{\{-(.+?)\}\}/gim
                 };
                 return _;
             }

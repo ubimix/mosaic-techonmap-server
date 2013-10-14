@@ -1,13 +1,9 @@
-define([ 'Backbone', 'Underscore', '../collections/ResourceCollection', '../commons/Dialog', 'text!./export.html',
-        'BootstrapModal' ],
+define([ 'Underscore', '../collections/ResourceCollection',
+        '../commons/Dialog', 'text!./export.html', 'BootstrapModal' ],
 
-function(Backbone, _, ResourceCollection, Dialog, Template) {
+function(_, ResourceCollection, Dialog, Template) {
 
     var DialogView = Dialog.extend({
-        
-        initialize : function() {
-            
-        },
 
         template : _.template(Template),
 
@@ -19,33 +15,35 @@ function(Backbone, _, ResourceCollection, Dialog, Template) {
         jsonExportClicked : function(event) {
             var target = $(event.currentTarget);
             target.toggleClass('active');
-            this.exportResources(target, function(collection) {
-                return JSON.stringify(collection.models, null, 2);    
+            this._exportResources(target, function(collection) {
+                return JSON.stringify(collection.models, null, 2);
             });
         },
-        
+
         csvExportClicked : function(event) {
             var target = $(event.currentTarget);
             target.toggleClass('active');
-            this.exportResources(target, function(collection) {
-                return JSON.stringify(collection.models, null, 2);    
+            this._exportResources(target, function(collection) {
+                return JSON.stringify(collection.models, null, 2);
             });
         },
-        
-        exportResources : function(target, convert) {
-            this.$('.export-content').val('');
-            var coll = new ResourceCollection();
+
+        _exportResources : function(target, convert) {
             var that = this;
+            var textarea = this.$('.export-content');
+            textarea.val('');
+            var coll = new ResourceCollection();
             coll.fetch({
                 success : function(coll) {
                     _.each(coll.models, function(item, index) {
-                       item.deleteSysAttributes();
+                        item.deleteSysAttributes();
                     });
                     var formattedContent = convert(coll);
-                    that.$('.export-content').val(formattedContent);
+                    textarea.val(formattedContent);
                     target.toggleClass('active');
                 },
                 error : function(error) {
+                    // FIXME: notify
                     console.log('error', error);
                     target.toggleClass('active');
                 }

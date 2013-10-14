@@ -1,33 +1,31 @@
-define([ 'Backbone', 'Underscore', 'utils', '../../models/Resource', './resourcelistitem', '../../resource/table-view',
-        '../../commons/Dialog', '../../models/Validator', 'text!./resourcelist.html' ],
+define([ 'Underscore', '../../commons/UmxView', 'Backbone', 'utils',
+        '../../models/Resource', './resourcelistitem',
+        '../../resource/table-view', '../../commons/Dialog',
+        '../../models/Validator', 'text!./resourcelist.html' ],
 
-function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dialog, Validator, ResourceListTemplate) {
+function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
+        ResourceContentView, Dialog, Validator, ResourceListTemplate) {
 
     function loadEntry(id, callback) {
         var resource = new Resource({
             id : id
         });
-
         resource.fetch({
             // TODO: handle errors when no resource found with given id
             success : function(model, object) {
                 callback(model);
             }
         });
-
     }
 
-    var View = Backbone.View.extend({
+    var View = UmxView.extend({
         template : _.template(ResourceListTemplate),
         // resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
             _.bindAll(this, '_updateListStatus');
             this.subviews = [];
-
             this.collection.on('reset', function() {
-                // TODO: why does 'this' refer to the view while we're in a
-                // function
                 this.$el.empty();
                 this.render();
             }, this);
@@ -42,35 +40,23 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
             'click .howmany a' : 'handlePageCountClick'
         },
 
+        getTotalRecordsNumber : function() {
+            return this.collection.info().totalRecords;  
+        },
+        
         // TODO: use backgrid.js ?
+        renderResources : function() {
+            return this.asyncElement(function(elm) {
+                this.collection.forEach(function(resource) {
+                    var view = new ResourceRowView({
+                        model : resource,
+                        workspace : this.options.workspace
+                    });
+                    elm.append(view.render().el);
+                    this.subviews.push(view);
+                }, this);
 
-        render : function() {
-            // TODO add loading indicator
-            // TODO: do we need to remove the view when rendering it
-            // again ?
-            this.$el.html(this.template(this.options));
-
-            // TODO:
-            // http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
-            function getDotProperty(obj, dotNotation) {
-                var arr = dotNotation.split(".");
-                while (arr.length && (obj = obj[arr.shift()]))
-                    ;
-                return obj;
-            }
-
-            var resourceElt = this.$('.resources');
-
-            this.collection.forEach(function(resource) {
-                var view = new ResourceRowView({
-                    model : resource,
-                    workspace : this.options.workspace
-                });
-                resourceElt.append(view.render().el);
-                this.subviews.push(view);
-            }, this);
-
-            return this;
+            })
         },
 
         handleEntryClick : function(event) {
@@ -81,12 +67,14 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
                 return;
 
             var e = target.parent().parent();
-            this.$el.find('.media-content').each(function(i) {
-                if ($(this).parent().parent().attr('data-id') != e.attr('data-id')) {
-                    $(this).html('');
-                    $(this).hide();
-                }
-            });
+            this.$el.find('.media-content').each(
+                    function(i) {
+                        if ($(this).parent().parent().attr('data-id') != e
+                                .attr('data-id')) {
+                            $(this).html('');
+                            $(this).hide();
+                        }
+                    });
 
             this.$el.find('.media').each(function(i) {
                 if ($(this).attr('data-id') != e.attr('data-id')) {
@@ -165,9 +153,11 @@ function(Backbone, _, Utils, Resource, ResourceRowView, ResourceContentView, Dia
         },
 
         handleValidateClick : function(event) {
-            //TODO: we should probably refresh the validator when hitting the validate button
-            //because the validated items may have changed in other tabs meantime
-            
+            // TODO: we should probably refresh the validator when hitting the
+            // validate button
+            // because the validated items may have changed in other tabs
+            // meantime
+
             var selection = this.$('.validation:checked');
             var list = [];
             var validator = Validator.getInstance();

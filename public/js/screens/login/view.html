@@ -1,46 +1,20 @@
-<div style="margin-top: 5em; text-align: center;">
-
-	{{ if (user.displayName) { }} You are already logged in. {{ } else { }}
-
-	<p>
-		<a href="/api/auth/google" class="btn btn-primary btn-login">S'identifier avec Google
-			</a>
-
-	</p>
-	<p>
-		<a href="/api/auth/twitter" class="btn btn-primary btn-login">S'identifier avec Twitter</a>
-	</p>
-	<p>
-		<a href="/api/auth/facebook" class="btn btn-primary btn-login">S'identifier avec Facebook</a>
-	</p>
-
-	<!-- 
-	<div class="col-md-8">
-		<form class="form-horizontal" role="form" action='/api/login'
-			method='post'>
-
-			<div class="form-group">
-				<label for="username" class="col-lg-2 control-label">Login</label>
-				<div class="col-lg-3">
-					<input type='text' class="form-control" id='username'
-						name='username' placeholder='Login' />
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label for="password" class="col-lg-2 control-label">Password</label>
-				<div class="col-lg-3">
-					<input type='password' class="form-control" id='password'
-						name='password' placeholder='Password' />
-				</div>
-			</div>
-			<div class="form-actions">
-				<input type="submit" value="Login" class="btn btn-primary">
-			</div>
-
-		</form>
+<div style="margin-top: 5em; text-align: center;"{{=view.renderView()}}>
+	<div class="alreadyLogged">You are already logged in.</div>
+	<div class="notLogged">
+		<p>
+			<a
+				{{=view.renderLink('/api/auth/google')}} class="btn btn-primary btn-login">S'identifier
+				avec Google </a>
+		</p>
+		<p>
+			<a
+				{{=view.renderLink('/api/auth/twitter')}} class="btn btn-primary btn-login">S'identifier
+				avec Twitter</a>
+		</p>
+		<p>
+			<a
+				{{=view.renderLink('/api/auth/facebook')}} class="btn btn-primary btn-login">S'identifier
+				avec Facebook</a>
+		</p>
 	</div>
-	 -->
-	{{ } }}
-
 </div>

@@ -4,23 +4,21 @@
 		<div class="navbar-brand">
 
 			<ol class="breadcrumb">
-				<li><a href="/{{=workspace}}/"><i
+				<li><a{{=view.renderLink('/')}} "><i
 						class="glyphicon glyphicon-home"></i></a></li>
-				<li><span class="name" data-type="text" data-title="Nom" data-inputclass="name-control" data-clear="false">{{-model.getTitle()}}</span></li>
+				<li><span {{=view.renderTitle()}} class="name" data-type="text"
+					data-title="Nom" data-inputclass="name-control" data-clear="false"></span></li>
 			</ol>
 		</div>
 	</div>
 	<ul class="navbar-brand nav navbar-nav right">
-
-		<li>
-			<button class="submit btn btn-primary">Enregistrer</button>
-			<button class="validate btn btn-default">Valider</button> 
-			{{ if (data.sys.path) { }}
-			<button class="history btn btn-default">Voir l'historique</button>
-			<button role="button" class="delete btn btn-default"
-				data-toggle="modal">Supprimer</button> {{ } }}
-		</li>
+		<li><button class="submit btn btn-primary"{{=view.renderSaveBtn()}}>Enregistrer</button></li>
+		<li><button class="validate btn btn-default"{{=view.renderValidateBtn()}}>Valider</button></li>
+		<li><a class="history btn btn-default"{{=view.renderHistoryBtn()}}>Voir
+				l'historique</a></li>
+		<li><button role="button" class="delete btn btn-default"
+			data-toggle="modal"{{=view.renderDeleteBtn()}}>Supprimer</button></li>
 	</ul>
 </nav>
 
-<div id='editors'></div>
+<div{{=view.renderEditor()}}></div>

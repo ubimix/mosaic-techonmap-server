@@ -1,6 +1,12 @@
-define([ 'Backbone', 'text!./pagination.html' ], function(Backbone, template) {
+define([ '../../commons/UmxView', 'Backbone', 'text!./pagination.html' ],
 
-    var PaginationView = Backbone.View.extend({
+function(UmxView, Backbone, PaginationViewTemplate) {
+
+    var PaginationView = UmxView.extend({
+
+        tagName : 'aside',
+
+        template : _.template(PaginationViewTemplate),
 
         events : {
             'click a.first' : 'gotoFirst',
@@ -14,30 +20,29 @@ define([ 'Backbone', 'text!./pagination.html' ], function(Backbone, template) {
             'click a.filter' : 'filter'
         },
 
-        tagName : 'aside',
-
-        pagingTemplate : _.template(template),
-
         initialize : function() {
             this.collection.on('reset', this.render, this);
             // this.$el.appendTo('#pagination');
-            var _this =  this;
+            var self = this;
             Backbone.pubSub.on('sort', function(action) {
-                _this.collection.setSort(action.sort, action.sortOrder);
+                self.collection.setSort(action.sort, action.sortOrder);
             }, this);
-            
             Backbone.pubSub.on('pagecount', function(pageCount) {
-                _this.collection.howManyPer(pageCount);
+                self.collection.howManyPer(pageCount);
             }, this);
-            
-
+            console.log(this.options);
         },
-        render : function() {
-            var html = this.pagingTemplate(this.collection.info());
-            this.$el.html(html);
-            return this;
+        
+        renderPaginator : function() {
+            return this.asyncElement(function(elm) {
+                
+            })
         },
 
+        getPageSet : function() {
+            return this.collection.info().pageSet
+        },
+        
         gotoFirst : function(e) {
             this.boxEvent(e);
             this.collection.goTo(1);

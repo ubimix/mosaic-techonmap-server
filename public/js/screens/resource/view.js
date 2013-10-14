@@ -1,21 +1,20 @@
 //table-view / contentView
 
-define([ 'Backbone', 'BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
+define([ '../commons/UmxView', 'BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
 
-function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
+function(UmxView, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
 
-    var ResourceContainerView = Backbone.View.extend({
+    var ResourceContainerView = UmxView.extend({
 
         template : _.template(ResourceContainerTemplate),
         events : {
-            'click .submit' : 'saveClicked',
-            'click .history' : 'historyClicked',
-            'click .delete' : 'deleteClicked',
-            'click .validate' : 'validateClicked',
             'keydown' : 'onKeydown'
         },
 
         initialize : function() {
+            _.bindAll(this, 'saveClicked',  
+                        'deleteClicked', 'validateClicked', 'onKeydown');
+            
             // var options = _.clone(this.options);
             // this is to force a fake change event
             this.model.set('type', 'Feature');
@@ -28,26 +27,70 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
             this.model.on('change', this.render, this);
 
         },
+        
+        getTitle: function() {
+            return this.model.getTitle();
+        },
+        
+        renderTitle: function() {
+            return this.asyncElement(function(elm) {
+                this.nameElm = elm;
+                this.nameElm.text(this.getTitle());
+                var placeholder = elm.data('title')
+                this.nameElm.editable({
+                    showbuttons:false,
+                    highlight:false,
+                    emptytext: placeholder||'',
+                    unsavedclass:null
+                });
+            });
+        },
 
-        render : function() {
-            var html = this.template({
-                // content : this.contentView.render().$el,
-                data : this.model.toJSON(),
-                model : this.model,
-                workspace : this.options.workspace
+        renderValidateBtn : function() {
+            return this.asyncElement(function(elm) {
+                elm.click(this.validateClicked);
             })
-            this.$el.html(html);
+        },
 
-            this.$('#editors').append(this.contentView.$el);
-            this.contentView.render();
-            
-            this.$('.name').editable({showbuttons:false, highlight:false, emptytext:'Nom', unsavedclass:null});
+        renderSaveBtn : function() {
+            return this.asyncElement(function(elm) {
+                elm.click(this.saveClicked);
+            })
+        },
+        
+        renderHistoryBtn : function() {
+            return this.asyncElement(function(elm) {
+                if (this.isNew()) {
+                    elm.hide();
+                } else {
+                    this.doRenderLink(elm, this.model.getPath() + '/history');
+                }
+            })
+        },
 
-            return this;
+        renderDeleteBtn : function() {
+            return this.asyncElement(function(elm) {
+                if (this.isNew()) {
+                    elm.hide();
+                } else {
+                    elm.click(this.deleteClicked);
+                }
+            })
+        },
+
+        renderEditor : function() {
+            return this.asyncElement(function(elm) {
+                elm.append(this.contentView.$el);
+                this.contentView.render();
+            });
+        },
+        
+        isNew : function() {
+            var path = this.model.getPath();
+            return !path || path == ''    
         },
 
         onKeydown : function(event) {
-
             if (event.altKey) {
                 if (event.which == 83) {
                     // alt+S
@@ -59,25 +102,8 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
                 // $('.type-ahead').focus();
                 // }
             }
-            return;
-
         },
 
-        historyClicked : function() {
-            // TODO: a link would be better than a button so
-            // that the
-            // history
-            // can be opened in a new tab
-            // TODO: use events to switch from one view to the
-            // other, so
-            // that
-            // not all views need to be loaded upfront
-            this.remove();
-            Backbone.history.navigate('/' + this.options.workspace + '/' + this.options.path + '/history', true);
-            return false;
-        },
-        
-        
         doSave : function(callback) {
             callback = callback||function(){}
             
@@ -87,7 +113,7 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
             // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
             var self = this;
             
-            var name = this.$('.name').text();
+            var name = this.nameElm.text();
             var updatedModel = this.contentView.updateModel();
             Utils.updateObject(updatedModel.attributes, 'properties.name', name);
             console.log('model', this.model);
@@ -103,28 +129,21 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
                 } else {
                     this.model.set('id',id);
                     this.updateModel(updatedModel, function() {
-                        self.remove();
-                        Backbone.history.navigate(self.options.workspace + '/' + id, true);
+                        var path = self.getLink(id);
+                        self.navigateTo(path);
                         callback();
                     });
                 }
             }            
         },
-
-        saveClicked : function(event) {
-                this.doSave();
-        },
-
-        // do not call this method 'resource' or it will
-        // interfere with
-        // the
-        // 'remove' method of Backbone.View
+        
+        // do not call this method 'resource' or it will interfere with
+        // the 'remove' method of Backbone.View
         removeResource : function() {
-
+            var self = this;
             var dialog = Utils.showOkDialog('Suppression', 'Suppression en cours...', function() {
-                self.remove();
-                Backbone.history.navigate('/' + self.options.workspace, true);
-                // TODO: redirect
+                var path = self.getLink('');
+                self.navigateTo(path);
             });
 
             var self = this;
@@ -145,7 +164,6 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
         },
 
         updateModel : function(updatedModel, callback) {
-
             this.model.updateAndSave(updatedModel, function(updatedResource) {
                 $.bootstrapGrowl("Enregistrement effectué", {
                     ele : 'body',
@@ -163,6 +181,10 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
                 typeof callback === 'function' && callback();
             });
         },
+        
+        saveClicked : function() {
+            this.doSave();
+        },
 
         deleteClicked : function() {
             var _this = this;
@@ -178,20 +200,19 @@ function(Backbone, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Res
         validateClicked : function(event) {
             // submit then validate, then go back to list
             // TODO: check wether resource has actually changed
-            var that = this;
+            var self = this;
             this.doSave(function() {
                 var validator = Validator.getInstance();
                 validator.onReady(function() {
-                    validator.validateResources([ that.model ]);
+                    validator.validateResources([ self.model ]);
                     validator.once('loaded', function() {
-                        Backbone.history.navigate('/', true);
+                        var path = self.getLink('');
+                        self.navigateTo(path);
                     });
 
                 });
             });
-
         }
-
     });
 
     return ResourceContainerView;

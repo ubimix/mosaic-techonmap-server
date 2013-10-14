@@ -1,16 +1,19 @@
-define([ 'Backbone', './resourcelist', './paginator' ], function(Backbone, ResourceListView, PaginationView) {
+define([ 'Underscore', '../../commons/UmxView', './resourcelist', './paginator',
+        'text!./main.html' ],
 
-    var MainView = Backbone.View.extend({
-        initialize : function() {
-            this.subviews = [];
-        },
+function(_, UmxView, ResourceListView, PaginationView, MainViewTemplate) {
 
-        render : function() {
-            if (this.options.error) {
-                // this.$el.append('You are not authorized to perform this
-                // action. Please <a href="/login">login</a>.');
-                Backbone.history.navigate('/login', true);
-            } else {
+    var MainView = UmxView.extend({
+
+        template: _.template(MainViewTemplate),
+        
+        renderMainView : function() {
+            return this.asyncElement(function(elm) {
+                if (!this.isLogged()) {
+                    var path = this.getLink('/login');
+                    this.navigateTo(path);
+                    return;
+                }
 
                 var view = new ResourceListView({
                     collection : this.collection,
@@ -18,22 +21,21 @@ define([ 'Backbone', './resourcelist', './paginator' ], function(Backbone, Resou
                     sort : this.options.sort,
                     verified : this.options.verified
                 });
-                this.$el.append(view.render().el);
+                elm.append(view.render().el);
 
                 var paginationView = new PaginationView({
                     collection : this.collection
                 });
 
-                this.$el.append(paginationView.render().el);
-                
-                //view.$('.sorter').append(paginationView.getSorter());
+                elm.append(paginationView.render().el);
+            });
+        },
 
-                this.subviews.push(view);
-                this.subviews.push(paginationView);
-
-            }
-            return this;
+        isLogged : function() {
+            // FIXME:
+            return this.options.error ? false : true;
         }
+
     });
 
     return MainView;

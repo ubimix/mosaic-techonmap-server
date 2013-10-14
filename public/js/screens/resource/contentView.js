@@ -1,33 +1,39 @@
-define([ 'Backbone', 'Underscore', 'CodeMirror', 'CodeMirrorYaml', '../models/Resource', 'utils', 'text!./contentView.html' ],
+define([ '../commons/UmxView', 'Backbone', 'Underscore', 'CodeMirror',
+        'CodeMirrorYaml', '../models/Resource', 'utils',
+        'text!./contentView.html' ],
 
-function(Backbone, _, CodeMirror, CodeMirrorYaml, ResourceModel, Utils, ContentViewTemplate) {
+function(UmxView, Backbone, _, CodeMirror, CodeMirrorYaml, ResourceModel,
+        Utils, ContentViewTemplate) {
 
+    var ResourceContentView = UmxView.extend({
+        template : _.template(ContentViewTemplate),
 
-    var ResourceContentView = Backbone.View.extend({
         initialize : function(options) {
             this.readOnly = this.options.readOnly ? 'nocursor' : false;
         },
-        template : _.template(ContentViewTemplate),
-        render : function() {
-            var html = this.template({
-                view : this
-            });
-            this.$el.html(html);
 
-            var formattedContent = this.getFormattedContent();
-            // FIXME: put readOnly in options directly
-            this.contentEditor = Utils.newCodeMirror($('.content').get(0), null, this.readOnly, formattedContent);
-            this.propertiesEditor = Utils.newCodeMirror($('.properties').get(0), {
-                mode : 'yaml',
-                lineNumbers : false
-            }, this.readOnly, this.getFormattedProperties());
-            $(this.propertiesEditor.getWrapperElement()).addClass('properties');
+        renderContent : function() {
+            console.log('renderContent')
+            return this.asyncElement(function(elm) {
+                // FIXME: put readOnly in options directly
+                var formattedContent = this.getFormattedContent();
+                this.contentEditor = Utils.newCodeMirror(elm[0], null,
+                        this.readOnly, formattedContent);
+                var lineNumbers = formattedContent.split('\n').length;
+                this.contentEditor.focus();
+                this.contentEditor.setCursor(lineNumbers);
+            })
+        },
 
-            var lineNumbers = formattedContent.split('\n').length;
-            this.contentEditor.focus();
-            this.contentEditor.setCursor(lineNumbers);
-            return this;
-
+        renderProperties : function() {
+            return this.asyncElement(function(elm) {
+                this.propertiesEditor = Utils.newCodeMirror(elm[0], {
+                    mode : 'yaml',
+                    lineNumbers : false
+                }, this.readOnly, this.getFormattedProperties());
+                $(this.propertiesEditor.getWrapperElement()).addClass(
+                        'properties');
+            })
         },
 
         getFormattedProperties : function() {
@@ -52,7 +58,8 @@ function(Backbone, _, CodeMirror, CodeMirrorYaml, ResourceModel, Utils, ContentV
             var description = this.contentEditor.getValue();
             var json = Utils.toJSON(description, yaml);
             this.model.set('properties', json);
-            //FIXME: geometry is not in the properties but in the attributes
+            // FIXME: geometry is not in the properties but in the
+            // attributes
             return this.model;
         }
 
