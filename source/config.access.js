@@ -63,7 +63,13 @@ module.exports = function(app) {
          } else if (path.match(/^\/api\/validation\/?.*$/)){
              return 'validation';
          } else if (path.match(/^\/api\/twitter\/?.*$/)){
-             return 'twitter';
+             return 'login-endpoint';
+         } else if (path.match(/^\/api\/google\/?.*$/)){
+             return 'login-endpoint';
+         } else if (path.match(/^\/api\/facebook\/?.*$/)){
+             return 'login-endpoint';
+         } else if (path.match(/^\/wiki\/?.*$/)){
+             return 'wiki';
          } else {
              return '';
          }
@@ -77,7 +83,9 @@ module.exports = function(app) {
         // Check access for logged users
         function() {
             var next = this;
-            if (userId != 'Anonymous') {
+            if (path == '') {
+                next(null, true);
+            } else if (userId != 'Anonymous') {
                 acl.isAllowed('LoggedUser', path, method, next);
             } else {
                 next(null, false);

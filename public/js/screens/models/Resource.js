@@ -5,16 +5,17 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
 
         defaults : {
             properties : {
-                description : '',
+                description : 'Description...',
                 name : '',
                 address : '',
                 postcode : '',
                 city : '',
+                tags: ['tag1','tag2','tag3'],
                 creationyear : '',
                 url : '',
                 linkedin : '',
                 id : '',
-                category : ''
+                category : 'entreprise'
             },
             sys : {
                 path : ''
@@ -85,6 +86,11 @@ define([ 'Backbone', './Validator' ], function(Backbone, Validator) {
             return this.getUpdated().versionId;
         },
 
+        buildPermalink : function() {
+            //TODO mv to config
+            return 'http://techonmap.fr/#' + this.getId();  
+        },
+        
         updateAndSave : function(newModel, callback) {
             var copy = this.getCopy();
             this.set('properties', newModel.getProperties());

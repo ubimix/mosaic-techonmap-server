@@ -464,8 +464,8 @@ module.exports = function(app) {
         cacheMaxSize : 300000,
         cacheMaxAge : 1 * YEAR
     };
-    var promise = loadData(options);
-    //var promise = initProject(options);
+    //var promise = loadData(options);
+    var promise = initProject(options);
     return promise
     //
     .then(function(project) {
