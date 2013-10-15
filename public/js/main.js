@@ -115,7 +115,7 @@ require.config({
         BootstrapTooltip : './../components/bootstrap/js/tooltip',
         BootstrapPopover : './../components/bootstrap/js/popover',
         BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
-        moment : './../components/momentjs/min/moment+langs',
+        moment : './../components/momentjs/min/moment-with-langs',
         UmxAppTemplates : './theme-techonmap/umx.app.templates',
         CodeMirror : './../components/codemirror/lib/codemirror',
         CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
