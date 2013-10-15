@@ -15,8 +15,13 @@ function(_, Backbone, AsyncRender) {
         },
 
         navigateTo : function(path) {
-            alert(path);
-            Backbone.history.navigate(path, true);
+            console.log('navigate to:', path);
+            if (path.indexOf('/api/') == 0) {
+                alert(path)
+                document.location.href= path;
+            } else {
+                Backbone.history.navigate(path, true);
+            }
         },
 
         getLink : function(path) {
@@ -25,10 +30,11 @@ function(_, Backbone, AsyncRender) {
             path = path.replace(/[\\\/]+/gim, '/').replace(/\s+/, '').replace(
                     /^\//g, '').replace(/\/$/gi, '');
             // FIXME: is it really required ?
+            console.log(path);
             if (path.indexOf('api/') == 0) {
                 path = '/' + path;
             } else {
-                path = '/workspace/' + path;
+                path = '/wiki/' + path;
             }
             return path;
         },
