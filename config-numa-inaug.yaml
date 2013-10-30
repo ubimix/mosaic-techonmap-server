@@ -1,0 +1,64 @@
+---
+# Configuration sample file for Djinko (YAML)
+application:
+    title: "jscr-webui"
+    repository: "/home/arkub/git/djinko.data/data-1/"
+    docSubdir: ""
+    remote: ""
+    pushInterval: 30
+    secret: "lksjdfada0010101DNNQSDKdd27?2101"
+server:
+    hostname: "umxdev.com"
+    port: 8001
+    localOnly: false
+    baseUrl: "http://umxdev.com:8001"
+    basePath: '/wiki/'
+authorization:
+    anonRead: true
+    validMatches: ".+"
+authentication:
+    google:
+      enabled: true
+    twitter:
+      enabled: true
+      oauthkeys:
+        consumerKey : 'fytCW2YVtV3QYClAIV8vA'
+        consumerSecret : 'dnXAumqDkGr5p3gKm9CIC4EPbaV5OkWPpDYU2xVNg'
+      cacheExpire: 5000
+    facebook:
+      enabled: true
+      oauthkeys:
+        clientID : '491166480975374'
+        clientSecret : 'cd05173cecc60189b5ad96bc18dce6b3'
+    alone:
+      enabled: true
+      username: "cartowiki"
+      passwordHash: "11f04c1e711c242728866815c50889b3bd209010"
+      email: "slauriere@ubimix.com"
+accessRules:
+    - roles: [ "admin", "owner" ]
+      allows:
+        - resources: ["resources", "resources/import", "resources/export", "validation", "typeahead", "twitter"]
+          permissions: [ "get", "put", "delete", "post" ]
+    - roles: ["guest"]
+      allows:
+        - resources: ["resources/export", "validation", "twitter"]
+          permissions:  ["get"]
+    - roles: ["logged"]
+      allows:
+        - resources: ["resources", "resources/export", "validation", "typeahead", "twitter"]
+          permissions: [ "get", "put", "post" ]
+userRoles:
+     Anonymous: [ "guest" ]
+     Stéphane Laurière: [ "admin" ]
+     cartowiki: [ "guest" ]
+     Mikhail Kotelnikov: [ "admin" ]
+     Loïc Haÿ: ["admin"]
+     Olivier ETIENNE: ["admin"]
+     TechOnMap: ["admin"]
+     LoggedUser: ["guest", "logged"]
+twitterClient:
+        consumerKey : 'fytCW2YVtV3QYClAIV8vA'
+        consumerSecret : 'dnXAumqDkGr5p3gKm9CIC4EPbaV5OkWPpDYU2xVNg'
+        accessTokenKey : '10078002-PlycJAuvnnRfhNyPQBxwIyqvnhHYAHOSTFHngi1ow'
+        accessTokenSecret : '3zqJDH51aCuZxrhMnEmLjrmQPkUPxij0GB0oF3UM'

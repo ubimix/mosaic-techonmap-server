@@ -457,7 +457,8 @@ module.exports = function(app) {
     var YEAR = 365 * DAY;
     var options = {
         dir : './tmp',
-        name : 'techonmap',
+	rootDir : 'repository',
+        name : 'numa-inaug',
         // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',
         author : 'TechOnMap <admin@techonmap.fr>',
