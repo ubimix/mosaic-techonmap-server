@@ -1,8 +1,8 @@
 //table-view / contentView
 
-define([ '../commons/UmxView', 'BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
+define([ '../commons/UmxView', '../commons/LinkController','BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
 
-function(UmxView, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
+function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
 
     var ResourceContainerView = UmxView.extend({
 
@@ -63,7 +63,7 @@ function(UmxView, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, Reso
                 if (this.isNew()) {
                     elm.hide();
                 } else {
-                    this.doRenderLink(elm, this.model.getPath() + '/history');
+                    this.doRenderHistoryLink(elm, this.model.getPath());
                 }
             })
         },

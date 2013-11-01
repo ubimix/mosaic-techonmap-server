@@ -1,6 +1,6 @@
-define([ 'Underscore', 'Backbone', './AsyncRender' ],
+define([ 'Underscore', 'Backbone', './LinkController', './AsyncRender' ],
 
-function(_, Backbone, AsyncRender) {
+function(_, Backbone, LinkController, AsyncRender) {
 
     var View = Backbone.View.extend();
     _.extend(View.prototype, AsyncRender.prototype, {
@@ -15,26 +15,27 @@ function(_, Backbone, AsyncRender) {
         },
 
         navigateTo : function(path) {
-            alert(path);
-            Backbone.history.navigate(path, true);
+            var linkController = LinkController.getInstance();
+            return linkController.navigateTo(path);
         },
 
         getLink : function(path) {
-            if (!path)
-                path = '';
-            path = path.replace(/[\\\/]+/gim, '/').replace(/\s+/, '').replace(
-                    /^\//g, '').replace(/\/$/gi, '');
-            // FIXME: is it really required ?
-            if (path.indexOf('api/') == 0) {
-                path = '/' + path;
-            } else {
-                path = '/workspace/' + path;
-            }
-            return path;
+            var linkController = LinkController.getInstance();
+            return linkController.getLink(path);
+        },
+
+        doRenderHistoryLink : function(a, path, version1, version2) {
+            var linkController = LinkController.getInstance();
+            path = linkController.getHistoryLink(path, version1, version2);
+            this._setLinkAttributes(a, path);
         },
 
         doRenderLink : function(a, path) {
-            path = this.getLink(path);
+            var linkController = LinkController.getInstance();
+            path = linkController.getLink(path);
+            this._setLinkAttributes(a, path);
+        },
+        _setLinkAttributes : function(a, path) {
             a.attr('href', path);
             var that = this;
             a.click(function(event) {

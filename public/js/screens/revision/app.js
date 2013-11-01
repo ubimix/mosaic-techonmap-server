@@ -1,11 +1,15 @@
-define([ 'Backbone', '../models/Resource', './view' ], function(Backbone, ResourceModel, RevisionView) {
+define([ 'Backbone', '../commons/LinkController', '../models/Resource',
+        './view' ],
+
+function(Backbone, LinkController, ResourceModel, RevisionView) {
     return {
         run : function(viewManager, options) {
+            var linkController = LinkController.getInstance();
             var revisions = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : '/api/resources/' + options.path + '/history/' + options.version
+                url : linkController.getApiVersionLink(options.path,
+                        options.version)
             });
-            
 
             revisions.fetch({
                 success : function(collection, object) {

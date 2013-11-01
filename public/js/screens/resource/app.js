@@ -1,4 +1,7 @@
-define([ '../models/Resource', './view' ], function(Resource, ResourceContainerView) {
+define([ '../commons/LinkController', '../models/Resource', './view' ],
+
+function(LinkController, Resource, ResourceContainerView) {
+    var linkController = LinkController.getInstance();
     return {
         run : function(viewManager, options) {
 
@@ -6,18 +9,14 @@ define([ '../models/Resource', './view' ], function(Resource, ResourceContainerV
                 id : options.path
             });
 
-            if (options.path == 'new') {
-
+            if (linkController.isNewResourcePath(options.path)) {
                 var view = new ResourceContainerView({
                     model : new Resource(),
                     path : options.path,
                     workspace : options.workspace
                 });
-                
                 viewManager.show(view);
-                
             } else {
-
                 resource.fetch({
                     // TODO: handle errors when no resource found with given id
                     success : function(model, object) {
