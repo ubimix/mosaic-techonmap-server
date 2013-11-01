@@ -37,9 +37,16 @@ define(
                 getLabelFromValue : function(value) {
                     return ResourceModel.categoryLabels[value] || value;
                 },
-                getValueFromLabel : function(value) {
-                    return ResourceModel.categoryLabels[value] || value;
-                },
+        getValueFromLabel: function(label) {
+            var result = label;
+            _.each(ResourceModel.categoryLabels, function(value, key) {
+                if (label == value) {
+                    result = key;
+                }
+            });
+            return result;
+            
+        },
                 getPossibleValues : function() {
                     return _.values(ResourceModel.categoryLabels);
                 }
