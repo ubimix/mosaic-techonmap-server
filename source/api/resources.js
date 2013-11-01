@@ -467,6 +467,7 @@ module.exports = function(app) {
     var YEAR = 365 * DAY;
     var options = {
         dir : './tmp',
+		rootDir : 'repository',
         name : 'techonmap',
         // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',

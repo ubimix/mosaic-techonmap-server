@@ -38,7 +38,7 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewMana
                 this.nameElm.text(this.getTitle());
                 var placeholder = elm.data('title')
                 this.nameElm.editable({
-                    showbuttons:false,
+                    showbuttons:true,
                     highlight:false,
                     emptytext: placeholder||'',
                     unsavedclass:null

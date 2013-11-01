@@ -31,8 +31,7 @@ function(_, Backbone, LinkController, AsyncRender) {
         },
 
         doRenderLink : function(a, path) {
-            var linkController = LinkController.getInstance();
-            path = linkController.getLink(path);
+            path = this.getLink(path);
             this._setLinkAttributes(a, path);
         },
         _setLinkAttributes : function(a, path) {
