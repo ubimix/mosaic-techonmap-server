@@ -11,14 +11,20 @@
 			</ol>
 		</div>
 	</div>
+	
 	<ul class="navbar-brand nav navbar-nav right">
-		<li><button class="submit btn btn-primary"{{=view.renderSaveBtn()}}>Enregistrer</button></li>
-		<li><button class="validate btn btn-default"{{=view.renderValidateBtn()}}>Valider</button></li>
-		<li><a class="history btn btn-default"{{=view.renderHistoryBtn()}}>Voir
-				l'historique</a></li>
-		<li><button role="button" class="delete btn btn-default"
-			data-toggle="modal"{{=view.renderDeleteBtn()}}>Supprimer</button></li>
-	</ul>
+
+		<li>
+		<div class="btn-group">
+			<button class="submit btn btn-primary"{{=view.renderSaveBtn()}}>Enregistrer</button>
+			<button class="validate btn btn-default"{{=view.renderValidateBtn()}}>Valider</button> 
+			<button class="history btn btn-default"{{=view.renderHistoryBtn()}}>Voir l'historique</button>
+			<button role="button" class="delete btn btn-default"
+				data-toggle="modal"{{=view.renderDeleteBtn()}}>Supprimer</button>
+		</div>
+		</li>
+	</ul>	
+	
 </nav>
 
 <div{{=view.renderEditor()}}></div>

@@ -63,7 +63,7 @@ function(_, YAML, Moment, Resource, Dialog) {
     
     
     // TODO: externalize this script and these mappings
-    var fieldMapping = {
+    Utils.fieldMapping = {
             'Identifiant' : 'id',
             'Nom' : 'name',
             'Description' : 'description',
@@ -77,6 +77,7 @@ function(_, YAML, Moment, Resource, Dialog) {
             'Ville' : 'city',
             'Année de création' : 'creationyear',
             'Url site web' : 'url',
+            'Email' : 'email',
             'Nom compte Twitter' : 'twitter',
             'Url page Facebook' : 'facebook',
             'Url page Google +' : 'googleplus',
