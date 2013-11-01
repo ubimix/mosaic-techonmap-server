@@ -1,19 +1,19 @@
-define([ 'Backbone', '../models/Resource', './view' ],
+define([ 'Backbone', '../commons/LinkController', '../models/Resource',
+        './view' ],
 
-function(Backbone, ResourceModel, CompareView) {
+function(Backbone, LinkController, ResourceModel, CompareView) {
     return {
         run : function(viewManager, options) {
-
+            var linkController = LinkController.getInstance();
             var revisions1 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : '/api/resources/' + options.path + '/history/'
-                        + options.v1
+                url : linkController
+                        .getApiVersionLink(options.path, options.v1)
             });
 
             var revisions2 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : '/api/resources/' + options.path + '/history/'
-                        + options.v2
+                url : linkController.getApiLink(options.path, options.v2)
             });
 
             revisions1.fetch({
@@ -35,23 +35,7 @@ function(Backbone, ResourceModel, CompareView) {
                         }
                     });
                 }
-
             });
-
-            // $.get('/api/resources/' + options.path + '/history/' +
-            // options.v1, function(version1) {
-            //
-            // $.get('/api/resources/' + options.path + '/history/' +
-            // options.v2, function(version2) {
-            // var view = new CompareView({
-            // v1 : version1,
-            // v2 : version2,
-            // workspace : options.workspace
-            // });
-            // viewManager.show(view);
-            // }, 'json');
-            //
-            // }, 'json');
         }
     };
 });

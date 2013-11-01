@@ -1,6 +1,7 @@
-define([ 'Underscore', '../commons/UmxView', 'text!./view.html' ],
+define([ 'Underscore', '../commons/UmxView', '../commons/LinkController',
+        'text!./view.html' ],
 
-function(_, UmxView, template) {
+function(_, UmxView, LinkController, template) {
 
     var View = UmxView.extend({
         template : _.template(template),
@@ -9,13 +10,15 @@ function(_, UmxView, template) {
             'click .go' : 'openResource'
         },
 
-        renderSearchBox : function() {
+        renderSearchBox : function() {
             return this.asyncElement(function(elm) {
                 var data;
                 this.searchBox = elm;
                 this.searchBox.typeahead({
                     source : function(query, process) {
-                        return $.get('/api/typeahead', {
+                        var linkController = LinkController.getInstance();
+                        var url = linkController.getApiTypeaheadLink();
+                        return $.get(url, {
                             query : query
                         }, function(items) {
                             data = items;

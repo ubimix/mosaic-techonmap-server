@@ -1,56 +1,53 @@
-define([ 'jQuery', 'Underscore', 'Backbone', 'Typeahead', 'UmxAppTemplates', '../screens/export/Export', 'BootstrapDropdown' ],
+define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView', 'Typeahead',
+        '../screens/commons/LinkController', 'text!./view.header.html',
+        '../screens/export/Export', 'BootstrapDropdown' ],
 
-function($, _, Backbone, Typeahead, templates, ExportDialog) {
+function($, _, Backbone, UmxView, Typeahead, LinkController, ViewHeaderTemplate,
+        ExportDialog) {
     var View = Backbone.View.extend({
-        template : templates['HeaderView'],
+        template : _.template(ViewHeaderTemplate),
 
         events : {
             'click .export' : 'exportClicked'
         },
 
-        
-        render : function() {
-            this.$el.html(this.template(this.options));
-            var searchInput = this.$el.find('.umx-typeahead');
-            var typeahead = searchInput.twitterTypeahead({
-                remote : '/api/typeahead/?query=%QUERY',
-                limit : 15,
-                beforeSend : function(xhqr, settings) {
-                    console.log('beforesend', settings);
-                },
-                filter : function(response) {
-                    console.log('response:', response);
-                    return response;
-                }
-            });
-
-            var body = $('body');
-            body.on('typeahead:selected', function(event, datum) {
-                if (datum && datum.id) {
-                    Backbone.history.navigate('/workspace/' + datum.id, true);
-                }
-                searchInput.val('');
-            });
-            body.keypress(function(e) {
-                // http://api.jquery.com/focus-selector/
-                var $focused = $(document.activeElement);
-                var tagName = $focused.prop('tagName').toLowerCase();
-                if (tagName == 'body') {
-                    searchInput.focus();
-                }
-            });
-            body.keydown(function(event) {
-                if (event.altKey) {
-                    if (event.which == 76) {
-                        // alt+L
+        renderPage : function() {
+            return this.asyncElement(function(elm) {
+                var searchInput = elm.find('.umx-typeahead');
+                var linkController = LinkController.getInstance();
+                var url = linkController.getApiTypeaheadLink() + '?query=%QUERY';
+                var typeahead = searchInput.twitterTypeahead({
+                    remote : url,
+                    limit : 15
+                });
+                
+                var body = $('body');
+                body.on('typeahead:selected', function(event, datum) {
+                    if (datum && datum.id) {
+                        Backbone.history.navigate('/workspace/' + datum.id, true);
+                    }
+                    searchInput.val('');
+                });
+                body.keypress(function(e) {
+                    // http://api.jquery.com/focus-selector/
+                    var $focused = $(document.activeElement);
+                    var tagName = $focused.prop('tagName').toLowerCase();
+                    if (tagName == 'body') {
                         searchInput.focus();
                     }
-                }
+                });
+                body.keydown(function(event) {
+                    if (event.altKey) {
+                        if (event.which == 76) {
+                            // alt+L
+                            searchInput.focus();
+                        }
+                    }
+                });
+                
             });
-
-            return this;
         },
-        
+
         exportClicked : function(event) {
             console.log('export clicked');
             var dialog = new ExportDialog({
@@ -65,7 +62,6 @@ function($, _, Backbone, Typeahead, templates, ExportDialog) {
                 } ]
             });
             dialog.show();
-
         }
     });
     return View;

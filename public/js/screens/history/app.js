@@ -1,9 +1,12 @@
-define([ '../models/Resource', './view' ], function(Resource, HistoryView) {
+define([ '../commons/LinkController', '../models/Resource', './view' ],
+
+function(LinkController, Resource, HistoryView) {
     return {
         run : function(viewManager, options) {
 
+            var linkController = LinkController.getInstance();
             var history = new Backbone.Model();
-            history.url = '/api/resources/' + options.path + '/history';
+            history.url = linkController.getApiVersionLink(options.path);
 
             function showError(error) {
                 var view = new MainView({
@@ -34,7 +37,8 @@ define([ '../models/Resource', './view' ], function(Resource, HistoryView) {
                 error : showError
             });
 
-            // why is jQuery available while not in the defines ? because
+            // why is jQuery available while not in the defines ?
+            // because
             // Backbone depends on it ?
             // $.get('/api/resources/' + options.path + '/history',
 
