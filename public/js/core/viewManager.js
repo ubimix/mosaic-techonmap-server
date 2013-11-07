@@ -2,7 +2,7 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
 
     var viewManager = (function() {
         var currentView;
-        //var theme = 
+        // var theme =
 
         function showView(view) {
             disposeView(currentView, function() {
@@ -36,18 +36,14 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
                     title : 'jscr-webui',
                     user : user
                 });
-                //TODO: pourquoi le html est dynamique
-               
                 $('#umx-header').html(headerView.$el);
                 headerView.render();
-                
                 $('#umx-header').data('loaded', 'true');
             }
 
-            
             $('#app').append(currentView.$el);
             currentView.render();
-            
+
         }
 
         return {

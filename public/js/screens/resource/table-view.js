@@ -37,16 +37,16 @@ define(
                 getLabelFromValue : function(value) {
                     return ResourceModel.categoryLabels[value] || value;
                 },
-        getValueFromLabel: function(label) {
-            var result = label;
-            _.each(ResourceModel.categoryLabels, function(value, key) {
-                if (label == value) {
-                    result = key;
-                }
-            });
-            return result;
-            
-        },
+                getValueFromLabel : function(label) {
+                    var result = label;
+                    _.each(ResourceModel.categoryLabels, function(value, key) {
+                        if (label == value) {
+                            result = key;
+                        }
+                    });
+                    return result;
+
+                },
                 getPossibleValues : function() {
                     return _.values(ResourceModel.categoryLabels);
                 }
@@ -185,8 +185,11 @@ define(
 
                         renderIdField : function() {
                             return this.asyncElement(function(elm) {
-                                if (this.isNew()) {
-                                    elm.removeAttr('disabled');
+                                this.idFieldElm = elm;
+                                var path = this.getPath();
+                                this.idFieldElm.val(path);
+                                if (this.model.isNew()) {
+                                    this.idFieldElm.removeAttr('disabled');
                                 }
                             })
                         },
@@ -221,10 +224,6 @@ define(
                             })
                         },
 
-                        isNew : function() {
-                            var path = this.model.getPath();
-                            return !path || path == ''
-                        },
 
                         _newMap : function(mapContainer) {
                             var elm = mapContainer[0];
@@ -254,7 +253,7 @@ define(
                             var geometry = this.model.get('geometry');
 
                             var data = [];
-                            var id = this.model.getPath();
+                            var id = this.getPath();
                             var cellMetaMap = {};
                             _.each(schema, function(item, index) {
                                 var value = '';
@@ -331,8 +330,10 @@ define(
                             return $container.handsontable('getInstance');
                         },
 
-                        getId : function() {
-                            return this._getProperties().id || '';
+                        getPath : function() {
+                            var path = this.model.getId();
+                            path = path != '' ? path : this.options.path;
+                            return path;
                         },
 
                         getDescription : function() {
@@ -388,7 +389,7 @@ define(
                             changed |= Utils.updateObject(attributes,
                                     'properties.description', description);
 
-                            var id = this.$('.id').val();
+                            var id = this.idFieldElm.val();
                             changed |= Utils.updateObject(attributes,
                                     'properties.id', id);
                             if (changed) {

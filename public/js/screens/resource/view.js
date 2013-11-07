@@ -1,8 +1,11 @@
 //table-view / contentView
 
-define([ '../commons/UmxView', '../commons/LinkController','BootstrapGrowl', 'Xeditable', '../models/Validator', 'core/viewManager', 'utils', './table-view', 'text!./view.html' ],
+define([ '../commons/UmxView', '../commons/LinkController', 'BootstrapGrowl',
+        'Xeditable', '../models/Validator', 'core/viewManager', 'utils',
+        './table-view', 'text!./view.html' ],
 
-function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
+function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator,
+        viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
 
     var ResourceContainerView = UmxView.extend({
 
@@ -12,67 +15,72 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewMana
         },
 
         initialize : function() {
-            _.bindAll(this, 'saveClicked',  
-                        'deleteClicked', 'validateClicked', 'onKeydown');
-            
+            _.bindAll(this, 'saveClicked', 'deleteClicked', 'validateClicked',
+                    'onKeydown');
+
             // var options = _.clone(this.options);
             // this is to force a fake change event
             this.model.set('type', 'Feature');
-            this.contentView = new ResourceContentView({
+            var options = _.extend({}, this.options, {
                 model : this.model
             });
+            this.contentView = new ResourceContentView(options);
             // TODO: use Marionette for unsubscribing from changes when
-            // the view
-            // disappears
+            // the view disappears
             this.model.on('change', this.render, this);
 
         },
-        
-        getTitle: function() {
+
+        getTitle : function() {
             return this.model.getTitle();
         },
-        
-        renderTitle: function() {
-            return this.asyncElement(function(elm) {
+
+        renderTitle : function() {
+            return this.asyncElement(function(elm) {
                 this.nameElm = elm;
-                this.nameElm.text(this.getTitle());
+                var title = this.getTitle();
+                if (!title || title == '') {
+                    title = this.getPath();
+                }
+                console.log('RESOURCE TITLE:', title)
+                this.nameElm.text(title);
                 var placeholder = elm.data('title')
                 this.nameElm.editable({
-                    showbuttons:true,
-                    highlight:false,
-                    emptytext: placeholder||'',
-                    unsavedclass:null
+                    showbuttons : true,
+                    highlight : false,
+                    emptytext : placeholder || '',
+                    unsavedclass : null
                 });
             });
         },
 
-        renderValidateBtn : function() {
+        renderValidateBtn : function() {
             return this.asyncElement(function(elm) {
                 elm.click(this.validateClicked);
             })
         },
 
-        renderSaveBtn : function() {
+        renderSaveBtn : function() {
             return this.asyncElement(function(elm) {
                 elm.click(this.saveClicked);
             })
         },
-        
-        renderHistoryBtn : function() {
+
+        renderHistoryBtn : function() {
             return this.asyncElement(function(elm) {
-                if (this.isNew()) {
+                if (this.model.isNew()) {
                     elm.hide();
-                } else {
+                } else {
                     this.doRenderHistoryLink(elm, this.model.getPath());
                 }
             })
         },
 
-        renderDeleteBtn : function() {
+        renderDeleteBtn : function() {
             return this.asyncElement(function(elm) {
-                if (this.isNew()) {
+                if (this.model.isNew()) {
                     elm.hide();
-                } else {
+                } else {
                     elm.click(this.deleteClicked);
                 }
             })
@@ -84,10 +92,11 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewMana
                 this.contentView.render();
             });
         },
-        
-        isNew : function() {
-            var path = this.model.getPath();
-            return !path || path == ''    
+
+        getPath : function() {
+            var path = this.model.getId();
+            path = path != '' ? path : this.options.path;
+            return path;
         },
 
         onKeydown : function(event) {
@@ -105,51 +114,56 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewMana
         },
 
         doSave : function(callback) {
-            callback = callback||function(){}
-            
+            callback = callback || function() {
+            }
+
             // TODO: handle error when yaml invalid: show
             // notification
             // TODO:
             // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
             var self = this;
-            
-            var name = this.nameElm.text();
+
             var updatedModel = this.contentView.updateModel();
-            Utils.updateObject(updatedModel.attributes, 'properties.name', name);
+            var name = this.nameElm.text();
+            Utils
+                    .updateObject(updatedModel.attributes, 'properties.name',
+                            name);
             console.log('model', this.model);
             console.log('updatedModel', updatedModel);
-            
+
             // TODO: check how to check empty string in all browsers
             if (this.model.getPath() && this.model.getPath().length > 0) {
                 this.updateModel(updatedModel, callback);
             } else {
                 var id = updatedModel.getId();
                 if (!id || id.length == 0) {
-                    return Utils.showOkDialog('Erreur', 'Le champ <em>Identifiant</em> est requis.');
+                    return Utils.showOkDialog('Erreur',
+                            'Le champ <em>Identifiant</em> est requis.');
                 } else {
-                    this.model.set('id',id);
+                    this.model.set('id', id);
                     this.updateModel(updatedModel, function() {
                         var path = self.getLink(id);
                         self.navigateTo(path);
                         callback();
                     });
                 }
-            }            
+            }
         },
-        
+
         // do not call this method 'resource' or it will interfere with
         // the 'remove' method of Backbone.View
         removeResource : function() {
             var self = this;
-            var dialog = Utils.showOkDialog('Suppression', 'Suppression en cours...', function() {
-                var path = self.getLink('');
-                self.navigateTo(path);
-            });
+            var dialog = Utils.showOkDialog('Suppression',
+                    'Suppression en cours...', function() {
+                        var path = self.getLink('');
+                        self.navigateTo(path);
+                    });
 
             var self = this;
             this.model.destroy({
                 success : function() {
-                    setTimeout(function() {
+                    setTimeout(function() {
                         dialog.updateContent('Suppression effectuée.');
                     }, 500);
                     // TODO: see how to propagate the removal to
@@ -181,19 +195,20 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, viewMana
                 typeof callback === 'function' && callback();
             });
         },
-        
+
         saveClicked : function() {
             this.doSave();
         },
 
         deleteClicked : function() {
             var _this = this;
-            var dialog = Utils.showYesNoDialog('Confirmation', 'Confirmer la suppression de l\'entité ?', function() {
-                dialog.hide();
-                _this.removeResource();
-            }, function() {
-                dialog.hide();
-            });
+            var dialog = Utils.showYesNoDialog('Confirmation',
+                    'Confirmer la suppression de l\'entité ?', function() {
+                        dialog.hide();
+                        _this.removeResource();
+                    }, function() {
+                        dialog.hide();
+                    });
 
         },
 

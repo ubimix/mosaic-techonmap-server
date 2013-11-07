@@ -1,61 +1,58 @@
-<div id="topbar">
-        <div class="social">
-            <div class="left">
-            </div>
-            <div class="right">
-            </div>
-        </div>
-
-        <div class="header">
-            <div class="aside">
-            </div>
-
-            <div class="ban">
-                <div class="left">
-                    <h1>
-                        <a href="/"><img src="/js/theme-techonmap/images/banner.png" alt="Techonmap"></a>
-                    </h1>
-                    <h2>La carte des acteurs du numérique en
-                        Île-de-France</h2>
-                </div>
-                <div class="right" style="margin-right:5em;">
-                    {{ if (user != 'Anonymous') { }}
-                    <ul class="menu nav navbar-nav navbar-right">
-                        <li><input type="text" class="umx-typeahead" autocomplete="off" placeholder="Rechercher..."></li>                        
-<li>
-<div class="btn-group">
-  <button type="button" class="btn btn-default"><a href="/workspace/new">Créer</a></button>
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-   <li><a href="/workspace/import">Importer</a></li>
-    <li><a class="export">Exporter</a></li>
-    <li><a target="blank" href="/map/">Voir la carte</a></li>
-    <li class="divider"></li>
-    {{ if (user != 'Anonymous') { }}
-    <li><a href="/api/logout">Se déconnecter ({{=user}})</a></li>
-    {{ } }}
-  </ul>
+{{ var user = view.getUser(); }}
+<div id="topbar"{{=view.renderPage()}}>
+	<!-- end header -->
 </div>
-</li>
+<!-- end topbar -->
+<div class="social">
+	<div class="left"></div>
+	<div class="right"></div>
+</div>
 
-                        
-                     
+<div class="header">
+	<div class="aside"></div>
+
+	<div class="ban">
+		<div class="left">
+			<h1>
+				<a {{=view.renderLink("") }}><img
+					src="{{=view.getLink('../js/theme-techonmap/images/banner.png') }}"
+					alt="Techonmap"></a>
+			</h1>
+			<h2>La carte des acteurs du numérique en Île-de-France</h2>
+		</div>
+		<div class="right" style="margin-right: 5em;">
+			<ul class="menu nav navbar-nav navbar-right">
+				<li><input type="text" class="umx-typeahead" autocomplete="off"
+					placeholder="Rechercher..." {{=view.renderTypeahead()}}></li>
+				<li>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default">
+							<a {{=view.renderCreateLink() }}>Créer</a>
+						</button>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a {{=view.renderLink("import") }} >Importer</a></li>
+							<li><a class="export" {{=view.renderExportLink() }} >Exporter</a></li>
+							<li><a target="blank" {{=view.renderLink("map") }} >Voir la carte</a></li>
+							{{if(view.isLogged()){}} 
+							<li><a {{=view.renderLink("api/logout") }} >Se déconnecter ({{=view.getUser()}})</a></li>
+							{{} }}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+	<!-- end ban -->
 
 
-                    </ul>
-                    {{ } }}
-                </div>
-
-            </div><!-- end ban -->
-
-
-        </div><!-- end header -->
-</div> <!-- end topbar -->
-
-<div style="clear:both;">
-<hr style="margin-top:0px; margin-bottom:0px;"/>
+</div>
+<div style="clear: both;">
+	<hr style="margin-top: 0px; margin-bottom: 0px;" />
 </div>
 
 

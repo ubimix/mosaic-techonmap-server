@@ -1,6 +1,8 @@
 var Acl = require('acl');
 var Step = require('step');
 var config = require('./config');
+var Q = require('q');
+var _ = require('underscore');
 
 module.exports = function(app) {
 
@@ -16,30 +18,15 @@ module.exports = function(app) {
             console.log("ERROR: " + err);
         }
     }
-    var accessRules = yaml2json(config.accessRules);
-    acl.allow(accessRules, onError);
-    var userRoles = yaml2json(config.userRoles);
-    for ( var userId in userRoles) {
-        var roles = userRoles[userId] || [];
-        acl.addUserRoles(userId, roles, onError);
+    function nfcall(context, method) {
+        var array = _.toArray(arguments);
+        array.splice(0, 2);
+        return Q.nfapply(_.bind(method, context), array);
     }
 
-    // Step(function() {
-    // var accessRules = yaml2json(config.accessRules);
-    // acl.allow(accessRules, this);
-    // }, function(err) {
-    // if (err)
-    // throw err;
-    // var userRoles = yaml2json(config.userRoles);
-    // for ( var userId in userRoles) {
-    // var roles = userRoles[userId] || [];
-    // acl.addUserRoles(userId, roles, this);
-    // }
-    // }, function onError(err) {
-    // if (err) {
-    // console.log("ERROR: " + err);
-    // }
-    // })
+    function checkAcl(user, resource, action) {
+        return nfcall(acl, acl.isAllowed, user, resource, action);
+    }
 
     function getUserId(req, res) {
         // TODO: the user should be stored in res.locals (?)
@@ -50,76 +37,113 @@ module.exports = function(app) {
             userId = 'Anonymous';
         return userId;
     }
-    
-    function getLogicalPath(path) {
-         if (path.match(/^\/api\/resources\/export\/?$/)){
-             return 'resources/export';
-         } else if (path.match(/^\/api\/resources\/import\/?$/)){
-             return 'resources/import';
-         } else if (path.match(/^\/api\/resources\/?.*$/)){
-             return 'resources';
-         } else if (path.match(/^\/api\/typeahead\/?.*$/)){
-             return 'typeahead';
-         } else if (path.match(/^\/api\/validation\/?.*$/)){
-             return 'validation';
-         } else if (path.match(/^\/api\/twitter\/?.*$/)){
-             return 'login-endpoint';
-         } else if (path.match(/^\/api\/google\/?.*$/)){
-             return 'login-endpoint';
-         } else if (path.match(/^\/api\/facebook\/?.*$/)){
-             return 'login-endpoint';
-         } else if (path.match(/^\/wiki\/?.*$/)){
-             return 'wiki';
-         } else {
-             return '';
-         }
+
+    // Resources: 'resource', 'resource-list', 'validator', 'file'
+    // Actions: 'read', 'write', 'delete'
+    function getProtectedContext(path, method) {
+        var action = 'read';
+        switch (method) {
+        case 'put':
+        case 'post':
+            action = 'write';
+            break;
+        case 'delete':
+            action = 'delete';
+            break;
+        case 'get':
+        default:
+            action = 'read';
+            break;
+        }
+        var resource = null;
+        if (path.match(/^\/api\/resources\/export\/?$/)) {
+            if (method == 'get') {
+                resource = 'resource-list';
+                action = 'read';
+            }
+        } else if (path.match(/^\/api\/resources\/import\/?$/)) {
+            if (method == 'put' || method == 'post') {
+                resource = 'resource-list';
+                action = 'write';
+            }
+        } else if (path.match(/^\/api\/resources\/?.*$/)) {
+            resource = 'resource';
+        } else if (path.match(/^\/api\/typeahead\/?.*$/)) {
+            if (method == 'get') {
+                resource = 'resource';
+                action = 'read';
+            }
+        } else if (path.match(/^\/api\/validation\/?.*$/)) {
+            resource = 'validator';
+        } else {
+            resource = 'file';
+        }
+        if (!resource)
+            return null;
+        return {
+            resource : resource,
+            action : action
+        }
     }
 
     function requireAuthentication(req, res, next) {
         var userId = getUserId(req, res);
-        var path = getLogicalPath(req.url.split('?')[0]);
+        var path = req.url.split('?')[0];
         var method = req.method.toLowerCase();
-        Step(
-        // Check access for logged users
-        function() {
-            var next = this;
-            if (path == '') {
-                next(null, true);
-            } else if (userId != 'Anonymous') {
-                acl.isAllowed('LoggedUser', path, method, next);
-            } else {
-                next(null, false);
-            }
-        },
-        // Check access using the user names
-        function(err, allowed) {
-            var next = this;
-            if (allowed) {
-                next(null, allowed);
-            } else {
-                // console.log("USER: ", userId, userRoles[userId])
-                acl.isAllowed(userId, path, method, next);
-            }
-        },
+        Q()
+        //
+        .then(
+                function() {
+                    var context = getProtectedContext(path, method);
+                    if (!context) {
+                        throw new Error('Access denied');
+                    }
+                    return checkAcl(userId, context.resource, context.action)
+                    //
+                    .then(
+                            function(allowed) {
+                                if (allowed)
+                                    return true;
+                                if (userId == 'Anonymous')
+                                    return false;
+                                // Additional access check for logged users
+                                return checkAcl('LoggedUser', context.resource,
+                                        context.action);
+                            });
+                })
         // 
-        function(err, allowed) {
-             console.log('Access "' + path + '": ' + err, allowed)
-            if (err || !allowed) {
-                res.send('Access denied. User: "' + userId + '". Resource: "' + path + '".', 403);
-                return;
-                // TODO: we should probably send an HTTP UNAUTHORIZED error
-                // throw new Error();
-            } else {
-                next();
-            }
-        })
+        .then(
+                function(allowed) {
+                    if (!allowed) {
+                        res.send('Access denied. User: "' + userId
+                                + '". Resource: "' + path + '".', 403);
+                    }
+                },
+                function(error) {
+                    res.send('Access denied. User: "' + userId
+                            + '". Resource: "' + path + '".', 403);
+                })
+        //
+        .then(next)
+        //
+        .done();
     }
-    
-    
-    app.all('/api/*', requireAuthentication);
-    
-    // if (!app.locals.authorization.anonRead) {
-    // app.all("/wiki/*", requireAuthentication);
-    // app.all("/search", requireAuthentication);
-    // }
+
+    var accessRules = yaml2json(config.accessRules);
+    return nfcall(acl, acl.allow, accessRules).then(function() {
+        var userRoles = yaml2json(config.userRoles);
+        return Q.all(_.map(userRoles, function(roles, userId) {
+            var roles = roles || [];
+            return nfcall(acl, acl.addUserRoles, userId, roles);
+        }))
+    }).then(function(r) {
+        var authFunction = function(req, res, next) {
+            console.log('Auth!')
+            next(null, null);
+        };
+        app.all('/api/*', requireAuthentication);
+        app.all('/api/auth', authFunction);
+        app.all('/api/auth/*', authFunction);
+        return r;
+    });
 }

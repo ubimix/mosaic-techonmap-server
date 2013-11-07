@@ -17,7 +17,7 @@ function(_, UmxView, LinkController, template) {
                 this.searchBox.typeahead({
                     source : function(query, process) {
                         var linkController = LinkController.getInstance();
-                        var url = linkController.getApiTypeaheadLink();
+                        var url = linkController.getLink('/api/typeahead');
                         return $.get(url, {
                             query : query
                         }, function(items) {

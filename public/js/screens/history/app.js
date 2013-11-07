@@ -6,7 +6,8 @@ function(LinkController, Resource, HistoryView) {
 
             var linkController = LinkController.getInstance();
             var history = new Backbone.Model();
-            history.url = linkController.getApiVersionLink(options.path);
+            history.url = linkController.getLink('/api/resources/'
+                    + options.path + '/history');
 
             function showError(error) {
                 var view = new MainView({

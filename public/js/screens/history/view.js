@@ -24,8 +24,8 @@ function(_, UmxView, Utils, template) {
                     // TODO: is this really needed ?
                     self.remove();
 
-                    var href = self.getLink(self.model.getPath()
-                            + '/history/compare/' + xx);
+                    var fullPath = self.getLink(self.model.getPath());
+                    var href = self.toHistoryLink(fullPath, xx);
                     self.navigateTo(href);
                     return false;
                 });
