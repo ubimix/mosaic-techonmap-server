@@ -1,5 +1,7 @@
 var Tools = require('./tools');
 var config = require('./config');
+var Q = require('q');
+var _ = require('underscore');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -54,12 +56,11 @@ module.exports = function(app) {
         res.redirect('/');
     });
 
-    console.log(app.locals.baseUrl);
-
     /* ------------------------------------------------------------ */
     // Local
     passport.use(new LocalStrategy(function(username, password, done) {
-        if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
+        if (username.toLowerCase() != auth.alone.username.toLowerCase()
+                || Tools.hashify(password) != auth.alone.passwordHash) {
             return done(null, false, {
                 message : 'Incorrect username or password'
             });
@@ -110,8 +111,8 @@ module.exports = function(app) {
             });
             return done(undefined, user);
         }));
-        
-        //http://stackoverflow.com/questions/9885711/custom-returnurl-on-node-js-passports-google-strategy
+
+        // http://stackoverflow.com/questions/9885711/custom-returnurl-on-node-js-passports-google-strategy
         app.get("/api/auth/twitter", function(req, res, next) {
             req.session.destination = req.query.redirect;
             passport.authenticate('twitter', function(err, user, info) {
@@ -138,10 +139,11 @@ module.exports = function(app) {
             return done(undefined, user);
         }));
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
-        app.get("/api/auth/facebook/return", passport.authenticate('facebook', {
-            successRedirect : '/api/auth/done',
-            failureRedirect : '/login'
-        }));
+        app.get("/api/auth/facebook/return", passport.authenticate('facebook',
+                {
+                    successRedirect : '/api/auth/done',
+                    failureRedirect : '/login'
+                }));
     }
 
     /* ------------------------------------------------------------ */
@@ -162,7 +164,7 @@ module.exports = function(app) {
     /* ------------------------------------------------------------ */
     // var auth = app.locals.authentication = config.authentications
     var auth = app.locals.authentication = config.authentication;
-
+    return Q(true);
     //
     // var authEnabled = false;
     // for ( var n in config.authentications) {

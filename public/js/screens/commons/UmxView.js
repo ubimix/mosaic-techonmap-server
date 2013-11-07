@@ -24,9 +24,14 @@ function(_, Backbone, LinkController, AsyncRender) {
             return linkController.getLink(path);
         },
 
+        toHistoryLink : function(path, v1, v2) {
+            var linkController = LinkController.getInstance();
+            return linkController.toHistoryLink(path, v1, v2);
+        },
+
         doRenderHistoryLink : function(a, path, version1, version2) {
             var linkController = LinkController.getInstance();
-            path = linkController.getHistoryLink(path, version1, version2);
+            path = linkController.toHistoryLink(path, version1, version2);
             this._setLinkAttributes(a, path);
         },
 

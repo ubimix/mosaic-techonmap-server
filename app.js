@@ -5,17 +5,18 @@ var fs = require("fs");
 var middleware = require('./source/middleware');
 var passport = require('passport');
 var config = require('./source/config');
-var configPassport = require('./source/config.passport');
-var configAccessControl = require('./source/config.access');
 // needed by Passport LocalStrategy
 var Flash = require('connect-flash');
+var Q = require('q');
+var _ = require('underscore');
 
 var app = express();
 
 app.locals.port = config.server.port || process.env.PORT || 6067;
 app.locals.hostname = config.server.hostname || "localhost";
 // baseUrl is used as the public url
-app.locals.baseUrl = config.server.baseUrl || ("http://" + app.locals.hostname + ":" + app.locals.port)
+app.locals.baseUrl = config.server.baseUrl
+        || ("http://" + app.locals.hostname + ":" + app.locals.port)
 
 var oneMonth = 30 * 24 * 60 * 60 * 1000;
 
@@ -61,14 +62,13 @@ app.configure(function() {
 app.configure('development', function() {
     app.use(express.errorHandler());
     app.use('/map/', express.static(path.join(__dirname, 'public/map')));
-//    listFolders(path.join(__dirname, 'public'), function(err, folders) {
-//        folders.forEach(function(folder, array, index) {
-//            app.use('/backoffice/' + path.basename(folder), express.static(path
-//                    .join(__dirname, 'public/' + path.basename(folder))));
-//        });
-//
-//    });
-
+    // listFolders(path.join(__dirname, 'public'), function(err, folders) {
+    // folders.forEach(function(folder, array, index) {
+    // app.use('/backoffice/' + path.basename(folder), express.static(path
+    // .join(__dirname, 'public/' + path.basename(folder))));
+    // });
+    //
+    // });
 
     app.use(express.static(path.join(__dirname, 'public')));
 
@@ -83,13 +83,29 @@ app.configure('production', function() {
     app.use(middleware.serveMaster.production());
 });
 
-configPassport(app);
-configAccessControl(app);
-
-var promise = require('./source/api/resources')(app);
-promise.then(function() {
-    http.createServer(app).listen(app.get('port'), function() {
-        var environment = process.env.NODE_ENV || 'development';
-        console.log('Server started: ' + app.get('port') + ' (' + environment + ')');
-    });
-});
+Q()
+// Configure OAuth passports for individual providers (G+, FB, TW, LiN)
+.then(function() {
+    return require('./source/config.passport')(app);
+})
+// Configure access control
+.then(function() {
+    return require('./source/config.access')(app);
+})
+// Configure the API to access resources
+.then(function() {
+    return require('./source/api/resources')(app);
+})
+// Instantiate and run an HTTP server
+.then(function() {
+    var server = http.createServer(app);
+    return Q.nfcall(_.bind(server.listen, server), app.get('port'))
+})
+// Print out the address of the main page
+.then(function(r) {
+    var port = app.get('port');
+    console.log("http://127.0.0.1:" + port + '/workspace/');
+    return r;
+})
+// Handle errors and finish the initialization process
+.done();

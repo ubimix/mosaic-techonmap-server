@@ -124,15 +124,15 @@ function getVersionFromRequest(req, param) {
 
 /** Loads and returns information about the user from the current request */
 function getOptionsFromRequest(req) {
+    var options = {};
     var user = req.user;
-    // console.log('user', user);
-    var email = user.displayName;
-    email = email.replace(/[\s]/, '_');
-    email = '<' + email + '@foo.bar>';
-    var author = user.displayName + ' ' + email;
-    var options = {
-        author : author
-    };
+    if (user) {
+        var email = user.displayName;
+        email = email.replace(/[\s]/, '_');
+        email = '<' + email + '@foo.bar>';
+        var author = user.displayName + ' ' + email;
+        options.author = author;
+    }
     return options;
 }
 
@@ -431,18 +431,25 @@ function initializeApplication(app, project) {
     });
 
     app.get('/api/validation', function(req, res) {
-        reply(req, res, project.loadResource('.admin-timestamp').then(
+        var resourcePath = '.admin-timestamp';
+        reply(req, res, project.loadResource(resourcePath).then(
                 function(resource) {
+                    var promise; 
                     if (!resource) {
                         var options = getOptionsFromRequest(req);
-                        return importGeoJSONItem(project, '.admin-timestamp', {
+                        promise = importGeoJSONItem(project, resourcePath, {
                             properties : {
                                 validated : [],
                                 timestamp : 0
                             }
                         }, options);
+                    } else {
+                        promise = Q(getGeoJsonFromResource(resource));
                     }
-                    return getGeoJsonFromResource(resource);
+                    return promise.then(function(json) {
+                        console.log(json);
+                        return json;
+                    });
                 }));
 
     });
@@ -467,7 +474,7 @@ module.exports = function(app) {
     var YEAR = 365 * DAY;
     var options = {
         dir : './tmp',
-		rootDir : 'repository',
+        rootDir : 'repository',
         name : 'techonmap',
         // inputFile : './data/geoitems.1.json',
         inputFile : './data/data.json',

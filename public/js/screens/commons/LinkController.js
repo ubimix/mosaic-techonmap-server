@@ -3,14 +3,37 @@ define([ 'Underscore', 'Backbone' ], function(_, Backbone) {
     var LinkController = Backbone.Model.extend({
 
         navigateTo : function(path) {
-            console.log('navigateTo:', path);
-            Backbone.history.navigate(path, true);
+            if (path.indexOf('api') >= 0) {
+                console.log(path);
+                window.location = path;
+            } else {
+                console.log('LinkController#navigateTo: "' + path + '"')
+                Backbone.history.navigate(path, {
+                    trigger : true
+                });
+            }
+        },
+
+        _prepareHistoryLink : function(path, version1, version2) {
+            var str = path + '/history';
+            if (version1) {
+                str += '/' + version1;
+                if (version2) {
+                    str += '/' + version2;
+                }
+            }
+            return str;
+        },
+
+        toHistoryLink : function(path, version1, version2) {
+            str = this._prepareHistoryLink(path, version1, version2);
+            return this.getLink(str);
         },
 
         getLink : function(path) {
             if (!path)
                 path = '';
-            path = path.replace(/[\\\/]+/gim, '/').replace(/\s+/, '').replace(
+            path = path.replace(/[\\\/]+/gim, '/').replace(/^\s+|\s+$/gim, '').replace(
                     /^\//g, '').replace(/\/$/gi, '');
             // FIXME: is it really required ?
             if (path.indexOf('api/') == 0) {
@@ -30,28 +53,8 @@ define([ 'Underscore', 'Backbone' ], function(_, Backbone) {
                 }
             }
             return str;
-        },
+        }
 
-        getHistoryLink : function(path, version1, version2) {
-            str = this._prepareHistoryLink(path, version1, version2);
-            return this.getLink(str);
-        },
-
-        isNewResourcePath : function(path) {
-            return path == 'new';
-        },
-
-        getApiVersionLink : function(path, version1, version2) {
-            str = this._prepareHistoryLink(path, version1, version2);
-            return this.getApiLink(str);
-        },
-
-        getApiLink : function(path) {
-            return this.getLink('/api/resources/' + path);
-        },
-        getApiTypeaheadLink : function() {
-            return this.getLink('/api/typeahead');
-        },
     }, {
         getInstance : function() {
             if (!LinkController._instance) {

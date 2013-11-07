@@ -131,7 +131,12 @@ function(Router, client, Backbone, _) {
     var app = {
         root : '/'
     };
-
+    var sync = Backbone.sync; 
+    Backbone.sync = function() {
+        console.log('Backbone.sync', arguments)
+        sync.apply(this, arguments)
+    }
+    
     window.Router = new Router();
     client.setup(window, app);
     Backbone.pubSub = _.extend({}, Backbone.Events);
