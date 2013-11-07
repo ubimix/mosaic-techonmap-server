@@ -95,7 +95,7 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator,
 
         getPath : function() {
             var path = this.model.getId();
-            path = path != '' ? path : this.options.path;
+            path = path && path != '' ? path : this.options.path;
             return path;
         },
 
