@@ -24,12 +24,10 @@ function(LinkController, Resource, ResourceContainerView) {
                 success : function(model, object) {
                     // TODO: why both model + object are returned ? where is
                     // it documented ?
-                    console.log('CONTENT LOADED', resource.toJSON(), model
-                            .toJSON());
                     showResource(viewManager, resource, options);
                 },
                 error : function(err) {
-                    console.log('CONTENT LOAD ERROR', err, resource);
+                    resource.set('id', null);
                     showResource(viewManager, resource, options);
                 }
             });

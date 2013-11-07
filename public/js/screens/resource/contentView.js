@@ -13,7 +13,6 @@ function(UmxView, Backbone, _, CodeMirror, CodeMirrorYaml, ResourceModel,
         },
 
         renderContent : function() {
-            console.log('renderContent')
             return this.asyncElement(function(elm) {
                 // FIXME: put readOnly in options directly
                 var formattedContent = this.getFormattedContent();

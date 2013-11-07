@@ -187,6 +187,7 @@ define(
                             return this.asyncElement(function(elm) {
                                 this.idFieldElm = elm;
                                 var path = this.getPath();
+                                console.log('renderIdField:', path)
                                 this.idFieldElm.val(path);
                                 if (this.model.isNew()) {
                                     this.idFieldElm.removeAttr('disabled');
@@ -332,7 +333,7 @@ define(
 
                         getPath : function() {
                             var path = this.model.getId();
-                            path = path != '' ? path : this.options.path;
+                            path = path && path != '' ? path : this.options.path;
                             return path;
                         },
 
