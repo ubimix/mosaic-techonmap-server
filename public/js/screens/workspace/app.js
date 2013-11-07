@@ -14,8 +14,9 @@ function(ResourceCollection, Validator, MainView) {
             var coll = new ResourceCollection();
 
             var validator = Validator.getInstance();
-
+            console.log('validator:before')
             validator.onReady(function() {
+                console.log('validator:after')
                 coll.fetch({
                     success : function(coll) {
                         coll.setSort('attributes.sys.updated.timestamp', 'desc');

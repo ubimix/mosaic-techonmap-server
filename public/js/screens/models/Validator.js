@@ -1,13 +1,22 @@
-define([ 'Backbone' ], function(Backbone) {
+define([ 'Backbone', '../commons/LinkController' ],
+//
+function(Backbone, LinkController) {
 
     var Validator = Backbone.Model.extend({
-        url : '/api/validation/',
+
+        url : function() {
+            var linkController = LinkController.getInstance();
+            var link = linkController.getLink('/api/validation');
+            return link;
+        },
 
         initialize : function() {
-            _.bindAll(this, '_onLoad');
-            this.fetch({
-                success : this._onLoad
-            });
+            _.bindAll(this, '_onLoad', '_onFailure');
+            this._resultHandlers = {
+                success : this._onLoad,
+                error : this._onFailure
+            };
+            this.fetch(this._resultHandlers);
         },
 
         onReady : function(callback) {
@@ -17,6 +26,10 @@ define([ 'Backbone' ], function(Backbone) {
                 this._readyListeners = this._readyListeners || [];
                 this._readyListeners.push(callback);
             }
+        },
+
+        _onFailure : function(err) {
+            console.log('ERROR:', err);
         },
 
         _onLoad : function() {
@@ -69,11 +82,8 @@ define([ 'Backbone' ], function(Backbone) {
                     validated.splice(idx, 0, path);
                 }
             }, this);
-            
-            
-            this.save(null, {
-                success : this._onLoad
-            });
+
+            this.save(null, this._resultHandlers);
 
         },
 
@@ -81,9 +91,7 @@ define([ 'Backbone' ], function(Backbone) {
             var props = this._getProperties();
             props.validated = [];
             props.timestamp = new Date().getTime();
-            this.save(null, {
-                success : this._onLoad
-            })
+            this.save(null, this._resultHandlers)
         },
 
         _getTimestamp : function() {

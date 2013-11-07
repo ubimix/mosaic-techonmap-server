@@ -18,25 +18,30 @@ define(function(require) {
                     ':workspace/*path' : 'resourceScreen'
                 },
                 loginScreen : function() {
+                    console.log('loginScreen')
                     require('./../screens/login/app').run(viewManager, {});
                 },
                 searchScreen : function(workspace) {
+                    console.log('searchScreen')
                     require('./../screens/search/app').run(viewManager, {
                         workspace : workspace
                     });
                 },
                 importScreen : function(workspace) {
+                    console.log('importScreen')
                     require('./../screens/import/app').run(viewManager, {
                         workspace : workspace
                     });
                 },
                 workspaceScreen : function(workspace, sort) {
+                    console.log('workspaceScreen')
                     require('./../screens/workspace/app').run(viewManager, {
                         workspace : workspace,
                         sort : sort
                     });
                 },
                 compareScreen : function(workspace, path, v1, v2) {
+                    console.log('compareScreen')
                     require('./../screens/compare/app').run(viewManager, {
                         workspace : workspace,
                         path : path,
@@ -53,7 +58,8 @@ define(function(require) {
                 resourceScreen : function(workspace, path) {
                     require('./../screens/resource/app').run(viewManager, {
                         workspace : workspace,
-                        path : path
+                        path : path,
+                        create : false
                     });
                 },
                 revisionScreen : function(workspace, path, version) {

@@ -5,10 +5,10 @@ function(Backbone, LinkController, ResourceModel, RevisionView) {
     return {
         run : function(viewManager, options) {
             var linkController = LinkController.getInstance();
+            var fullPath = linkController.getPath(options.path);
             var revisions = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : linkController.getApiVersionLink(options.path,
-                        options.version)
+                url : linkController.toHistoryLink(fullPath, options.version)
             });
 
             revisions.fetch({

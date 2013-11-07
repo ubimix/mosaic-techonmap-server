@@ -5,15 +5,18 @@ function(Backbone, LinkController, ResourceModel, CompareView) {
     return {
         run : function(viewManager, options) {
             var linkController = LinkController.getInstance();
+            var fullPath = linkController.getPath('/api/resources/'
+                    + options.path)
             var revisions1 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : linkController
-                        .getApiVersionLink(options.path, options.v1)
+                // FIXME: replace it by a direct API call
+                url : linkController.toHistoryLink(fullPath, options.v1)
             });
 
             var revisions2 = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : linkController.getApiLink(options.path, options.v2)
+                // FIXME: replace it by a direct API call
+                url : linkController.toHistoryLink(fullPath, options.v2)
             });
 
             revisions1.fetch({
