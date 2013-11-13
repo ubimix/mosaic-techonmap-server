@@ -4,4 +4,4 @@
 @import url('../components/handsontable/dist/jquery.handsontable.full.css');
 @import url('../components/leaflet-dist/leaflet.css');
 @import url('../components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css');
-@import url('style.css');
+@import url('./style.css');
