@@ -14,32 +14,32 @@
 	<div class="ban">
 		<div class="left">
 			<h1>
-				<a {{=view.renderLink("") }}><img
+				<a{{=view.renderLink("") }}><img
 					src="{{=view.getLink('../js/theme-techonmap/images/banner.png') }}"
 					alt="Techonmap"></a>
 			</h1>
 			<h2>La carte des acteurs du numérique en Île-de-France</h2>
 		</div>
-		<div class="right" style="margin-right: 5em;">
+		<div class="right" style="margin-right: 5em;"{{=view.renderMainView()}}>
 			<ul class="menu nav navbar-nav navbar-right">
 				<li><input type="text" class="umx-typeahead" autocomplete="off"
-					placeholder="Rechercher..." {{=view.renderTypeahead()}}></li>
+					placeholder="Rechercher..."{{=view.renderTypeahead()}}></li>
 				<li>
 					<div class="btn-group">
 						<button type="button" class="btn btn-default">
-							<a {{=view.renderCreateLink() }}>Créer</a>
+							<a{{=view.renderCreateLink() }}>Créer</a>
 						</button>
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown">
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
-							<li><a {{=view.renderLink("import") }} >Importer</a></li>
-							<li><a class="export" {{=view.renderExportLink() }} >Exporter</a></li>
-							<li><a target="blank" {{=view.renderLink("map") }} >Voir la carte</a></li>
-							{{if(view.isLogged()){}} 
-							<li><a {{=view.renderLink("api/logout") }} >Se déconnecter ({{=view.getUser()}})</a></li>
-							{{} }}
+							<li><a{{=view.renderLink("import") }} >Importer</a></li>
+							<li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
+							<li><a target="blank"{{=view.renderLink("map") }} >Voir
+									la carte</a></li> {{if(view.isLogged()){}} 
+							<li><a{{=view.renderLink("api/logout") }} >Se
+									déconnecter ({{=view.getUser()}})</a></li> {{} }}
 						</ul>
 					</div>
 				</li>

@@ -134,7 +134,6 @@ function(Router, client, Backbone, _, LinkController) {
     var app = {
         root : '/'
     };
-
     var sync = Backbone.sync;
     var linkController = LinkController.getInstance();
     var ACL_URL = linkController.getLink('/api/validation');

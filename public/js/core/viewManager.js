@@ -29,18 +29,15 @@ define([ 'jQuery', './view.header' ], function($, HeaderView) {
 
         function render(view) {
             currentView = view;
-            var headerLoaded = $('#umx-header').data('loaded');
             var user = $('#umx-header').data('user');
-            if (!headerLoaded) {
-                var headerView = new HeaderView({
+            if (!this.headerView) {
+                this.headerView = new HeaderView({
                     title : 'jscr-webui',
                     user : user
                 });
-                $('#umx-header').html(headerView.$el);
-                headerView.render();
-                $('#umx-header').data('loaded', 'true');
+                $('#umx-header').html(this.headerView.$el);
             }
-
+            this.headerView.render();
             $('#app').append(currentView.$el);
             currentView.render();
 

@@ -10,11 +10,7 @@ function(LinkController, Resource, HistoryView) {
                     + options.path + '/history');
 
             function showError(error) {
-                var view = new MainView({
-                    error : err,
-                    workspace : options.workspace
-                });
-                viewManager.show(view);
+                console.log(error);
             }
 
             history.fetch({
