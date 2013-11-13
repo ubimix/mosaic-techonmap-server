@@ -13,9 +13,20 @@ function($, _, Backbone, UmxView, Typeahead, LinkController,
         getUser : function() {
             return this.options.user;
         },
+
         isLogged : function() {
             var user = this.getUser();
-            return user ? true : false;
+            return user && user != 'Anonymous' ? true : false;
+        },
+
+        renderMainView : function() {
+            return this.asyncElement(function(elm) {
+                if (this.isLogged()) {
+                    elm.show();
+                } else {
+                    elm.hide();
+                }
+            });
         },
 
         renderExportLink : function() {
@@ -30,7 +41,6 @@ function($, _, Backbone, UmxView, Typeahead, LinkController,
                 var linkController = LinkController.getInstance();
                 function updateCreateLink() {
                     var id = that.searchInput.val();
-                    console.log('SEARCH Id: ', id);
                     var path = linkController.getLink(id);
                     elm.attr('href', path);
                     return path;
