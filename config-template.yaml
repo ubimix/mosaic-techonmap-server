@@ -1,0 +1,63 @@
+---
+# Configuration sample file (YAML)
+application:
+    title: "TechOnMap Wiki"
+server:
+    hostname: "umxdev.com"
+    port: 8000
+    localOnly: false
+    baseUrl: "http://umxdev.com:8000"
+    basePath: '/wiki/'
+authorization:
+    anonRead: true
+    validMatches: ".+"
+authentication:
+    google:
+      enabled: true
+      oauthkeys:
+        consumerKey : ''
+        consumerSecret : ''
+    twitter:
+      enabled: true
+      oauthkeys:
+        consumerKey : ''
+        consumerSecret : ''
+      cacheExpire: 5000
+    facebook:
+      enabled: true
+      oauthkeys:
+        clientID : ''
+        clientSecret : ''
+    alone:
+      enabled: true
+      username: "cartowiki"
+      passwordHash: ""
+      email: "john.smith@yahoo.com"
+accessRules:
+    - roles: [ "admin", "owner" ]
+      allows:
+        - resources: "file"
+          permissions: "read"
+        - resources: [ "resource", "validator", "resource-list" ]
+          permissions:  ["read", "write", "delete" ]
+    - roles: ["guest"]
+      allows:
+        - resources: "file"
+          permissions: "read"
+        - resources: [ "resource-list" ]
+          permissions:  ["read"]
+    - roles: ["logged"]
+      allows:
+        - resources: "file", 
+          permissions: "read"
+        - resources: [ "resource", "validator" ]
+          permissions:  ["read", "write" ]
+userRoles:
+     Anonymous: [ "guest" ]
+     John Smith: [ "admin" ]
+     LoggedUser: ["guest", "logged"]
+twitterClient:
+        consumerKey : ''
+        consumerSecret : ''
+        accessTokenKey : ''
+        accessTokenSecret : ''
