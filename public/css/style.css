@@ -254,7 +254,7 @@ body {
 /******************************************************************
  ************************** TECHONMAP *****************************
  ******************************************************************/
-#topbar .social {
+.social {
 	height: 25px;
 	line-height: 25px;
 	background: #eb6564;
@@ -265,13 +265,13 @@ body {
 	overflow: hidden;
 }
 
-#topbar .header h1 {
+.header h1 {
 	display: block;
 	margin-top: 2px;
 	margin-left: 15px;
 }
 
-#topbar .header h2 {
+.header h2 {
 	font-size: 13px;
 	color: #666666;
 	display: block;

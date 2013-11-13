@@ -4,6 +4,9 @@ function(Backbone, LinkController) {
 
     var Validator = Backbone.Model.extend({
 
+        initialize : function() {
+        },
+
         url : function() {
             var linkController = LinkController.getInstance();
             var link = linkController.getLink('/api/validation');
@@ -28,8 +31,12 @@ function(Backbone, LinkController) {
             }
         },
 
-        _onFailure : function(err) {
-            console.log('ERROR:', err);
+        _onFailure : function(obj, err) {
+            console.log('ERROR:', arguments);
+            if (err.status == 403) {
+                var linkController = LinkController.getInstance();
+                linkController.navigateTo('/login');
+            }
         },
 
         _onLoad : function() {
