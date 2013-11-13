@@ -117,14 +117,15 @@ module.exports = function(app) {
                     if (!allowed) {
                         res.send('Access denied. User: "' + userId
                                 + '". Resource: "' + path + '".', 403);
+                    } else {
+                        next();
                     }
                 },
                 function(error) {
+                    console.log('Error', error);
                     res.send('Access denied. User: "' + userId
                             + '". Resource: "' + path + '".', 403);
                 })
-        //
-        .then(next)
         //
         .done();
     }
