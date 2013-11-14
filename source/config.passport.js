@@ -35,25 +35,15 @@ module.exports = function(app) {
     });
 
     app.get('/api/auth/done', function(req, res) {
-
-        // console.log('User: ', req.user);
-        if (!req.user) {
-            var dst = req.session.destination || "/";
-            delete req.session.destination;
-            res.redirect(dst);
-            return;
-        } else {
-            var dst = req.session.destination || "/";
-            delete req.session.destination;
-            res.redirect(dst);
-        }
-
+        var dst = req.session.destination || "/workspace";
+        delete req.session.destination;
+        res.redirect(dst);
     });
 
     app.get('/api/logout', function(req, res) {
         req.logout();
         req.session = null;
-        res.redirect('/');
+        res.redirect("/workspace");
     });
 
     /* ------------------------------------------------------------ */
@@ -121,7 +111,7 @@ module.exports = function(app) {
         });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
             successRedirect : '/api/auth/done',
-            failureRedirect : '/api/auth/done'
+            failureRedirect : '/login'
         }));
     }
 
