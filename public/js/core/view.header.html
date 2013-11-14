@@ -36,7 +36,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><a{{=view.renderLink("import") }} >Importer</a></li>
 							<li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
-							<li><a target="blank"{{=view.renderLink("map") }} >Voir
+							<li><a target="_blank" href="/">Voir
 									la carte</a></li> {{if(view.isLogged()){}} 
 							<li><a{{=view.renderLink("api/logout") }} >Se
 									déconnecter ({{=view.getUser()}})</a></li> {{} }}

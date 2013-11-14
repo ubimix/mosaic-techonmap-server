@@ -4,7 +4,8 @@ define(function(require) {
     var Router = Backbone.Router
             .extend({
                 routes : {
-                    // '' : 'workspaceScreen',
+                    '' : 'mapScreen',
+                    '/' : 'mapScreen',
                     'login' : 'loginScreen',
                     'search' : 'searchScreen',
                     ':workspace/search' : 'searchScreen',
@@ -63,6 +64,9 @@ define(function(require) {
                         path : path,
                         version : version
                     });
+                },
+                mapScreen : function() {
+                    window.location = '../';
                 }
 
             });
