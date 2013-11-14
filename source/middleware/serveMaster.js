@@ -1,5 +1,6 @@
 var _ = require('underscore');
-var client = require('./../client');
+var client = require('../client');
+var config = require('../config');
 
 function skipMaster(req) {
     return _.any([ '/api', '/components', '/admin-css', '/js', '/build', '/map/' ], function(url) {
@@ -7,7 +8,7 @@ function skipMaster(req) {
     });
 }
 
-function hander(title, mainJs, mainCss) {
+function handle(title, mainJs, mainCss) {
     return function(req, res, next) {
         if (skipMaster(req)) {
             // TODO: what is next
@@ -26,10 +27,10 @@ function hander(title, mainJs, mainCss) {
 
 module.exports = {
     development : function() {
-        return hander('jscr-webui', '/js/main.js', '/admin-css/main.css');
+        return handle(config.application.title, '/js/main.js', '/admin-css/main.css');
     },
 
     production : function() {
-        return hander('jscr-webui', client.js, client.css);
+        return handle(config.application.title, client.js, client.css);
     }
 };

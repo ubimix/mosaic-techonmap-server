@@ -61,3 +61,10 @@ twitterClient:
         consumerSecret : ''
         accessTokenKey : ''
         accessTokenSecret : ''
+repository:
+        rootDir: 'repository'
+        name: 'test'
+        inputFile: ''
+        author: 'system <system@company.com>'
+        cacheMaxSize: 300000
+        cacheMaxAge: 31536000000
