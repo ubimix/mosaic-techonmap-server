@@ -1,5 +1,6 @@
 var Path = require('path');
 var Fs = require('fs');
+var config = require('../config');
 // TODO: when to use relative paths, absolute paths in node ?
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
@@ -467,22 +468,17 @@ function initializeApplication(app, project) {
 /* The main exported module (the 'main' function) */
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
-    var SEC = 1000; // 1000 milliseconds
-    var MIN = 60 * SEC;
-    var HOUR = 60 * MIN;
-    var DAY = 24 * HOUR;
-    var YEAR = 365 * DAY;
-    var options = {
-        dir : './tmp',
-        rootDir : 'repository',
-        name : 'techonmap',
-        // inputFile : './data/geoitems.1.json',
-        inputFile : './data/data.json',
-        author : 'TechOnMap <admin@techonmap.fr>',
-        cacheMaxSize : 300000,
-        cacheMaxAge : 1 * YEAR
-    };
-    // var promise = loadData(options);
+    var options = config.repository;
+//    {
+//        dir : './tmp',
+//        rootDir : 'repository',
+//        name : 'techonmap',
+//        inputFile : './data/data.json',
+//        author : 'TechOnMap <admin@techonmap.fr>',
+//        cacheMaxSize : 300000,
+//        cacheMaxAge : 1 * YEAR
+//    };
+    var promise = loadData(options);
     var promise = initProject(options);
     return promise
     //
