@@ -479,7 +479,7 @@ module.exports = function(app) {
 //        cacheMaxAge : 1 * YEAR
 //    };
     var promise = loadData(options);
-    var promise = initProject(options);
+    //var promise = initProject(options);
     return promise
     //
     .then(function(project) {

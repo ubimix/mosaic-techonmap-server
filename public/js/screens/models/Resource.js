@@ -95,6 +95,7 @@ define(
                         },
 
                         getUpdated : function() {
+                            console.log('updated', this.getSys().updated );
                             return this.getSys().updated || {};
                         },
                         getCreated : function() {
@@ -103,6 +104,10 @@ define(
 
                         getVersionId : function() {
                             return this.getUpdated().versionId;
+                        },
+                        
+                        getVersionTimestamp : function() {
+                            return this.getUpdated().timestamp;
                         },
 
                         buildPermalink : function() {
