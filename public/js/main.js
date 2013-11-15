@@ -168,7 +168,7 @@ function(Router, client, Backbone, _, LinkController) {
             access.load(function(data, errorArray) {
                 if (errorArray == null) {
                     accessInfo = access;
-                    options.success.apply(this, arguments);
+                    sync.call(this, method, model, options);
                 } else {
                     var error = errorArray[0]
                     if (error.status == 403) {

@@ -4,6 +4,9 @@ define(
         function(UmxView, DiffMatchPatch, template, Utils) {
 
             var View = UmxView.extend({
+                getFormattedRevisionDate : function(timestamp) {
+                    return Utils.formatDate(timestamp);
+                },
                 template : _.template(template),
 
                 renderDiff : function() {

@@ -29,6 +29,13 @@ define([ 'Underscore', 'Backbone' ], function(_, Backbone) {
             str = this._prepareHistoryLink(path, version1, version2);
             return this.getLink(str);
         },
+        
+
+        toHistoryApiLink : function(path, version1) {
+            str = '/api/resources/' + this._prepareHistoryLink(path, version1);
+            return this.getLink(str);
+        },
+
 
         getLink : function(path) {
             if (!path)
