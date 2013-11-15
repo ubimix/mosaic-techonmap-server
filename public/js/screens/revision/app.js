@@ -5,12 +5,11 @@ function(Backbone, LinkController, ResourceModel, RevisionView) {
     return {
         run : function(viewManager, options) {
             var linkController = LinkController.getInstance();
-            var fullPath = linkController.getPath(options.path);
             var revisions = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : linkController.toHistoryLink(fullPath, options.version)
+                url : linkController.toHistoryApiLink(options.path, options.version)
             });
-
+            
             revisions.fetch({
                 success : function(collection, object) {
                     // TODO : note that the console points to an object which is
@@ -18,6 +17,7 @@ function(Backbone, LinkController, ResourceModel, RevisionView) {
                     var revision = collection.at(0);
                     // FIXME: why is this needed ?
                     revision.id = options.path;
+                    console.log('revision', revision);
                     var view = new RevisionView({
                         model : revision,
                         workspace : options.workspace

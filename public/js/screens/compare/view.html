@@ -5,8 +5,8 @@
 			<ol class="breadcrumb">
 				<li><a{{=view.renderLink('')}}><i
 						class="glyphicon glyphicon-home"></i></a></li>
-				<li><a{{=view.renderLink(revision1.getPath()) }}>{{=revision1.getTitle()}}</a></li>
-				<li><a{{=view.renderLink(revision1.getPath() + '/history') }}>Historique</a></li>
+				<li><a{{=view.renderLink(revision2.getPath()) }}>{{=revision2.getTitle()}}</a></li>
+				<li><a{{=view.renderLink(revision2.getPath() + '/history') }}>Historique</a></li>
 				<li class="active">Comparaison</li>
 			</ol>
 		</div>
@@ -15,7 +15,8 @@
 
 </nav>
 
-<p>Version 1: {{=revision1.getVersionId()}} - Version 2:
-	{{=revision2.getVersionId()}}</p>
+<p><a href="{{=view.toHistoryLink(revision1.getPath(), revision1.getVersionId())}}">Version {{=view.getFormattedRevisionDate(revision1.getVersionTimestamp())}}</a> - 
+<a href="{{=view.toHistoryLink(revision2.getPath(), revision2.getVersionId())}}">Version {{=view.getFormattedRevisionDate(revision2.getVersionTimestamp())}}</a>
+</p>
 
 <pre{{=view.renderDiff()}}></pre>

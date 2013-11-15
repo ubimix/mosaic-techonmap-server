@@ -1,6 +1,6 @@
-define([ 'Underscore', '../commons/UmxView', 'utils', 'text!./view.html' ],
+define([ 'Underscore', '../commons/LinkController', '../commons/UmxView', 'utils', 'text!./view.html' ],
 
-function(_, UmxView, Utils, template) {
+function(_, LinkController, UmxView, Utils, template) {
 
     var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
     var View = UmxView.extend({
@@ -18,15 +18,14 @@ function(_, UmxView, Utils, template) {
                         return false;
                     }
 
-                    var xx = $hCol1.find(':checked').map(function() {
-                        return $(this).val();
-                    }).toArray().join('/with/');
-                    // TODO: is this really needed ?
-                    self.remove();
+                    var versions = [];
+                    $hCol1.find(':checked').map(function() {
+                        versions.push($(this).val());
+                    });
 
-                    var fullPath = self.getLink(self.model.getPath());
-                    var href = self.toHistoryLink(fullPath, xx);
-                    self.navigateTo(href);
+                    var fullPath = self
+                            .getLink(self.model.getPath() + '/history/compare/' + versions[0] + '/with/' + versions[1]);
+                    self.navigateTo(fullPath);
                     return false;
                 });
 
@@ -69,6 +68,14 @@ function(_, UmxView, Utils, template) {
         },
         getFormattedRevisionDate : function(timestamp) {
             return Utils.formatDate(timestamp);
+        },
+
+        renderHistoryLink : function(versionId) {
+            return this.asyncElement(function(a) {
+                var path = this.model.getPath();
+                path = this.toHistoryLink(path, versionId);
+                this._setLinkAttributes(a, path);
+            })
         }
     });
     return View;
