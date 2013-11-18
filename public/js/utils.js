@@ -212,26 +212,32 @@ function(_, YAML, Moment, Resource, Dialog) {
     }
     
     
-    Utils.selectFromObject = function(node, path) {
+    Utils.selectFromObject = function(node, path){
         var array = path.split('.');
         var n = node;
-        _.each(array, function(segment) {
-            if (n) {
+        _.each(array, function(segment){
+            if (n){
+                if (_.isArray(n) && segment.match(/^\d+$/)){
+                    segment = parseInt(segment);
+                }
                 n = n[segment];
             }
         })
         return n;
     }
     
-    Utils.updateObject = function(node, path, value) {
+    Utils.updateObject = function(node, path, value){
         var array = path.split('.');
         var n = node;
         var container = n;
         var len = array.length - 1;
         for (var i=0; i<len;i++) {
             var segment = array[i];
+            if (_.isArray(n) && segment.match(/^\d+$/)) {
+                segment = parseInt(segment);
+            }
             container = n[segment];
-            if (container == null) {
+            if (container == null){
                 if (i  < len - 1 && array[i+1].match(/^\d+$/)) {
                     container = [];
                 } else {
