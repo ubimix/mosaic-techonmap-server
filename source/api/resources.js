@@ -215,7 +215,9 @@ function initProject(options) {
 }
 
 /**
- * Initializes and returns a new project. Used options fields:
+ * Loads data in the specified project. This method returns a promise for the
+ * given project. If the input file is not specified then this method just
+ * returns the project promise. Used options fields:
  * 
  * <pre>
  *  - dir - a root workspace directory
@@ -225,21 +227,21 @@ function initProject(options) {
  * 
  * @returns a promise for an initialized project
  */
-function loadData(options) {
-    var project;
-    return initProject(options)
-    // Set the newly created project in a variable
-    .then(function(p) {
-        project = p;
-    })
+function loadData(project, options) {
+    if (!options.inputFile || options.inputFile == '')
+        return Q(project);
+    return Q()
     // Load file with data
     .then(function() {
         return Q.nfcall(Fs.readFile, options.inputFile, 'UTF-8');
     })
-    // Parse JSON
+    // Parse JSON and return an array of GeoJson objects
     .then(function(data) {
         var json = JSON.parse(data);
-        var jsonItems = _.isArray(json.features) ? json.features : json;
+        var jsonItems = json.features || json;
+        if (!_.isArray(jsonItems)) {
+            jsonItems = [ jsonItems ];
+        }
         return jsonItems;
     })
     // Store the JSON content as project resources
@@ -435,7 +437,7 @@ function initializeApplication(app, project) {
         var resourcePath = '.admin-timestamp';
         reply(req, res, project.loadResource(resourcePath).then(
                 function(resource) {
-                    var promise; 
+                    var promise;
                     if (!resource) {
                         var options = getOptionsFromRequest(req);
                         promise = importGeoJSONItem(project, resourcePath, {
@@ -469,25 +471,20 @@ function initializeApplication(app, project) {
 /* -------------------------------------------------------------------------- */
 module.exports = function(app) {
     var options = config.repository;
-//    {
-//        dir : './tmp',
-//        rootDir : 'repository',
-//        name : 'techonmap',
-//        inputFile : './data/data.json',
-//        author : 'TechOnMap <admin@techonmap.fr>',
-//        cacheMaxSize : 300000,
-//        cacheMaxAge : 1 * YEAR
-//    };
-    var promise = loadData(options);
-    //var promise = initProject(options);
-    return promise
-    //
+    // Opens and initializes project
+    return initProject(options)
+    // Loads project data
+    .then(function(project) {
+        return loadData(project, options);
+    })
+    // Initializes the application with the project
     .then(function(project) {
         initializeApplication(app, project);
         return true;
-    }).fail(function(err) {
+    })
+    // Handle errors
+    .fail(function(err) {
         console.log('error', err);
         throw err;
     });
-
 }
