@@ -1,10 +1,7 @@
-define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView',
-        'Typeahead', '../screens/commons/LinkController',
-        'text!./view.header.html', '../screens/export/Export',
-        'BootstrapDropdown' ],
+define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView', 'Typeahead', '../screens/commons/LinkController',
+        'text!./view.header.html', '../screens/commons/Dialog', '../screens/export/Export', 'BootstrapDropdown' ],
 
-function($, _, Backbone, UmxView, Typeahead, LinkController,
-        ViewHeaderTemplate, ExportDialog) {
+function($, _, Backbone, UmxView, Typeahead, LinkController, ViewHeaderTemplate, Dialog, ExportDialog) {
 
     var View = UmxView.extend({
 
@@ -35,22 +32,67 @@ function($, _, Backbone, UmxView, Typeahead, LinkController,
             });
         },
 
+        renderCreateDialog : function() {
+            return this.asyncElement(function(elm) {
+                this.createDialogElm = elm;
+                elm.remove();
+            })
+        },
+
         renderCreateLink : function() {
             return this.asyncElement(function(elm) {
                 var that = this;
                 var linkController = LinkController.getInstance();
-                function updateCreateLink() {
-                    var id = that.searchInput.val();
-                    var path = linkController.getLink(id);
-                    elm.attr('href', path);
+                function isEmpty(str) {
+                    return !str || str == '';
+                }
+                function updateCreateLink(id) {
+                    var path = null;
+                    if (!isEmpty(id)) {
+                        path = linkController.getLink(id);
+                        elm.attr('href', path);
+                    }
                     return path;
                 }
-                elm.on('mouseover', updateCreateLink)
-                elm.click(function(event) {
-                    var path = updateCreateLink();
-                    if (path) {
+                function redirectToPage(path) {
+                    if (!isEmpty(path)) {
                         that.navigateTo(path);
                         that.searchInput.val('');
+                    }
+                }
+                elm.on('mouseover', function() {
+                    updateCreateLink(that.searchInput.val());
+                })
+                elm.click(function(event) {
+                    var path = updateCreateLink(that.searchInput.val());
+                    if (isEmpty(path)) {
+                        var createDialog = new Dialog({
+                            title : that.createDialogElm.find('.title').text(),
+                            content : that.createDialogElm.find('.content').html(),
+                            actions : [ {
+                                label : that.createDialogElm.find('.btn-ok').text(),
+                                primary : true,
+                                action : function() {
+                                    path = createDialog.$el.find('input').val();
+                                    path = updateCreateLink(path);
+                                    redirectToPage(path);
+                                    createDialog.hide();
+                                }
+                            }, {
+                                label : that.createDialogElm.find('.btn-cancel').text(),
+                                action : function() {
+                                    createDialog.hide();
+                                }
+                            } ]
+                        });
+                        var input = createDialog.$el.find('input');
+                        input.on('keyup', function(ev) {
+                            alert(ev)
+                        })
+                        createDialog.show();
+                        input.focus();
+                    } else {
+                        redirectToPage();
                     }
                     event.preventDefault();
                     event.stopPropagation();
@@ -59,44 +101,41 @@ function($, _, Backbone, UmxView, Typeahead, LinkController,
         },
 
         renderTypeahead : function() {
-            return this
-                    .asyncElement(function(searchInput) {
-                        var that = this;
-                        that.searchInput = searchInput;
-                        var linkController = LinkController.getInstance();
-                        var url = linkController
-                                .getLink('/api/typeahead?query=%QUERY');
-                        var typeahead = that.searchInput.twitterTypeahead({
-                            remote : url,
-                            limit : 15
-                        });
-                        typeahead.on('typeahead:selected', function(event,
-                                datum) {
-                            if (datum && datum.id) {
-                                var path = linkController.getLink(datum.id);
-                                linkController.navigateTo(path);
-                            }
-                            that.searchInput.val('');
-                        });
-                        // var body = $('body');
-                        // body.keypress(function(e) {
-                        // // http://api.jquery.com/focus-selector/
-                        // var $focused = $(document.activeElement);
-                        // var tagName = $focused.prop('tagName')
-                        // .toLowerCase();
-                        // if (tagName == 'body') {
-                        // searchInput.focus();
-                        // }
-                        // });
-                        // body.keydown(function(event) {
-                        // if (event.altKey) {
-                        // if (event.which == 76) {
-                        // // alt+L
-                        // searchInput.focus();
-                        // }
-                        // }
-                        // });
-                    });
+            return this.asyncElement(function(searchInput) {
+                var that = this;
+                that.searchInput = searchInput;
+                var linkController = LinkController.getInstance();
+                var url = linkController.getLink('/api/typeahead?query=%QUERY');
+                var typeahead = that.searchInput.twitterTypeahead({
+                    remote : url,
+                    limit : 15
+                });
+                typeahead.on('typeahead:selected', function(event, datum) {
+                    if (datum && datum.id) {
+                        var path = linkController.getLink(datum.id);
+                        linkController.navigateTo(path);
+                    }
+                    that.searchInput.val('');
+                });
+                // var body = $('body');
+                // body.keypress(function(e) {
+                // // http://api.jquery.com/focus-selector/
+                // var $focused = $(document.activeElement);
+                // var tagName = $focused.prop('tagName')
+                // .toLowerCase();
+                // if (tagName == 'body') {
+                // searchInput.focus();
+                // }
+                // });
+                // body.keydown(function(event) {
+                // if (event.altKey) {
+                // if (event.which == 76) {
+                // // alt+L
+                // searchInput.focus();
+                // }
+                // }
+                // });
+            });
         },
 
         renderPage : function() {

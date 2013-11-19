@@ -36,8 +36,8 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><a{{=view.renderLink("import") }} >Importer</a></li>
 							<li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
-							<li><a target="_blank" href="/">Voir
-									la carte</a></li> {{if(view.isLogged()){}} 
+							<li><a target="_blank" href="/">Voir la carte</a></li>
+							{{if(view.isLogged()){}} 
 							<li><a{{=view.renderLink("api/logout") }} >Se
 									déconnecter ({{=view.getUser()}})</a></li> {{} }}
 						</ul>
@@ -49,11 +49,22 @@
 	</div>
 	<!-- end ban -->
 
+	<div{{=view.renderCreateDialog()}}>
+		<h3 class="title">Nouvelle entité</h3>
+		<div class="content">
+			<form role="form">
+				<div class="form-group">
+					<label>Identifiant</label> <input type="text" class="form-control"
+						placeholder="" value="">
+				</div>
+			</form>
+		</div>
+		<button class="btn-ok">OK</button>
+		<button class="btn-cancel">Fermer</button>
+	</div>
 
 </div>
 <div style="clear: both;">
 	<hr style="margin-top: 0px; margin-bottom: 0px;" />
 </div>
 
-
-</div>
