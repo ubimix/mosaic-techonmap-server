@@ -228,7 +228,7 @@ function initProject(options) {
  * @returns a promise for an initialized project
  */
 function loadData(project, options) {
-    if (!options.inputFile || options.inputFile == '')
+    if (!options.inputFile || options.inputFile == '' || !Fs.existsSync(options.inputFile))
         return Q(project);
     return Q()
     // Load file with data
