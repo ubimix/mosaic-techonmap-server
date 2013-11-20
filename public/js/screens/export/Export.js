@@ -40,6 +40,8 @@ function(_, Utils, ResourceCollection, Dialog, Template) {
                     });
                     var formattedContent = convert(coll);
                     textarea.val(formattedContent);
+                    textarea.focus();
+                    textarea.select();
                     target.toggleClass('active');
                 },
                 error : function(error) {

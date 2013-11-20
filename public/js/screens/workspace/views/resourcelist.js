@@ -33,17 +33,16 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         },
 
         events : {
-            'click .media .media-top' : 'handleEntryClick',
             'click .action-validate' : 'handleValidateClick',
-            'click .validation' : 'handleSelectionClick',
             'click a.sort' : 'handleSortClick',
-            'click .howmany a' : 'handlePageCountClick'
+            'click .howmany a' : 'handlePageCountClick',
+            'click .media .media-top' : 'handleEntryClick',
         },
 
         getTotalRecordsNumber : function() {
-            return this.collection.info().totalRecords;  
+            return this.collection.info().totalRecords;
         },
-        
+
         // TODO: use backgrid.js ?
         renderResources : function() {
             return this.asyncElement(function(elm) {
@@ -117,9 +116,10 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         },
 
         handleSortClick : function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             var sort = $(e.currentTarget).data('sort');
             var sortOrder = $(e.currentTarget).data('sort-order') || 'asc';
-
             Backbone.pubSub.trigger('sort', {
                 sort : sort,
                 sortOrder : sortOrder
@@ -127,6 +127,8 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         },
 
         handlePageCountClick : function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             var per = $(e.target).text();
             Backbone.pubSub.trigger('pagecount', per);
         },
@@ -185,10 +187,6 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
                 validator.validateResources(list);
             }
 
-        },
-
-        handleSelectionClick : function(event) {
-            event.stopPropagation();
         }
 
     });

@@ -1,4 +1,4 @@
-define([ '../../commons/UmxView', 'Backbone', 'text!./pagination.html' ],
+define([ '../../commons/UmxView', 'Backbone', 'text!./paginator.html' ],
 
 function(UmxView, Backbone, PaginationViewTemplate) {
 
@@ -30,19 +30,26 @@ function(UmxView, Backbone, PaginationViewTemplate) {
             Backbone.pubSub.on('pagecount', function(pageCount) {
                 self.collection.howManyPer(pageCount);
             }, this);
-            console.log(this.options);
+            // console.log(this.options);
         },
-        
+
         renderPaginator : function() {
             return this.asyncElement(function(elm) {
-                
+                console.log(this.collection)
             })
         },
 
         getPageSet : function() {
             return this.collection.info().pageSet
         },
-        
+
+        hasPrev : function() {
+            return this.collection.currentPage > 1;
+        },
+        hasNext : function() {
+            return this.collection.currentPage > 0;
+        },
+
         gotoFirst : function(e) {
             this.boxEvent(e);
             this.collection.goTo(1);
