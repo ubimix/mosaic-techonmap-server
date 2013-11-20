@@ -181,7 +181,7 @@ function(_, YAML, Moment, Resource, Dialog) {
 
     Utils.toGeoJson =  function(array) {
         var features = [];
-        var fields = getFieldsFromHeader(fieldMapping, array[0]);
+        var fields = getFieldsFromHeader(Utils.fieldMapping, array[0]);
         for ( var i = 1; i < array.length; i++) {
             var point = toGeoJsonPoint(fields, array[i]);
             features.push(point);

@@ -42,7 +42,6 @@ function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator,
                 if (!title || title == '') {
                     title = this.getPath();
                 }
-                console.log('RESOURCE TITLE:', title)
                 this.nameElm.text(title);
                 var placeholder = elm.data('title')
                 this.nameElm.editable({

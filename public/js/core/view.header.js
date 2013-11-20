@@ -92,7 +92,7 @@ function($, _, Backbone, UmxView, Typeahead, LinkController, ViewHeaderTemplate,
                         createDialog.show();
                         input.focus();
                     } else {
-                        redirectToPage();
+                        redirectToPage(path);
                     }
                     event.preventDefault();
                     event.stopPropagation();

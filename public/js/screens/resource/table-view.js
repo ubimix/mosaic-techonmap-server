@@ -105,10 +105,11 @@ define(
                 property : 'properties.id',
                 isPersistent : false,
                 renderer : linkRenderer,
-                getLabelFromValue : function(value, model) {
-                    return 'http://techonmap.fr/#' + model.getId();
+                getLabelFromValue : function(value, model, view) {
+                    var path = view.getPath();
+                    return 'http://techonmap.fr/#' + path;
                 },
-                getValueFromLabel : function(label, model) {
+                getValueFromLabel : function(label, model, view) {
                     return undefined;
                 }
             } ];
@@ -370,8 +371,8 @@ define(
                                 var value = Utils.selectFromObject(attributes,
                                         item.property);
                                 if (item.getLabelFromValue) {
-                                    value = item
-                                            .getLabelFromValue(value, model);
+                                    value = item.getLabelFromValue(value,
+                                            model, that);
                                 }
                                 data.push([ item.title, value ]);
                                 cellMetaMap[index] = item;
@@ -453,13 +454,14 @@ define(
 
                         _doUpdateModel : function(attributes, editor, schema) {
                             var data = editor.getDataAtCol(1);
+                            var that = this;
                             var model = this.model;
                             var changed = false;
                             _.each(schema, function(item, index) {
                                 var value = data[index];
                                 if (item.getValueFromLabel) {
-                                    value = item
-                                            .getValueFromLabel(value, model);
+                                    value = item.getValueFromLabel(value,
+                                            model, that);
                                 }
                                 if (value !== undefined) {
                                     changed |= Utils.updateObject(attributes,
