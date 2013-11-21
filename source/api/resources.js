@@ -36,7 +36,7 @@ function getGeoJsonFromResource(resource, showSystemProperties) {
     // console.log(JSON.stringify(resource));
     var properties = _.clone(resource.properties);
     var result = {
-        _id : id,
+        id : id,
         type : "Feature",
         geometry : {
             "type" : "Point",

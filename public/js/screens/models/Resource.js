@@ -4,6 +4,8 @@ define(
 
             var Resource = Backbone.Model
                     .extend({
+                        idAttribute : 'id',
+
                         urlRoot : '/api/resources/',
 
                         url : function() {
@@ -95,7 +97,7 @@ define(
                         },
 
                         getUpdated : function() {
-                            console.log('updated', this.getSys().updated );
+                            console.log('updated', this.getSys().updated);
                             return this.getSys().updated || {};
                         },
                         getCreated : function() {
@@ -105,7 +107,7 @@ define(
                         getVersionId : function() {
                             return this.getUpdated().versionId;
                         },
-                        
+
                         getVersionTimestamp : function() {
                             return this.getUpdated().timestamp;
                         },
@@ -143,7 +145,7 @@ define(
                         },
 
                         deleteSysAttributes : function() {
-                            delete this.attributes._id;
+                            delete this.attributes.id;
                             delete this.attributes.sys;
                             delete this.attributes.properties.oldid;
                             delete this.attributes.properties.origin;
