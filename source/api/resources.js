@@ -96,7 +96,7 @@ function reply(req, res, promise) {
         // Return something to avoid blocking
         return true;
     })
-    // 
+    //
     .fail(function(error) {
         console.log(error);
         if (error instanceof HttpError) {
@@ -131,7 +131,7 @@ function getOptionsFromRequest(req) {
     var user = req.user;
     if (user) {
         var accountId = user.accountId;
-        if (!accountId) {
+        if (!accountId) {
             accountId = user.displayName;
             accountId = accountId.replace(/[\s]/, '.').toLowerCase();
         }
@@ -141,7 +141,9 @@ function getOptionsFromRequest(req) {
     return options;
 }
 
-/** Reads JSON object from the request body, parse it and returns the results */
+/**
+ * Reads JSON object from the request body, parse it and returns the results
+ */
 function loadJsonFromRequest(req) {
     var data = req.body;
     return Q(data);
@@ -150,7 +152,6 @@ function loadJsonFromRequest(req) {
 function loadJsonMapFromRequest(req) {
     var data = req.body.data;
     return Q(data);
-
 }
 
 /* ========================================================================== */
@@ -184,7 +185,7 @@ function importGeoJSON(project, json, options) {
         var itemPath = getPathFromGeoJson(item);
         promise = promise.then(function() {
             return importGeoJSONItem(project, itemPath, item, options)
-            // 
+            //
             .then(function(resource) {
                 result[itemPath] = resource;
                 return resource;
@@ -200,8 +201,8 @@ function importGeoJSON(project, json, options) {
  * Initializes and returns a new project. The following options fields are used:
  * 
  * <pre>
- *  - dir - a root workspace directory
- *  - name - a name of the repository
+ * - dir - a root workspace directory
+ * - name - a name of the repository
  * </pre>
  */
 function initProject(options) {
@@ -215,7 +216,6 @@ function initProject(options) {
             create : true
         });
     })
-
 }
 
 /**
@@ -224,15 +224,16 @@ function initProject(options) {
  * returns the project promise. Used options fields:
  * 
  * <pre>
- *  - dir - a root workspace directory
- *  - name - a name of the repository
- *  - inputFile - a data file to inject in the repository 
+ * - dir - a root workspace directory
+ * - name - a name of the repository
+ * - inputFile - a data file to inject in the repository
  * </pre>
  * 
  * @returns a promise for an initialized project
  */
 function loadData(project, options) {
-    if (!options.inputFile || options.inputFile == '' || !Fs.existsSync(options.inputFile))
+    if (!options.inputFile || options.inputFile == ''
+            || !Fs.existsSync(options.inputFile))
         return Q(project);
     return Q()
     // Load file with data
@@ -265,7 +266,6 @@ function loadData(project, options) {
 
 /** Binds request handling to the specified application */
 function initializeApplication(app, project) {
-
     function getGeoJsonList(resources, keepSystemProperties) {
         var list = [];
         _.each(resources, function(resource) {
@@ -308,7 +308,6 @@ function initializeApplication(app, project) {
             }
             return getGeoJsonFromResource(resource);
         }));
-
     });
 
     /** Import 'in-batch' an array of GeoJSON items */
@@ -428,28 +427,31 @@ function initializeApplication(app, project) {
         }));
     });
 
-    app.post('/api/validation', function(req, res) {
-        reply(req, res, loadJsonFromRequest(req).then(function(json) {
-            var options = getOptionsFromRequest(req);
-            var path = '.admin-timestamp';
-            return importGeoJSONItem(project, path, json, options);
-        }));
-
-    });
+    var VALIDATION_RESOURCE = '.admin-timestamp';
+    function updateValidationResource(req, res) {
+        reply(req, res, loadJsonFromRequest(req).then(
+                function(json) {
+                    var options = getOptionsFromRequest(req);
+                    return importGeoJSONItem(project, VALIDATION_RESOURCE,
+                            json, options);
+                }));
+    }
+    app.put('/api/validation', updateValidationResource);
+    app.post('/api/validation', updateValidationResource);
 
     app.get('/api/validation', function(req, res) {
-        var resourcePath = '.admin-timestamp';
-        reply(req, res, project.loadResource(resourcePath).then(
+        reply(req, res, project.loadResource(VALIDATION_RESOURCE).then(
                 function(resource) {
                     var promise;
                     if (!resource) {
                         var options = getOptionsFromRequest(req);
-                        promise = importGeoJSONItem(project, resourcePath, {
-                            properties : {
-                                validated : [],
-                                timestamp : 0
-                            }
-                        }, options);
+                        promise = importGeoJSONItem(project,
+                                VALIDATION_RESOURCE, {
+                                    properties : {
+                                        validated : [],
+                                        timestamp : 0
+                                    }
+                                }, options);
                     } else {
                         promise = Q(getGeoJsonFromResource(resource));
                     }
@@ -458,7 +460,6 @@ function initializeApplication(app, project) {
                         return json;
                     });
                 }));
-
     });
 
     app.get('/api/twitter/last', function(req, res) {
@@ -467,7 +468,6 @@ function initializeApplication(app, project) {
         });
 
     });
-
 }
 
 /* ========================================================================== */
