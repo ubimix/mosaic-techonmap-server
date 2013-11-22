@@ -14,26 +14,26 @@ var FacebookStrategy = require('passport-facebook').Strategy;
  */
 module.exports = function(app) {
 
+    function escapeDisplayName(name) {
+        return name.replace(/[\s]/, '.').toLowerCase();
+    }
+
     function newUser(data) {
-        if (!data.userId) {
-            data.userId = data.displayName + '@domain.com'
-        }
-        if (!data.id) {
-            // data.id = data.userId;
-            data.id = data.displayName;
-        }
+        data.id = data.provider + ':' + escapeDisplayName(data.displayName);
+        // FIXME: remove it (need to replace access rules in config.yaml to use
+        // real IDs)
+        data.id = data.displayName;
         return data;
     }
 
-    function getUserId(userId, domain, displayName) {
-        if (userId && userId != '')
-            return userId;
-        userId = displayName;
-        userId = userId.replace(/[\s]/, '.').toLowerCase();
+    function getAccountId(accountId, domain, displayName) {
+        if (accountId && accountId != '')
+            return accountId;
+        accountId = escapeDisplayName(displayName);
         if (domain) {
-            userId = domain + ':' + userId;
+            accountId = domain + ':' + accountId;
         }
-        return userId;
+        return accountId;
     }
 
     app.get('/api/auth/user', function(req, res) {
@@ -69,7 +69,8 @@ module.exports = function(app) {
 
         var user = newUser({
             displayName : auth.alone.username,
-            userId : getUserId(auth.alone.email, 'system', auth.alone.username)
+            accountId : getAccountId(auth.alone.email, 'system',
+                    auth.alone.username)
         });
 
         return done(undefined, user);
@@ -86,16 +87,17 @@ module.exports = function(app) {
         returnURL : app.locals.baseUrl + '/api/auth/google/return',
         realm : app.locals.baseUrl
     }, function(identifier, profile, done) {
-        var userId = null;
+        var accountId = null;
         if (profile.emails && profile.emails.length) {
             var obj = profile.emails[0];
-            userId = obj ? obj.value : null;
+            accountId = obj ? obj.value : null;
         }
-        userId = getUserId(userId, 'gmail.com', profile.displayName);
+        accountId = getAccountId(accountId, 'gmail.com', profile.displayName);
         var user = newUser({
+            accountId : accountId,
             displayName : profile.displayName,
             name : profile.name,
-            userId : userId
+            provider : 'google'
         });
         done(undefined, user);
     }));
@@ -114,10 +116,12 @@ module.exports = function(app) {
             consumerSecret : twitterConfig.oauthkeys.consumerSecret,
             callbackURL : app.locals.baseUrl + '/api/auth/twitter/return'
         }, function(token, tokenSecret, profile, done) {
-            var userId = getUserId(null, profile.provider, profile.username);
+            var provider = 'twitter';
+            var accountId = getAccountId(null, provider, profile.username);
             var user = newUser({
+                accountId : accountId,
                 displayName : profile.displayName,
-                userId : userId
+                provider : provider
             });
             return done(undefined, user);
         }));
@@ -143,10 +147,11 @@ module.exports = function(app) {
             clientSecret : facebookConfig.oauthkeys.clientSecret,
             callbackURL : app.locals.baseUrl + '/api/auth/facebook/return'
         }, function(accessToken, refreshToken, profile, done) {
-            console.log(profile)
             var user = newUser({
+                accountId : getAccountId(null, 'facebook.com',
+                        profile.displayName),
                 displayName : profile.displayName,
-                userId : getUserId(null, 'facebook.com', profile.displayName)
+                provider : 'facebook'
             });
             return done(undefined, user);
         }));
@@ -166,7 +171,7 @@ module.exports = function(app) {
     /* ------------------------------------------------------------ */
     passport.deserializeUser(function(user, done) {
         // if (user.emails && user.emails.length > 0) { // Google
-        // user.userId = user.emails[0].value;
+        // user.accountId = user.emails[0].value;
         // delete user.emails;
         // }
         done(undefined, user);

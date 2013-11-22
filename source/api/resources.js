@@ -130,12 +130,12 @@ function getOptionsFromRequest(req) {
     var options = {};
     var user = req.user;
     if (user) {
-        var userId = user.userId;
-        if (!userId) {
-            userId = user.displayName;
-            userId = userId.replace(/[\s]/, '.').toLowerCase();
+        var accountId = user.accountId;
+        if (!accountId) {
+            accountId = user.displayName;
+            accountId = accountId.replace(/[\s]/, '.').toLowerCase();
         }
-        var author = user.displayName + ' <' + userId + '>';
+        var author = user.displayName + ' <' + accountId + '>';
         options.author = author;
     }
     return options;
