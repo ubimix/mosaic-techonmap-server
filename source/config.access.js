@@ -56,7 +56,12 @@ module.exports = function(app) {
             break;
         }
         var resource = null;
-        if (path.match(/^\/api\/resources\/export\/?$/)) {
+        if (path.match(/^\/api\/resources\/?$/)) {
+            if (method == 'get') {
+                resource = 'resource-full-list';
+                action = 'read';
+            }
+        } else if (path.match(/^\/api\/resources\/export\/?$/)) {
             if (method == 'get') {
                 resource = 'resource-list';
                 action = 'read';
@@ -66,7 +71,7 @@ module.exports = function(app) {
                 resource = 'resource-list';
                 action = 'write';
             }
-        } else if (path.match(/^\/api\/resources\/?.*$/)) {
+        } else if (path.match(/^\/api\/resources\/.+$/)) {
             resource = 'resource';
         } else if (path.match(/^\/api\/typeahead\/?.*$/)) {
             if (method == 'get') {
