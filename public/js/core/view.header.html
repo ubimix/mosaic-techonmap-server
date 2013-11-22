@@ -37,11 +37,20 @@
 							<li><a{{=view.renderLink("import") }} >Importer</a></li>
 							<li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
 							<li><a target="_blank" href="/">Voir la carte</a></li>
-							{{if(view.isLogged()){}} 
-							<li><a{{=view.renderLink("api/logout") }} >Se
-									déconnecter ({{=view.getUser()}})</a></li> {{} }}
 						</ul>
-					</div>
+					</div> {{if(view.isLogged()){ }}
+					<div class="btn-group">
+						<button type="button" class="btn btn-default" data-toggle="dropdown">
+							{{=view.getUser()}}</button>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a{{=view.renderLink("api/logout") }} >Se
+									déconnecter</a></li>
+						</ul>
+					</div> {{} }}
 				</li>
 			</ul>
 		</div>
