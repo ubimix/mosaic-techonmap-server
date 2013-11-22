@@ -156,10 +156,8 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
 
         handleValidateClick : function(event) {
             // TODO: we should probably refresh the validator when hitting the
-            // validate button
-            // because the validated items may have changed in other tabs
-            // meantime
-
+            // validate button because the validated items may have changed in
+            // other tabs meantime
             var selection = this.$('.validation:checked');
             var list = [];
             var validator = Validator.getInstance();
