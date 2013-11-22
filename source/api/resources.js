@@ -46,6 +46,8 @@ function getGeoJsonFromResource(resource, showSystemProperties) {
     };
     if (showSystemProperties !== false) {
         result.sys = _.clone(resource.sys);
+    } else {
+        delete result.properties.email;
     }
     return result;
 }
@@ -128,10 +130,12 @@ function getOptionsFromRequest(req) {
     var options = {};
     var user = req.user;
     if (user) {
-        var email = user.displayName;
-        email = email.replace(/[\s]/, '_');
-        email = '<' + email + '@foo.bar>';
-        var author = user.displayName + ' ' + email;
+        var userId = user.userId;
+        if (!userId) {
+            userId = user.displayName;
+            userId = userId.replace(/[\s]/, '.').toLowerCase();
+        }
+        var author = user.displayName + ' <' + userId + '>';
         options.author = author;
     }
     return options;
