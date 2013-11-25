@@ -61,8 +61,9 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         handleEntryClick : function(event) {
             var target = $(event.currentTarget);
             var sender = $(event.target);
-            // if the target is a link we don't expand
-            if (sender.prop('tagName') == 'I')
+            
+            // if the target is a link or an input (eg validation checkbox), we don't expand
+            if (sender.prop('tagName') == 'I' || sender.prop('tagName') == 'INPUT')
                 return;
 
             var e = target.parent().parent();
