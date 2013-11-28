@@ -97,7 +97,7 @@ define(
                         },
 
                         getUpdated : function() {
-                            console.log('updated', this.getSys().updated);
+                            // console.log('updated', this.getSys().updated);
                             return this.getSys().updated || {};
                         },
                         getCreated : function() {

@@ -84,13 +84,13 @@ app.configure('production', function() {
 });
 
 Q()
-// Configure OAuth passports for individual providers (G+, FB, TW, LiN)
-.then(function() {
-    return require('./source/config.passport')(app);
-})
 // Configure access control
 .then(function() {
     return require('./source/config.access')(app);
+})
+// Configure OAuth passports for individual providers (G+, FB, TW, LiN)
+.then(function() {
+    return require('./source/config.passport')(app);
 })
 // Configure the API to access resources
 .then(function() {

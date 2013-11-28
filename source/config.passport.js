@@ -42,7 +42,6 @@ module.exports = function(app) {
         } else {
             res.json({});
         }
-
     });
 
     app.get('/api/auth/done', function(req, res) {

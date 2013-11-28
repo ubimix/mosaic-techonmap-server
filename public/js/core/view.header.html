@@ -20,28 +20,12 @@
 			</h1>
 			<h2>La carte des acteurs du numérique en Île-de-France</h2>
 		</div>
-		<div class="right" style="margin-right: 5em;"{{=view.renderMainView()}}>
-			<ul class="menu nav navbar-nav navbar-right">
-				<li><input type="text" class="umx-typeahead" autocomplete="off"
-					placeholder="Rechercher..."{{=view.renderTypeahead()}}></li>
+		<div class="right" style="margin-right: 5em;">
+			<ul class="menu nav navbar-nav navbar-right"{{=view.renderUserInfoBlock()}}>
 				<li>
 					<div class="btn-group">
-						<button type="button" class="btn btn-default">
-							<a{{=view.renderCreateLink() }}>Créer</a>
-						</button>
-						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown">
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a{{=view.renderLink("import") }} >Importer</a></li>
-							<li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
-							<li><a target="_blank" href="/">Voir la carte</a></li>
-						</ul>
-					</div> {{if(view.isLogged()){ }}
-					<div class="btn-group">
-						<button type="button" class="btn btn-default" data-toggle="dropdown">
-							{{=view.getUser()}}</button>
+						<button type="button" class="btn btn-default"
+							data-toggle="dropdown">{{=view.getUser()}}</button>
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown">
 							<span class="caret"></span>
@@ -50,9 +34,29 @@
 							<li><a{{=view.renderLink("api/logout") }} >Se
 									déconnecter</a></li>
 						</ul>
-					</div> {{} }}
+					</div>
 				</li>
 			</ul>
+			<ul class="menu nav navbar-nav navbar-right"{{=view.renderToolBox()}}>
+                <li><input type="text" class="umx-typeahead" autocomplete="off"
+                    placeholder="Rechercher..."{{=view.renderTypeahead()}}></li>
+                <li>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">
+                            <a{{=view.renderCreateLink() }}>Créer</a>
+                        </button>
+                        <button type="button" class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a{{=view.renderLink("import") }} >Importer</a></li>
+                            <li><a class="export"{{=view.renderExportLink() }} >Exporter</a></li>
+                            <li><a target="_blank" href="/">Voir la carte</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
 		</div>
 
 	</div>
