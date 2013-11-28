@@ -52,9 +52,10 @@ module.exports = function(app) {
     });
 
     app.get('/api/logout', function(req, res) {
+        var redirectTarget = req.query.redirect || "/workspace";
         req.logout();
         req.session = null;
-        res.redirect("/workspace");
+        res.redirect(redirectTarget);
     });
 
     /* ------------------------------------------------------------ */
