@@ -191,6 +191,8 @@ function(_, YAML, Moment, Resource, Dialog) {
     
     Utils.newCodeMirror =  function(elt, options, readOnly, value) {
         options = options || {};
+        if (readOnly)
+            readOnly = 'nocursor';
         var defaultOptions = {
             lineNumbers : true,
             viewportMargin : Infinity,

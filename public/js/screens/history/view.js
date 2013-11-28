@@ -69,6 +69,12 @@ function(_, LinkController, UmxView, Utils, template) {
         getFormattedRevisionDate : function(timestamp) {
             return Utils.formatDate(timestamp);
         },
+        
+        getShortVersionId : function(versionId) {
+            if (versionId && versionId.length > 7)
+                return versionId.substring(0, 7);
+            return versionId;
+        },
 
         renderHistoryLink : function(versionId) {
             return this.asyncElement(function(a) {
