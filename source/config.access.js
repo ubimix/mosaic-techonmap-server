@@ -24,6 +24,10 @@ module.exports = function(app) {
         return Q.nfapply(_.bind(method, context), array);
     }
 
+    function getUserRoles(user) {
+        return nfcall(acl, acl.userRoles, user);
+    }
+
     function checkAcl(user, resource, action) {
         return nfcall(acl, acl.isAllowed, user, resource, action);
     }
@@ -56,7 +60,12 @@ module.exports = function(app) {
             break;
         }
         var resource = null;
-        if (path.match(/^\/api\/resources\/?$/)) {
+        if (path.match(/^\/api\/auth\/.*?$/)) {
+            if (method == 'get') {
+                resource = 'file';
+                action = 'read';
+            }
+        } else if (path.match(/^\/api\/resources\/?$/)) {
             if (method == 'get') {
                 resource = 'resource-full-list';
                 action = 'read';
@@ -97,25 +106,28 @@ module.exports = function(app) {
         var method = req.method.toLowerCase();
         Q()
         //
-        .then(
-                function() {
-                    var context = getProtectedContext(path, method);
-                    if (!context) {
-                        throw new Error('Access denied');
-                    }
-                    return checkAcl(userId, context.resource, context.action)
-                    //
-                    .then(
-                            function(allowed) {
-                                if (allowed)
-                                    return true;
-                                if (userId == 'Anonymous')
-                                    return false;
-                                // Additional access check for logged users
-                                return checkAcl('LoggedUser', context.resource,
-                                        context.action);
-                            });
-                })
+        .then(function() {
+            var context = getProtectedContext(path, method);
+            if (!context) {
+                throw new Error('Access denied');
+            }
+            var aclUser = userId;
+            // Load user roles
+            return getUserRoles(aclUser).then(function(roles) {
+                if (!roles && aclUser != 'Anonymous') {
+                    aclUser = 'LoggedUser';
+                    return getUserRoles(aclUser);
+                }
+                return roles;
+            })
+            // Check the user access
+            .then(function(roles) {
+                if (req.user) {
+                    req.user.userRoles = roles;
+                }
+                return checkAcl(aclUser, context.resource, context.action);
+            })
+        })
         // 
         .then(
                 function(allowed) {
@@ -143,13 +155,7 @@ module.exports = function(app) {
             return nfcall(acl, acl.addUserRoles, userId, roles);
         }))
     }).then(function(r) {
-        var authFunction = function(req, res, next) {
-            console.log('Auth!')
-            next(null, null);
-        };
         app.all('/api/*', requireAuthentication);
-        app.all('/api/auth', authFunction);
-        app.all('/api/auth/*', authFunction);
         return r;
     });
 }
