@@ -37,9 +37,9 @@
 					<td>{{-item.author}}</td>
 					<td>{{=view.getFormattedRevisionDate(item.timestamp)}}</td>
 				{{ if (index > 0) { }} 
-				<td><a {{=view.renderHistoryLink(item.versionId) }}>{{=item.versionId }}</a></td>
+				<td><a {{=view.renderHistoryLink(item.versionId) }}>{{=view.getShortVersionId(item.versionId) }}</a></td>
 				{{ } else if (index == 0) { }}
-				<td><a {{=view.renderLink(view.model.getPath())}}>{{=item.versionId}}</a></td>
+				<td><a {{=view.renderLink(view.model.getPath())}}>{{=view.getShortVersionId(item.versionId) }}</a></td>
 				{{ } }}
 				
 			</tr>
