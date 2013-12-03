@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Conertion</title>
+<meta charset="utf-8"></meta>
+<link rel="stylesheet" type="text/css" href="./main.css">
+<script type="text/javascript" src="../components/requirejs/require.js"
+	data-main="main"></script>
+<style type="text/css">
+textarea.form-control {
+	height: 300px;
+}
+
+.dataset {
+	margin: 1em 0;
+}
+
+.dataset .data-container {
+	max-height: 300px;
+	overflow: auto;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Conversion</h1>
+		<p>
+			Put your data in the form. It could be JSON data (<a
+				href="http://techonmap.fr/geoitems?dirty=false" target="_blank">clean</a>
+			/ <a href="http://techonmap.fr/geoitems?dirty=true" target="_blank">dirty</a>)
+			or a CSV file.
+		</p>
+		<div id="datasets">
+			<div class="row hidden dataset">
+				<div class="col-md-10">
+					<div class="data-container">
+						<pre class="data"></pre>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<button class="btn btn-primary">Remove</button>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group" id="input-form">
+			<div class="col-md-10">
+				<textarea class="form-control" id="input-one"
+					placeholder="Put your data here."></textarea>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-primary">Add</button>
+				<button class="btn clear">Clear</button>
+			</div>
+		</div>
+
+
+		<div id="results">
+			<div class="row form-group">
+				<div class="col-md-12">
+					<button class="btn btn-primary merge" data-format="csv">Merge
+						to CSV</button>
+					<button class="btn btn-primary merge" data-format="json">Merge
+						to JSON</button>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-md-12">
+					<div class="row dataset">
+						<div class="data-container">
+							<textarea class="form-control data"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
