@@ -1,6 +1,6 @@
-define([ 'Underscore', 'Backbone', './LinkController', './AsyncRender' ],
+define([ 'Underscore', 'Backbone', './LinkController' ],
 
-function(_, Backbone, LinkController, AsyncRender) {
+function(_, Backbone, LinkController) {
     // Trigger an event and/or a corresponding method name. Examples:
     //
     // `this.triggerMethod("foo")` will trigger the "foo" event and
@@ -42,7 +42,7 @@ function(_, Backbone, LinkController, AsyncRender) {
     })();
 
     var View = Backbone.View.extend();
-    _.extend(View.prototype, AsyncRender.prototype, {
+    _.extend(View.prototype, {
         triggerMethod : triggerMethod,
         renderDefault : function(el) {
             console.log('[WARN] [' + el.attr('data-render')
@@ -98,7 +98,6 @@ function(_, Backbone, LinkController, AsyncRender) {
                     view : this
                 })
                 this.$el.html(html);
-                this.callAsyncHandlers(this.$el); // FIXME: remove it
             }
             this.renderElement(this.$el);
             return this;
