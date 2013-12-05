@@ -11,6 +11,9 @@ require([ 'require.config' ], function() {
         function isEmpty(str) {
             return !str || str == '';
         }
+        function resetId(obj) {
+            obj.properties.id = Import.transformNameToId(obj.properties.name);
+        }
         function convertTextToObjects(text) {
             var results = [];
             text = trim(text);
@@ -62,8 +65,7 @@ require([ 'require.config' ], function() {
                 if (!obj.properties.id) {
                     obj.properties.id = id;
                     if (!obj.properties.id) {
-                        obj.properties.id = Import
-                                .transformNameToId(obj.properties.name);
+                        resetId(obj);
                     }
                 }
             })
@@ -144,6 +146,12 @@ require([ 'require.config' ], function() {
                 _.each(data, function(objects) {
                     objectList = objectList.concat(objects);
                 })
+                var regenerateIds = $('#regenerate-ids').is(':checked');
+                console.log('REGENERATE:', regenerateIds)
+                if (regenerateIds) {
+                    objectList = JSON.parse(JSON.stringify(objectList));
+                    _.each(objectList, resetId);
+                }
                 var result = Import.mergeJson(objectList, function(obj) {
                     var id = obj.properties.id || obj.id;
                     return id;
