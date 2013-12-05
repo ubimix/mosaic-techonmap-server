@@ -30,7 +30,7 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
                 opened = item;
                 $('html, body').animate({
                     scrollTop: opened.$el.offset().top
-                }, 300);
+                }, 10);
             });
             Backbone.pubSub.on('item:close', function(item) {
             });

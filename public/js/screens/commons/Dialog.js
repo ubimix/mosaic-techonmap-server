@@ -17,16 +17,10 @@ function(_, UmxView, Template) {
             this.updateContent(this.options.content);
         },
 
-        prepareContent : function(content) {
-            if (_.isObject(content) && content.render) {
-                var el = content.render().$el;
-                return el.html();
-            }
-            return content;
-        },
-
         updateContent : function(content) {
-            content = this.prepareContent(content);
+            if (_.isObject(content) && content.render) {
+                content = content.render().$el;
+            }
             this.contentElm.html(content)
         },
 
