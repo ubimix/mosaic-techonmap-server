@@ -1,30 +1,24 @@
-
-<nav class="navbar" style="padding-top: 1em;">
-	<div class="navbar-header">
-		<div class="navbar-brand">
-
-			<ol class="breadcrumb">
-				<li><a{{=view.renderLink('/')}} "><i
-						class="glyphicon glyphicon-home"></i></a></li>
-				<li><span {{=view.renderTitle()}} class="name" data-type="text"
-					data-title="Nom" data-inputclass="name-control" data-clear="false"></span></li>
-			</ol>
+<nav class="navbar">
+	<div class="navbar-brand">
+		<ol class="breadcrumb">
+			<li><a href="/" data-render="renderHREF"><i
+					class="glyphicon glyphicon-home"></i></a></li>
+			<li><span data-render="renderTitle" class="name"
+				data-type="text" data-title="Nom" data-inputclass="name-control"
+				data-clear="false"></span></li>
+		</ol>
+	</div>
+	<div class="navbar-brand right">
+		<div class="btn-group1">
+			<button class="submit btn btn-primary" data-render="renderSaveBtn">Enregistrer</button>
+			<button class="validate btn btn-default"
+				data-render="renderValidateBtn">Valider</button>
+			<button class="history btn btn-default"
+				data-render="renderHistoryBtn">Voir l'historique</button>
+			<button role="button" class="delete btn btn-default"
+				data-toggle="modal" data-render="renderDeleteBtn">Supprimer</button>
 		</div>
 	</div>
-	
-	<ul class="navbar-brand nav navbar-nav right">
-
-		<li>
-		<div class="btn-group">
-			<button class="submit btn btn-primary"{{=view.renderSaveBtn()}}>Enregistrer</button>
-			<button class="validate btn btn-default"{{=view.renderValidateBtn()}}>Valider</button> 
-			<button class="history btn btn-default"{{=view.renderHistoryBtn()}}>Voir l'historique</button>
-			<button role="button" class="delete btn btn-default"
-				data-toggle="modal"{{=view.renderDeleteBtn()}}>Supprimer</button>
-		</div>
-		</li>
-	</ul>	
-	
 </nav>
 
-<div{{=view.renderEditor()}}></div>
+<div data-render="renderEditor"></div>

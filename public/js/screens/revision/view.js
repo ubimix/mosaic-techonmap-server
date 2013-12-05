@@ -12,21 +12,32 @@ function(UmxView, Utils, ResourceContentView, RevisionContainerTemplate) {
             _.bindAll(this, 'restoreVersion');
         },
 
-        renderContentView : function() {
-            return this.asyncElement(function(elm) {
-                var contentView = new ResourceContentView({
-                    model : this.model,
-                    readOnly : true
-                });
-                elm.append(contentView.$el);
-                contentView.render();
-            });
+        renderResourceLink : function(elm) {
+            var link = this.model.getPath();
+            this.doRenderLink(elm, link);
         },
-
-        renderRestoreBtn : function() {
-            return this.asyncElement(function(elm) {
-                elm.click(this.restoreVersion);
+        renderResourceHistoryLink : function(elm) {
+            var link = this.model.getPath() + '/history';
+            this.doRenderLink(elm, link);
+        },
+        renderTitle : function(elm) {
+            var title = this.model.getTitle();
+            elm.text(title);
+        },
+        renderVersionId : function(elm) {
+            var versionId = this.getVersionId();
+            elm.text(versionId);
+        },
+        renderContentView : function(elm) {
+            var contentView = new ResourceContentView({
+                model : this.model,
+                readOnly : true
             });
+            elm.append(contentView.$el);
+            contentView.render();
+        },
+        renderRestoreBtn : function(elm) {
+            elm.click(this.restoreVersion);
         },
 
         getPath : function() {

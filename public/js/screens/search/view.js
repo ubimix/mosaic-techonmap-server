@@ -10,32 +10,33 @@ function(_, UmxView, LinkController, template) {
             'click .go' : 'openResource'
         },
 
-        renderSearchBox : function() {
-            return this.asyncElement(function(elm) {
-                var data;
-                this.searchBox = elm;
-                this.searchBox.typeahead({
-                    source : function(query, process) {
-                        var linkController = LinkController.getInstance();
-                        var url = linkController.getLink('/api/typeahead');
-                        return $.get(url, {
-                            query : query
-                        }, function(items) {
-                            data = items;
-                            return process(_.pluck(items, 'name'));
-                        });
-                    },
-                    updater : function(item) {
-                        var found = _.find(data, function(it) {
-                            return it.name == item
-                        });
-                        // console.log('ID: ', nameIdMap[item]);
-                        // console.log('Found: ', found.id);
-                        $('#resource-id').val(found.id);
-                        return item;
-                    }
-                });
+        renderWorkspaceTitle : function(elm) {
+            elm.text(this.options.workspace);
+        },
 
+        renderSearchBox : function(elm) {
+            var data;
+            this.searchBox = elm;
+            this.searchBox.typeahead({
+                source : function(query, process) {
+                    var linkController = LinkController.getInstance();
+                    var url = linkController.getLink('/api/typeahead');
+                    return $.get(url, {
+                        query : query
+                    }, function(items) {
+                        data = items;
+                        return process(_.pluck(items, 'name'));
+                    });
+                },
+                updater : function(item) {
+                    var found = _.find(data, function(it) {
+                        return it.name == item
+                    });
+                    // console.log('ID: ', nameIdMap[item]);
+                    // console.log('Found: ', found.id);
+                    $('#resource-id').val(found.id);
+                    return item;
+                }
             });
         },
 

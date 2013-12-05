@@ -1,51 +1,36 @@
-
-<nav class="navbar" style="padding-top: 1em;">
-	<div class="navbar-header">
-		<div class="navbar-brand">
-			<ol class="breadcrumb">
-			    <li><a {{=view.renderLink()}}><i class="glyphicon glyphicon-home"></i></a></li>
-				<li><a {{=view.renderLink(view.model.getPath()) }}>{{=view.model.getTitle()}}</a></li>
-				<li class="active">Historique</li>
-			</ol>
-			</div>
+<nav class="navbar">
+	<div class="navbar-brand">
+		<ol class="breadcrumb">
+			<li><a href="" data-render="renderHREF"><i
+					class="glyphicon glyphicon-home"></i></a></li>
+			<li><a href="" data-render="renderRef"><span
+					data-render="renderTitle">Page Title</span></a></li>
+			<li class="active">Historique</li>
+		</ol>
 	</div>
-	<ul class="navbar-brand nav navbar-nav right">
-		<li><div class="btn-group">
-				<button class="compare btn btn-primary"{{=view.renderCompareButton()}}>Comparer</button>
-			</div></li>
-	</ul>
+	<div class="navbar-brand right">
+		<div class="btn-group">
+			<button class="compare btn btn-primary"
+				data-render="renderCompareButton">Comparer</button>
+		</div>
+	</div>
 </nav>
 
 <table
-	class="table table-striped table-bordered table-hover table-condensed" {{=view.postprocess()}}>
+	class="table table-striped table-bordered table-hover table-condensed">
 	<tbody>
-            <tr style="color: black;">
-                <th></th>
-                    <th>Auteur</th>
-                    <th>Date</th>
-                    <th>Version</th>
-                </tr>	
-
-        {{ //_.each(_.sortBy(history, function (elt) { return elt.timestamp; }).reverse(), function(item, index) { }}
-        {{ var history = view.getHistory();  }}
-        {{ _.each(history, function(item, index) {  }}
-
-            {{if (index < (_.keys(history).length -1)) { }}
-			<tr style="color: black;">
-				<td><input type="checkbox"
-					value="{{=item.versionId}}"></td>
-					<td>{{-item.author}}</td>
-					<td>{{=view.getFormattedRevisionDate(item.timestamp)}}</td>
-				{{ if (index > 0) { }} 
-				<td><a {{=view.renderHistoryLink(item.versionId) }}>{{=view.getShortVersionId(item.versionId) }}</a></td>
-				{{ } else if (index == 0) { }}
-				<td><a {{=view.renderLink(view.model.getPath())}}>{{=view.getShortVersionId(item.versionId) }}</a></td>
-				{{ } }}
-				
-			</tr>
-		    {{ } }}
-
-		{{ }) }}
+		<tr style="color: black;">
+			<th></th>
+			<th>Auteur</th>
+			<th>Date</th>
+			<th>Version</th>
+		</tr>
+		<tr data-render="renderHistory">
+			<td><input type="checkbox" value="" data-render="renderCheckbox"></td>
+			<td data-render="renderAuthor"></td>
+			<td data-render="renderRevisionDate"></td>
+			<td><a data-render="renderHistoryRef"></a></td>
+		</tr>
 	</tbody>
 </table>
 

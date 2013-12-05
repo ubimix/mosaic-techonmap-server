@@ -3,23 +3,19 @@ define([ '../commons/UmxView', 'text!./view.html' ],
 function(UmxView, template) {
     var View = UmxView.extend({
         template : _.template(template),
-        renderNotLoggedBlock : function() {
-            return this.asyncElement(function(elm) {
-                if (this.isLogged()) {
-                    elm.hide();
-                } else {
-                    elm.show();
-                }
-            });
+        renderNotLoggedBlock : function(elm) {
+            if (this.isLogged()) {
+                elm.hide();
+            } else {
+                elm.show();
+            }
         },
-        renderAlreadyLoggedBlock : function() {
-            return this.asyncElement(function(elm) {
-                if (this.isLogged()) {
-                    elm.show();
-                } else {
-                    elm.hide();
-                }
-            });
+        renderAlreadyLoggedBlock : function(elm) {
+            if (this.isLogged()) {
+                elm.show();
+            } else {
+                elm.hide();
+            }
         },
         isLogged : function() {
             // FIXME: check the role of the user
