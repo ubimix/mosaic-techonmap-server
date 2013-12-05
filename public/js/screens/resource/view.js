@@ -1,11 +1,11 @@
 //table-view / contentView
 
 define([ '../commons/UmxView', '../commons/LinkController', 'BootstrapGrowl',
-        'Xeditable', '../models/Validator', 'core/viewManager', 'utils',
-        './table-view', 'text!./view.html' ],
+        'Xeditable', '../models/Validator', 'utils', './table-view',
+        'text!./view.html' ],
 
-function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator,
-        viewManager, Utils, ResourceContentView, ResourceContainerTemplate) {
+function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, Utils,
+        ResourceContentView, ResourceContainerTemplate) {
 
     var ResourceContainerView = UmxView.extend({
 
