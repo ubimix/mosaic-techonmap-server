@@ -61,9 +61,6 @@ define(
                     var ds = dmp.diff_prettyHtml(d);
                     el.html(ds);
                 },
-                getWorkspace : function() {
-                    return this.options.workspace;
-                },
                 getFirstRevision : function() {
                     return this.options.revision1;
                 },

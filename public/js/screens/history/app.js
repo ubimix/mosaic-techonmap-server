@@ -33,7 +33,7 @@ function(LinkController, Resource, HistoryView) {
                 },
                 error : showError
             });
-
+            
             // why is jQuery available while not in the defines ?
             // because
             // Backbone depends on it ?
