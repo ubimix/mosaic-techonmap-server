@@ -1,22 +1,25 @@
-<!-- {{  var revision1 = view.getFirstRevision(); var revision2 = view.getSecondRevision(); var workspace = view.getWorkspace(); }} -->
 <nav class="navbar" style="padding-top: 1em;">
 	<div class="navbar-header">
 		<div class="navbar-brand">
 			<ol class="breadcrumb">
-				<li><a{{=view.renderLink('')}}><i
+				<li><a href="" data-render="renderHREF"><i
 						class="glyphicon glyphicon-home"></i></a></li>
-				<li><a{{=view.renderLink(revision2.getPath()) }}>{{=revision2.getTitle()}}</a></li>
-				<li><a{{=view.renderLink(revision2.getPath() + '/history') }}>Historique</a></li>
+				<li><a href="" data-render="renderCurrentRevisionRef"><span
+						data-render="renderTitle"></span></a></li>
+				<li><a data-render="renderHistoryRef">Historique</a></li>
 				<li class="active">Comparaison</li>
 			</ol>
 		</div>
 
 	</div>
-
 </nav>
 
-<p><a href="{{=view.toHistoryLink(revision1.getPath(), revision1.getVersionId())}}">Version {{=view.getFormattedRevisionDate(revision1.getVersionTimestamp())}}</a> - 
-<a href="{{=view.toHistoryLink(revision2.getPath(), revision2.getVersionId())}}">Version {{=view.getFormattedRevisionDate(revision2.getVersionTimestamp())}}</a>
+<p>
+	<a href="" data-render="renderFirstRevisionRef">Version <span
+		data-render="renderFirstTimestamp">1</span>
+	</a> &#150; <a href="" data-render="renderSecondRevisionRef">Version <span
+		data-render="renderSecondTimestamp">2</span>
+	</a>
 </p>
 
-<pre{{=view.renderDiff()}}></pre>
+<pre data-render="renderDiff"></pre>
