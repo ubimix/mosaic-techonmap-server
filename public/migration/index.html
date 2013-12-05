@@ -12,7 +12,6 @@ textarea.form-control {
 }
 
 .dataset {
-	margin: 1em 0;
 }
 
 .dataset .data-container {
@@ -56,11 +55,15 @@ textarea.form-control {
 
 		<div id="results">
 			<div class="row form-group">
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<button class="btn btn-primary merge" data-format="csv">Merge
 						to CSV</button>
 					<button class="btn btn-primary merge" data-format="json">Merge
 						to JSON</button>
+				</div>
+				<div class="col-md-6">
+					<input type="checkbox" id="regenerate-ids" checked="checked" /> Force ID
+					re-generation based on names
 				</div>
 			</div>
 			<div class="row form-group">
