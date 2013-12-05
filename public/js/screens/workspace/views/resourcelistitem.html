@@ -1,43 +1,40 @@
-
-<li class="media" data-id="{{=model.getPath()}}">
+<li class="media" data-render="renderItem">
 	<div class="media-body">
-		<div
-			class="media-top {{= validator.wasCreated(model) ? 'created' : validator.wasUpdated(model) ? 'updated' : 'validated' }}">
+		<div class="media-top" data-render="renderItemTop">
 			<div class="row">
 				<div class="col-md-6 col-xs-6 media-header">
-					<h1 class="media-heading"><i class='glyphicon {{= validator.wasCreated(model) ? 'glyphicon-flash' : validator.wasUpdated(model) ? 'glyphicon-fire' : 'glyphicon-flash' }}'></i> {{=model.getTitle()}}</h1>
-					<div class="media-summary">{{=model.getDescription()}}</div>
+					<h1 class="media-heading">
+						<i class='glyphicon' data-render="renderStatusIcon"></i> <span
+							data-render="renderTitle">Title</span>
+					</h1>
+					<div class="media-summary" data-render="renderDescription">Description</div>
 				</div>
 				<div class="col-md-2 col-xs-1 media-header">
-					<span class="category">{{-model.getCategoryLabel()}}</span>
+					<span class="category" data-render="renderCategoryLabel">Category
+						label</span>
 				</div>
 				<div class="col-md-2 col-xs-2 media-header">
-					<span class="published-date">{{=view.getFormattedUpdateTime()}}</span>
+					<span class="published-date" data-render="renderUpdateTime">01/02/2022</span>
 				</div>
 				<div class="col-md-2 col-xs-3 media-header">
-					{{ if (!validator.isValidated(model)) { }} <input type="checkbox"
-						class="validation" data-id="{{=model.getPath()}}" /> {{ } }} <span
-						class="media-url"><a
-						href="/{{=workspace }}/{{=model.getPath() }}"
-						title="{{=model.getTitle()}}"><i
-							class="glyphicon glyphicon-edit"></i></a> 
-							<a
-                        href="../edition.html#{{=model.getPath()}}"
-                        data-bypass="true"
-                        title="{{=model.getTitle()}}"><i
-                            class="glyphicon glyphicon-list-alt"></i></a>
-							
-							</span>
+					<input type="checkbox" class="validation"
+						data-render="renderValidationCheckbox" />
+					<!--  -->
+					<span class="media-url"> <a href="../edition.html#"
+						data-render="renderExternalEditRef" data-bypass="true"><i
+							class="glyphicon glyphicon-list-alt"></i></a></span>
+					<!--  -->
+					<span class="media-url"><a href=""
+						data-render="renderItemRef"><i
+							class="glyphicon glyphicon-edit"></i></a> </span>
+
 				</div>
 			</div>
 		</div>
-		<div class="media-content">
-		<div class="row">
-                <div class="col-md-10 resource">
-                </div>
-                <div class="col-md-2 actions">
-                fgfngfn
-                </div>
+		<div class="media-content hidden" data-render="renderContentBlock">
+			<div class="row">
+				<div class="col-md-12 resource" data-render="renderItemWidget">Chargement...</div>
+			</div>
 		</div>
 	</div>
 </li>

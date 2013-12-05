@@ -43,6 +43,7 @@ require([ 'require.config' ], function() {
                     el : el,
                     model : this.model
                 }).render();
+                return false;
             }
         })
 

@@ -2,23 +2,25 @@
 	<div class="navbar-header">
 		<div class="navbar-brand">
 			<ol class="breadcrumb">
-				<li><a{{=view.renderLink()}} ><i
+				<li><a href="" data-render="renderHREF"><i
 						class="glyphicon glyphicon-home"></i></a></li>
-				<li><a{{=view.renderLink( view.getPath() )}}>{{=view.getTitle()}}</a></li>
-				<li><a{{=view.renderLink( view.getPath() + '/history' )}}>Historique</a></li>
-				<li class="active">Version {{=view.getVersionId()}}</li>
+				<li><a href="" data-render="renderResourceLink"><span
+						data-render="renderTitle">Resource</span></a></li>
+				<li><a href="" data-render="renderResourceHistoryLink">Historique</a></li>
+				<li class="active">Version <span data-render="renderVersionId">1</span></li>
 			</ol>
 		</div>
 	</div>
 	<ul class="navbar-brand nav navbar-nav right">
 		<li><div class="btn-group">
-				<button class="submit btn btn-primary"{{=view.renderRestoreBtn()}}>Restaurer</button>
+				<button class="submit btn btn-primary"
+					data-render="renderRestoreBtn">Restaurer</button>
 			</div></li>
 
 	</ul>
 </nav>
 
-<div{{=view.renderContentView()}}></div>
+<div data-render="renderContentView"></div>
 
 <!-- Modal -->
 <div id="dialog-restore-ok" class="modal hide fade" tabindex="-1"

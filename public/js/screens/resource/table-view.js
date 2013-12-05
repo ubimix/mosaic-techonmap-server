@@ -208,94 +208,83 @@ define(
                             this.readOnly = this.options.readOnly === true;
                         },
 
-                        renderIdField : function() {
-                            return this.asyncElement(function(elm) {
-                                this.idFieldElm = elm;
-                                var path = this.getPath();
-                                this.idFieldElm.val(path);
-                                if (this.model.isNew()) {
-                                    this.idFieldElm.removeAttr('disabled');
-                                }
-                            })
+                        renderIdField : function(elm) {
+                            this.idFieldElm = elm;
+                            var path = this.getPath();
+                            this.idFieldElm.val(path);
+                            if (this.model.isNew()) {
+                                this.idFieldElm.removeAttr('disabled');
+                            }
                         },
 
                         isReadonly : function() {
                             return this.options.readOnly === true;
                         },
 
-                        renderDescription : function() {
-                            return this.asyncElement(function(elm) {
-                                this.contentEditor = Utils.newCodeMirror(elm
-                                        .get(0), {
-                                    lineNumbers : false
-                                }, this.isReadonly(), this.getDescription());
-                            })
+                        renderDescription : function(elm) {
+                            this.contentEditor = Utils
+                                    .newCodeMirror(elm.get(0), {
+                                        lineNumbers : false
+                                    }, this.isReadonly(), this.getDescription());
                         },
 
-                        renderPropertyTable : function() {
-                            return this.asyncElement(function(elm) {
-                                this.tableEditor = this._newHandsontable(elm,
-                                        dataModel);
-                            })
+                        renderPropertyTable : function(elm) {
+                            this.tableEditor = this._newHandsontable(elm,
+                                    dataModel);
                         },
 
-                        renderGeoTable : function() {
-                            return this.asyncElement(function(elm) {
-                                this.geoEditor = this._newHandsontable(elm,
-                                        geoDataModel);
-                                var latRow = -1;
-                                var lngRow = -1;
-                                _.each(geoDataModel, function(item, index) {
-                                    switch (item.property) {
-                                    case 'geometry.coordinates.0':
-                                        lngRow = index;
-                                        break;
-                                    case 'geometry.coordinates.1':
-                                        latRow = index;
-                                        break;
+                        renderGeoTable : function(elm) {
+                            this.geoEditor = this._newHandsontable(elm,
+                                    geoDataModel);
+                            var latRow = -1;
+                            var lngRow = -1;
+                            _.each(geoDataModel, function(item, index) {
+                                switch (item.property) {
+                                case 'geometry.coordinates.0':
+                                    lngRow = index;
+                                    break;
+                                case 'geometry.coordinates.1':
+                                    latRow = index;
+                                    break;
+                                }
+                            });
+                            var that = this;
+                            var onCellChange = function(ev) {
+                                var lat = that.geoEditor.getDataAtCell(latRow,
+                                        1);
+                                var lng = that.geoEditor.getDataAtCell(lngRow,
+                                        1);
+                                var changed = false;
+                                _.each(ev, function(change) {
+                                    var row = change[0];
+                                    var col = change[1];
+                                    if (col != 1)
+                                        return;
+                                    var oldVal = change[2];
+                                    var newVal = parseFloat(change[3]);
+                                    if (row == latRow) {
+                                        lat = newVal;
+                                        changed = true;
+                                    } else if (row == lngRow) {
+                                        lng = newVal;
+                                        changed = true;
                                     }
                                 });
-                                var that = this;
-                                var onCellChange = function(ev) {
-                                    var lat = that.geoEditor.getDataAtCell(
-                                            latRow, 1);
-                                    var lng = that.geoEditor.getDataAtCell(
-                                            lngRow, 1);
-                                    var changed = false;
-                                    _.each(ev, function(change) {
-                                        var row = change[0];
-                                        var col = change[1];
-                                        if (col != 1)
-                                            return;
-                                        var oldVal = change[2];
-                                        var newVal = parseFloat(change[3]);
-                                        if (row == latRow) {
-                                            lat = newVal;
-                                            changed = true;
-                                        } else if (row == lngRow) {
-                                            lng = newVal;
-                                            changed = true;
-                                        }
-                                    });
-                                    if (changed) {
-                                        that._updateCoordinates(lng, lat);
-                                    }
+                                if (changed) {
+                                    that._updateCoordinates(lng, lat);
                                 }
-                                this.geoEditor.addHook('afterChange',
-                                        onCellChange);
-                                this.on('coords:changed', function(evt) {
-                                    that.geoEditor.setDataAtCell(latRow, 1,
-                                            evt.coords[1]);
-                                    that.geoEditor.setDataAtCell(lngRow, 1,
-                                            evt.coords[0]);
-                                })
+                            }
+                            this.geoEditor.addHook('afterChange', onCellChange);
+                            this.on('coords:changed', function(evt) {
+                                that.geoEditor.setDataAtCell(latRow, 1,
+                                        evt.coords[1]);
+                                that.geoEditor.setDataAtCell(lngRow, 1,
+                                        evt.coords[0]);
                             })
                         },
 
-                        renderMap : function() {
-                            return this.asyncElement(function(mapContainer) {
-                                this.map = this._newMap(mapContainer);
-                            })
+                        renderMap : function(mapContainer) {
+                            this.map = this._newMap(mapContainer);
                         },
 
                         _getCoordinates : function() {

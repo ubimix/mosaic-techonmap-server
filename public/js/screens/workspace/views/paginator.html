@@ -1,25 +1,8 @@
-{{var list = view.getPageSet();}}
-{{ if (list.length) { }}
-<div style="display:block;text-align:center;" {{=view.renderPaginator()}}>
-{{console.log(view.options.lastPage) ; if (view.options.lastPage == 0) return ;}}
-<ul class="pagination pagination-centered" >
-  {{ if (view.collection.currentPage != view.collection.firstPage) { }}
-  <li><a href="#" class="first">&laquo;</a></li>
-  {{ } else { }}
-  <li class="disabled"><a href="#" class="first">&laquo;</a></li>
-  {{ } }}
-   {{ _.each (list, function (p) { }}
-        {{ if (view.collection.currentPage == p) { }}
-        <li class="active"><a href="#" class="page">{{= p }}</a></li>
-        {{ } else { }}
-        <li><a href="#" class="page">{{= p }}</a></li>
-        {{ } }}
-   {{ }); }}
-   {{ if (view.collection.lastPage != view.collection.currentPage && view.collection.lastPage != 0) { }}
-    <li><a href="#" class="last">&raquo;</a></li>  
-   {{ } else { }}
-   <li class="disabled"><a href="#" class="last">&raquo;</a></li>
-   {{ } }}
-</ul>
+<div class="center-block">
+	<ul class="pagination pagination-sm" data-render="renderPaginator"
+		data-rendered="renderedPaginator">
+		<li data-render="renderFirstPageRef"><a href="#" class="first">&laquo;</a></li>
+		<li data-render="renderInnerPageRef"><a href="#" class="page">1</a></li>
+		<li data-render="renderLastPageRef"><a href="#" class="last">&raquo;</a></li>
+	</ul>
 </div>
-{{ } }}
