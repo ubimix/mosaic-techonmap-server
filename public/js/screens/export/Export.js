@@ -1,4 +1,4 @@
-define([ 'Underscore', 'utils', '../collections/ResourceCollection',
+define([ 'Underscore', 'utils', '../../models/ResourceCollection',
         '../commons/Dialog', 'text!./export.html', 'BootstrapModal' ],
 
 function(_, Utils, ResourceCollection, Dialog, Template) {
@@ -35,7 +35,9 @@ function(_, Utils, ResourceCollection, Dialog, Template) {
                 success : function(coll) {
                     _.each(coll.models, function(item, index) {
                         // add permalink
-                        Utils.updateObject(item, 'attributes.properties.permalink', item.buildPermalink());
+                        Utils.updateObject(item,
+                                'attributes.properties.permalink', item
+                                        .buildPermalink());
                         item.deleteSysAttributes();
                     });
                     var formattedContent = convert(coll);
@@ -69,7 +71,8 @@ function(_, Utils, ResourceCollection, Dialog, Template) {
             function formatCSV(resource) {
                 var array = [];
                 var properties = resource.getProperties() || {};
-                var coordinates = resource.getGeometry() && resource.getGeometry().coordinates || [];
+                var coordinates = resource.getGeometry()
+                        && resource.getGeometry().coordinates || [];
 
                 array.push(properties.id);
                 array.push(properties.name);

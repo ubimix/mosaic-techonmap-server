@@ -1,7 +1,7 @@
 //table-view / contentView
 
-define([ '../commons/UmxView', '../commons/LinkController', 'BootstrapGrowl',
-        'Xeditable', '../models/Validator', 'utils', './table-view',
+define([ '../commons/UmxView', '../../models/LinkController', 'BootstrapGrowl',
+        'Xeditable', '../../models/Validator', 'utils', './table-view',
         'text!./view.html' ],
 
 function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, Utils,

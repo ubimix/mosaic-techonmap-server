@@ -1,4 +1,4 @@
-define([ 'Backbone', '../commons/LinkController', '../models/Resource',
+define([ 'Backbone', '../../models/LinkController', '../../models/Resource',
         './view' ],
 
 function(Backbone, LinkController, ResourceModel, RevisionView) {
@@ -7,9 +7,10 @@ function(Backbone, LinkController, ResourceModel, RevisionView) {
             var linkController = LinkController.getInstance();
             var revisions = new Backbone.Collection([], {
                 model : ResourceModel,
-                url : linkController.toHistoryApiLink(options.path, options.version)
+                url : linkController.toHistoryApiLink(options.path,
+                        options.version)
             });
-            
+
             revisions.fetch({
                 success : function(collection, object) {
                     // TODO : note that the console points to an object which is

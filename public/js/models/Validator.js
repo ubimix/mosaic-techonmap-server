@@ -1,4 +1,4 @@
-define([ 'Backbone', '../commons/LinkController' ],
+define([ 'Backbone', './LinkController' ],
 //
 function(Backbone, LinkController) {
 
