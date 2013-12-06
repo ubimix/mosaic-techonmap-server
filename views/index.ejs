@@ -5,23 +5,7 @@
 		<meta charset="utf-8"></meta>
 		<link rel="stylesheet" type="text/css" href="<%= mainCss %>">
 		<script type="text/javascript" src="/components/requirejs/require.js" data-main="<%= mainJs %>"></script>
-		
 	</head>
-	<body>
-    
-    <div id="umx-header" data-loaded="false" data-user="<%= user %>" data-user-role="<%= roles %>">
-    </div>
-	
-
-    <div class="row" style="position:relative; z-index:0;">
-    <div class="col-md-1"></div>
-        <div class="col-md-10">
-		<div id="app">
-		
-		</div>
-		</div>
-		<div class="col-md-1"></div>
-	</div>
-
+	<body data-user="<%= user %>" data-user-role="<%= roles %>">
 	</body>
 </html>

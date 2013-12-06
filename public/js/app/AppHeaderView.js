@@ -1,14 +1,14 @@
 define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView',
         'Typeahead', '../screens/commons/LinkController',
-        'text!./view.header.html', '../screens/commons/Dialog',
+        'text!./AppHeaderView.html', '../screens/commons/Dialog',
         '../screens/export/Export', 'BootstrapDropdown' ],
 
 function($, _, Backbone, UmxView, Typeahead, LinkController,
-        ViewHeaderTemplate, Dialog, ExportDialog) {
+        AppHeaderViewTemplate, Dialog, ExportDialog) {
 
     var View = UmxView.extend({
 
-        template : _.template(ViewHeaderTemplate),
+        template : _.template(AppHeaderViewTemplate),
 
         getUser : function() {
             return this.options.user;
@@ -194,9 +194,6 @@ function($, _, Backbone, UmxView, Typeahead, LinkController,
             // }
             // }
             // });
-        },
-
-        renderPage : function(elm) {
         },
 
         exportClicked : function(event) {
