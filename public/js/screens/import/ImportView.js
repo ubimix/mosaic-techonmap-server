@@ -1,11 +1,11 @@
-define([ '../../commons/UmxView', 'Underscore', 'jQueryCsv', 'CodeMirror',
+define([ '../../commons/TemplateView', 'Underscore', 'jQueryCsv', 'CodeMirror',
         'Handsontable', 'utils', '../../commons/Dialog',
         'text!./ImportView.html' ],
 
-function(UmxView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,
+function(TemplateView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,
         ImportViewTemplate) {
 
-    var TableView = UmxView.extend({
+    var TableView = TemplateView.extend({
         initialize : function(options) {
             this.isRendered = false;
             this.setData(this.options.data);
@@ -38,7 +38,7 @@ function(UmxView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,
         }
     });
 
-    var TextView = UmxView.extend({
+    var TextView = TemplateView.extend({
         renderCsvEditor : function(elm) {
             var text = elm.text();
             elm.remove();
@@ -61,7 +61,7 @@ function(UmxView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,
         }
     });
 
-    var ImportView = UmxView
+    var ImportView = TemplateView
             .extend({
                 initialize : function() {
                     _.bindAll(this, 'onImported', 'importCsv', 'nextClicked',

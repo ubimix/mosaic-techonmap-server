@@ -1,11 +1,11 @@
-define([ '../../commons/UmxView', '../../models/LinkController',
+define([ '../../commons/TemplateView', '../../models/LinkController',
         'BootstrapGrowl', 'Xeditable', '../../models/Validator', 'utils',
         './ResourceContentView', 'text!./ResourceView.html' ],
 
-function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, Utils,
+function(TemplateView, LinkController, BootstrapGrowl, Xeditable, Validator, Utils,
         ResourceContentView, ResourceContainerTemplate) {
 
-    var ResourceContainerView = UmxView.extend({
+    var ResourceContainerView = TemplateView.extend({
 
         template : _.template(ResourceContainerTemplate),
         events : {

@@ -1,11 +1,11 @@
-define([ 'jQuery', 'Underscore', 'Backbone', '../commons/UmxView', 'Typeahead',
+define([ 'jQuery', 'Underscore', 'Backbone', '../commons/TemplateView', 'Typeahead',
         '../models/LinkController', 'text!./AppHeaderView.html',
         '../commons/Dialog', '../screens/export/ExportDialog', 'BootstrapDropdown' ],
 
-function($, _, Backbone, UmxView, Typeahead, LinkController,
+function($, _, Backbone, TemplateView, Typeahead, LinkController,
         AppHeaderViewTemplate, Dialog, ExportDialog) {
 
-    var View = UmxView.extend({
+    var View = TemplateView.extend({
 
         template : _.template(AppHeaderViewTemplate),
 
