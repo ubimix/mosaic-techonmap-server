@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33762721900041,
+          48.89398598100047
+        ]
+      },
+      "properties": {
+        "name": "My Precious Life",
+        "email": "contact@mypreciouslife.com",
+        "description": "MyPreciousLife est le carnet d'inspiration sur mobile, la plus belle manière de prendre des notes.\nDesign émotionnel et respect de la vie privée sont au cœur de la démarche de l'entreprise. www.mypreciouslife.com",
+        "category": "entreprise",
+        "address": "cité Nollez - 75018 Paris",
+        "creationyear": "2012",
+        "url": "www.mypreciouslife.com",
+        "twitter": "M_PreciousLife",
+        "facebook": "https://www.facebook.com/my.precious.life",
+        "postcode": "",
+        "city": "",
+        "id": "my-precious-life.txt",
+        "origin": "dirty",
+        "oldid": "www.mypreciouslife.com"
+      },
+      "dirty": true,
+      "_id": "52256a51597a759423000003"
+    }
+  ]
+}

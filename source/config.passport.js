@@ -1,5 +1,7 @@
 var Tools = require('./tools');
 var config = require('./config');
+var Q = require('q');
+var _ = require('underscore');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -12,15 +14,26 @@ var FacebookStrategy = require('passport-facebook').Strategy;
  */
 module.exports = function(app) {
 
+    function escapeDisplayName(name) {
+        return name.replace(/[\s]/, '.').toLowerCase();
+    }
+
     function newUser(data) {
-        if (!data.email) {
-            data.email = data.displayName + '@domain.com'
-        }
-        if (!data.id) {
-            // data.id = data.email;
-            data.id = data.displayName;
-        }
+        data.id = data.provider + ':' + escapeDisplayName(data.displayName);
+        // FIXME: remove it (need to replace access rules in config.yaml to use
+        // real IDs)
+        data.id = data.displayName;
         return data;
+    }
+
+    function getAccountId(accountId, domain, displayName) {
+        if (accountId && accountId != '')
+            return accountId;
+        accountId = escapeDisplayName(displayName);
+        if (domain) {
+            accountId = domain + ':' + accountId;
+        }
+        return accountId;
     }
 
     app.get('/api/auth/user', function(req, res) {
@@ -29,35 +42,26 @@ module.exports = function(app) {
         } else {
             res.json({});
         }
-
     });
 
     app.get('/api/auth/done', function(req, res) {
-
-        // console.log('User: ', req.user);
-        if (!req.user) {
-            res.redirect("/");
-            return;
-        } else {
-            var dst = req.session.destination || "/";
-            delete req.session.destination;
-            res.redirect(dst);
-        }
-
+        var dst = req.session.destination || "/workspace";
+        delete req.session.destination;
+        res.redirect(dst);
     });
 
     app.get('/api/logout', function(req, res) {
+        var redirectTarget = req.query.redirect || "/workspace";
         req.logout();
         req.session = null;
-        res.redirect('/');
+        res.redirect(redirectTarget);
     });
-
-    console.log(app.locals.baseUrl);
 
     /* ------------------------------------------------------------ */
     // Local
     passport.use(new LocalStrategy(function(username, password, done) {
-        if (username.toLowerCase() != auth.alone.username.toLowerCase() || Tools.hashify(password) != auth.alone.passwordHash) {
+        if (username.toLowerCase() != auth.alone.username.toLowerCase()
+                || Tools.hashify(password) != auth.alone.passwordHash) {
             return done(null, false, {
                 message : 'Incorrect username or password'
             });
@@ -65,7 +69,8 @@ module.exports = function(app) {
 
         var user = newUser({
             displayName : auth.alone.username,
-            email : auth.alone.email || ""
+            accountId : getAccountId(auth.alone.email, 'system',
+                    auth.alone.username)
         });
 
         return done(undefined, user);
@@ -82,9 +87,17 @@ module.exports = function(app) {
         returnURL : app.locals.baseUrl + '/api/auth/google/return',
         realm : app.locals.baseUrl
     }, function(identifier, profile, done) {
+        var accountId = null;
+        if (profile.emails && profile.emails.length) {
+            var obj = profile.emails[0];
+            accountId = obj ? obj.value : null;
+        }
+        accountId = getAccountId(accountId, 'gmail.com', profile.displayName);
         var user = newUser({
+            accountId : accountId,
             displayName : profile.displayName,
-            email : profile.email
+            name : profile.name,
+            provider : 'google'
         });
         done(undefined, user);
     }));
@@ -103,12 +116,23 @@ module.exports = function(app) {
             consumerSecret : twitterConfig.oauthkeys.consumerSecret,
             callbackURL : app.locals.baseUrl + '/api/auth/twitter/return'
         }, function(token, tokenSecret, profile, done) {
+            var provider = 'twitter';
+            var accountId = getAccountId(null, provider, profile.username);
             var user = newUser({
-                displayName : profile.displayName
+                accountId : accountId,
+                displayName : profile.displayName,
+                provider : provider
             });
             return done(undefined, user);
         }));
-        app.get("/api/auth/twitter", passport.authenticate('twitter'));
+
+        // http://stackoverflow.com/questions/9885711/custom-returnurl-on-node-js-passports-google-strategy
+        app.get("/api/auth/twitter", function(req, res, next) {
+            req.session.destination = req.query.redirect;
+            passport.authenticate('twitter', function(err, user, info) {
+                next();
+            })(req, res, next);
+        });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
             successRedirect : '/api/auth/done',
             failureRedirect : '/login'
@@ -124,15 +148,19 @@ module.exports = function(app) {
             callbackURL : app.locals.baseUrl + '/api/auth/facebook/return'
         }, function(accessToken, refreshToken, profile, done) {
             var user = newUser({
-                displayName : profile.displayName
+                accountId : getAccountId(null, 'facebook.com',
+                        profile.displayName),
+                displayName : profile.displayName,
+                provider : 'facebook'
             });
             return done(undefined, user);
         }));
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
-        app.get("/api/auth/facebook/return", passport.authenticate('facebook', {
-            successRedirect : '/api/auth/done',
-            failureRedirect : '/login'
-        }));
+        app.get("/api/auth/facebook/return", passport.authenticate('facebook',
+                {
+                    successRedirect : '/api/auth/done',
+                    failureRedirect : '/login'
+                }));
     }
 
     /* ------------------------------------------------------------ */
@@ -142,18 +170,17 @@ module.exports = function(app) {
 
     /* ------------------------------------------------------------ */
     passport.deserializeUser(function(user, done) {
-        if (user.emails && user.emails.length > 0) { // Google
-            user.email = user.emails[0].value;
-            delete user.emails;
-        }
-        user.asGitAuthor = user.displayName + " <" + user.email + ">";
+        // if (user.emails && user.emails.length > 0) { // Google
+        // user.accountId = user.emails[0].value;
+        // delete user.emails;
+        // }
         done(undefined, user);
     });
 
     /* ------------------------------------------------------------ */
     // var auth = app.locals.authentication = config.authentications
     var auth = app.locals.authentication = config.authentication;
-
+    return Q(true);
     //
     // var authEnabled = false;
     // for ( var n in config.authentications) {

@@ -1,19 +1,48 @@
-<div>
-<!-- 	<h1>{{=workspace}}</h1>  -->
+<nav class="navbar">
+	<div class="navbar-brand">
+		<ol class="breadcrumb">
+			<li><i class="glyphicon glyphicon-home"></i> Tableau de bord
+				&nbsp;<span class="badge pull-right"
+				data-render="renderRecordNumber">0</span></li>
+		</ol>
+	</div>
+	<div class="navbar-brand right">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle"
+				data-toggle="dropdown">
+				Trier <span class="caret"></span>
+			</button>
+
+			<ul class="dropdown-menu" role="menu">
+				<li><a class="sort" href="#"
+					data-sort="attributes.properties.name">Par nom</a></li>
+				<li><a class="sort" href="#"
+					data-sort="attributes.properties.category">Par catégorie</a></li>
+				<li><a class="sort" href="#"
+					data-sort="attributes.sys.updated.timestamp" data-sort-order="desc">Par
+						date</a></li>
+			</ul>
+		</div>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle"
+				data-toggle="dropdown">
+				Afficher <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu howmany" role="menu">
+				<li><a href="#">15</a></li>
+				<li><a href="#">50</a></li>
+				<li><a href="#">100</a></li>
+			</ul>
+		</div>
+		<button type="button" class="btn btn-primary action-validate">Valider</button>
+	</div>
+</nav>
+<div class="resources" style="clear: right;"
+	data-render="renderResources"></div>
+
+<div class="dialog-validation hide">
+	<div class="title">Validation</div>
+	<div class="message">Aucune entité n'est sélectionnée.
+		Souhaitez-vous les valider toutes ?</div>
 </div>
-
-<h2>Resources</h2>
-
-<div style='margin-bottom:1em;'>
-<a href="/{{=workspace}}/new" class="btn btn-primary">New Resource</a>
-</div>
-
-<div style='margin-bottom:1em; float:right; display:block;'>
-Sort by : <a class="sort" href="/{{=workspace}}/sort/properties.name">Name</a>
-<a class="sort" href="/{{=workspace}}/sort/properties.category">Category</a>
-<a class="sort" href="/{{=workspace}}/sort/sys.updated.timestamp">Date</a>
-</div>
-
-<div class="resources" style="clear:right;">
-
-</div>
+<nav data-render="renderPaginator"></nav>

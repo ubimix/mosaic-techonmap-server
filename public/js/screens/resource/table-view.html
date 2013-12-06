@@ -1,0 +1,48 @@
+<style type="text/css">
+.CodeMirror {
+	border: none;
+	height: auto;
+}
+
+.CodeMirror-scroll {
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+</style>
+
+
+<div class="row form-group">
+	<div class="col-md-4"></div>
+	<div class="col-md-8"></div>
+</div>
+<div class="row">
+	<div class="col-md-7">
+		<div class="form-group">
+			<div class="description" data-render="renderDescription"></div>
+		</div>
+		<div class="form-group">
+			<div class="property-table" data-render="renderPropertyTable"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon">ID</span> <input type="text"
+						class="form-control id" data-render="renderIdField" value=""
+						disabled="disabled">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-5">
+		<div class="form-group">
+			<div class="thumbnail">
+				<div class="map-container" style="height: 300px;"
+					data-render="renderMap"></div>
+				<div class="caption">
+					<div class="geo-table" data-render="renderGeoTable"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

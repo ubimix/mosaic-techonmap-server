@@ -1,26 +1,27 @@
-define([ 'Backbone', './resourcelist' ], function(Backbone, ResourceListView) {
+define([ 'Underscore', '../../commons/UmxView', './resourcelist',
+        'text!./main.html' ],
 
-    var MainView = Backbone.View.extend({
-        initialize : function() {
-            this.subviews = [];
+function(_, UmxView, ResourceListView, MainViewTemplate) {
+
+    var MainView = UmxView.extend({
+
+        template : _.template(MainViewTemplate),
+
+        renderMainView : function(elm) {
+            // console.log('[MAIN VIEW] BEFORE')
+        },
+        renderedMainView : function(elm) {
+            // console.log('[MAIN VIEW] AFTER')
         },
 
-        render : function() {
-            if (this.options.error) {
-                this.$el.append('You are not authorized to perform this action. Please <a href="/login">login</a>.');
-            } else {
-
-                var view = new ResourceListView({
-                    collection : this.collection,
-                    workspace : this.options.workspace,
-                    sort : this.options.sort
-                });
-                this.$el.append(view.render().el);
-                this.subviews.push(view);
-                
-                
-            }
-            return this;
+        renderResourceList : function(elm) {
+            var view = new ResourceListView({
+                collection : this.collection,
+                workspace : this.options.workspace,
+                sort : this.options.sort,
+                verified : this.options.verified
+            });
+            elm.append(view.render().el);
         }
     });
 

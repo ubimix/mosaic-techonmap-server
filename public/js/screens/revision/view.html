@@ -1,42 +1,42 @@
-<div>
-
-	<h1>{{=resource.properties.name}}</h1>
-
-	<p>
-		<span>Version: {{=resource.sys.updated.versionId}}</span>
-	</p>
-	<p>
-		<span>Back to current version : <a
-			href="/{{=workspace}}/{{=path}}">current</a></span>
-	</p>
-
-
-	<div class="form-actions">
-		<input id="version" type="hidden" value="{{=resource.sys.updated.versionId}}" />
-		<button class="submit btn btn-primary">Restore</button>
+<nav class="navbar" style="padding-top: 1em;">
+	<div class="navbar-header">
+		<div class="navbar-brand">
+			<ol class="breadcrumb">
+				<li><a href="" data-render="renderHREF"><i
+						class="glyphicon glyphicon-home"></i></a></li>
+				<li><a href="" data-render="renderResourceLink"><span
+						data-render="renderTitle">Resource</span></a></li>
+				<li><a href="" data-render="renderResourceHistoryLink">Historique</a></li>
+				<li class="active">Version <span data-render="renderVersionId">1</span></li>
+			</ol>
+		</div>
 	</div>
+	<ul class="navbar-brand nav navbar-nav right">
+		<li><div class="btn-group">
+				<button class="submit btn btn-primary"
+					data-render="renderRestoreBtn">Restaurer</button>
+			</div></li>
 
+	</ul>
+</nav>
 
-	<p>
-	<pre>{{=yaml}}</pre>
-	</p>
-</div>
+<div data-render="renderContentView"></div>
 
 <!-- Modal -->
-<div id="dialog-restore-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Restore Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>The resource has been restored successfully.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
+<div id="dialog-restore-ok" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="restore-resource" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Restore Dialog</h3>
+	</div>
+	<div class="modal-body">
+		<p>The resource has been restored successfully.</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal"
+			aria-hidden="true">Ok</button>
+	</div>
 </div>
 
 

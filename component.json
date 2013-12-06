@@ -6,12 +6,16 @@
     "jquery": "latest",
     "jquery-csv":"latest",
     "backbone": "~1.0.0",
-    "bootstrap": "2.3.2",
+    "bootstrap": "3.0.0",
+    "typeahead.js":"0.9.3",
+    "bootstrap-growl" : "latest",
     "requirejs": "~2.1.5",
     "requirejs-text": "latest",
-    "require-handlebars-plugin": "~0.4.0",
-    "animate.css": "latest",
     "momentjs":"latest",
-    "pnotify":"latest"
+    "codemirror":"~3.18.0",
+    "handsontable":"*",
+    "font-awesome":"*",
+    "leaflet-dist" : "*",
+    "x-editable" : "*"
   }
 }

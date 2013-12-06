@@ -1,74 +1,79 @@
-define(function(require) {
-    var Backbone = require('Backbone');
-    var viewManager = require('./viewManager');
-    var Router = Backbone.Router.extend({
-        routes : {
-            '' : 'homeScreen',
-            'login' : 'loginScreen',
-            'search' : 'searchScreen',
-            ':workspace/search' : 'searchScreen',
-            ':workspace/import' : 'importScreen',
-            ':workspace' : 'workspaceScreen',
-            ':workspace/' : 'workspaceScreen',
-            ':workspace/sort/:sort' : 'workspaceScreen',
-            ':workspace/*path/history/compare/:version1/with/:version2' : 'compareScreen',
-            ':workspace/*path/history/:version' : 'revisionScreen',
-            ':workspace/*path/history' : 'historyScreen',
-            ':workspace/*path' : 'resourceScreen'
-        },
-        homeScreen : function() {
-            require('./../screens/home/app').run(viewManager, {});
-        },
-        loginScreen : function() {
-            require('./../screens/login/app').run(viewManager, {});
-        },
-        searchScreen : function(workspace) {
-            require('./../screens/search/app').run(viewManager, {
-                workspace : workspace
-            });
-        },
-        importScreen : function(workspace) {
-            require('./../screens/import/app').run(viewManager, {
-                workspace : workspace
-            });
-        },
-        workspaceScreen : function(workspace, sort) {
-            require('./../screens/workspace/app').run(viewManager, {
-                workspace : workspace,
-                sort : sort
-            });
-        },
-        compareScreen : function(workspace, path, v1, v2) {
-            require('./../screens/compare/app').run(viewManager, {
-                workspace : workspace,
-                path : path,
-                v1 : v1,
-                v2 : v2
-            });
-        },
-        historyScreen : function(workspace, path) {
-            require('./../screens/history/app').run(viewManager, {
-                workspace : workspace,
-                path : path
-            });
-        },
-        resourceScreen : function(workspace, path) {
-            require('./../screens/resource/app').run(viewManager, {
-                workspace : workspace,
-                path : path
-            });
-        },
-        revisionScreen : function(workspace, path, version) {
-            require('./../screens/revision/app').run(viewManager, {
-                workspace : workspace,
-                path : path,
-                version : version
-            });
-        }
+define(
+        [ 'require', 'Backbone', './viewManager' ],
+        function(require, Backbone, ViewManager) {
+            function runModule(path, options) {
+                options = options || {};
+                require([ path ], function(module) {
+                    module.run(ViewManager, options);
+                })
+            }
+            var Router = Backbone.Router
+                    .extend({
+                        routes : {
+                            '' : 'mapScreen',
+                            '/' : 'mapScreen',
+                            'login' : 'loginScreen',
+                            'search' : 'searchScreen',
+                            ':workspace/search' : 'searchScreen',
+                            ':workspace/import' : 'importScreen',
+                            ':workspace' : 'workspaceScreen',
+                            ':workspace/' : 'workspaceScreen',
+                            ':workspace/sort/:sort' : 'workspaceScreen',
+                            ':workspace/*path/history/compare/:version1/with/:version2' : 'compareScreen',
+                            ':workspace/*path/history/:version' : 'revisionScreen',
+                            ':workspace/*path/history' : 'historyScreen',
+                            ':workspace/*path' : 'resourceScreen'
+                        },
+                        loginScreen : function() {
+                            runModule('./../screens/login/app');
+                        },
+                        searchScreen : function(workspace) {
+                            runModule('./../screens/search/app', {
+                                workspace : workspace
+                            });
+                        },
+                        importScreen : function(workspace) {
+                            runModule('./../screens/import/app', {
+                                workspace : workspace
+                            });
+                        },
+                        workspaceScreen : function(workspace, sort) {
+                            runModule('./../screens/workspace/app', {
+                                workspace : workspace,
+                                sort : sort
+                            });
+                        },
+                        compareScreen : function(workspace, path, v1, v2) {
+                            runModule('./../screens/compare/app', {
+                                workspace : workspace,
+                                path : path,
+                                v1 : v1,
+                                v2 : v2
+                            });
+                        },
+                        historyScreen : function(workspace, path) {
+                            runModule('./../screens/history/app', {
+                                path : path
+                            });
+                        },
+                        resourceScreen : function(workspace, path) {
+                            runModule('./../screens/resource/app', {
+                                workspace : workspace,
+                                path : path,
+                                create : false
+                            });
+                        },
+                        revisionScreen : function(workspace, path, version) {
+                            runModule('./../screens/revision/app', {
+                                workspace : workspace,
+                                path : path,
+                                version : version
+                            });
+                        },
+                        mapScreen : function() {
+                            window.location = '../';
+                        }
+                    });
 
-    });
-    
-    
-
-    return Router;
-});
+            return Router;
+        });

@@ -1,21 +1,40 @@
+<li class="media" data-render="renderItem">
+	<div class="media-body">
+		<div class="media-top" data-render="renderItemTop">
+			<div class="row">
+				<div class="col-md-6 col-xs-6 media-header">
+					<h1 class="media-heading">
+						<i class='glyphicon' data-render="renderStatusIcon"></i> <span
+							data-render="renderTitle">Title</span>
+					</h1>
+					<div class="media-summary" data-render="renderDescription">Description</div>
+				</div>
+				<div class="col-md-2 col-xs-1 media-header">
+					<span class="category" data-render="renderCategoryLabel">Category
+						label</span>
+				</div>
+				<div class="col-md-2 col-xs-2 media-header">
+					<span class="published-date" data-render="renderUpdateTime">01/02/2022</span>
+				</div>
+				<div class="col-md-2 col-xs-3 media-header">
+					<input type="checkbox" class="validation"
+						data-render="renderValidationCheckbox" />
+					<!--  -->
+					<span class="media-url"> <a href="../edition.html#"
+						data-render="renderExternalEditRef" data-bypass="true"><i
+							class="glyphicon glyphicon-list-alt"></i></a></span>
+					<!--  -->
+					<span class="media-url"><a href=""
+						data-render="renderItemRef"><i
+							class="glyphicon glyphicon-edit"></i></a> </span>
 
-<li class="media" data-id="{{=data.sys.path}}">
-    <div class="media-body">
-    <div class="media-top">
-        <div class="row-fluid">
-            <div class="span8 header">
-                <h1 class="media-heading">{{=data.properties.name}}</h1>
-                <div class="media-summary">{{=data.properties.description}}</div>
-            </div>
-            <div class="span4 header">
-                <span class="category">{{-data.properties.category}}</span>
-                <span class="published-date">{{= moment(data.sys.updated.timestamp).format("YYYY-MM-DD HH:mm:ss") }}</span>
-                <span
-                    class="media-url"><a href="/{{=workspace }}{{=data.sys.path }}" title="{{=data.properties.name}}"><i class=" icon-chevron-right"></i></a>
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="media-content"></div>
-</div>
+				</div>
+			</div>
+		</div>
+		<div class="media-content hidden" data-render="renderContentBlock">
+			<div class="row">
+				<div class="col-md-12 resource" data-render="renderItemWidget">Chargement...</div>
+			</div>
+		</div>
+	</div>
 </li>

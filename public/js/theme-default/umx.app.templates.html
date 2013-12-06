@@ -1,0 +1,41 @@
+<div>
+
+<script type="text/template" id="HeaderView">
+
+ <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">{{= title }}</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/workspace/import">Import</a></li>
+           
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
+            {{ if (user != 'Anonymous') { }}
+                 <li><a href="/">{{=user}}</a></li>
+            {{ } }}
+
+            {{ if (user != 'Anonymous') { }}
+            <li><a href="/api/logout">Logout</a></li>
+            {{ } else { }}
+            <li><a href="/login">Login</a></li>
+            {{ } }}
+
+          </ul>
+
+           <form class="navbar-form navbar-right">
+             <input type="text" class="typeahead" autocomplete="off" placeholder="Search...">
+           </form>
+
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+</script>
+
+</div>
