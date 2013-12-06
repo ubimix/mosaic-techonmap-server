@@ -28,45 +28,56 @@ define(
                             })
                         },
                         loginScreen : function() {
-                            this.showScreen('./../screens/login/app');
+                            this
+                                    .showScreen('./../screens/login/LoginController');
                         },
                         importScreen : function(workspace) {
-                            this.showScreen('./../screens/import/app', {
-                                workspace : workspace
-                            });
+                            this.showScreen(
+                                    './../screens/import/ImportController', {
+                                        workspace : workspace
+                                    });
                         },
                         workspaceScreen : function(workspace, sort) {
-                            this.showScreen('./../screens/workspace/app', {
-                                workspace : workspace,
-                                sort : sort
-                            });
+                            this
+                                    .showScreen(
+                                            './../screens/workspace/WorkspaceController',
+                                            {
+                                                workspace : workspace,
+                                                sort : sort
+                                            });
                         },
                         compareScreen : function(workspace, path, v1, v2) {
-                            this.showScreen('./../screens/compare/app', {
-                                workspace : workspace,
-                                path : path,
-                                v1 : v1,
-                                v2 : v2
-                            });
+                            this.showScreen(
+                                    './../screens/compare/CompareController', {
+                                        workspace : workspace,
+                                        path : path,
+                                        v1 : v1,
+                                        v2 : v2
+                                    });
                         },
                         historyScreen : function(workspace, path) {
-                            this.showScreen('./../screens/history/app', {
-                                path : path
-                            });
+                            this.showScreen(
+                                    './../screens/history/HistoryController', {
+                                        path : path
+                                    });
                         },
                         resourceScreen : function(workspace, path) {
-                            this.showScreen('./../screens/resource/app', {
-                                workspace : workspace,
-                                path : path,
-                                create : false
-                            });
+                            this.showScreen(
+                                    './../screens/resource/ResourceController',
+                                    {
+                                        workspace : workspace,
+                                        path : path,
+                                        create : false
+                                    });
                         },
                         revisionScreen : function(workspace, path, version) {
-                            this.showScreen('./../screens/revision/app', {
-                                workspace : workspace,
-                                path : path,
-                                version : version
-                            });
+                            this.showScreen(
+                                    './../screens/revision/RevisionController',
+                                    {
+                                        workspace : workspace,
+                                        path : path,
+                                        version : version
+                                    });
                         },
                         mapScreen : function() {
                             window.location = '../';
