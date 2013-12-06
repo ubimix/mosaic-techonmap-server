@@ -1,17 +1,27 @@
-define([ 'Underscore', 'Backbone', 'text!./view.html' ], function(_, Backbone, template) {
-    var View = Backbone.View.extend({
+define([ 'Underscore', '../commons/UmxView', '../commons/LinkController',
+        'text!./view.html' ],
+
+function(_, UmxView, LinkController, template) {
+
+    var View = UmxView.extend({
         template : _.template(template),
 
         events : {
             'click .go' : 'openResource'
         },
-        
-        render : function() {
-            this.$el.html(this.template(this.options));
+
+        renderWorkspaceTitle : function(elm) {
+            elm.text(this.options.workspace);
+        },
+
+        renderSearchBox : function(elm) {
             var data;
-            this.$el.find('.typeahead').typeahead({
+            this.searchBox = elm;
+            this.searchBox.typeahead({
                 source : function(query, process) {
-                    return $.get('/api/typeahead', {
+                    var linkController = LinkController.getInstance();
+                    var url = linkController.getLink('/api/typeahead');
+                    return $.get(url, {
                         query : query
                     }, function(items) {
                         data = items;
@@ -28,10 +38,8 @@ define([ 'Underscore', 'Backbone', 'text!./view.html' ], function(_, Backbone, t
                     return item;
                 }
             });
-
-            return this;
         },
-        
+
         openResource : function() {
             // TODO: a link would be better than a button so that the
             // history
@@ -39,14 +47,12 @@ define([ 'Underscore', 'Backbone', 'text!./view.html' ], function(_, Backbone, t
             // TODO: use events to switch from one view to the other, so
             // that
             // not all views need to be loaded upfront
-            this.remove();
-            var path = this.$el.find('#resource-id').val();
-            Backbone.history.navigate('/' + this.options.workspace + '/' + path, true);
-
+            var path = this.searchBox.val();
+            path = this.getLink(path);
+            this.navigateTo(path);
             return false;
         },
 
-        
     });
     return View;
 

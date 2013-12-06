@@ -1,0 +1,74 @@
+
+
+<style type="text/css">
+.CodeMirror {
+	border: 1px solid #eee;
+}
+
+.import-config {
+	margin-bottom: 1em;
+}
+</style>
+
+<nav class="navbar" style="padding-top: 1em;">
+	<div class="navbar-header">
+		<div class="navbar-brand">
+
+			<ol class="breadcrumb">
+				<li><a href="" data-render="renderHREF"><i
+						class="glyphicon glyphicon-home"></i></a></li>
+				<li>Importer</li>
+			</ol>
+		</div>
+	</div>
+	<ul class="navbar-brand nav navbar-nav right">
+		<li><div class="btn-group">
+				<button class="previous btn btn-default"
+					data-render="renderBtnPrevious">Précédent</button>
+				<button class="next btn btn-default btn-primary"
+					data-render="renderBtnNext">Suivant</button>
+				<button class="import btn btn-default" data-render="renderBtnImport">Importer</button>
+			</div></li>
+	</ul>
+</nav>
+
+<div class="import-config">
+	<div class="row">
+		<div class="col-lg-2">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">Séparateur :</span> <input
+					type="text" class="form-control separator" value="," maxlength="1">
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="input-group input-group-sm">
+				<span class="input-group-addon">Caractère d'échappement :</span> <input
+					type="text" class="form-control delimiter" value="&quot;"
+					maxlength="1">
+			</div>
+		</div>
+		<div class="col-lg-7"></div>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div data-render="renderWizard">
+			<div data-render="renderTextView">
+				<script type="text/plain" data-render="renderCsvEditor">
+        Identifiant, Nom, Description, Tag 1, Tag 2,
+        Tag 3, Latitude, Longitude, N° et nom de rue, CP, Ville, Année de
+        création, Url site web, Nom compte Twitter, Url page Facebook, Url
+        page Google +, Url page Linkedin, Url page Viadeo, Catégorie
+        </script>
+			</div>
+			<div data-render="renderTableView"></div>
+		</div>
+	</div>
+</div>
+
+<div class="dialog-import hide">
+	<div class="title">Import Results</div>
+</div>
+

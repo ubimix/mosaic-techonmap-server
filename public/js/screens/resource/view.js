@@ -1,148 +1,218 @@
-define([ 'Backbone', 'text!./view.html', 'core/viewManager', 'BootstrapModal', 'utils' ], function(Backbone, template,
-        viewManager, BootstrapModal, Utils) {
+//table-view / contentView
 
-    var ResourceRowView = Backbone.View.extend({
-        template : _.template(template),
+define([ '../commons/UmxView', '../commons/LinkController', 'BootstrapGrowl',
+        'Xeditable', '../models/Validator', 'utils', './table-view',
+        'text!./view.html' ],
 
+function(UmxView, LinkController, BootstrapGrowl, Xeditable, Validator, Utils,
+        ResourceContentView, ResourceContainerTemplate) {
+
+    var ResourceContainerView = UmxView.extend({
+
+        template : _.template(ResourceContainerTemplate),
         events : {
-            'click .submit' : 'submitResource',
-            'click .history' : 'historyScreen',
-            'click .delete' : 'removeResource'
+            'keydown' : 'onKeydown'
         },
 
         initialize : function() {
-            // this.model.on('change', this.render, this);
-
-        },
-
-        render : function() {
-            var view = this;
-            this.$el.html(this.template({
-                data : this.model.toJSON(),
-                yaml : Utils.toYaml(this.model.attributes),
-                workspace : this.options.workspace,
-                path : this.options.path
-            }));
-
-            this.$el.keydown(function(event) {
-                // console.log(event.which);
-                if (event.altKey) {
-                    if (event.which == 83) {
-                        // alt+S
-                        view.submitResource();
-                    } else if (event.which == 76) {
-                        // alt+L
-                        $('.type-ahead').focus();
-                    }
-                }
-
+            _.bindAll(this, 'saveClicked', 'deleteClicked', 'validateClicked',
+                    'onKeydown');
+            // this is to force a fake change event
+            this.model.set('type', 'Feature');
+            var options = _.extend({}, this.options, {
+                model : this.model
             });
+            this.contentView = new ResourceContentView(options);
+            // TODO: use Marionette for unsubscribing from changes when
+            // the view disappears
+            this.model.on('change', this.render, this);
 
-            return this;
         },
 
-        historyScreen : function() {
-            // TODO: a link would be better than a button so that the
-            // history
-            // can be opened in a new tab
-            // TODO: use events to switch from one view to the other, so
-            // that
-            // not all views need to be loaded upfront
-            this.remove();
-            Backbone.history.navigate('/' + this.options.workspace + '/' + this.options.path + '/history', true);
-            return false;
+        getTitle : function() {
+            return this.model.getTitle();
         },
 
-        submitResource : function() {
+        renderTitle : function(elm) {
+            this.nameElm = elm;
+            var title = this.getTitle();
+            if (!title || title == '') {
+                title = this.getPath();
+            }
+            this.nameElm.text(title);
+            var placeholder = elm.data('title')
+            this.nameElm.editable({
+                showbuttons : true,
+                highlight : false,
+                emptytext : placeholder || '',
+                unsavedclass : null
+            });
+        },
 
-            var content = this.$el.find('textarea[name="content"]').val();
-            // TODO: handle error when yaml invalid: show notification
-            // TODO: is this ok?
-            // NB: the model won't fire a change event in this case (a
-            // change is
-            // probably fired only when doing 'model.set(...)')
-            // quid if the client changes the sys.path attribute on the client
-            // side ?
-            this.model.attributes.properties = Utils.toJSON(content);
+        renderValidateBtn : function(elm) {
+            elm.click(this.validateClicked);
+        },
 
-            // this.model = _.extend(this.model, {
-            // attributes : JSON.parse(content)
-            // });
+        renderSaveBtn : function(elm) {
+            elm.click(this.saveClicked);
+        },
 
-            // console.log('Model updated: ', this.model);
-
-            var self = this;
-            if (this.model.attributes.sys.path) {
-                this.model.save(null, {
-                    success : function(model, response) {
-                        // console.log('saved: ' + JSON.stringify(data,
-                        // null, 2));
-                        // var obj = JSON.parse(data);
-                        // var obj = data;
-                        // self.model.set('system.version',
-                        // response.system.version);
-                        // self.model.set('system.date',
-                        // response.system.date);
-
-                        self.render();
-                        // TODO: add bootstrap short message: resource saved
-                        //self.$el.find('#dialog-save-ok').modal();
-                         $('#dialog-save-ok').modal();
-
-                        // TODO: add error callback
-                    }
-                });
+        renderHistoryBtn : function(elm) {
+            if (this.model.isNew()) {
+                elm.hide();
             } else {
-                var path = this.$el.find('#path').val();
-                if (!path)
-                    path = Math.random().toString(36).substring(7);
+                this.doRenderHistoryLink(elm, this.model.getPath());
+            }
+        },
 
-                $.ajax({
-                    url : '/api/resources/new',
-                    type : 'POST',
-                    data : {
-                        path : path,
-                        resource : this.model.attributes
-                    },
-                    dataType : 'json',
-                    success : function(result) {
-                        if (result.error) {
-                            //TODO: notification
-                            console.log(result.error);
-                        } else {
-                            self.remove();
-                            Backbone.history.navigate('/techonmap/' + path, true);
-                        }
+        renderDeleteBtn : function(elm) {
+            if (this.model.isNew()) {
+                elm.hide();
+            } else {
+                elm.click(this.deleteClicked);
+            }
+        },
 
-                    },
-                    error : function(error) {
-                        console.log(error);
-                    }
-                });
+        renderEditor : function(elm) {
+            elm.append(this.contentView.$el);
+            this.contentView.render();
+        },
+
+        getPath : function() {
+            var path = this.model.getId();
+            path = path && path != '' ? path : this.options.path;
+            return path;
+        },
+
+        onKeydown : function(event) {
+            if (event.altKey) {
+                if (event.which == 83) {
+                    // alt+S
+                    this.submitResource();
+                }
+                // TODO: won't work, why ?
+                // else if (event.which == 76) {
+                // // alt+L
+                // $('.type-ahead').focus();
+                // }
+            }
+        },
+
+        doSave : function(callback) {
+            callback = callback || function() {
+            }
+
+            // TODO: handle error when yaml invalid: show notification
+            // TODO:
+            // http://stackoverflow.com/questions/6351271/backbone-js-get-and-set-nested-object-attribute
+            var self = this;
+
+            var updatedModel = this.contentView.updateModel();
+            var name = this.nameElm.text();
+            Utils
+                    .updateObject(updatedModel.attributes, 'properties.name',
+                            name);
+            console.log('model', this.model);
+            console.log('updatedModel', updatedModel);
+
+            // TODO: check how to check empty string in all browsers
+            if (this.model.getPath() && this.model.getPath().length > 0) {
+                this.updateModel(updatedModel, callback);
+            } else {
+                var id = updatedModel.getId();
+                if (!id || id.length == 0) {
+                    return Utils.showOkDialog('Erreur',
+                            'Le champ <em>Identifiant</em> est requis.');
+                } else {
+                    this.model.set('id', id);
+                    this.updateModel(updatedModel, function() {
+                        var path = self.getLink(id);
+                        self.navigateTo(path);
+                        callback();
+                    });
+                }
             }
         },
 
         // do not call this method 'resource' or it will interfere with
-        // the
-        // 'remove' method of Backbone.View
+        // the 'remove' method of Backbone.View
         removeResource : function() {
+            var self = this;
+            var dialog = Utils.showOkDialog('Suppression',
+                    'Suppression en cours...', function() {
+                        var path = self.getLink('');
+                        self.navigateTo(path);
+                    });
+
             var self = this;
             this.model.destroy({
                 success : function() {
-                    // TODO: see how to propagate the removal to the
-                    // collection
-                    // and to the collection view directly
-                    self.remove();
-                    Backbone.history.navigate('/' + self.options.workspace, true);
+                    setTimeout(function() {
+                        dialog.updateContent('Suppression effectuée.');
+                    }, 500);
+                    // TODO: see how to propagate the removal to
+                    // the collection and to the collection view directly
                     return false;
 
-                    // TODO: add bootstrap short message: resource saved
+                    // TODO: add bootstrap short message:
+                    // resource saved
                     // TODO: add error callback
                 }
             });
-        }
+        },
 
+        updateModel : function(updatedModel, callback) {
+            this.model.updateAndSave(updatedModel, function(updatedResource) {
+                $.bootstrapGrowl("Enregistrement effectué", {
+                    ele : 'body',
+                    type : 'success',
+                    offset : {
+                        from : 'top',
+                        amount : 40
+                    },
+                    align : 'center',
+                    width : 'auto',
+                    delay : 1500,
+                    allow_dismiss : false,
+                    stackup_spacing : 10
+                });
+                typeof callback === 'function' && callback();
+            });
+        },
+
+        saveClicked : function() {
+            this.doSave();
+        },
+
+        deleteClicked : function() {
+            var _this = this;
+            var dialog = Utils.showYesNoDialog('Confirmation',
+                    'Confirmer la suppression de l\'entité ?', function() {
+                        dialog.hide();
+                        _this.removeResource();
+                    }, function() {
+                        dialog.hide();
+                    });
+
+        },
+
+        validateClicked : function(event) {
+            // submit then validate, then go back to list
+            // TODO: check wether resource has actually changed
+            var self = this;
+            this.doSave(function() {
+                var validator = Validator.getInstance();
+                validator.onReady(function() {
+                    validator.validateResources([ self.model ]);
+                    validator.once('loaded', function() {
+                        var path = self.getLink('');
+                        self.navigateTo(path);
+                    });
+
+                });
+            });
+        }
     });
 
-    return ResourceRowView;
+    return ResourceContainerView;
 });

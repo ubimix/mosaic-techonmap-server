@@ -41,20 +41,12 @@ module.exports = (function() {
 ---\n\
 # Configuration sample file for Jingo (YAML)\n\
 application:\n\
-    title: \"jscr-webui\"\n\
-    repository: \"/absolute/path/to/your/repo\"\n\
-    docSubdir: \"\"\n\
-    remote: \"\"\n\
-    pushInterval: 30\n\
-    secret: \"change me\"\n\
+    title: \"CartoWiki\"\n\
 server:\n\
     hostname: \"localhost\"\n\
     port: 6067\n\
     localOnly: false\n\
     baseUrl: \"http://localhost:6067\"\n\
-authorization:\n\
-    anonRead: true\n\
-    validMatches: \".+\"\n\
 authentication:\n\
     google:\n\
       enabled: true\n\
@@ -63,6 +55,7 @@ authentication:\n\
 	  oauthkeys:\n\
         consumerKey : ''\n\
         consumerSecret : ''\n\
+      cacheExpire: 3600000\n\
 	facebook:\n\
 	  enabled: true\n\
 	  oauthkeys:\n\
@@ -73,6 +66,11 @@ authentication:\n\
       username: \"\"\n\
       passwordHash: \"\"\n\
       email: \"\"\n\
+twitterClient:\n\
+    consumerKey : ''\n\
+    consumerSecret : ''\n\
+    accessTokenKey : ''\n\
+    accessTokenSecret : ''\n\
 ";
     }
 

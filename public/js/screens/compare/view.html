@@ -1,11 +1,25 @@
-<div>
-	<h1><a href="/{{=workspace}}/{{=path}}">{{=v1.properties.name}}</a></h1>
-	<p>Version 1: {{=v1.sys.updated.versionId}}</p>
-	<p>Version 2: {{=v2.sys.updated.versionId}}</p>
-    <p><a href="/{{=workspace}}/{{=path}}/history">History</a>
-<pre>
-<div id="outputdiv">
+<nav class="navbar" style="padding-top: 1em;">
+	<div class="navbar-header">
+		<div class="navbar-brand">
+			<ol class="breadcrumb">
+				<li><a href="" data-render="renderHREF"><i
+						class="glyphicon glyphicon-home"></i></a></li>
+				<li><a href="" data-render="renderCurrentRevisionRef"><span
+						data-render="renderTitle"></span></a></li>
+				<li><a data-render="renderHistoryRef">Historique</a></li>
+				<li class="active">Comparaison</li>
+			</ol>
+		</div>
 
-</div>
-</pre>
-</div>
+	</div>
+</nav>
+
+<p>
+	<a href="" data-render="renderFirstRevisionRef">Version <span
+		data-render="renderFirstTimestamp">1</span>
+	</a> &#150; <a href="" data-render="renderSecondRevisionRef">Version <span
+		data-render="renderSecondTimestamp">2</span>
+	</a>
+</p>
+
+<pre data-render="renderDiff"></pre>

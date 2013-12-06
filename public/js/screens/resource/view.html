@@ -1,74 +1,24 @@
-
-<h1>{{=data.properties.name}}</h1>
-
-{{ if (data.sys.path) { }}
-<label>Path: {{=data.sys.path }}</label>
-{{ } else { }}
-Identifier: <input type='text' id='path' name='path' value=''/>
-{{ } }}
-
-
-
-<fieldset>
-	<div class="control-group">
-		<textarea class="input-block-level" name="content"
-			id="resource-content" placeholder="Content..." rows="20">{{=yaml}}</textarea>
+<nav class="navbar">
+	<div class="navbar-brand">
+		<ol class="breadcrumb">
+			<li><a href="/" data-render="renderHREF"><i
+					class="glyphicon glyphicon-home"></i></a></li>
+			<li><span data-render="renderTitle" class="name"
+				data-type="text" data-title="Nom" data-inputclass="name-control"
+				data-clear="false"></span></li>
+		</ol>
 	</div>
-</fieldset>
-
-<div class="form-actions">
-	<button class="submit btn btn-primary">Save</button>
-	{{ if (data.sys.path) { }}
-	<button class="history btn">History</button>
-	<button href="#dialog-delete-confirm" role="button" class="btn" data-toggle="modal">Delete</button>
-	{{ } }}
-</div>
-
-<div id="dialog-delete-confirm" class="modal hide fade" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Confirmation</h3>
+	<div class="navbar-brand right">
+		<div class="btn-group1">
+			<button class="submit btn btn-primary" data-render="renderSaveBtn">Enregistrer</button>
+			<button class="validate btn btn-default"
+				data-render="renderValidateBtn">Valider</button>
+			<button class="history btn btn-default"
+				data-render="renderHistoryBtn">Voir l'historique</button>
+			<button role="button" class="delete btn btn-default"
+				data-toggle="modal" data-render="renderDeleteBtn">Supprimer</button>
+		</div>
 	</div>
-	<div class="modal-body">
-		<p>Do you really want to delete this resource ?</p>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-primary" data-dismiss="modal"
-			aria-hidden="true">Cancel</button>
-		<button class="delete btn" data-dismiss="modal">Confirm</button>
-	</div>
-</div>
+</nav>
 
-<div id="dialog-save-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Save Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>The resource has been saved successfully.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
-</div>
-
-<div id="dialog-save-not-ok" class="modal hide fade" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-            aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Save Dialog</h3>
-    </div>
-    <div class="modal-body">
-        <p>An error occurred while saving the resource. Please check the YAML syntax.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal"
-            aria-hidden="true">Ok</button>
-    </div>
-</div>
+<div data-render="renderEditor"></div>

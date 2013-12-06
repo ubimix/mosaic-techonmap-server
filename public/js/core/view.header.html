@@ -1,0 +1,82 @@
+<div id="topbar" data-render="renderPage">
+	<!-- end header -->
+</div>
+<!-- end topbar -->
+<div class="social">
+	<div class="left"></div>
+	<div class="right"></div>
+</div>
+<div class="header">
+	<div class="aside"></div>
+
+	<div class="ban">
+		<div class="left">
+			<h1>
+				<a href="" data-render="renderHREF"><img
+					data-src="../js/theme-techonmap/images/banner.png"
+					data-render="renderSRC" alt="Techonmap"></a>
+			</h1>
+			<h2>La carte des acteurs du numérique en Île-de-France</h2>
+		</div>
+		<div class="right" style="margin-right: 5em;">
+			<ul class="menu nav navbar-nav navbar-right"
+				data-render="renderUserInfoBlock">
+				<li>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default"
+							data-toggle="dropdown" data-render="renderUserName"></button>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="api/logout" data-render="renderHREF">Se
+									déconnecter</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+			<ul class="menu nav navbar-nav navbar-right"
+				data-render="renderToolBox">
+				<li><input type="text" class="umx-typeahead" autocomplete="off"
+					placeholder="Rechercher..." data-render="renderTypeahead"></li>
+				<li>
+					<div class="btn-group">
+						<a type="button" class="btn btn-default" href=""
+							data-render="renderCreateLink">Créer</a>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="import" data-render="renderHREF">Importer</a></li>
+							<li><a class="export" data-render="renderExportLink">Exporter</a></li>
+							<li><a target="_blank" href="/">Voir la carte</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+	<!-- end ban -->
+
+	<div data-render="renderCreateDialog">
+		<h3 class="title">Nouvelle entité</h3>
+		<div class="content">
+			<form role="form">
+				<div class="form-group">
+					<label>Identifiant</label> <input type="text" class="form-control"
+						placeholder="" value="">
+				</div>
+			</form>
+		</div>
+		<button class="btn-ok">OK</button>
+		<button class="btn-cancel">Fermer</button>
+	</div>
+
+</div>
+<div style="clear: both;">
+	<hr style="margin-top: 0px; margin-bottom: 0px;" />
+</div>
+

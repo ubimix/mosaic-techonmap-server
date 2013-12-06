@@ -1,0 +1,416 @@
+li.media {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: #007de3;
+}
+
+.media-top {
+	cursor: pointer;
+}
+
+.media-top:hover {
+	background-color: #f6f6f6;
+}
+
+.media-top.validated {
+	background-color: #efefef;
+	color: grey;
+}
+
+.media-content {
+	margin-left: 0em;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 1em;
+	padding-top: 1em;
+}
+
+.media {
+	border-top: 1px solid #dddddd;
+}
+
+.media-content p {
+	margin-bottom: 1em;
+}
+
+.nav {
+	white-space: nowrap;
+}
+
+@media ( max-width : 767px) {
+	.container-fluid {
+		padding-left: 1.5em;
+		padding-right: 1.5em;
+	}
+}
+
+h1.media-heading,.media-summary,.media-summary * {
+	display: inline;
+}
+
+h1.media-heading {
+	font-size: 1em;
+	padding-left: 1em;
+	font-weight: bold;
+}
+
+.media-summary {
+	color: #777;
+}
+
+.media-summary:before {
+	content: " - ";
+}
+
+.media-header {
+	white-space: nowrap;
+	overflow: hidden;
+	line-height: 40px;
+}
+
+.media.expanded .media-top {
+	background-color: #efefef;
+}
+
+.media,.media .media {
+	margin-top: 0;
+}
+
+.media.expanded {
+	border-left: solid 1px #007de3;
+}
+
+.media-content pre {
+	border: none;
+	background: transparent;
+}
+
+.media-meta {
+	margin-bottom: 1em;
+}
+
+.media-meta h1 {
+	font-size: 1.2em;
+	margin-top: 0.3em;
+	line-height: 1.2em;
+}
+
+.media-url {
+	float: right;
+	padding-right: 1em;
+}
+
+.favicon {
+	width: 24px;
+	height: 24px;
+	border-radius: 4px;
+	float: left;
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	margin-right: 0.5em;
+}
+
+.well {
+	
+}
+
+body {
+	
+}
+
+.navbar-inner {
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+
+#navlist li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 20px;
+}
+
+.navbar .nav-user {
+	position: relative;
+	left: 0;
+	display: block;
+	margin: 0 10px 0 0;
+	float: right;
+}
+
+.nav-user {
+	list-style: none;
+}
+
+.nav-user li {
+	display: inline;
+	list-style-type: none;
+}
+
+.navbar .nav-user>li>a {
+	float: none;
+	padding: 10px 0px 10px;
+	color: #777777;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+.nav-user>li>a {
+	display: block;
+}
+
+.page-header {
+	margin: 0px 0 20px;
+	border-bottom: none;
+}
+
+.form-search {
+	float: right;
+	padding-top: 5px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+}
+
+.umx-typeahead,.tt-query,.tt-hint {
+	width: 180px;
+	height: 30px;
+	padding: 8px 12px;
+	font-size: 1em;
+	line-height: 30px;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	outline: none;
+	margin-top: 0.5em;
+}
+
+.umx-typeahead {
+	background-color: #fff;
+	margin-right: 1em;
+	margin-top: 0.5em;
+}
+
+.umx-typeahead:focus {
+	border: 1px solid #0097cf;
+}
+
+.tt-query {
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+	color: #999
+}
+
+.tt-dropdown-menu {
+	margin-top: 6px;
+	padding: 8px 0;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+.tt-suggestion {
+	padding: 3px 20px;
+	font-size: 1em;
+	line-height: 24px;
+	text-align: left;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+	color: #fff;
+	background-color: #0097cf;
+}
+
+.tt-suggestion p {
+	margin: 0;
+}
+
+.gist {
+	font-size: 1em;
+}
+
+.btn-login {
+	width: 100%;
+	background: #385f98;
+}
+
+/******************************************************************
+ ************************** TECHONMAP *****************************
+ ******************************************************************/
+.social {
+	height: 25px;
+	line-height: 25px;
+	background: #eb6564;
+	border-bottom: 1px solid #d40308;
+	color: #fff;
+	font-size: 14px;
+	padding: 0 10px;
+	overflow: hidden;
+}
+
+.header h1 {
+	display: block;
+	margin-top: 2px;
+	margin-left: 15px;
+}
+
+.header h2 {
+	font-size: 13px;
+	color: #666666;
+	display: block;
+	margin-left: 15px;
+	margin-top: 5px;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+ul.menu {
+	margin-top: 1em;
+	margin-right: 1em;
+	padding: 0;
+	list-style-type: none;
+}
+
+ul.menu li {
+	display: inline;
+}
+
+.media-heading .glyphicon {
+	visibility: hidden;
+}
+
+.created .media-heading .glyphicon {
+	visibility: visible;
+}
+
+.updated .media-heading .glyphicon {
+	visibility: visible;
+}
+
+/** FIXME */
+body {
+	overflow-x: hidden;
+}
+
+.navbar {
+	margin-bottom: 0px;
+}
+
+.navbar-nav li a.btn,.navbar-nav li button {
+	margin-top: 5px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.handsontable {
+	font-size: inherit;
+}
+
+.handsontable td {
+	font-size: inherit;
+}
+
+.handsontableInput {
+	font-size: inherit;
+}
+
+.handsontable .typeahead {
+	font-size: inherit;
+}
+
+.published-date {
+	font-size: smaller;
+}
+
+.spinner {
+	display: inline-block;
+	opacity: 0;
+	width: 0;
+	-webkit-transition: opacity 0.25s, width 0.25s;
+	-moz-transition: opacity 0.25s, width 0.25s;
+	-o-transition: opacity 0.25s, width 0.25s;
+	transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+	cursor: progress;
+}
+
+.has-spinner.active .spinner {
+	opacity: 1;
+	width: auto;
+}
+
+.has-spinner.btn.active .spinner {
+	width: 16px;
+}
+
+/** FIXME */
+.handsontable .dragdealer .handle {
+	position: absolute;
+	background: none;
+}
+
+.handsontable .dragdealer {
+	position: relative;
+	height: 0px;
+	background: none;
+	border: none;
+}
+
+.thumbnail {
+	border: none;
+}
+
+.thumbnail .caption {
+	padding: 9px 0px 0px 0px;
+	color: #333333;
+}
+
+.handsontable th,.handsontable td {
+	border: none;
+}
+
+.handsontable th:first-child,.handsontable td:first-child,.handsontable .htNoFrame+th,.handsontable .htNoFrame+td
+	{
+	border-left: 1px solid transparent;
+}
+
+.handsontable tr:first-child th,.handsontable tr:first-child td {
+	border-top: 1px solid transparent;
+}
+
+.handsontable tr:last-child td { /** border-bottom: 1px solid #CCC; */
+	border: none;
+}
+
+.handsontable td:last-child { /** border-right: 1px solid #CCC; */
+	border: none;
+}
+
+.name-control {
+	min-width: 300px;
+}
