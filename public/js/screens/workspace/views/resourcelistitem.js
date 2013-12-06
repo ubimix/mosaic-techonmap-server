@@ -1,5 +1,5 @@
 define([ 'Backbone', '../../commons/UmxView', 'utils',
-        '../../models/Validator', '../../resource/table-view',
+        '../../../models/Validator', '../../resource/table-view',
         'text!./resourcelistitem.html' ],
 
 function(Backbone, UmxView, Utils, Validator, ResourceContentView, template) {

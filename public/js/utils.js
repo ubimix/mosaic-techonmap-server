@@ -1,4 +1,4 @@
-define([ 'Underscore', 'yaml', 'moment', 'CodeMirror', './screens/models/Resource', './screens/commons/Dialog' ],
+define([ 'Underscore', 'yaml', 'moment', 'CodeMirror', './models/Resource', './screens/commons/Dialog' ],
         
 function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
     'use strict';

@@ -1,4 +1,5 @@
-define([ '../collections/ResourceCollection', '../models/Validator', './views/main' ],
+define([ '../../models/ResourceCollection', '../../models/Validator',
+        './views/main' ],
 
 function(ResourceCollection, Validator, MainView) {
 
@@ -17,7 +18,9 @@ function(ResourceCollection, Validator, MainView) {
             validator.onReady(function() {
                 coll.fetch({
                     success : function(coll) {
-                        coll.setSort('attributes.sys.updated.timestamp', 'desc');
+                        coll
+                                .setSort('attributes.sys.updated.timestamp',
+                                        'desc');
                         // coll.pager();
                         var view = new MainView({
                             collection : coll,
