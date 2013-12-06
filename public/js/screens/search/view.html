@@ -1,10 +1,6 @@
 <div>
 	<h1>Search</h1>
-	{{ if (workspace) { }}
-	<p>Workspace: {{=workspace}}</p>
-	{{ } }}
+	<p>Workspace: <span data-render="renderWorkspaceTitle">Test</span></p>
 	<p>The search feature is not implemented yet.</p>
-	
-	
-
+	<!-- <input {{=view.renderSearchBox()}} /> -->
 </div>

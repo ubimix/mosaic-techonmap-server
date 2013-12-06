@@ -1,113 +1,141 @@
-define([ 'Backbone', 'utils', './resourcelistitem', 'text!./resourcelist.html' ], function(Backbone, Utils, ResourceRowView,
-        template) {
+define([ 'Underscore', '../../commons/UmxView', 'Backbone', 'utils',
+        '../../models/Resource', './resourcelistitem', './paginator',
+        '../../commons/Dialog', '../../models/Validator',
+        'text!./resourcelist.html' ],
 
-    function loadEntry(id, callback) {
-        $.get('/api/resources' + id + '?' + Math.random(), function(data) {
-            callback(data);
-        });
-    }
+function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
+        PaginationView, Dialog, Validator, ResourceListTemplate) {
 
-    var View = Backbone.View.extend({
-        template : _.template(template),
+    var View = UmxView.extend({
+        template : _.template(ResourceListTemplate),
+        // resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
+            _.bindAll(this, '_updateListStatus');
             this.subviews = [];
+            this.collection.on('reset', function() {
+                this.$el.empty();
+                this.render();
+            }, this);
+            this._initializeScrollEvents();
+        },
+        
+        _initializeScrollEvents : function() {
+            // FIXME: remove it
+            var opened = null;
+            Backbone.pubSub.on('item:open', function(item) {
+                if (opened && opened != item) {
+                    opened.close(); 
+                }
+                opened = item;
+                $('html, body').animate({
+                    scrollTop: opened.$el.offset().top
+                }, 10);
+            });
+            Backbone.pubSub.on('item:close', function(item) {
+            });
         },
 
         events : {
-            'click .sort' : 'sort',
-            'click .media .media-top' : 'handleEntryClick'
+            'click .action-validate' : 'handleValidateClick',
+            'click a.sort' : 'handleSortClick',
+            'click .howmany a' : 'handlePageCountClick'
+        },
+
+        getTotalRecordsNumber : function() {
+            return this.collection.info().totalRecords;
         },
 
         // TODO: use backgrid.js ?
-
-        render : function() {
-            // TODO add loading indicator
-            // TODO: do we need to remove the view when rendering it
-            // again ?
-            this.$el.html(this.template(this.options));
-
-            // TODO:
-            // http://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
-            function getDotProperty(obj, dotNotation) {
-                var arr = dotNotation.split(".");
-                while (arr.length && (obj = obj[arr.shift()]))
-                    ;
-                return obj;
-            }
-
-            var resourceElt = this.$('.resources');
-            var sortField = 'sys.updated.timestamp';
-            if (this.options.sort)
-                sortField = this.options.sort;
-            var models = _.sortBy(this.collection.models, function(resource) {
-                // TODO: how to avoid accessing the attributes
-                return getDotProperty(resource.attributes, sortField);
-            });
-
-            if (sortField == 'sys.updated.timestamp')
-                models.reverse();
-
-            models.forEach(function(resource) {
+        renderResources : function(elm) {
+            this.collection.forEach(function(resource) {
                 var view = new ResourceRowView({
                     model : resource,
                     workspace : this.options.workspace
                 });
-                resourceElt.append(view.render().el);
+                elm.append(view.render().el);
                 this.subviews.push(view);
             }, this);
-
-            return this;
-        },
-        
-        
-        sort : function(event) {
-            
-            console.log('begin');
-            this.$el.css('background-color','blue');
-            this.render();
-            this.$el.css('background-color','white');
-            console.log('end');
         },
 
-        handleEntryClick : function(event) {
-            var target = $(event.currentTarget);
-            var sender = $(event.target);
-            // if the target is a link we don't expand
-            console.log(sender.prop('tagName'));
-            if (sender.prop('tagName') == 'I')
-                return;
+        renderRecordNumber : function(elm) {
+            var len = this.getTotalRecordsNumber();
+            elm.text('' + len);
+        },
 
-            var e = target.parent().parent();
+        renderPaginator : function(elm) {
+            var paginationView = new PaginationView({
+                collection : this.collection
+            });
+            elm.append(paginationView.render().el);
+        },
 
-            this.$el.find('.media-content').each(function(i) {
-                if ($(this).parent().parent().attr('data-id') != e.attr('data-id')) {
-                    $(this).hide();
+        handleSortClick : function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var sort = $(e.currentTarget).data('sort');
+            var sortOrder = $(e.currentTarget).data('sort-order') || 'asc';
+            Backbone.pubSub.trigger('sort', {
+                sort : sort,
+                sortOrder : sortOrder
+            });
+        },
+
+        handlePageCountClick : function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var per = $(e.target).text();
+            Backbone.pubSub.trigger('pagecount', per);
+        },
+
+        _updateListStatus : function() {
+            var validator = Validator.getInstance();
+            var selection = this.$('.media');
+            var collection = this.collection;
+            selection.each(function() {
+                var item = $(this);
+                var id = item.data('id');
+                var resource = collection.getById(id);
+                if (validator.isValidated(resource)) {
+                    item.find('.validation').remove();
+                }
+                var el = item.find('.media-top');
+                el.removeClass('validated');
+                if (resource && validator.isValidated(resource)) {
+                    el.removeClass('created');
+                    el.removeClass('updated');
+                    el.addClass('validated');
                 }
             });
+        },
 
-            this.$el.find('.media').each(function(i) {
-                if ($(this).attr('data-id') != e.attr('data-id')) {
-                    $(this).removeClass('expanded');
+        handleValidateClick : function(event) {
+            // TODO: we should probably refresh the validator when hitting the
+            // validate button because the validated items may have changed in
+            // other tabs meantime
+            var list = [];
+            var validator = Validator.getInstance();
+            var collection = this.collection;
+            _.each(this.subviews, function(view) {
+                var validationChecked = view.isValidationChecked();
+                if (validationChecked && !validator.isValidated(view.model)) {
+                    list.push(view.model);
                 }
-            });
-
-            var content = e.find('.media-content');
-            if (!content.attr('data-loaded')) {
-                var id = e.attr('data-id');
-                content.attr('data-loaded', true);
-                var media = content.parent().parent();
-                content.html('Loading...');
-                media.toggleClass('expanded');
-                content.toggle();
-                loadEntry(id, function(data) {
-                    var xYaml = Utils.toYaml(data);
-                    content.html('<pre>' + xYaml + '</pre>');
-                })
+            })
+            var that = this;
+            if (!list || list.length == 0) {
+                var title = this.$('.dialog-validation .title').html();
+                var content = this.$('.dialog-validation .message').html();
+                var dialog = Utils.showYesNoDialog(title, content, function() {
+                    validator.once('loaded', that._updateListStatus);
+                    validator.validateAll();
+                    dialog.hide();
+                }, function() {
+                    dialog.hide();
+                });
             } else {
-                content.toggle();
-                var media = content.parent().parent();
-                media.toggleClass('expanded');
+                validator.once('loaded', that._updateListStatus);
+                validator.validateResources(list);
             }
 
         }

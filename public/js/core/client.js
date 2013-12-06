@@ -13,7 +13,7 @@ define(function(require) {
 
                 // TODO: see if there is a better way (possibly with
                 // 'data-bypass' ?)
-                if (href.attr.indexOf('/api/') == 0) {
+                if (href.attr.indexOf('/api/') == 0 || href.attr.indexOf('/map/') == 0) {
                     return;
                 }
 
