@@ -1,5 +1,5 @@
 define([ 'Backbone', '../../models/LinkController', '../../models/Resource',
-        './view' ],
+        './CompareView' ],
 
 function(Backbone, LinkController, ResourceModel, CompareView) {
     return {

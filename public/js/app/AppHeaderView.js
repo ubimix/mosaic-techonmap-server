@@ -1,7 +1,6 @@
-define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView',
-        'Typeahead', '../models/LinkController',
-        'text!./AppHeaderView.html', '../screens/commons/Dialog',
-        '../screens/export/Export', 'BootstrapDropdown' ],
+define([ 'jQuery', 'Underscore', 'Backbone', '../commons/UmxView', 'Typeahead',
+        '../models/LinkController', 'text!./AppHeaderView.html',
+        '../commons/Dialog', '../screens/export/ExportDialog', 'BootstrapDropdown' ],
 
 function($, _, Backbone, UmxView, Typeahead, LinkController,
         AppHeaderViewTemplate, Dialog, ExportDialog) {
