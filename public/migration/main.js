@@ -83,6 +83,39 @@ require([ 'require.config' ], function() {
                 })
             })
 
+            // Fix categories
+            var categoryMapping = {
+
+                // lo case -> upper case
+                'entreprise' : 'Entreprise',
+                'tiers-lieu' : 'Tiers-lieu',
+                'incubateur' : 'Incubateur',
+                'investisseur' : 'Investisseur',
+                'communauté' : 'Communauté',
+                'prestataire' : 'Prestataire',
+                'école' : 'École',
+                'acteur public' : 'Acteur public',
+
+                // en -> fr
+                'entreprise' : 'Entreprise',
+                'third-place' : 'Tiers-lieu',
+                'incubator' : 'Incubateur',
+                'investor' : 'Investisseur',
+                'community' : 'Communauté',
+                'prestataire' : 'Prestataire',
+                'school' : 'École',
+                'public-actor' : 'Acteur public',
+
+                // Default options for all other organizations
+                'default' : 'Entreprise'
+            }
+            _.each(objects, function(object) {
+                var category = object.properties.category || '';
+                category = category.toLowerCase();
+                object.properties.category = categoryMapping[category]
+                        || categoryMapping['default']
+            })
+
         }
 
         function init() {
@@ -147,7 +180,6 @@ require([ 'require.config' ], function() {
                     objectList = objectList.concat(objects);
                 })
                 var regenerateIds = $('#regenerate-ids').is(':checked');
-                console.log('REGENERATE:', regenerateIds)
                 if (regenerateIds) {
                     objectList = JSON.parse(JSON.stringify(objectList));
                     _.each(objectList, resetId);
