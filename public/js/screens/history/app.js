@@ -1,4 +1,4 @@
-define([ '../../models/LinkController', '../../models/Resource', './view' ],
+define([ '../../models/LinkController', '../../models/Resource', './HistoryView' ],
 
 function(LinkController, Resource, HistoryView) {
     return {

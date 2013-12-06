@@ -1,4 +1,4 @@
-define([ '../../commons/UmxView', 'Backbone', 'text!./paginator.html' ],
+define([ '../../../commons/UmxView', 'Backbone', 'text!./paginator.html' ],
 
 function(UmxView, Backbone, PaginationViewTemplate) {
 

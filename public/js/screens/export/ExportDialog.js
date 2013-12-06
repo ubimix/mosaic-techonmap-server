@@ -1,11 +1,11 @@
 define([ 'Underscore', 'utils', '../../models/ResourceCollection',
-        '../commons/Dialog', 'text!./export.html', 'BootstrapModal' ],
+        '../../commons/Dialog', 'text!./ExportDialog.html', 'BootstrapModal' ],
 
-function(_, Utils, ResourceCollection, Dialog, Template) {
+function(_, Utils, ResourceCollection, Dialog, ExportDialogTemplate) {
 
-    var DialogView = Dialog.extend({
+    var ExportDialog = Dialog.extend({
 
-        template : _.template(Template),
+        template : _.template(ExportDialogTemplate),
 
         events : {
             'click .export-json' : 'jsonExportClicked',
@@ -119,6 +119,6 @@ function(_, Utils, ResourceCollection, Dialog, Template) {
 
     });
 
-    return DialogView;
+    return ExportDialog;
 
 });

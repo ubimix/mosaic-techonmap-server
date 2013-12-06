@@ -1,4 +1,4 @@
-define([ 'Backbone', '../../commons/UmxView', 'utils',
+define([ 'Backbone', '../../../commons/UmxView', 'utils',
         '../../../models/Validator', '../../resource/table-view',
         'text!./resourcelistitem.html' ],
 

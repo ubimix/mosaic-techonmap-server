@@ -1,4 +1,4 @@
-define([ 'Underscore', 'jQuery', '../screens/commons/UmxView',
+define([ 'Underscore', 'jQuery', '../commons/UmxView',
         './AppHeaderView', 'text!./AppMainView.html' ],
 
 function(_, $, UmxView, AppHeaderView, AppMainViewTemplate) {

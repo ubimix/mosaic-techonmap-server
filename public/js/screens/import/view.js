@@ -1,5 +1,5 @@
-define([ '../commons/UmxView', 'Underscore', 'jQueryCsv', 'CodeMirror',
-        'Handsontable', 'utils', '../commons/Dialog', 'text!./ImportView.html',
+define([ '../../commons/UmxView', 'Underscore', 'jQueryCsv', 'CodeMirror',
+        'Handsontable', 'utils', '../../commons/Dialog', 'text!./ImportView.html',
         'text!./TableView.html', 'text!./TextView.html' ],
 
 function(UmxView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,

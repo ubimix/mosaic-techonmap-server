@@ -1,4 +1,4 @@
-define([ 'Underscore', '../../commons/UmxView', './resourcelist',
+define([ 'Underscore', '../../../commons/UmxView', './resourcelist',
         'text!./main.html' ],
 
 function(_, UmxView, ResourceListView, MainViewTemplate) {

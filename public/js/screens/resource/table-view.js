@@ -1,5 +1,5 @@
 define(
-        [ '../commons/UmxView', 'Underscore', 'Handsontable', 'Leaflet',
+        [ '../../commons/UmxView', 'Underscore', 'Handsontable', 'Leaflet',
                 '../../models/Resource', 'utils', 'text!./table-view.html' ],
 
         function(UmxView, _, Handsontable, Leaflet, ResourceModel, Utils,
