@@ -1,14 +1,12 @@
 define(
-        [ 'require', 'Backbone', './viewManager' ],
-        function(require, Backbone, ViewManager) {
-            function runModule(path, options) {
-                options = options || {};
-                require([ path ], function(module) {
-                    module.run(ViewManager, options);
-                })
-            }
-            var Router = Backbone.Router
+        [ 'require', 'Backbone', './AppMainView' ],
+        function(require, Backbone, AppMainView) {
+            var AppRouter = Backbone.Router
                     .extend({
+                        initialize : function(options) {
+                            this.mainView = new AppMainView(options);
+                            this.mainView.render();
+                        },
                         routes : {
                             '' : 'mapScreen',
                             '/' : 'mapScreen',
@@ -24,27 +22,34 @@ define(
                             ':workspace/*path/history' : 'historyScreen',
                             ':workspace/*path' : 'resourceScreen'
                         },
+                        showScreen : function(path, options) {
+                            options = options || {};
+                            var that = this;
+                            require([ path ], function(module) {
+                                module.run(that.mainView, options);
+                            })
+                        },
                         loginScreen : function() {
-                            runModule('./../screens/login/app');
+                            this.showScreen('./../screens/login/app');
                         },
                         searchScreen : function(workspace) {
-                            runModule('./../screens/search/app', {
+                            this.showScreen('./../screens/search/app', {
                                 workspace : workspace
                             });
                         },
                         importScreen : function(workspace) {
-                            runModule('./../screens/import/app', {
+                            this.showScreen('./../screens/import/app', {
                                 workspace : workspace
                             });
                         },
                         workspaceScreen : function(workspace, sort) {
-                            runModule('./../screens/workspace/app', {
+                            this.showScreen('./../screens/workspace/app', {
                                 workspace : workspace,
                                 sort : sort
                             });
                         },
                         compareScreen : function(workspace, path, v1, v2) {
-                            runModule('./../screens/compare/app', {
+                            this.showScreen('./../screens/compare/app', {
                                 workspace : workspace,
                                 path : path,
                                 v1 : v1,
@@ -52,19 +57,19 @@ define(
                             });
                         },
                         historyScreen : function(workspace, path) {
-                            runModule('./../screens/history/app', {
+                            this.showScreen('./../screens/history/app', {
                                 path : path
                             });
                         },
                         resourceScreen : function(workspace, path) {
-                            runModule('./../screens/resource/app', {
+                            this.showScreen('./../screens/resource/app', {
                                 workspace : workspace,
                                 path : path,
                                 create : false
                             });
                         },
                         revisionScreen : function(workspace, path, version) {
-                            runModule('./../screens/revision/app', {
+                            this.showScreen('./../screens/revision/app', {
                                 workspace : workspace,
                                 path : path,
                                 version : version
@@ -75,5 +80,5 @@ define(
                         }
                     });
 
-            return Router;
+            return AppRouter;
         });
