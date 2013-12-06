@@ -1,5 +1,5 @@
 define([ '../../models/ResourceCollection', '../../models/Validator',
-        './views/main' ],
+        './WorkspaceView' ],
 
 function(ResourceCollection, Validator, MainView) {
 

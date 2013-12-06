@@ -1,4 +1,4 @@
-define([ '../../commons/UmxView', 'text!./view.html' ],
+define([ '../../commons/UmxView', 'text!./LoginView.html' ],
 
 function(UmxView, template) {
     var View = UmxView.extend({

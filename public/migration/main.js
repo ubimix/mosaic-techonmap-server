@@ -115,7 +115,6 @@ require([ 'require.config' ], function() {
                 object.properties.category = categoryMapping[category]
                         || categoryMapping['default']
             })
-
         }
 
         function init() {
