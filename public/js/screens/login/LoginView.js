@@ -1,7 +1,7 @@
-define([ '../../commons/UmxView', 'text!./LoginView.html' ],
+define([ '../../commons/TemplateView', 'text!./LoginView.html' ],
 
-function(UmxView, template) {
-    var View = UmxView.extend({
+function(TemplateView, template) {
+    var View = TemplateView.extend({
         template : _.template(template),
         renderNotLoggedBlock : function(elm) {
             if (this.isLogged()) {

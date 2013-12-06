@@ -1,9 +1,9 @@
-define([ '../../commons/UmxView', 'diff_match_patch',
+define([ '../../commons/TemplateView', 'diff_match_patch',
         'text!./CompareView.html', 'utils' ],
 
-function(UmxView, DiffMatchPatch, template, Utils) {
+function(TemplateView, DiffMatchPatch, template, Utils) {
 
-    var CompareView = UmxView.extend({
+    var CompareView = TemplateView.extend({
         getFormattedRevisionDate : function(timestamp) {
             return Utils.formatDate(timestamp);
         },

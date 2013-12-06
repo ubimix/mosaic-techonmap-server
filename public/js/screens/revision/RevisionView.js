@@ -1,9 +1,9 @@
-define([ '../../commons/UmxView', 'utils', '../resource/ResourceContentView',
+define([ '../../commons/TemplateView', 'utils', '../resource/ResourceContentView',
         'text!./RevisionView.html' ],
  
-function(UmxView, Utils, ResourceContentView, RevisionContainerTemplate) {
+function(TemplateView, Utils, ResourceContentView, RevisionContainerTemplate) {
 
-    var View = UmxView.extend({
+    var View = TemplateView.extend({
 
         template : _.template(RevisionContainerTemplate),
 
