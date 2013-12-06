@@ -1,4 +1,4 @@
-define([ './view' ], function(ImportView) {
+define([ './ImportView' ], function(ImportView) {
     return {
         run : function(viewManager, options) {
             var view = new ImportView({

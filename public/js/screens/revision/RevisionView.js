@@ -1,6 +1,6 @@
-define([ '../../commons/UmxView', 'utils', '../resource/table-view',
-        'text!./view.html' ],
-
+define([ '../../commons/UmxView', 'utils', '../resource/ResourceContentView',
+        'text!./RevisionView.html' ],
+ 
 function(UmxView, Utils, ResourceContentView, RevisionContainerTemplate) {
 
     var View = UmxView.extend({

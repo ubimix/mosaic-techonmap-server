@@ -1,14 +1,13 @@
-define([ 'Underscore', '../../../commons/UmxView', 'Backbone', 'utils',
-        '../../../models/Resource', './resourcelistitem', './paginator',
-        '../../../commons/Dialog', '../../../models/Validator',
-        'text!./resourcelist.html' ],
+define([ 'Underscore', '../../commons/UmxView', 'Backbone', 'utils',
+        '../../models/Resource', './ResourceListItemView',
+        '../../commons/Dialog', '../../models/Validator',
+        'text!./ResourceListView.html' ],
 
-function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
-        PaginationView, Dialog, Validator, ResourceListTemplate) {
+function(_, UmxView, Backbone, Utils, Resource, ResourceListItemView, Dialog,
+        Validator, ResourceListTemplate) {
 
-    var View = UmxView.extend({
+    var ResourceListView = UmxView.extend({
         template : _.template(ResourceListTemplate),
-        // resourceTemplate : _.template(resourceTemplate),
 
         initialize : function() {
             _.bindAll(this, '_updateListStatus');
@@ -19,20 +18,20 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
             }, this);
             this._initializeScrollEvents();
         },
-        
+
         _initializeScrollEvents : function() {
             // FIXME: remove it
             var opened = null;
-            Backbone.pubSub.on('item:open', function(item) {
+            Backbone.pubSub.on('item:open', function(item) {
                 if (opened && opened != item) {
-                    opened.close(); 
+                    opened.close();
                 }
                 opened = item;
                 $('html, body').animate({
-                    scrollTop: opened.$el.offset().top
+                    scrollTop : opened.$el.offset().top
                 }, 10);
             });
-            Backbone.pubSub.on('item:close', function(item) {
+            Backbone.pubSub.on('item:close', function(item) {
             });
         },
 
@@ -49,7 +48,7 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         // TODO: use backgrid.js ?
         renderResources : function(elm) {
             this.collection.forEach(function(resource) {
-                var view = new ResourceRowView({
+                var view = new ResourceListItemView({
                     model : resource,
                     workspace : this.options.workspace
                 });
@@ -61,13 +60,6 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
         renderRecordNumber : function(elm) {
             var len = this.getTotalRecordsNumber();
             elm.text('' + len);
-        },
-
-        renderPaginator : function(elm) {
-            var paginationView = new PaginationView({
-                collection : this.collection
-            });
-            elm.append(paginationView.render().el);
         },
 
         handleSortClick : function(e) {
@@ -137,10 +129,9 @@ function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,
                 validator.once('loaded', that._updateListStatus);
                 validator.validateResources(list);
             }
-
         }
 
     });
 
-    return View;
+    return ResourceListView;
 });

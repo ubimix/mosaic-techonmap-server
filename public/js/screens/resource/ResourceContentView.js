@@ -1,9 +1,9 @@
 define(
         [ '../../commons/UmxView', 'Underscore', 'Handsontable', 'Leaflet',
-                '../../models/Resource', 'utils', 'text!./table-view.html' ],
+                '../../models/Resource', 'utils', 'text!./ResourceContentView.html' ],
 
         function(UmxView, _, Handsontable, Leaflet, ResourceModel, Utils,
-                ContentViewTemplate) {
+                ResourceContentViewTemplate) {
 
             var DEFAULT_MAP_CENTER = [ 2.351932525634765, 48.85666816723737 ];
             // TODO:move this model information to the Resource model attributes
@@ -195,7 +195,7 @@ define(
             var TILE_SERVER_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png';
             var ResourceTableView = UmxView
                     .extend({
-                        template : _.template(ContentViewTemplate),
+                        template : _.template(ResourceContentViewTemplate),
 
                         initialize : function(options) {
                             this.readOnly = this.options.readOnly === true;
