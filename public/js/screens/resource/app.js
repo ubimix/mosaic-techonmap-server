@@ -1,11 +1,12 @@
-define([ '../../models/LinkController', '../../models/Resource', './view' ],
+define([ '../../models/LinkController', '../../models/Resource',
+        './ResourceView' ],
 
-function(LinkController, Resource, ResourceContainerView) {
+function(LinkController, Resource, ResourceView) {
     var linkController = LinkController.getInstance();
 
     function showResource(viewManager, model, options) {
         var path = options.path;
-        var view = new ResourceContainerView({
+        var view = new ResourceView({
             model : model,
             path : path,
             workspace : options.workspace

@@ -1,9 +1,9 @@
 define([ '../../commons/UmxView', 'Underscore', 'jQueryCsv', 'CodeMirror',
-        'Handsontable', 'utils', '../../commons/Dialog', 'text!./ImportView.html',
-        'text!./TableView.html', 'text!./TextView.html' ],
+        'Handsontable', 'utils', '../../commons/Dialog',
+        'text!./ImportView.html' ],
 
 function(UmxView, _, jQueryCsv, CodeMirror, Handsontable, Utils, Dialog,
-        ImportViewTemplate, TableViewTemplate, TextViewTemplate) {
+        ImportViewTemplate) {
 
     var TableView = UmxView.extend({
         initialize : function(options) {

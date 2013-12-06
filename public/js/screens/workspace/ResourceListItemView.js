@@ -1,12 +1,12 @@
-define([ 'Backbone', '../../../commons/UmxView', 'utils',
-        '../../../models/Validator', '../../resource/table-view',
-        'text!./resourcelistitem.html' ],
+define([ 'Backbone', '../../commons/UmxView', 'utils',
+        '../../models/Validator', '../resource/ResourceContentView',
+        'text!./ResourceListItemView.html' ],
+ 
+function(Backbone, UmxView, Utils, Validator, ResourceContentView, ResourceListItemTemplate) {
 
-function(Backbone, UmxView, Utils, Validator, ResourceContentView, template) {
+    var ResourceListItemView = UmxView.extend({
 
-    var ResourceRowView = UmxView.extend({
-
-        template : _.template(template),
+        template : _.template(ResourceListItemTemplate),
 
         isValidationChecked : function() {
             return this.validationCheckbox.is(':checked');
@@ -118,5 +118,5 @@ function(Backbone, UmxView, Utils, Validator, ResourceContentView, template) {
         }
     });
 
-    return ResourceRowView;
+    return ResourceListItemView;
 });

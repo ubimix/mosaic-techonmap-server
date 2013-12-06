@@ -1,4 +1,4 @@
-define([ './view' ], function(LoginView) {
+define([ './LoginView' ], function(LoginView) {
     return {
         run : function(viewManager, options) {
             // FIXME: replace this direct call by a model call

@@ -1,9 +1,9 @@
-define([ 'Underscore', '../../../commons/UmxView', './resourcelist',
-        'text!./main.html' ],
+define([ 'Underscore', '../../commons/UmxView', './ResourceListView',
+        './PaginationView', 'text!./WorkspaceView.html' ],
 
-function(_, UmxView, ResourceListView, MainViewTemplate) {
+function(_, UmxView, ResourceListView, PaginationView, MainViewTemplate) {
 
-    var MainView = UmxView.extend({
+    var WorkspaceView = UmxView.extend({
 
         template : _.template(MainViewTemplate),
 
@@ -22,8 +22,16 @@ function(_, UmxView, ResourceListView, MainViewTemplate) {
                 verified : this.options.verified
             });
             elm.append(view.render().el);
+        },
+
+        renderPaginator : function(elm) {
+            var paginationView = new PaginationView({
+                collection : this.collection
+            });
+            elm.append(paginationView.render().el);
         }
+
     });
 
-    return MainView;
+    return WorkspaceView;
 });
