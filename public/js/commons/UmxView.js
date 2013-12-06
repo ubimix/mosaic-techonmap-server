@@ -1,4 +1,4 @@
-define([ 'Underscore', 'Backbone', '../../models/LinkController' ],
+define([ 'Underscore', 'Backbone', '../models/LinkController' ],
 
 function(_, Backbone, LinkController) {
     // Trigger an event and/or a corresponding method name. Examples:

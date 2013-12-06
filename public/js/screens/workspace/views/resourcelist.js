@@ -1,6 +1,6 @@
-define([ 'Underscore', '../../commons/UmxView', 'Backbone', 'utils',
+define([ 'Underscore', '../../../commons/UmxView', 'Backbone', 'utils',
         '../../../models/Resource', './resourcelistitem', './paginator',
-        '../../commons/Dialog', '../../../models/Validator',
+        '../../../commons/Dialog', '../../../models/Validator',
         'text!./resourcelist.html' ],
 
 function(_, UmxView, Backbone, Utils, Resource, ResourceRowView,

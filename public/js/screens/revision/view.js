@@ -1,4 +1,4 @@
-define([ '../commons/UmxView', 'utils', '../resource/table-view',
+define([ '../../commons/UmxView', 'utils', '../resource/table-view',
         'text!./view.html' ],
 
 function(UmxView, Utils, ResourceContentView, RevisionContainerTemplate) {
