@@ -42,20 +42,13 @@ define(
                 title : 'Catégorie',
                 property : 'properties.category',
                 getLabelFromValue : function(value, model) {
-                    return ResourceModel.categoryLabels[value] || value;
+                    return ResourceModel.getCategoryLabel(value);
                 },
                 getValueFromLabel : function(label, model) {
-                    var result = label;
-                    _.each(ResourceModel.categoryLabels, function(value, key) {
-                        if (label == value) {
-                            result = key;
-                        }
-                    });
-                    return result;
-
+                    return ResourceModel.getCategoryKey(label);
                 },
                 getPossibleValues : function() {
-                    return _.values(ResourceModel.categoryLabels);
+                    return ResourceModel.getCategoryLabels();
                 }
             }, {
                 title : 'Tags',

@@ -105,9 +105,6 @@ define([ 'jQuery', 'Underscore', './import' ], function($, _, Import) {
             from : 'properties/name',
             to : 'Nom'
         }, {
-            from : 'Nom',
-            to : 'properties/name'
-        }, {
             from : 'properties/description',
             to : 'Description'
         }, {

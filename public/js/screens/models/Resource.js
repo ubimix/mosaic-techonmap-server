@@ -68,8 +68,7 @@ define(
 
                         getCategoryLabel : function() {
                             var category = this.getCategory();
-                            return Resource.categoryLabels[category]
-                                    || category;
+                            return Resource.getCategoryLabel(category);
                         },
 
                         getId : function() {
@@ -153,31 +152,26 @@ define(
 
                     });
 
-            // TODO: turn to static function
-
             Resource.categoryLabels = {
                 'entreprise' : 'Entreprise',
-                'third-place' : 'Tiers-lieu',
-                'incubator' : 'Incubateur',
-                'investor' : 'Investisseur',
-                'community' : 'Communauté',
+                'tiers-lieu' : 'Tiers-lieu',
+                'incubateur' : 'Incubateur',
+                'investisseur' : 'Investisseur',
+                'communauté' : 'Communauté',
                 'prestataire' : 'Prestataire',
-                'school' : 'École',
-                'public-actor' : 'Acteur public'
+                'école' : 'École',
+                'acteur public' : 'Acteur public'
             };
-
-            Resource.mapCategory = function(label) {
-                if (!label)
-                    return '';
-                var category = label;
-                _.each(Resource.categoryLabels, function(value, key) {
-                    if ((value.toLowerCase() == label.toLowerCase())) {
-                        category = key;
-                    }
-                });
-
-                return category;
+            Resource.getCategoryLabels = function() {
+                return _.values(Resource.categoryLabels);
             }
+            Resource.getCategoryLabel = function(category) {
+                category = category || '';
+                category = category.toLowerCase();
+                return Resource.categoryLabels[category];
+            }
+            Resource.getCategoryKey = Resource.getCategoryLabel;
+            Resource.mapCategory = Resource.getCategoryLabel;
 
             return Resource;
         });
