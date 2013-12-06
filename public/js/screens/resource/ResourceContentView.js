@@ -1,8 +1,8 @@
 define(
-        [ '../../commons/UmxView', 'Underscore', 'Handsontable', 'Leaflet',
+        [ '../../commons/TemplateView', 'Underscore', 'Handsontable', 'Leaflet',
                 '../../models/Resource', 'utils', 'text!./ResourceContentView.html' ],
 
-        function(UmxView, _, Handsontable, Leaflet, ResourceModel, Utils,
+        function(TemplateView, _, Handsontable, Leaflet, ResourceModel, Utils,
                 ResourceContentViewTemplate) {
 
             var DEFAULT_MAP_CENTER = [ 2.351932525634765, 48.85666816723737 ];
@@ -193,7 +193,7 @@ define(
              */
 
             var TILE_SERVER_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png';
-            var ResourceTableView = UmxView
+            var ResourceTableView = TemplateView
                     .extend({
                         template : _.template(ResourceContentViewTemplate),
 

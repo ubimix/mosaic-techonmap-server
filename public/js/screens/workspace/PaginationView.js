@@ -1,8 +1,8 @@
-define([ '../../commons/UmxView', 'Backbone', 'text!./PaginationView.html' ],
+define([ '../../commons/TemplateView', 'Backbone', 'text!./PaginationView.html' ],
 
-function(UmxView, Backbone, PaginationViewTemplate) {
+function(TemplateView, Backbone, PaginationViewTemplate) {
 
-    var PaginationView = UmxView.extend({
+    var PaginationView = TemplateView.extend({
         template : _.template(PaginationViewTemplate),
 
         initialize : function() {

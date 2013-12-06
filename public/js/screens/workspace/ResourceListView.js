@@ -1,12 +1,12 @@
-define([ 'Underscore', '../../commons/UmxView', 'Backbone', 'utils',
+define([ 'Underscore', '../../commons/TemplateView', 'Backbone', 'utils',
         '../../models/Resource', './ResourceListItemView',
         '../../commons/Dialog', '../../models/Validator',
         'text!./ResourceListView.html' ],
 
-function(_, UmxView, Backbone, Utils, Resource, ResourceListItemView, Dialog,
+function(_, TemplateView, Backbone, Utils, Resource, ResourceListItemView, Dialog,
         Validator, ResourceListTemplate) {
 
-    var ResourceListView = UmxView.extend({
+    var ResourceListView = TemplateView.extend({
         template : _.template(ResourceListTemplate),
 
         initialize : function() {

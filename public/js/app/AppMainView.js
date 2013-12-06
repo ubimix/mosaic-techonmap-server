@@ -1,9 +1,9 @@
-define([ 'Underscore', 'jQuery', '../commons/UmxView',
+define([ 'Underscore', 'jQuery', '../commons/TemplateView',
         './AppHeaderView', 'text!./AppMainView.html' ],
 
-function(_, $, UmxView, AppHeaderView, AppMainViewTemplate) {
+function(_, $, TemplateView, AppHeaderView, AppMainViewTemplate) {
 
-    var View = UmxView.extend({
+    var View = TemplateView.extend({
 
         template : _.template(AppMainViewTemplate),
 

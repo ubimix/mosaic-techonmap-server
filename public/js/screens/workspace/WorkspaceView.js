@@ -1,9 +1,9 @@
-define([ 'Underscore', '../../commons/UmxView', './ResourceListView',
+define([ 'Underscore', '../../commons/TemplateView', './ResourceListView',
         './PaginationView', 'text!./WorkspaceView.html' ],
 
-function(_, UmxView, ResourceListView, PaginationView, MainViewTemplate) {
+function(_, TemplateView, ResourceListView, PaginationView, MainViewTemplate) {
 
-    var WorkspaceView = UmxView.extend({
+    var WorkspaceView = TemplateView.extend({
 
         template : _.template(MainViewTemplate),
 

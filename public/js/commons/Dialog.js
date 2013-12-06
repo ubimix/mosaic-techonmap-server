@@ -1,8 +1,8 @@
-define([ 'Underscore', './UmxView', 'text!./Dialog.html', 'BootstrapModal' ],
+define([ 'Underscore', './TemplateView', 'text!./Dialog.html', 'BootstrapModal' ],
 
-function(_, UmxView, Template) {
+function(_, TemplateView, Template) {
 
-    var DialogView = UmxView.extend({
+    var DialogView = TemplateView.extend({
 
         className : 'modal fade',
 

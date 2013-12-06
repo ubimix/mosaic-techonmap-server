@@ -1,11 +1,11 @@
-define([ 'Underscore', '../../models/LinkController', '../../commons/UmxView',
+define([ 'Underscore', '../../models/LinkController', '../../commons/TemplateView',
         'utils', 'text!./HistoryView.html' ],
 
-function(_, LinkController, UmxView, Utils, HistoryViewTemplate) {
+function(_, LinkController, TemplateView, Utils, HistoryViewTemplate) {
 
     var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-    var HistoryView = UmxView.extend({
+    var HistoryView = TemplateView.extend({
         template : _.template(HistoryViewTemplate),
         initialize : function() {
             this.versionPositions = {};

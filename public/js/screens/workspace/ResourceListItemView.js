@@ -1,10 +1,10 @@
-define([ 'Backbone', '../../commons/UmxView', 'utils',
+define([ 'Backbone', '../../commons/TemplateView', 'utils',
         '../../models/Validator', '../resource/ResourceContentView',
         'text!./ResourceListItemView.html' ],
  
-function(Backbone, UmxView, Utils, Validator, ResourceContentView, ResourceListItemTemplate) {
+function(Backbone, TemplateView, Utils, Validator, ResourceContentView, ResourceListItemTemplate) {
 
-    var ResourceListItemView = UmxView.extend({
+    var ResourceListItemView = TemplateView.extend({
 
         template : _.template(ResourceListItemTemplate),
 
