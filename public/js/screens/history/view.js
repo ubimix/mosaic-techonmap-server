@@ -1,4 +1,4 @@
-define([ 'Underscore', '../commons/LinkController', '../commons/UmxView',
+define([ 'Underscore', '../../models/LinkController', '../commons/UmxView',
         'utils', 'text!./view.html' ],
 
 function(_, LinkController, UmxView, Utils, template) {

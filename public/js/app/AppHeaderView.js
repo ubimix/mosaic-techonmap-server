@@ -1,5 +1,5 @@
 define([ 'jQuery', 'Underscore', 'Backbone', '../screens/commons/UmxView',
-        'Typeahead', '../screens/commons/LinkController',
+        'Typeahead', '../models/LinkController',
         'text!./AppHeaderView.html', '../screens/commons/Dialog',
         '../screens/export/Export', 'BootstrapDropdown' ],
 

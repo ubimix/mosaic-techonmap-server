@@ -11,8 +11,6 @@ define(
                             '' : 'mapScreen',
                             '/' : 'mapScreen',
                             'login' : 'loginScreen',
-                            'search' : 'searchScreen',
-                            ':workspace/search' : 'searchScreen',
                             ':workspace/import' : 'importScreen',
                             ':workspace' : 'workspaceScreen',
                             ':workspace/' : 'workspaceScreen',
@@ -31,11 +29,6 @@ define(
                         },
                         loginScreen : function() {
                             this.showScreen('./../screens/login/app');
-                        },
-                        searchScreen : function(workspace) {
-                            this.showScreen('./../screens/search/app', {
-                                workspace : workspace
-                            });
                         },
                         importScreen : function(workspace) {
                             this.showScreen('./../screens/import/app', {

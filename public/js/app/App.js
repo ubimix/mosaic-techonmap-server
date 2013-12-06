@@ -1,4 +1,4 @@
-define([ 'Underscore', 'Backbone', 'screens/commons/LinkController',
+define([ 'Underscore', 'Backbone', '../models/LinkController',
         './AppRouter' ],
 
 function(_, Backbone, LinkController, AppRouter) {

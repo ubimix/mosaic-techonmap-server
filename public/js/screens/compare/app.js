@@ -1,4 +1,4 @@
-define([ 'Backbone', '../commons/LinkController', '../models/Resource',
+define([ 'Backbone', '../../models/LinkController', '../../models/Resource',
         './view' ],
 
 function(Backbone, LinkController, ResourceModel, CompareView) {
