@@ -47,14 +47,14 @@ module.exports = function(app) {
     app.get('/api/auth/done', function(req, res) {
         var dst = req.session.destination || "/workspace";
         delete req.session.destination;
-        res.redirect(dst);
+        res.redirect(app.locals.baseUrl + dst);
     });
 
     app.get('/api/logout', function(req, res) {
         var redirectTarget = req.query.redirect || "/workspace";
         req.logout();
         req.session = null;
-        res.redirect(redirectTarget);
+        res.redirect(app.locals.baseUrl + redirectTarget);
     });
 
     /* ------------------------------------------------------------ */
@@ -76,8 +76,8 @@ module.exports = function(app) {
         return done(undefined, user);
     }));
     app.post("/api/login", passport.authenticate('local', {
-        successRedirect : '/api/auth/done',
-        failureRedirect : '/login',
+        successRedirect : app.locals.baseUrl + '/api/auth/done',
+        failureRedirect : app.locals.baseUrl + '/login',
         failureFlash : true
     }));
 
@@ -103,8 +103,8 @@ module.exports = function(app) {
     }));
     app.get("/api/auth/google", passport.authenticate('google'));
     app.get("/api/auth/google/return", passport.authenticate('google', {
-        successRedirect : '/api/auth/done',
-        failureRedirect : '/login'
+        successRedirect : app.locals.baseUrl + '/api/auth/done',
+        failureRedirect : app.locals.baseUrl + '/login'
     }));
 
     /* ------------------------------------------------------------ */
@@ -134,8 +134,8 @@ module.exports = function(app) {
             })(req, res, next);
         });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
-            successRedirect : '/api/auth/done',
-            failureRedirect : '/login'
+            successRedirect : app.locals.baseUrl + '/api/auth/done',
+            failureRedirect : app.locals.baseUrl + '/login'
         }));
     }
 
@@ -158,8 +158,8 @@ module.exports = function(app) {
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
         app.get("/api/auth/facebook/return", passport.authenticate('facebook',
                 {
-                    successRedirect : '/api/auth/done',
-                    failureRedirect : '/login'
+                    successRedirect : app.locals.baseUrl + '/api/auth/done',
+                    failureRedirect : app.locals.baseUrl + '/login'
                 }));
     }
 
