@@ -14,6 +14,11 @@ var FacebookStrategy = require('passport-facebook').Strategy;
  */
 module.exports = function(app) {
 
+    function getRedirectUrl(path) {
+        var baseUrl = app.locals.baseUrl || '';
+        return baseUrl + path;
+    }
+
     function escapeDisplayName(name) {
         return name.replace(/[\s]/, '.').toLowerCase();
     }
@@ -47,14 +52,14 @@ module.exports = function(app) {
     app.get('/api/auth/done', function(req, res) {
         var dst = req.session.destination || "/workspace";
         delete req.session.destination;
-        res.redirect(dst);
+        res.redirect(getRedirectUrl(dst));
     });
 
     app.get('/api/logout', function(req, res) {
         var redirectTarget = req.query.redirect || "/workspace";
         req.logout();
         req.session = null;
-        res.redirect(redirectTarget);
+        res.redirect(getRedirectUrl(redirectTarget));
     });
 
     /* ------------------------------------------------------------ */
@@ -76,15 +81,15 @@ module.exports = function(app) {
         return done(undefined, user);
     }));
     app.post("/api/login", passport.authenticate('local', {
-        successRedirect : '/api/auth/done',
-        failureRedirect : '/login',
+        successRedirect : getRedirectUrl('/api/auth/done'),
+        failureRedirect : getRedirectUrl('/login'),
         failureFlash : true
     }));
 
     /* ------------------------------------------------------------ */
     // Google-based
     passport.use(new GoogleStrategy({
-        returnURL : app.locals.baseUrl + '/api/auth/google/return',
+        returnURL : getRedirectUrl('/api/auth/google/return'),
         realm : app.locals.baseUrl
     }, function(identifier, profile, done) {
         var accountId = null;
@@ -103,8 +108,8 @@ module.exports = function(app) {
     }));
     app.get("/api/auth/google", passport.authenticate('google'));
     app.get("/api/auth/google/return", passport.authenticate('google', {
-        successRedirect : '/api/auth/done',
-        failureRedirect : '/login'
+        successRedirect : getRedirectUrl('/api/auth/done'),
+        failureRedirect : getRedirectUrl('/login')
     }));
 
     /* ------------------------------------------------------------ */
@@ -114,7 +119,7 @@ module.exports = function(app) {
         passport.use(new TwitterStrategy({
             consumerKey : twitterConfig.oauthkeys.consumerKey,
             consumerSecret : twitterConfig.oauthkeys.consumerSecret,
-            callbackURL : app.locals.baseUrl + '/api/auth/twitter/return'
+            callbackURL : getRedirectUrl('/api/auth/twitter/return')
         }, function(token, tokenSecret, profile, done) {
             var provider = 'twitter';
             var accountId = getAccountId(null, provider, profile.username);
@@ -134,8 +139,8 @@ module.exports = function(app) {
             })(req, res, next);
         });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
-            successRedirect : '/api/auth/done',
-            failureRedirect : '/login'
+            successRedirect : getRedirectUrl('/api/auth/done'),
+            failureRedirect : getRedirectUrl('/login')
         }));
     }
 
@@ -145,7 +150,7 @@ module.exports = function(app) {
         passport.use(new FacebookStrategy({
             clientID : facebookConfig.oauthkeys.clientID,
             clientSecret : facebookConfig.oauthkeys.clientSecret,
-            callbackURL : app.locals.baseUrl + '/api/auth/facebook/return'
+            callbackURL : getRedirectUrl('/api/auth/facebook/return')
         }, function(accessToken, refreshToken, profile, done) {
             var user = newUser({
                 accountId : getAccountId(null, 'facebook.com',
@@ -158,8 +163,8 @@ module.exports = function(app) {
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
         app.get("/api/auth/facebook/return", passport.authenticate('facebook',
                 {
-                    successRedirect : '/api/auth/done',
-                    failureRedirect : '/login'
+                    successRedirect : getRedirectUrl('/api/auth/done'),
+                    failureRedirect : getRedirectUrl('/login')
                 }));
     }
 
