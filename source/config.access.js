@@ -60,7 +60,7 @@ module.exports = function(app) {
             break;
         }
         var resource = null;
-        if (path.match(/^\/api\/auth\/.*?$/)) {
+        if (path.match(/^\/api\/auth(\/.*)?$/)) {
             if (method == 'get') {
                 resource = 'file';
                 action = 'read';
@@ -114,11 +114,13 @@ module.exports = function(app) {
             var aclUser = userId;
             // Load user roles
             return getUserRoles(aclUser).then(function(roles) {
-                if (!roles && aclUser != 'Anonymous') {
-                    aclUser = 'LoggedUser';
-                    return getUserRoles(aclUser);
+                if (roles && roles.length) {
+                    return roles;
                 }
-                return roles;
+                if (aclUser != 'Anonymous') {
+                    aclUser = 'LoggedUser';
+                }
+                return getUserRoles(aclUser);
             })
             // Check the user access
             .then(function(roles) {
