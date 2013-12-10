@@ -31,9 +31,9 @@ function(UmxView, Backbone, PaginationViewTemplate) {
             var currentPageIdx = this.getCurrentPageIdx();
             this._renderReference(this.firstPageTemplate, currentPageIdx - 1);
             _.each(list, function(page, index) {
-                var el = this._renderReference(this.innerPageTemplate, index,
-                        '' + (index + 1));
-                if (index == currentPageIdx) {
+                var el = this._renderReference(this.innerPageTemplate, page, ''
+                        + page);
+                if (page == currentPageIdx) {
                     el.addClass('active');
                 }
             }, this);
@@ -64,26 +64,25 @@ function(UmxView, Backbone, PaginationViewTemplate) {
             this.refContainer.append(el);
             var ref = el.find('a');
             ref.attr('href', '#' + index)
-            var list = this.getPageSet();
+            var info = that.collection.info();
             ref.click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (index >= 0 && index < list.length) {
-                    that.collection.goTo(index + 1);
+                if (index >= 1 && index <= info.lastPage) {
+                    that.collection.goTo(index);
                 }
             })
-            if (index < 0 || index >= list.length) {
+            if (index < 1 || index > info.lastPage) {
                 el.addClass('disabled');
             }
-
             if (label) {
-                ref.text(label);
+                ref.text(index + '');
             }
             return el;
         },
 
         getCurrentPageIdx : function() {
-            var currentPageIdx = this.collection.currentPage - 1;
+            var currentPageIdx = this.collection.currentPage;
             return currentPageIdx;
         },
 
