@@ -14,6 +14,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
  */
 module.exports = function(app) {
 
+    // 
     function getRedirectUrl(path) {
         var baseUrl = app.locals.baseUrl || '';
         return baseUrl + path;
