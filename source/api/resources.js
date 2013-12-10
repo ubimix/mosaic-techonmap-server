@@ -323,36 +323,31 @@ function initializeApplication(app, project) {
     /** Stores a new resource in the repository */
     function saveResource(req, res) {
         reply(req, res, loadJsonFromRequest(req)
-
-        .then(
-                function(json) {
-                    var path = getRequestedPath(req);
-                    if (path == '') {
-                        path = getPathFromGeoJson(json);
-                    }
-                    var options = getOptionsFromRequest(req);
-                    console.log('Try to save the following resource "' + path
-                            + '": ', json)
-                    return importGeoJSONItem(project, path, json, options)
-
-                    .then(function(value) {
-                        // remove the resource from the validation object
-                        var timestampPath = '.admin-timestamp';
-                        return project
-
-                        .loadResource(timestampPath)
-
-                        .then(function(resource) {
-                            // Change it
-                            var properties = resource.getProperties();
-                            var list = properties.validated || [];
-                            properties.validated = _.without(list, path);
-                            return project.storeResource(resource, options);
-                        }).then(function() {
-                            return value;
-                        })
-                    });
-                }));
+        //
+        .then(function(json) {
+            var path = getRequestedPath(req);
+            if (path == '') {
+                path = getPathFromGeoJson(json);
+            }
+            var options = getOptionsFromRequest(req);
+            return importGeoJSONItem(project, path, json, options)
+            //
+            .then(function(value) {
+                // remove the resource from the validation object
+                var timestampPath = '.admin-timestamp';
+                return project //
+                .loadResource(timestampPath) //
+                .then(function(resource) {
+                    // Change it
+                    var properties = resource.getProperties();
+                    var list = properties.validated || [];
+                    properties.validated = _.without(list, path);
+                    return project.storeResource(resource, options);
+                }).then(function() {
+                    return value;
+                })
+            });
+        }));
     }
     app.post('/api/resources/:path', saveResource);
     app.put('/api/resources/:path', saveResource);
