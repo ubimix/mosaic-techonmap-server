@@ -17,6 +17,10 @@ module.exports = function(app) {
     // 
     function getRedirectUrl(path) {
         var baseUrl = app.locals.baseUrl || '';
+        //FIXME: check whether the baseUrl ends with a '/'
+	//and also check whether path is a relative or absolute URL
+        if (path && path.indexOf('/') != 0)
+             path = '/' + path;
         return baseUrl + path;
     }
 
