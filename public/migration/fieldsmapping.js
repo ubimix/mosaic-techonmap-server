@@ -24,7 +24,7 @@ define([ 'jQuery', 'Underscore', './import' ], function($, _, Import) {
                 return result;
             }
         }, {
-            from : 'Catégory',
+            from : 'Catégorie',
             to : 'properties/category',
             transform : function(value) {
                 if (!value)
@@ -51,13 +51,13 @@ define([ 'jQuery', 'Underscore', './import' ], function($, _, Import) {
             transform : transformTags
         }, {
             from : 'Latitude',
-            to : 'geometry/coordinates/0',
+            to : 'geometry/coordinates/1',
             transform : function(value) {
                 return parseFloat(value);
             }
         }, {
             from : 'Longitude',
-            to : 'geometry/coordinates/1',
+            to : 'geometry/coordinates/0',
             transform : function(value) {
                 return parseFloat(value);
             }
@@ -117,10 +117,10 @@ define([ 'jQuery', 'Underscore', './import' ], function($, _, Import) {
             from : 'properties/tags/2',
             to : 'Tag 3'
         }, {
-            from : 'geometry/coordinates/0',
+            from : 'geometry/coordinates/1',
             to : 'Latitude'
         }, {
-            from : 'geometry/coordinates/1',
+            from : 'geometry/coordinates/0',
             to : 'Longitude'
         }, {
             from : 'properties/address',
