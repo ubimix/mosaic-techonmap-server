@@ -111,7 +111,14 @@ module.exports = function(app) {
         });
         done(undefined, user);
     }));
-    app.get("/api/auth/google", passport.authenticate('google'));
+    app.get("/api/auth/google", function(req, res, next) {
+        req.session.destination = req.query.redirect;
+        passport.authenticate('google', function(err, user, info) {
+            next();
+        })(req, res, next);
+    });
+    
+    
     app.get("/api/auth/google/return", passport.authenticate('google', {
         successRedirect : getRedirectUrl('/api/auth/done'),
         failureRedirect : getRedirectUrl('/login')
