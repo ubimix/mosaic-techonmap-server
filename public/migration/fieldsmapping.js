@@ -78,6 +78,9 @@ define([ 'jQuery', 'Underscore', './import' ], function($, _, Import) {
             to : 'properties/url',
             transform : Import.checkUrl
         }, {
+            from : 'Email',
+            to : 'properties/email'
+        }, {
             from : 'Nom compte Twitter',
             to : 'properties/twitter'
         }, {

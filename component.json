@@ -16,6 +16,7 @@
     "handsontable":"*",
     "font-awesome":"*",
     "leaflet-dist" : "*",
-    "x-editable" : "*"
+    "x-editable" : "*",
+    "q":"*"
   }
 }
