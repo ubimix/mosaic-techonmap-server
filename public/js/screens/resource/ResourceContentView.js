@@ -192,7 +192,8 @@ define(
              * ---------------------------------
              */
 
-            var TILE_SERVER_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png';
+            //var TILE_SERVER_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png';
+            var TILE_SERVER_URL = '/tiles/{z}/{x}/{y}.png';
             var ResourceTableView = TemplateView
                     .extend({
                         template : _.template(ResourceContentViewTemplate),
