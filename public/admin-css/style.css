@@ -263,19 +263,26 @@ body {
 	font-size: 14px;
 	padding: 0 10px;
 	overflow: hidden;
+	display: none;
+}
+
+
+.header {
+
+padding-top:10px;
 }
 
 .header h1 {
-	display: block;
+	display: inline;
 	margin-top: 2px;
 	margin-left: 15px;
 }
 
 .header h2 {
-	font-size: 13px;
+	font-size: 18px;
 	color: #666666;
-	display: block;
-	margin-left: 15px;
+	display: inline;
+	margin-left: 5px;
 	margin-top: 5px;
 }
 

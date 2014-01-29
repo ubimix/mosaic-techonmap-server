@@ -100,7 +100,7 @@ define(
                 renderer : linkRenderer,
                 getLabelFromValue : function(value, model, view) {
                     var path = view.getPath();
-                    return 'http://techonmap.fr/#' + path;
+                    return 'http://demo.ubimix.com/#' + path;
                 },
                 getValueFromLabel : function(label, model, view) {
                     return undefined;

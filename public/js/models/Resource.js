@@ -153,14 +153,14 @@ define(
                     });
 
             Resource.categoryLabels = {
-                'entreprise' : 'Entreprise',
-                'tiers-lieu' : 'Tiers-lieu',
-                'incubateur' : 'Incubateur',
-                'investisseur' : 'Investisseur',
-                'communauté' : 'Communauté',
-                'prestataire' : 'Prestataire',
-                'école' : 'École',
-                'acteur public' : 'Acteur public'
+                'peinture' : 'Peinture / Sculpture',
+                'architecture' : 'Architecture',
+                'photographie' : 'Photographie',
+                'objets d\'art' : 'Objets d\'art',
+                'archéologie' : 'Archéologie',
+                'art contemporain' : 'Art contemporain',
+                'autre' : 'Autre',
+                'sciences' : 'Sciences'
             };
             Resource.getCategoryLabels = function() {
                 return _.values(Resource.categoryLabels);
