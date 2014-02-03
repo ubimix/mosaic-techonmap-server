@@ -296,7 +296,9 @@ function initializeApplication(app, project) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path).then(
                 function(results) {
-                    return getGeoJsonList(results, false);
+                    var list = getGeoJsonList(results, false);
+		    var geoJson = {'type':'FeatureCollection','features':list};
+		    return geoJson;
                 }));
     });
 
