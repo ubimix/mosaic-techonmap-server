@@ -1,6 +1,6 @@
-#TechOnMap Backoffice
+#TechOnMap backoffice
 
-This project contains the backoffice of the [TechOnMap website](http://techonmap.fr). It allows to edit collaboratively geolocalized data and to keep an history of the changes. It is implemented on top of NodeJS.
+This project contains the backoffice of the [TechOnMap website](http://techonmap.fr). It allows to edit collaboratively geolocalized data and to keep an history of the changes. It is implemented on top of NodeJS. 
 
 ##Server installation
 
@@ -27,7 +27,7 @@ Open a browser at the URL specified in the server configuration file.
 
 ##License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. Copyright : [Ubimix](http://ubimix.com).
 
 ##Authors
 
