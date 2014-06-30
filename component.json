@@ -6,7 +6,7 @@
     "jquery": "latest",
     "jquery-csv":"latest",
     "backbone": "~1.0.0",
-    "bootstrap": "3.0.0",
+    "bootstrap": "*",
     "typeahead.js":"0.9.3",
     "bootstrap-growl" : "latest",
     "requirejs": "~2.1.5",

@@ -8,6 +8,7 @@ function(TemplateView, Backbone, PaginationViewTemplate) {
         template : _.template(PaginationViewTemplate),
 
         initialize : function() {
+            this.collection.howManyPer(100);
             this.collection.on('reset', this.render, this);
             var self = this;
             Backbone.pubSub.on('sort', function(action) {

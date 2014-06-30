@@ -414,3 +414,14 @@ body {
 .name-control {
 	min-width: 300px;
 }
+
+.thumbnail img {
+	max-width: 100%;
+	
+}
+
+.carousel-control.right, .carousel-control.left  {
+	background-image: none;
+	
+	
+} 

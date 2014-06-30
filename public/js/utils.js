@@ -1,8 +1,10 @@
-define([ 'Underscore', 'yaml', 'moment', 'CodeMirror', './models/Resource', './commons/Dialog' ],
+define([ 'Underscore', 'yaml', 'moment', 'CodeMirror', './models/Resource', './commons/Dialog', 'CodeMirrorHyperTextMode' ],
         
 function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
     'use strict';
     var Utils = {};
+    
+    console.log(Dialog)
 
     Utils.toStructuredContent = function(attr) {
         // var copy = _.extend({}, attr);
@@ -26,6 +28,7 @@ function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
     }
     
     Utils.showOkDialog = function(title, message, callback) {
+       
         var dialog = new Dialog({
             title : title,
             content : message,
@@ -40,6 +43,7 @@ function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
                 }
             } ]
         });
+        
         dialog.show();
         return dialog;
     }
@@ -85,6 +89,13 @@ function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
             'Url page Viadeo' : 'viadeo',
             'Catégorie' : 'category'
         }
+    
+    
+    Utils.hasImageExtension = function(str) {
+        if (str.indexOf('.jpg')>0 || str.indexOf('jpeg') > 0 || str.indexOf('.png') > 0 || str.indexOf('.gif') > 0)
+            return true;
+        return false;
+    }
   
          
     function isEmpty(str) {
@@ -197,13 +208,44 @@ function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
             lineNumbers : true,
             viewportMargin : Infinity,
             lineWrapping : true,
-            mode : 'text',
-            readOnly : readOnly,
+            mode : 'djinko',
+            readOnly : false,
             height : '100%'
         };
         options = _.extend(defaultOptions, options);
         var editor = new CodeMirror(elt, options);
         editor.setValue(value);
+        
+        
+        editor.on("cursorActivity", function(cm) { 
+            var position = cm.getCursor();
+            var token = cm.getTokenAt(position);
+            if (token.type === "link") {
+                if (!cm._marker) {
+                      cm._marker = $('<div style="position: absolute;"></div>');
+                }
+                
+                var link = token.string;
+                console.log(link);
+                if (cm._panel)
+                    cm._panel.popover('destroy');
+                cm._panel = cm._marker.popover({ content: '<a href="'+link+'" target="_blank">'+link+'</a>', html: true ,placement: 'bottom' });
+                cm.addWidget(position, cm._marker[0]);
+                cm._panel.popover('show'); 
+                
+                
+            } else {
+                if (cm._marker) {
+                    cm._panel.popover('hide');
+                    delete cm._panel;  
+                    cm._marker.remove();
+                    delete cm._marker;
+                }
+            }
+            
+          });        
+        
+        
         return editor;
     }
     

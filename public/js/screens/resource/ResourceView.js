@@ -86,7 +86,7 @@ function(TemplateView, LinkController, BootstrapGrowl, Xeditable, Validator, Uti
             if (event.altKey) {
                 if (event.which == 83) {
                     // alt+S
-                    this.submitResource();
+                    this.doSave();
                 }
                 // TODO: won't work, why ?
                 // else if (event.which == 76) {
@@ -119,16 +119,20 @@ function(TemplateView, LinkController, BootstrapGrowl, Xeditable, Validator, Uti
             } else {
                 var id = updatedModel.getId();
                 if (!id || id.length == 0) {
-                    return Utils.showOkDialog('Erreur',
-                            'Le champ <em>Identifiant</em> est requis.');
-                } else {
+                    Utils.updateObject(updatedModel.attributes, 'properties.id', name);
+                    id = name;
+                }
+                //{
+                //    return Utils.showOkDialog('Erreur',
+                //            'Le champ <em>Identifiant</em> est requis.');
+                //} else {
                     this.model.set('id', id);
                     this.updateModel(updatedModel, function() {
                         var path = self.getLink(id);
                         self.navigateTo(path);
                         callback();
                     });
-                }
+                //}
             }
         },
 

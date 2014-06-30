@@ -73,11 +73,11 @@ function($, _, Backbone, TemplateView, Typeahead, LinkController,
         renderToolBox : function(elm) {
             elm.hide();
             this._loadUserInfo(function(user) {
-                if (this._isPowerUser(user)) {
+                //if (this._isPowerUser(user)) {
                     elm.show();
-                } else {
-                    elm.remove();
-                }
+                //} else {
+                //    elm.remove();
+                //}
             })
         },
 

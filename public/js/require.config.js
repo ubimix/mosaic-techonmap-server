@@ -65,6 +65,17 @@ require
                     exports : 'BootstrapPopover',
                     deps : [ 'jQuery', 'BootstrapTooltip' ]
                 },
+                
+                'BootstrapCarousel' : {
+                    exports : 'BootstrapCarousel',
+                    deps : [ 'jQuery', 'BootstrapTransition' ],
+                },
+                
+                'BootstrapTransition' : {
+                    exports : 'BootstrapTransition',
+                    deps : [ 'jQuery' ],
+                },
+                
                 'Typeahead' : {
                     exports : 'Typeahead',
                     deps : [ 'jQuery' ],
@@ -85,6 +96,9 @@ require
                 },
                 'CodeMirrorYaml' : {
                     deps : [ 'CodeMirror' ]
+                },
+                'CodeMirrorHyperTextMode' : {
+                    deps : [ 'CodeMirror', 'BootstrapPopover' ]
                 },
                 'Leaflet' : {
                     exports : 'L'
@@ -113,6 +127,8 @@ require
                 Typeahead : './../components/typeahead.js/dist/typeahead',
                 BootstrapModal : './../components/bootstrap/js/modal',
                 BootstrapDropdown : './../components/bootstrap/js/dropdown',
+                BootstrapCarousel : './../components/bootstrap/js/carousel',
+                BootstrapTransition : './../components/bootstrap/js/transition',
                 BootstrapTooltip : './../components/bootstrap/js/tooltip',
                 BootstrapPopover : './../components/bootstrap/js/popover',
                 BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
@@ -120,6 +136,7 @@ require
                 UmxAppTemplates : './theme-techonmap/umx.app.templates',
                 CodeMirror : './../components/codemirror/lib/codemirror',
                 CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
+                CodeMirrorHyperTextMode : './codemirror/mode/djinko/djinko',
                 Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
                 Leaflet : './../components/leaflet-dist/leaflet',
                 Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable'

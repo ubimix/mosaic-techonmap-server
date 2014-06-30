@@ -61,6 +61,19 @@ define(
                         getDescription : function() {
                             return this.getProperties().description;
                         },
+                        
+                        getRelations : function() {
+                            
+                            return this.getProperties().relations;
+                        },
+                        
+                        setAllRelations : function(relations) {
+                            this.allRelations = relations;
+                        },
+                        
+                        getAllRelations : function() {
+                          return this.allRelations;  
+                        },
 
                         getCategory : function() {
                             return this.getProperties().category || '';
@@ -110,10 +123,15 @@ define(
                         getVersionTimestamp : function() {
                             return this.getUpdated().timestamp;
                         },
+                        
 
                         buildPermalink : function() {
                             // TODO mv to config
                             return 'http://techonmap.fr/#' + this.getId();
+                        },
+                        
+                        setBinaries : function(binaries) {
+                            this.binaries = binaries;
                         },
 
                         updateAndSave : function(newModel, callback) {

@@ -1,0 +1,73 @@
+<!doctype html>
+
+<title>Djinko</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../doc/docs.css">
+<link rel="stylesheet" href="../lib/codemirror.css">
+<link rel="stylesheet" href="../doc/bootstrap.css">
+<link rel=stylesheet href="../doc/djinko.css">
+
+<script src="../lib/codemirror.js"></script>
+<script src="../lib/jquery-1.10.2.min.js"></script>
+<script src="../lib/bootstrap.js"></script>
+<script src="../mode/djinko/djinko.js"></script>
+
+
+
+<style type="text/css">
+       .CodeMirror { border: 1px solid silver; }
+      .cm-header { font-size: 130%; font-family: arial; }
+      .cm-strong { font-size: 110%; }
+    </style>
+    
+<article>
+<form>
+      <div style="max-width: 80em"><textarea id="code-html" name="code-html"></textarea></div>
+    </form>
+
+<script id="script"> 
+
+window.onload = function() {
+  var te_html = document.getElementById("code-html");
+  te_html.value = "http://www.djinko.com";
+
+  window.editor = CodeMirror.fromTextArea(te_html, {
+    mode: "djinko",
+    lineNumbers: false,
+    lineWrapping: true
+  });
+  
+  editor.on("cursorActivity", function(cm) { 
+    var position = cm.getCursor();
+    var token = cm.getTokenAt(position);
+    if (token.type === "link") {
+        if (!cm._marker) {
+              cm._marker = $('<div style="position: absolute;"></div>');
+        }
+        
+        var link = token.string;
+        console.log(link);
+        if (cm._panel)
+            cm._panel.popover('destroy');
+        cm._panel = cm._marker.popover({ content: '<a href="'+link+'">'+link+'</a>', html: true ,placement: 'bottom' });
+        cm.addWidget(position, cm._marker[0]);
+        cm._panel.popover('show'); 
+        
+        
+    } else {
+        if (cm._marker) {
+            cm._panel.popover('hide');
+            delete cm._panel;  
+            cm._marker.remove();
+            delete cm._marker;
+        }
+    }
+    
+  });
+  
+  //url = $(event.target).popover({html:'Hello world', placement:'bottom'});
+  
+  
+};
+</script>
+  </article>

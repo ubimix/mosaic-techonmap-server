@@ -2,6 +2,8 @@
 .CodeMirror {
 	border: none;
 	height: auto;
+    font-size: 0.9em;
+    line-height: inherit;
 }
 
 .CodeMirror-scroll {
@@ -16,32 +18,30 @@
 	<div class="col-md-8"></div>
 </div>
 <div class="row">
-	<div class="col-md-7">
+	<div class="col-md-8">
 		<div class="form-group">
 			<div class="description" data-render="renderDescription"></div>
 		</div>
-		<div class="form-group">
-			<div class="property-table" data-render="renderPropertyTable"></div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<div class="input-group input-group-sm">
-					<span class="input-group-addon">ID</span> <input type="text"
-						class="form-control id" data-render="renderIdField" value=""
-						disabled="disabled">
-				</div>
-			</div>
-		</div>
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-4">
 		<div class="form-group">
+            <div class="thumbnail">
+            <div data-render="renderAllRelations"></div>
+            </div>
+            
+            <div class="thumbnail">
+            <div data-render="renderRelationsEdit"></div>
+            </div>
+        
 			<div class="thumbnail">
-				<div class="map-container" style="height: 300px;"
-					data-render="renderMap"></div>
-				<div class="caption">
-					<div class="geo-table" data-render="renderGeoTable"></div>
-				</div>
+            <div data-render="renderImages"></div>
 			</div>
+            
+            
+            <div class="thumbnail">
+            <div data-render="renderBinaries"></div>
+            </div>
+            
 		</div>
 	</div>
 </div>

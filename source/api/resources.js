@@ -4,6 +4,7 @@ var config = require('../config');
 // TODO: when to use relative paths, absolute paths in node ?
 var Namer = require('../lib/namer');
 var _ = require('underscore')._;
+var ElasticSearch = require('elasticsearch');
 
 var Q = require('q');
 
@@ -11,6 +12,8 @@ var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
 require('jscr-api/jscr-memory');
 require('jscr-git/jscr-git');
+
+var indexName = 'idx2';
 
 /* ========================================================================== */
 /* Data transformation utilities */
@@ -31,8 +34,7 @@ function updateResourceFields(resource, geoJson) {
 /** Copies all required fields from the specified resource */
 function getGeoJsonFromResource(resource, showSystemProperties) {
     var id = resource.getPath();
-    var coordinates = resource.geometry ? _
-            .clone(resource.geometry.coordinates) : [];
+    var coordinates = resource.geometry ? _.clone(resource.geometry.coordinates) : [];
     // console.log(' * ' + id);
     // console.log(JSON.stringify(resource));
     var properties = _.clone(resource.properties);
@@ -63,8 +65,7 @@ function getPathFromGeoJson(geoJson) {
         var properties = geoJson.properties = (geoJson.properties || {});
         if (!result) {
             // FIXME in case of Git, ids need to be normalized
-            result = properties.id = (Namer.normalize(properties.id) || Namer
-                    .normalize(properties.name));
+            result = properties.id = (Namer.normalize(properties.id) || Namer.normalize(properties.name));
         }
         if (!result) {
             result = sys.path = (sys.path || Namer.normalize(properties.name));
@@ -159,6 +160,21 @@ function loadJsonMapFromRequest(req) {
 /* Main application functions */
 /* -------------------------------------------------------------------------- */
 
+function indexResource(resource, client) {
+
+    return client.index({
+        index : indexName,
+        type : 'resource',
+        id : resource.getPath(),
+        body : {
+            name : resource.properties.name,
+            relations : resource.properties.relations,
+            description : resource.properties.description
+        }
+    });
+
+}
+
 /**
  * Import and stores the given GeoJSON object in the resource with the specified
  * path.
@@ -170,6 +186,14 @@ function importGeoJSONItem(project, itemPath, item, options) {
     }).then(function(resource) {
         resource = updateResourceFields(resource, item);
         return project.storeResource(resource, options);
+    }).then(function(resource) {
+        var client = new ElasticSearch.Client({
+            host : 'localhost:9200',
+            log : 'trace'
+        });
+
+        return indexResource(resource, client);
+
     }).fail(function(error) {
         console.log('***', itemPath, error, item);
         return null;
@@ -178,8 +202,7 @@ function importGeoJSONItem(project, itemPath, item, options) {
 
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
-    var items = _.isArray(json.features) ? json.features
-            : _.isArray(json) ? json : [ json ];
+    var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
     var promise = Q();
     var result = {};
     _.each(items, function(item) {
@@ -233,8 +256,7 @@ function initProject(options) {
  * @returns a promise for an initialized project
  */
 function loadData(project, options) {
-    if (!options.inputFile || options.inputFile == ''
-            || !Fs.existsSync(options.inputFile))
+    if (!options.inputFile || options.inputFile == '' || !Fs.existsSync(options.inputFile))
         return Q(project);
     return Q()
     // Load file with data
@@ -279,27 +301,195 @@ function initializeApplication(app, project) {
         return list;
     }
 
+    app.get('/api/jscr-git/resources', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadChildResources(path).then(function(results) {
+            return getGeoJsonList(results, true);
+        }));
+    });
+
     /** Loads and returns all root resources from the storage */
+    // /api/jscr-es/resources/export
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(
-                function(results) {
-                    return getGeoJsonList(results, true);
-                }));
+        var client = new ElasticSearch.Client({
+            host : 'localhost:9200',
+            log : 'error'
+        });
+
+        client.search({
+            index : indexName,
+            type : 'resource',
+            pretty : true,
+            size : 100,
+            body : {
+                query : {
+                    match_all : {}
+                }
+            }
+        }).then(function(resp) {
+            var hits = resp.hits.hits;
+            console.log('**********************' + hits.length);
+            // return resp.hits.hits;
+            var resources = [];
+            _.each(hits, function(hit, index) {
+                var resource = {};
+                resource.id = hit._id;
+                // resource.type = hit._type;
+                resource.type = 'Feature';
+                resource.properties = {};
+                resource.properties.id = hit._id;
+                resource.properties.name = hit._source.name;
+                resource.sys = {
+                    path : hit._id
+                };
+                resources.push(resource);
+            });
+
+            res.json(resources);
+        }, function(err) {
+            console.log(err);
+            // console.trace(err.message);
+            res.json({
+                error : err.message
+            });
+        });
+
+    });
+
+    /** Provides search results for autocompletion */
+    // /api/resources/suggest
+    app.get('/api/typeahead', function(req, res) {
+        var path = getRequestedPath(req);
+        var query = req.query.query;
+        console.log('typeahead', path);
+
+        var client = new ElasticSearch.Client({
+            host : 'localhost:9200',
+            log : 'error'
+        });
+
+        var match = [];
+
+        client.suggest({
+            index : indexName,
+            body : {
+                suggester : {
+                    text : query,
+                    completion : {
+                        size : 20,
+                        field : 'suggest'
+                    }
+                }
+            }
+        }, function(error, response) {
+            console.log('error', error);
+            console.log(response);
+            var suggestion = response.suggester[0];
+            _.each(suggestion.options, function(option) {
+                console.log(option.text);
+                var name = option.text;
+                match.push({
+                    value : name,
+                    tokens : [ name ],
+                    id : name
+                });
+
+            });
+            res.json(match);
+
+        })
+
+    });
+
+    app.get('/api/resources/search', function(req, res) {
+        var path = getRequestedPath(req);
+        var query = req.query.query;
+        console.log('search', query);
+
+        var client = new ElasticSearch.Client({
+            host : 'localhost:9200',
+            log : 'error'
+        });
+
+        var match = [];
+
+        client.search({
+            index : indexName,
+            type : 'resource',
+            pretty : true,
+            size : 100,
+            body : {
+                query : {
+                    match_phrase : {
+                        description : query
+                    }
+
+                }
+            }
+        }, function(error, response) {
+            console.log('error', error);
+            console.log(response);
+            var suggestion = response.suggester[0];
+            _.each(suggestion.options, function(option) {
+                console.log(option.text);
+                var name = option.text;
+                match.push({
+                    value : name,
+                    tokens : [ name ],
+                    id : name
+                });
+
+            });
+            res.json(match);
+
+        })
+
     });
 
     /**
      * Loads and returns all resources in the 'exporing' format (without system
      * properties)
      */
-    app.get('/api/resources/export', function(req, res) {
+    app.get('/api/jscr/resources/export', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(
-                function(results) {
-                    var list = getGeoJsonList(results, false);
-		    var geoJson = {'type':'FeatureCollection','features':list};
-		    return geoJson;
-                }));
+        reply(req, res, project.loadChildResources(path).then(function(results) {
+            var list = getGeoJsonList(results, false);
+            var geoJson = {
+                'type' : 'FeatureCollection',
+                'features' : list
+            };
+            return geoJson;
+        }));
+    });
+
+    app.get('/api/resources/index', function(req, res) {
+        var path = getRequestedPath(req);
+        reply(req, res, project.loadChildResources(path).then(function(results) {
+            var promise = Q();
+            var client = new ElasticSearch.Client({
+                host : 'localhost:9200',
+                log : 'trace'
+            });
+            _.each(results, function(resource) {
+                console.log('resource', resource.getPath());
+                promise = promise.then(function() {
+                    // return
+                    // project.loadResource(resource.getPath()).then(function(resource)
+                    // {
+                    return indexResource(resource, client);
+
+                    // });
+                });
+            });
+
+            return promise.then(function() {
+                return [];
+            });
+
+        })
+
+        );
     });
 
     /** Returns individual resource by its path */
@@ -351,6 +541,7 @@ function initializeApplication(app, project) {
             });
         }));
     }
+
     app.post('/api/resources/:path', saveResource);
     app.put('/api/resources/:path', saveResource);
 
@@ -358,24 +549,22 @@ function initializeApplication(app, project) {
     app['delete']('/api/resources/:path', function(req, res) {
         var path = getRequestedPath(req);
         var options = getOptionsFromRequest(req);
-        reply(req, res, project.deleteResource(path, options).then(
-                function(success) {
-                    return {
-                        result : 'OK'
-                    };
-                }));
+        reply(req, res, project.deleteResource(path, options).then(function(success) {
+            return {
+                result : 'OK'
+            };
+        }));
     });
 
     /** Returns a list of versions for the specified resource */
     app.get('/api/resources/:path/history', function(req, res) {
         var path = getRequestedPath(req);
-        reply(req, res, project.loadResourceHistory(path).then(
-                function(history) {
-                    if (!history || !history.length) {
-                        throw HttpError.notFound(path);
-                    }
-                    return history;
-                }));
+        reply(req, res, project.loadResourceHistory(path).then(function(history) {
+            if (!history || !history.length) {
+                throw HttpError.notFound(path);
+            }
+            return history;
+        }));
     });
 
     /**
@@ -394,11 +583,106 @@ function initializeApplication(app, project) {
         }));
     });
 
+    app.get('/api/resources/:path/binaries', function(req, res) {
+        var path = getRequestedPath(req);
+        var repository = config.repository;
+        var filePath = Path.join(repository.rootDir, repository.name, path);
+        if (Fs.existsSync(filePath)) {
+            var binaries = Fs.readdirSync(filePath);
+            res.json({
+                binaries : binaries
+            });
+        } else {
+            res.json({
+                binaries : []
+            });
+
+        }
+    });
+
+    app.get('/api/resources/:path/relations', function(req, res) {
+        var path = getRequestedPath(req);
+        var repository = config.repository;
+
+        var client = new ElasticSearch.Client({
+            host : 'localhost:9200',
+            log : 'trace'
+        });
+
+        client.search({
+            index : indexName,
+            type : 'resource',
+            pretty : true,
+            size : 1000,
+            body : {
+                query : {
+                    nested : {
+                        path : "relations",
+                        score_mode : "avg",
+                        query : {
+                            match_phrase : {
+                                id : path
+                            }
+                        }
+                    }
+                }
+            }
+        }).then(function(resp) {
+            var hits = resp.hits.hits;
+            var relations = [];
+            _.each(hits, function(hit) {
+                relations.push({
+                    id : hit._id
+                });
+            })
+
+            project.loadResource(path).then(function(resource) {
+                _.each(resource.properties.relations, function(item) {
+                    relations.push(item);
+                });
+                res.json({
+                    relations : relations.sort(function(a, b) {
+                        if (a.id > b.id)
+                            return 1;
+                        if (a.id < b.id)
+                            return -1;
+                        // a must be equal to b
+                        return 0;
+                    })
+                });
+
+            })
+
+        }, function(err) {
+            console.log(err);
+            res.json({
+                error : err.message
+            });
+            // console.trace(err.message);
+        });
+
+    });
+
+    app.get('/api/resources/:path/:path1', function(req, res) {
+        var path = getRequestedPath(req);
+        var path1 = req.params.path1;
+        var repository = config.repository;
+        var filePath = Path.join(repository.rootDir, repository.name, path, path1);
+        var img = Fs.readFileSync(filePath);
+        res.writeHead(200, {
+            'Content-Type' : 'image/jpg'
+        });
+        res.end(img, 'binary');
+
+    });
+
     /* --------------------------------------------------------------- */
 
     /** Provides search results for autocompletion */
-    app.get('/api/typeahead', function(req, res) {
+    app.get('/api/jscr-git/typeahead', function(req, res) {
         var path = getRequestedPath(req);
+        console.log('typeahead', path);
+        var childR = project.loadChildResources(path);
         reply(req, res, project.loadChildResources(path)
         // Filter resources
         .then(function(results) {
@@ -411,7 +695,8 @@ function initializeApplication(app, project) {
             _.each(results, function(item) {
                 if (!item.properties || !item.properties.name)
                     return;
-                var name = item.properties.name.toLowerCase();
+                // name can be a number -> convert to string
+                var name = ('' + item.properties.name).toLowerCase();
                 if (!name.match(regexp))
                     return;
                 // https://github.com/twitter/typeahead.js#datum
@@ -427,37 +712,33 @@ function initializeApplication(app, project) {
 
     var VALIDATION_RESOURCE = '.admin-timestamp';
     function updateValidationResource(req, res) {
-        reply(req, res, loadJsonFromRequest(req).then(
-                function(json) {
-                    var options = getOptionsFromRequest(req);
-                    return importGeoJSONItem(project, VALIDATION_RESOURCE,
-                            json, options);
-                }));
+        reply(req, res, loadJsonFromRequest(req).then(function(json) {
+            var options = getOptionsFromRequest(req);
+            return importGeoJSONItem(project, VALIDATION_RESOURCE, json, options);
+        }));
     }
     app.put('/api/validation', updateValidationResource);
     app.post('/api/validation', updateValidationResource);
 
     app.get('/api/validation', function(req, res) {
-        reply(req, res, project.loadResource(VALIDATION_RESOURCE).then(
-                function(resource) {
-                    var promise;
-                    if (!resource) {
-                        var options = getOptionsFromRequest(req);
-                        promise = importGeoJSONItem(project,
-                                VALIDATION_RESOURCE, {
-                                    properties : {
-                                        validated : [],
-                                        timestamp : 0
-                                    }
-                                }, options);
-                    } else {
-                        promise = Q(getGeoJsonFromResource(resource));
+        reply(req, res, project.loadResource(VALIDATION_RESOURCE).then(function(resource) {
+            var promise;
+            if (!resource) {
+                var options = getOptionsFromRequest(req);
+                promise = importGeoJSONItem(project, VALIDATION_RESOURCE, {
+                    properties : {
+                        validated : [],
+                        timestamp : 0
                     }
-                    return promise.then(function(json) {
-                        console.log(json);
-                        return json;
-                    });
-                }));
+                }, options);
+            } else {
+                promise = Q(getGeoJsonFromResource(resource));
+            }
+            return promise.then(function(json) {
+                console.log(json);
+                return json;
+            });
+        }));
     });
 
     app.get('/api/twitter/last', function(req, res) {

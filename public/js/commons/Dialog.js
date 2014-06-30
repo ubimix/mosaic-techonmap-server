@@ -4,7 +4,8 @@ function(_, TemplateView, Template) {
 
     var DialogView = TemplateView.extend({
 
-        className : 'modal fade',
+        //className : 'modal fade',
+        className : 'modal',
 
         template : _.template(Template),
 
