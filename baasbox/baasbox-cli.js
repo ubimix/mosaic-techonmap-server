@@ -1,76 +1,100 @@
-var Request = require('request');
+module.exports = BaasBoxCli;
+
+var Q = require('q');
 var Restler = require('restler');
+var _ = require('underscore');
 var Fs = require('fs');
 
-var BBURL = 'http://localhost:9000/';
-var APP_CODE = '1234567890';
+// see also: https://github.com/troupe/restler-q/blob/master/lib/restler-q.js
+// TODO: create namespaces: api.documents, api.users, api...
+// TODO : externalize restler calls (see elasticsearch-js/client_action.js)
+//check why not all entries are present in the db when imported from the djk folder
 
-function createHeaders(session, appCode) {
-    return {
-        'User-Agent' : 'restler',
-        'X-BB-SESSION' : session,
-        'X-BAASBOX-APPCODE' : appCode
+function BaasBoxCli(config) {
+
+    this.config = config || {};
+
+    var self = this;
+
+    if (!config.hasOwnProperty('log')) {
+        this.config.log = 'warning';
     }
-}
 
-function uploadFile(file, session, appCode) {
+    if (!config.hosts && !config.host) {
+        this.config.host = 'http://localhost:9000';
+    }
 
-    Fs.stat(file, function(err, stats) {
-        Restler.post(BBURL + 'file', {
-            multipart : true,
-            headers : createHeaders(session, appCode),
-            data : {
-                'filename' : Restler.file(file, null, stats.size, null, "image/jpg")
-            }
-        }).on('complete', function(data) {
-            console.log(data);
+    function createHeaders(params) {
+        return _.extend({
+            'User-Agent' : 'restler',
+            'X-BB-SESSION' : self.session,
+            'X-BAASBOX-APPCODE' : config.appcode
+        }, params);
+    }
+
+    this.login = function() {
+        var defer = Q.defer();
+        Restler.post(config.host + '/login', {
+            data : config
+        }).on('complete', function(body) {
+            var session = body.data['X-BB-SESSION'];
+            var roles = body.data.user.roles;
+            self.session = session;
+            defer.resolve({
+                session : session,
+                roles : roles
+            });
         });
-    });
-}
-
-function listDocuments(collection, session, appCode) {
-    Restler.get(BBURL + 'document/' + collection, {
-        headers : createHeaders(session, appCode)
-    }).on('complete', function(data) {
-        console.log(data);
-        return data;
-    });
-}
-
-function createDocument(collection, jsonObject, session, appCode) {
-    Restler.post(BBURL + 'document/' + collection, {
-        headers : {
-            'User-Agent' : 'request',
-            'X-BB-SESSION' : session,
-            'X-BAASBOX-APPCODE' : APP_CODE,
-            'Content-Type' : 'application/json'
-        },
-        data : JSON.stringify(jsonObject)
-    }).on('complete', function(data) {
-        console.log(data);
-    });
-}
-
-Restler.post(BBURL + 'login', {
-    data : {
-        username : 'arkub',
-        password : 'arkub',
-        // username : 'jean',
-        // password : 'jean',
-        appcode : APP_CODE
+        return defer.promise;
     }
-}).on('complete', function(body) {
 
-    var session = body.data['X-BB-SESSION'];
-    var roles = body.data.user.roles;
+    this.listDocuments = function(collection) {
+        var defer = Q.defer();
+        Restler.get(config.host + '/document/' + collection, {
+            headers : createHeaders()
+        }).on('complete', function(data) {
+            defer.resolve(data);
+        });
+        return defer.promise;
+    }
 
-    listDocuments('commerces', session, APP_CODE);
+    this.storeDocument = function(collection, jsonObject) {
+        var defer = Q.defer();
+        Restler.post(config.host + '/document/' + collection, {
+            headers : createHeaders({
+                'Content-Type' : 'application/json'
+            }),
+            data : JSON.stringify(jsonObject)
+        }).on('complete', function(data) {
+            defer.resolve(data);
+        });
+        return defer.promise;
+    }
+    
+    this.getDocument = function(collection, documentId) {
+        var defer = Q.defer();
+        Restler.get(config.host + '/document/' + collection+'/'+documentId, {
+            headers : createHeaders()
+        }).on('complete', function(data) {
+            defer.resolve(data);
+        });
+        return defer.promise;
+        
+    }
 
-    // uploadFile('/home/arkub/tmp/Holy_Motors_poster.jpg', session, APP_CODE);
+    this.uploadFile = function(file, mimeType) {
 
-    createDocument('commerces', {
-        tags : [ 'a', 'b', 'c' ],
-        name : 'Chez Maxims'
-    }, session, APP_CODE);
+        Fs.stat(file, function(err, stats) {
+            Restler.post(self.config.host + '/file', {
+                multipart : true,
+                headers : createHeaders(),
+                data : {
+                    'filename' : Restler.file(file, null, stats.size, null, mimeType)
+                }
+            }).on('complete', function(data) {
+                console.log(data);
+            });
+        });
+    }
 
-});
+}
