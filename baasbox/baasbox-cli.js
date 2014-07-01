@@ -9,6 +9,7 @@ var Fs = require('fs');
 // TODO: create namespaces: api.documents, api.users, api...
 // TODO : externalize restler calls (see elasticsearch-js/client_action.js)
 //check why not all entries are present in the db when imported from the djk folder
+//TODO : restler error handling : complete / success / fail
 
 function BaasBoxCli(config) {
 
@@ -37,6 +38,7 @@ function BaasBoxCli(config) {
         Restler.post(config.host + '/login', {
             data : config
         }).on('complete', function(body) {
+            console.log(body)
             var session = body.data['X-BB-SESSION'];
             var roles = body.data.user.roles;
             self.session = session;

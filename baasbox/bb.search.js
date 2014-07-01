@@ -5,10 +5,12 @@ var Fs = require('fs');
 var _ = require('underscore');
 var Q = require('q');
 
+var config = require('./config');
+
 var client = new BaasBoxCli({
-    username : 'arkub',
-    password : '[leliendéfait]',
-    appcode : '1234567890'
+    username : config.server.username,
+    password : config.server.password,
+    appcode : config.server.appcode
 });
 
 client.login().then(function() {
