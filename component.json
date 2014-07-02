@@ -17,6 +17,8 @@
     "font-awesome":"*",
     "leaflet-dist" : "*",
     "x-editable" : "*",
-    "q":"*"
+    "q":"*",
+    "parsleyjs": "*",
+    "superagent": "*"
   }
 }

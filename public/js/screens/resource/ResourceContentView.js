@@ -119,7 +119,9 @@ define(
                         },
 
                         getDescription : function() {
-                            return this._getProperties().description || '';
+                            //return this._getProperties().description || '';
+                            //return this._getProperties().content || '';
+                            return this._getContent();
                         },
 
                         getFormattedProperties : function() {
@@ -130,12 +132,17 @@ define(
                         },
 
                         getFormattedContent : function() {
-                            var properties = this._getProperties();
-                            return properties.description.trim();
+                            //var properties = this._getProperties();
+                            //return properties.content.trim();
+                            return this._getContent().trim();
                         },
 
                         _getAttributes : function() {
                             return this.model.attributes;
+                        },
+                        
+                        _getContent : function() {
+                          return this.model.attributes.content || {};  
                         },
 
                         _getProperties : function() {
@@ -148,7 +155,7 @@ define(
                             var attributes = copy.attributes;
                             var changed = false;
 
-                            var description = this.contentEditor.getValue();
+                            var content = this.contentEditor.getValue();
                             var relations = this.relationsEditor.val();
                             relations = relations.split('\n');
                             var newRelations = [];
@@ -160,7 +167,7 @@ define(
                             });
                             changed |= Utils.updateObject(attributes, 'properties.relations', newRelations);
 
-                            changed |= Utils.updateObject(attributes, 'properties.description', description);
+                            changed |= Utils.updateObject(attributes, 'content', content);
                             if (changed) {
                                 // FIXME: use "validate" method to check that
                                 // this field is

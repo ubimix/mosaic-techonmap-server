@@ -1,0 +1,10 @@
+---
+# Configuration sample file (YAML)
+application:
+    title: "Djk"
+baasbox:
+    host: "http://localhost:9000"
+    username: arkub
+    password: '[leliendéfait]'
+    appcode: 1234567890
+

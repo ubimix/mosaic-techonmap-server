@@ -6,6 +6,8 @@ var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 var ElasticSearch = require('elasticsearch');
 
+var BaasBoxCli = require('../../baasbox/baasbox-cli');
+
 var Q = require('q');
 
 var Twitter = require('../lib/twitterlib');
@@ -308,9 +310,40 @@ function initializeApplication(app, project) {
         }));
     });
 
+    app.get('/api/resources', function(req, res) {
+        var path = getRequestedPath(req);
+
+        var client = new BaasBoxCli({
+            host : config.baasbox.host,
+            username : config.baasbox.username,
+            password : config.baasbox.password,
+            appcode : config.baasbox.appcode
+        });
+
+        client.login().then(function() {
+
+            // var criteria = encodeURIComponent('properties.name like
+            // \'Under%\'');
+            // , 'where='+criteria
+            return client.queryCollection('arkdjk', {
+                fields : 'properties,id',
+                page : 0
+            }).then(function(result) {
+                // console.log(JSON.stringify(result, null, 2));
+                res.json(result.data);
+            });
+
+        }).fail(function(error) {
+            res.json({
+                error : error.message
+            });
+        }).done();
+
+    });
+
     /** Loads and returns all root resources from the storage */
     // /api/jscr-es/resources/export
-    app.get('/api/resources', function(req, res) {
+    app.get('/api/es/resources', function(req, res) {
         var path = getRequestedPath(req);
         var client = new ElasticSearch.Client({
             host : 'localhost:9200',
@@ -358,8 +391,62 @@ function initializeApplication(app, project) {
     });
 
     /** Provides search results for autocompletion */
+    // [
+    // {
+    // "value": "Artelys",
+    // "tokens": [
+    // "Artelys"
+    // ],
+    // "id": "artelys"
+    // },
+    // {
+    // "value": "A World For Us",
+    // "tokens": [
+    // "A World For Us"
+    // ],
+    // "id": "a-world-for-us"
+    // },
     // /api/resources/suggest
     app.get('/api/typeahead', function(req, res) {
+        var path = getRequestedPath(req);
+        var query = req.query.query;
+        console.log('typeahead', path);
+        var client = new BaasBoxCli({
+            host : config.baasbox.host,
+            username : config.baasbox.username,
+            password : config.baasbox.password,
+            appcode : config.baasbox.appcode
+        });
+
+        client.login().then(function() {
+
+            var criteria = encodeURIComponent('properties.name like \'' + query + '%\'');
+            return client.queryCollection('arkdjk', {
+                where : criteria
+            }).then(function(result) {
+                var suggestions = [];
+                _.each(result.data, function(resource) {
+                    suggestions.push({
+                        value : resource.properties.name,
+                        tokens : [ resource.properties.name ],
+                        id : resource.id
+                    })
+                });
+
+                res.json(suggestions);
+            });
+
+        }).fail(function(error) {
+            res.json({
+                error : error.message
+            });
+        }).done();
+
+    });
+
+    /** Provides search results for autocompletion */
+    // /api/resources/suggest
+    app.get('/api/es/typeahead', function(req, res) {
         var path = getRequestedPath(req);
         var query = req.query.query;
         console.log('typeahead', path);
@@ -492,8 +579,41 @@ function initializeApplication(app, project) {
         );
     });
 
-    /** Returns individual resource by its path */
     app.get('/api/resources/:path', function(req, res) {
+        var path = getRequestedPath(req);
+        // reply(req, res, project.loadResource(path).then(function(resource) {
+        // if (!resource) {
+        // throw HttpError.notFound(path);
+        // }
+        // return getGeoJsonFromResource(resource);
+        // }));
+
+        console.log('path', path);
+
+        var client = new BaasBoxCli({
+            host : config.baasbox.host,
+            username : config.baasbox.username,
+            password : config.baasbox.password,
+            appcode : config.baasbox.appcode
+        });
+
+        client.login().then(function() {
+
+            return client.loadResource('arkdjk', path).then(function(result) {
+                // console.log(JSON.stringify(result, null, 2));
+                res.json(result.data);
+            });
+
+        }).fail(function(error) {
+            res.json({
+                error : error.message
+            });
+        }).done();
+
+    });
+
+    /** Returns individual resource by its path */
+    app.get('/api/git/resources/:path', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadResource(path).then(function(resource) {
             if (!resource) {
@@ -679,7 +799,7 @@ function initializeApplication(app, project) {
     /* --------------------------------------------------------------- */
 
     /** Provides search results for autocompletion */
-    app.get('/api/jscr-git/typeahead', function(req, res) {
+    app.get('/api/git/typeahead', function(req, res) {
         var path = getRequestedPath(req);
         console.log('typeahead', path);
         var childR = project.loadChildResources(path);

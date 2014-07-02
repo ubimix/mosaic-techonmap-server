@@ -85,7 +85,8 @@ define(
                         },
 
                         getId : function() {
-                            var id = this.getProperties().id;
+                            //var id = this.getProperties().id;
+                            var id = this.id;
                             if (id == '')
                                 id = null;
                             return id;
