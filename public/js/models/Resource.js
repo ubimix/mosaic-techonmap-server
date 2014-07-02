@@ -52,7 +52,9 @@ define(
                         },
 
                         getTitle : function() {
-                            var title = this.getProperties().name;
+                            var title = this.getProperties().label;
+                            if (!title)
+                                title = this.getProperties().name;
                             if (!title)
                                 title = '';
                             return title;
@@ -60,6 +62,10 @@ define(
 
                         getDescription : function() {
                             return this.getProperties().description;
+                        },
+                        
+                        getContent : function() {
+                            return this.get('content');
                         },
                         
                         getRelations : function() {
@@ -137,6 +143,8 @@ define(
 
                         updateAndSave : function(newModel, callback) {
                             var copy = this.getCopy();
+                            
+                            this.set('content', newModel.getContent())
                             this.set('properties', newModel.getProperties());
                             this.set('geometry', newModel.getGeometry());
                             var that = this;
@@ -172,14 +180,16 @@ define(
                     });
 
             Resource.categoryLabels = {
-                'entreprise' : 'Entreprise',
-                'tiers-lieu' : 'Tiers-lieu',
-                'incubateur' : 'Incubateur',
-                'investisseur' : 'Investisseur',
-                'communauté' : 'Communauté',
-                'prestataire' : 'Prestataire',
-                'école' : 'École',
-                'acteur public' : 'Acteur public'
+                    '18760005100010' : 'CCI Rouen',
+                    '18640002400011' : 'CCI Pau'
+//                    'entreprise' : 'Entreprise',
+//                'tiers-lieu' : 'Tiers-lieu',
+//                'incubateur' : 'Incubateur',
+//                'investisseur' : 'Investisseur',
+//                'communauté' : 'Communauté',
+//                'prestataire' : 'Prestataire',
+//                'école' : 'École',
+//                'acteur public' : 'Acteur public'
             };
             Resource.getCategoryLabels = function() {
                 return _.values(Resource.categoryLabels);
@@ -192,5 +202,5 @@ define(
             Resource.getCategoryKey = Resource.getCategoryLabel;
             Resource.mapCategory = Resource.getCategoryLabel;
 
-            return Resource;
+                        return Resource;
         });

@@ -7,4 +7,7 @@ baasbox:
     username: arkub
     password: '[leliendéfait]'
     appcode: 1234567890
+dataSources:
+    - source: '/home/arkub/git/cci-preference-commerce/data/commerces060514.geo.json'
+      collection: 'commerces'
 

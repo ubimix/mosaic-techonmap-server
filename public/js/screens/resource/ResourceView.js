@@ -108,7 +108,7 @@ function(TemplateView, LinkController, BootstrapGrowl, Xeditable, Validator, Uti
             var updatedModel = this.contentView.updateModel();
             var name = this.nameElm.text();
             Utils
-                    .updateObject(updatedModel.attributes, 'properties.name',
+                    .updateObject(updatedModel.attributes, 'properties.label',
                             name);
             console.log('model', this.model);
             console.log('updatedModel', updatedModel);

@@ -1,4 +1,3 @@
-
 jQuery(function() {
 
     var marker = null;
@@ -14,8 +13,8 @@ jQuery(function() {
                 try {
                     // var valid = form.parsley('validate')
                     var errors = {};
-                    var result = getDataFromForm(errors);
-                    console.log(result);
+                    var commerce = getDataFromForm(errors);
+                    console.log(commerce);
                     var valid = true;
                     for ( var key in errors) {
                         errors[key].forEach(function(val) {
@@ -25,27 +24,33 @@ jQuery(function() {
                             }
                         })
                     }
+                    
                     if (valid) {
                         var elm = $(this);
-
-                        console.log('sending...');
 
                         config = {};
                         config.host = 'http://localhost:9000'
                         config.username = 'arkub'
                         config.password = '[leliendéfait]';
                         config.appcode = '1234567890';
-                        
-                        var session = 
 
-                        superagent.post(config.host + '/login').send(config)
-                                .set('Content-Type', 'application/x-www-form-urlencoded').end(function(error, res) {
+                        var collection = 'commerces';
+                        var url = config.host + '/login';
+                        superagent.post(url).send(config).set('Content-Type', 'application/x-www-form-urlencoded').end(
+                                function(error, res) {
                                     if (error)
                                         throw new Error(error)
                                     var session = res.body.data['X-BB-SESSION'];
                                     var roles = res.body.data.user.roles;
-                                    console.log(res);
-                                    console.log(session);
+
+                                    url = config.host + '/document/' + collection;
+                                    superagent.post(url).send(commerce).set('Content-Type', 'application/json').set(
+                                            'X-BB-SESSION', session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                                            function(error, res) {
+                                                if (error)
+                                                    console.log('ERROR', error)
+                                                console.log(res.body.data);
+                                            });
 
                                 });
 
@@ -79,19 +84,15 @@ jQuery(function() {
         });
 
         // TODO add form elements that are not inputs nor textareas
-
-        console.log('formFields', formFields);
-
         errors = errors || {};
         var coordinates = [];
-        var properties = {};
         var result = {
             type : "Feature",
             geometry : {
                 type : "Point",
                 coordinates : coordinates
             },
-            properties : properties
+            properties : formFields
         };
 
         // var category = categorySelector.find('options:selected').data(

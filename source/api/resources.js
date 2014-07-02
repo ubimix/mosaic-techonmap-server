@@ -6,7 +6,7 @@ var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 var ElasticSearch = require('elasticsearch');
 
-var BaasBoxCli = require('../../baasbox/baasbox-cli');
+var BaasBoxCli = require('../../public/baasbox/baasbox-cli');
 
 var Q = require('q');
 
@@ -181,7 +181,7 @@ function indexResource(resource, client) {
  * Import and stores the given GeoJSON object in the resource with the specified
  * path.
  */
-function importGeoJSONItem(project, itemPath, item, options) {
+function importGeoJSONItemGit(project, itemPath, item, options) {
     console.log('* Import "' + itemPath + '".');
     return project.loadResource(itemPath, {
         create : true
@@ -201,6 +201,7 @@ function importGeoJSONItem(project, itemPath, item, options) {
         return null;
     });
 }
+
 
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
@@ -325,12 +326,14 @@ function initializeApplication(app, project) {
             // var criteria = encodeURIComponent('properties.name like
             // \'Under%\'');
             // , 'where='+criteria
-            return client.queryCollection('arkdjk', {
+            console.log('queryCollection')
+            return client.queryCollection(config.baasbox.collection, {
                 fields : 'properties,id',
-                page : 0
-            }).then(function(result) {
+                page : 0,
+                recordsPerPage : 1000
+            }).then(function(data) {
                 // console.log(JSON.stringify(result, null, 2));
-                res.json(result.data);
+                res.json(data);
             });
 
         }).fail(function(error) {
@@ -421,7 +424,7 @@ function initializeApplication(app, project) {
         client.login().then(function() {
 
             var criteria = encodeURIComponent('properties.name like \'' + query + '%\'');
-            return client.queryCollection('arkdjk', {
+            return client.queryCollection(config.baasbox.collection, {
                 where : criteria
             }).then(function(result) {
                 var suggestions = [];
@@ -599,9 +602,9 @@ function initializeApplication(app, project) {
 
         client.login().then(function() {
 
-            return client.loadResource('arkdjk', path).then(function(result) {
-                // console.log(JSON.stringify(result, null, 2));
-                res.json(result.data);
+            return client.loadResource(config.baasbox.collection, path).then(function(result) {
+                console.log(JSON.stringify(result, null, 2));
+                res.json(result);
             });
 
         }).fail(function(error) {
@@ -633,7 +636,7 @@ function initializeApplication(app, project) {
     });
 
     /** Stores a new resource in the repository */
-    function saveResource(req, res) {
+    function saveGitResource(req, res) {
         reply(req, res, loadJsonFromRequest(req)
         //
         .then(function(json) {
@@ -659,6 +662,50 @@ function initializeApplication(app, project) {
                     return value;
                 })
             });
+        }));
+    }
+    
+    
+    function saveResource(req, res) {
+        reply(req, res, loadJsonFromRequest(req)
+        //
+        .then(function(json) {
+            var path = getRequestedPath(req);
+            if (path == '') {
+                path = getPathFromGeoJson(json);
+            }
+            var options = getOptionsFromRequest(req);
+            
+            var client = new BaasBoxCli({
+                host : config.baasbox.host,
+                username : config.baasbox.username,
+                password : config.baasbox.password,
+                appcode : config.baasbox.appcode
+            });
+
+            return client.login().then(function() {
+                return client.updateResource(config.baasbox.collection, path, json).then(function(data) {
+                    res.json(data);
+                });
+
+            });
+            
+//            //
+//            .then(function(value) {
+//                // remove the resource from the validation object
+//                var timestampPath = '.admin-timestamp';
+//                return project //
+//                .loadResource(timestampPath) //
+//                .then(function(resource) {
+//                    // Change it
+//                    var properties = resource.getProperties();
+//                    var list = properties.validated || [];
+//                    properties.validated = _.without(list, path);
+//                    return project.storeResource(resource, options);
+//                }).then(function() {
+//                    return value;
+//                })
+//            });
         }));
     }
 

@@ -43,7 +43,7 @@ function BaasBoxCli(config) {
         return defer.promise;
     }
 
-    this.listDocuments = function(collection) {
+    this.listResources = function(collection) {
         var defer = Q.defer();
         var url = config.host + '/document/' + collection;
         // Restler.get(url, {
@@ -61,24 +61,29 @@ function BaasBoxCli(config) {
         return defer.promise;
     }
 
-    this.storeDocument = function(collection, jsonObject) {
+    this.storeResource = function(collection, jsonObject) {
         var defer = Q.defer();
         var url = config.host + '/document/' + collection;
         Request.post(url).send(jsonObject).set('Content-Type', 'application/json').set('X-BB-SESSION', self.session).set(
                 'X-BAASBOX-APPCODE', config.appcode).end(function(error, res) {
             if (error)
                 defer.reject(new Error(error));
-            defer.resolve(res.body.data);
+            defer.resolve(res.body);
         });
+        return defer.promise;
+    }
 
-        // Restler.post(, {
-        // headers : createHeaders({
-        // 'Content-Type' : 'application/json'
-        // }),
-        // data : JSON.stringify(jsonObject)
-        // }).on('complete', function(data) {
-        // defer.resolve(data);
-        // });
+    this.updateResource = function(collection, resourceId, jsonObject) {
+        var defer = Q.defer();
+        var url = config.host + '/document/' + collection + '/' + resourceId;
+        console.log('updating resource...', resourceId, jsonObject);
+        Request.put(url).send(jsonObject).set('Content-Type', 'application/json').set('X-BB-SESSION', self.session).set(
+                'X-BAASBOX-APPCODE', config.appcode).end(function(error, res) {
+            console.log(res);
+            if (error)
+                defer.reject(new Error(error));
+            defer.resolve(res.body);
+        });
         return defer.promise;
     }
 
@@ -122,7 +127,9 @@ function BaasBoxCli(config) {
         if (params.recordsPerPage === undefined) {
             url += '&recordsPerPage=100';
         }
-        // console.log(url);
+
+        url += '&orderBy=properties.label';
+        console.log(url);
 
         Request.get(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(function(error, res) {
             if (error)
@@ -130,6 +137,28 @@ function BaasBoxCli(config) {
             defer.resolve(res.body.data);
         });
 
+        return defer.promise;
+    }
+
+    this.createCollection = function(collection, jsonObject) {
+        var defer = Q.defer();
+        var url = config.host + '/admin/collection/' + collection;
+        Request.post(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(function(error, res) {
+            if (error)
+                defer.reject(new Error(error));
+            defer.resolve(res.body);
+        });
+        return defer.promise;
+    }
+
+    this.deleteCollection = function(collection) {
+        var defer = Q.defer();
+        var url = config.host + '/admin/collection/' + collection;
+        Request.del(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(function(error, res) {
+            if (error)
+                defer.reject(new Error(error));
+            defer.resolve(res.body);
+        });
         return defer.promise;
     }
 

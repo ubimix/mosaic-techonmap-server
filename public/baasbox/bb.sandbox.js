@@ -15,12 +15,16 @@ var client = new BaasBoxCli({
 
 client.login().then(function(session) {
 
-    return client.storeDocument('commerces', {
-        title : 'hello',
-        name : 'Chez Peter Pan'
-    }).then(function(result) {
+    return client.deleteCollection('commerces').then(function(result) {
         console.log('[result]', result);
     });
+
+    // return client.storeResource('commerces', {
+    // title : 'hello',
+    // name : 'Chez Peter Pan'
+    // }).then(function(result) {
+    // console.log('[result]', result);
+    // });
 
     // }).then(function(session) {
     //
@@ -33,9 +37,9 @@ client.login().then(function(session) {
     //
     // return client.queryCollection('arkdjk', params).then(function(data) {
     // console.log(JSON.stringify(data, null, 2));
-    //    });
+    // });
     //    
-    
+
 }).fail(function(error) {
     if (error)
         console.log(error);

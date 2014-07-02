@@ -38,7 +38,6 @@ define([ 'Underscore', 'Backbone' ], function(_, Backbone) {
 
 
         getLink : function(path) {
-            console.log('path', path)
             //when path is a number
             path = ''+ path;
             if (!path)

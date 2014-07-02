@@ -9,10 +9,11 @@ var Q = require('q');
 var config = require('./config');
 
 var client = new BaasBoxCli({
-    username : '',
-    password : '',
-    appcode : ''
+    username : config.baasbox.username,
+    password : config.baasbox.password,
+    appcode : config.baasbox.appcode
 });
+
 
 function split(content) {
     content = content || '';
