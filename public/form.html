@@ -267,7 +267,7 @@ Adresse et contact
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Adresse</label>
-								<div class="col-sm-10">
+								<div class="col-sm-10 form-inline">
 									<span class="field-marker mandatory"></span> <input
 										name="address" type="text" required class="form-control"
 										data-parsley-error-message="L'adresse de votre commerce est requise"
@@ -303,13 +303,19 @@ Adresse et contact
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Contact principal</label>
-								<div class="col-sm-10">
-									<span class="field-marker"></span> <input name="contactName"
-										type="text" class="form-control"
-										placeholder="Nom du contact principal de votre commerce">
-									<span class="field-marker"></span> <input name="contactEmail"
-										type="text" class="form-control"
-										placeholder="Adresse e-mail de contact de votre commerce">
+								<div class="col-sm-10  form-inline">
+									<div class="input-group">
+										<span class="field-marker"></span> <input name="contactName"
+											type="text" class="form-control"
+											placeholder="Nom du contact principal de votre commerce">
+									</div>
+									<div class="input-group">
+										<span class="field-marker"></span>
+										<div class="input-group-addon">@</div>
+										<input name="contactEmail" type="email" class="form-control"
+											placeholder="Adresse e-mail de contact de votre commerce">
+									</div>
+
 								</div>
 							</div>
 
