@@ -9,10 +9,10 @@
 <script src="./form.js"></script>
 <script src="components/bootstrap/dist/js/bootstrap.js"></script>
 <link href="components/bootstrap/dist/css/bootstrap.css"
-    rel="stylesheet">
+	rel="stylesheet">
 <link href="components/parsleyjs/src/parsley.css" rel="stylesheet">
 <style>
-.form {
+/* .form {
 	margin: auto;
 	max-width: 900px;
 }
@@ -28,7 +28,7 @@
 	padding-left: 10px;
 	box-sizing: content-box;
 }
-
+ */
 .invalid-form-error-message {
 	margin-top: 10px;
 	padding: 5px;
@@ -58,7 +58,7 @@ p.parsley-success {
 <body>
 
 
-    <!-- 
+	<!-- 
 
 Description Commerce
     Nom "raison_sociale",
@@ -83,108 +83,119 @@ Réseaux sociaux
     "twitter","linkedin","facebook","viadeo","google_plus"
 
  -->
-    <form class="form" id="edit-form" data-parsley-validate>
+	<div class="container">
 
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker mandatory"></span> <input
-                    name="name"
-                    data-parsley-error-message="Un nom de commerce est requis"
-                    type="text" required
-                    placeholder="Nom de votre commerce">
+		<div class="panel panel-default">
+			<div class="panel-body">
 
-            </div>
-        </div>
+				<div class="row">
+					<div class="col-md-8">
+						<form id="edit-form" class="form form-horizontal"
+							data-parsley-validate>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Nom</label>
+								<div class="col-sm-10">
+									<input name="name" class="form-control"
+										data-parsley-error-message="Un nom de commerce est requis"
+										type="text" required placeholder="Nom de votre commerce">
+									<span class="field-marker mandatory"></span>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Nom de l'enseigne</label>
+								<div class="col-sm-10">
+									<span class="field-marker mandatory"></span> <input
+										name="enseigne" type="text" class="form-control"
+										placeholder="Nom de l'enseigne de votre commerce"> <span
+										class="field-marker mandatory"></span>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Site Web</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="website"
+										class="form-control" type="text"
+										placeholder="Site Web de votre commerce">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Description</label>
+								<div class="col-sm-10">
+									<span class="field-marker mandatory"></span>
+									<textarea required name="description" data-maxlength="250"
+										class="form-control"
+										data-parsley-error-message="Une description de votre commerce est requise"
+										placeholder="Description de votre commerce (250 caractères maximum)"
+										rows="6"></textarea>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Mots-clefs</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="tags"
+										type="text" class="form-control"
+										placeholder="Mots-clefs décrivant votre commerce (séparés par des virgules)">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Horaires
+									d'ouverture</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span>
+									<textarea class="form-control" name="horaires"
+										data-maxlength="250"
+										placeholder="Horaires d'ouverture de votre commerce" rows="6"></textarea>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Modes de paiement</label>
+								<div class="col-sm-10">
+									<div>
+										<input type="checkbox" name="payment[]" value="cb"
+											data-parsley-mincheck="2" /> Carte bleue
+									</div>
+									<div>
+										<input type="checkbox" name="payment[]" value="notes" />
+										Espèces
+									</div>
+									<div>
+										<input type="checkbox" name="payment[]" value="foodnote" />
+										Ticket restaurant
+									</div>
+									<div>
+										<input type="checkbox" name="payment[]" value="giftnote" />
+										Chèques cadeau
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Marques proposées</label>
+								<div class="col-sm-10">
+									<span class="field-marker mandatory"></span> <input
+										name="marques" type="text" class="form-control"
+										placeholder="Marques proposées par votre commerce (séparées par des virgules)">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Liens vidéos</label>
+								<div class="col-sm-10">
+									<span class="field-marker mandatory"></span> <input
+										name="video" type="text" class="form-control"
+										placeholder="Liens vers une ou plusieurs vidéos de présentation de votre commerce">
+								</div>
+							</div>
 
 
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker mandatory"></span> <input
-                    name="enseigne" type="text"
-                    placeholder="Nom de l'enseigne de votre commerce">
-
-
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input name="website"
-                    type="text" placeholder="Site Web de votre commerce">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker mandatory"></span>
-                <textarea class="count-field" required
-                    name="description" data-maxlength="250"
-                    data-parsley-error-message="Une description de votre commerce est requise"
-                    placeholder="Description de votre commerce (250 caractères maximum)"
-                    style="width: 80%;" rows="6"></textarea>
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input name="tags"
-                    type="text"
-                    placeholder="Mots-clefs décrivant votre commerce (séparés par des virgules)">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <textarea class="count-field" name="horaires"
-                    data-maxlength="250"
-                    placeholder="Horaires d'ouverture de votre commerce"
-                    style="width: 80%;" rows="6"></textarea>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                Modes de paiement
-                <ul>
-                    <li><input type="checkbox" name="payment[]"
-                        value="cb" data-parsley-mincheck="2" />Carte
-                        bleue</li>
-                    <li><input type="checkbox" name="payment[]"
-                        value="notes" />Espèces</li>
-                    <li><input type="checkbox" name="payment[]"
-                        value="foodnote" />Ticket restaurant</li>
-                    <li><input type="checkbox" name="payment[]"
-                        value="giftnote" />Chèques cadeau</li>
-                </ul>
-
-
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker mandatory"></span> <input
-                    name="marques" type="text"
-                    placeholder="Marques proposées par votre commerce (séparées par des virgules)">
-
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-
-                <span class="field-marker mandatory"></span> <input
-                    name="video" type="text"
-                    placeholder="Liens vers une ou plusieurs vidéos de présentation de votre commerce">
-
-            </div>
-        </div>
-
-        <!-- 
+							<!-- 
 Adresse et contact
     "adresse_rue","adresse_ville","adresse_code_postal"
     "contact_nom","contact_email",
@@ -192,118 +203,127 @@ Adresse et contact
  -->
 
 
-        <div class="row">
-            <div class="col-md-8">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Adresse</label>
+								<div class="col-sm-10">
+									<span class="field-marker mandatory"></span> <input
+										name="address" type="text" required class="form-control"
+										data-parsley-error-message="L'adresse de votre commerce est requise"
+										placeholder="Adresse de votre commerce"> <span
+										class="field-marker mandatory"></span> <input name="postcode"
+										type="text" required class="form-control"
+										data-parsley-error-message="Le code postal de votre commerce est requis"
+										placeholder="Code postal de votre commerce"> <span
+										class="field-marker mandatory"></span> <input name="city"
+										type="text" required class="form-control"
+										data-parsley-error-message="La ville de votre commerce est requise"
+										placeholder="Ville de votre commerce">
+								</div>
+							</div>
 
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Téléphone</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="phone"
+										class="form-control" type="text"
+										placeholder="Numéro de téléphone de votre commerce">
+								</div>
+							</div>
 
-                <span class="field-marker mandatory"></span> <input
-                    name="address" type="text" required
-                    data-parsley-error-message="L'adresse de votre commerce est requise"
-                    placeholder="Adresse de votre commerce"> <span
-                    class="field-marker mandatory"></span> <input
-                    name="postcode" type="text" required
-                    data-parsley-error-message="Le code postal de votre commerce est requis"
-                    placeholder="Code postal de votre commerce">
-                <span class="field-marker mandatory"></span> <input
-                    name="city" type="text" required
-                    data-parsley-error-message="La ville de votre commerce est requise"
-                    placeholder="Ville de votre commerce">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Numéro de fax</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="city"
+										type="text" class="form-control"
+										placeholder="Numéro de fax de votre commerce">
+								</div>
+							</div>
 
-            </div>
-        </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Contact principal</label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="contactName"
+										type="text" class="form-control"
+										placeholder="Nom du contact principal de votre commerce">
+									<span class="field-marker"></span> <input name="contactEmail"
+										type="text" class="form-control"
+										placeholder="Adresse e-mail de contact de votre commerce">
+								</div>
+							</div>
 
-
-        <div class="row">
-            <div class="col-md-8">
-
-                <span class="field-marker"></span> <input name="phone"
-                    type="text"
-                    placeholder="Numéro de téléphone de votre commerce">
-                <span class="field-marker"></span> <input name="city"
-                    type="text"
-                    placeholder="Numéro de fax de votre commerce">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-
-                <span class="field-marker"></span> <input
-                    name="contactName" type="text"
-                    placeholder="Nom du contact principal de votre commerce">
-
-                <span class="field-marker"></span> <input
-                    name="contactEmail" type="text"
-                    placeholder="Adresse e-mail de contact de votre commerce">
-
-            </div>
-        </div>
-
-
-        <!-- 
+							<!-- 
 Réseaux sociaux
     "twitter","linkedin","facebook","viadeo","google_plus"
  -->
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Facebook </label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="facebook"
+										class="form-control" type="text"
+										placeholder="Compte Facebook de votre commerce">
+								</div>
+							</div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input
-                    name="facebook" type="text"
-                    placeholder="Compte Facebook de votre commerce">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Viadeo </label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="viadeo"
+										type="text" class="form-control"
+										placeholder="Compte Viadeo contact de votre commerce">
+								</div>
+							</div>
 
-            </div>
-        </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Google+ </label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="viadeo"
+										type="text" class="form-control"
+										placeholder="Compte Google+ de votre commerce">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">LinkedIn </label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="LinkedIn"
+										type="text" class="form-control"
+										placeholder="Compte LinkedIn de votre commerce">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Twitter </label>
+								<div class="col-sm-10">
+									<span class="field-marker"></span> <input name="Twitter"
+										type="text" class="form-control"
+										placeholder="Compte Twitter de votre commerce">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label"></label>
+								<div class="col-sm-10"></div>
+							</div>
+
+							<button type="submit" class="btn btn-primary"
+								data-error-message="Une erreur s'est produite. Les informations n'ont pu être sauvegardées."
+								data-confirmation-message="Merci pour votre contribution, les informations saisies ont bien été enregistrées et sont visibles dés à présent sur la carte."
+								value="Envoyer">Envoyer</button>
+							<a href="" class="btn-gray btn-link"
+								data-confirmation-question="Confirmer l'annulation et revenir à la carte ?">Annuler</a>
 
 
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input name="viadeo"
-                    type="text"
-                    placeholder="Compte Viadeo contact de votre commerce">
+							<div class="row">
+								<div class="col-md-8">
+									<div class="inputs"></div>
+								</div>
+							</div>
+						</form>
 
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input
-                    name="googlePlus" type="text"
-                    placeholder="Compte Google+ de votre commerce">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input
-                    name="linkedIn" type="text"
-                    placeholder="Compte LinkedIn de votre commerce">
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-8">
-                <span class="field-marker"></span> <input name="twitter"
-                    type="text"
-                    placeholder="Compte Twitter de votre commerce">
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="inputs">
-                    <a href="" class="btn-gray cancel"
-                        data-confirmation-question="Confirmer l'annulation et revenir à la carte ?">Annuler</a>
-                    <input type="submit"
-                        data-error-message="Une erreur s'est produite. Les informations n'ont pu être sauvegardées."
-                        data-confirmation-message="Merci pour votre contribution, les informations saisies ont bien été enregistrées et sont visibles dés à présent sur la carte."
-                        class="btn-green" value="Envoyer">
-                </div>
-
-            </div>
-        </div>
-    </form>
-
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
