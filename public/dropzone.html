@@ -5,13 +5,13 @@
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
-    href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    href="../components/bootstrap/dist/css/bootstrap.min.css">
 
 <!-- Optional theme -->
 <link rel="stylesheet"
-    href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    href="../components/bootstrap/dist/css/bootstrap-theme.min.css">
 
-<script src="./components/dropzone/downloads/dropzone.js"></script>
+<script src="../components/dropzone/downloads/dropzone.js"></script>
 
 <style>
 html,body {
@@ -79,15 +79,9 @@ div.table .file-row:nth-child(odd) {
 
             <div class="col-lg-7">
                 <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button"> <i
+                <span class="btn btn-primary fileinput-button"> <i
                     class="glyphicon glyphicon-plus"></i> <span>Ajouter des images</span>
                 </span>
-                <button type="submit" class="btn btn-primary start">
-                    <i class="glyphicon glyphicon-upload"></i> <span>Démarrer le téléchargement</span>
-                </button>
-                <button type="reset" class="btn btn-warning cancel">
-                    <i class="glyphicon glyphicon-ban-circle"></i> <span>Annuler le téléchargement</span>
-                </button>
             </div>
 
             <div class="col-lg-5">
@@ -151,7 +145,7 @@ div.table .file-row:nth-child(odd) {
                                         thumbnailHeight : 80,
                                         parallelUploads : 20,
                                         previewTemplate : previewTemplate,
-                                        autoQueue : false, // Make sure the files aren't queued until manually added
+                                        autoQueue : true, // Make sure the files aren't queued until manually added
                                         previewsContainer : "#previews", // Define the container to display the previews
                                         clickable : ".fileinput-button" // Define the element that should be used as click trigger to select files.
                                     });
@@ -183,12 +177,7 @@ div.table .file-row:nth-child(odd) {
                                     // Setup the buttons for all transfers
                                     // The "add files" button doesn't need to be setup because the config
                                     // `clickable` has already been specified.
-                                    document.querySelector("#actions .start").onclick = function() {
-                                        myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-                                    };
-                                    document.querySelector("#actions .cancel").onclick = function() {
-                                        myDropzone.removeAllFiles(true);
-                                    };
+
                                 </script>
 
 
