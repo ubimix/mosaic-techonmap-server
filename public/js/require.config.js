@@ -39,6 +39,10 @@ require
                 'ApplicationRouter' : {
                     deps : [ 'jQuery', 'Underscore', 'Backbone' ]
                 },
+                
+//                'BaasBoxCli' : {
+//                    deps : ['When', 'Underscore', 'Superagent']
+//                }
 
                 'diff_match_patch' : {
                     exports : 'diff_match_patch'
@@ -140,5 +144,8 @@ require
                 Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
                 Leaflet : './../components/leaflet-dist/leaflet',
                 Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable'
+//                When : './../components/when/when.js',
+//                Superagent : './../components/superagent/superagent.js'
+                    
             }
         });

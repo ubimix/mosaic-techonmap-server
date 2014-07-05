@@ -52,6 +52,6 @@ client.login().then(function(session) {
     return Q.all([ promise ]);
     
     
-}).fail(function(error) {
+}).then(null, function(error) {
     console.log(error);
 }).done();

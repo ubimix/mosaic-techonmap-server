@@ -6,14 +6,10 @@ var Namer = require('../lib/namer');
 var _ = require('underscore')._;
 var ElasticSearch = require('elasticsearch');
 
-var BaasBoxCli = require('../../public/baasbox/baasbox-cli');
-
-var Q = require('q');
-
-var Twitter = require('../lib/twitterlib');
 var JSCR = require('jscr-api/jscr-api');
-require('jscr-api/jscr-memory');
-require('jscr-git/jscr-git');
+var BaasBoxCli = require('../../baasbox/baasbox-cli');
+
+var Q = require('when');
 
 var indexName = 'idx2';
 
@@ -101,7 +97,7 @@ function reply(req, res, promise) {
         return true;
     })
     //
-    .fail(function(error) {
+    .then(null, function(error) {
         console.log(error);
         if (error instanceof HttpError) {
             res.send(error.message, error.errorCode);
@@ -196,12 +192,11 @@ function importGeoJSONItemGit(project, itemPath, item, options) {
 
         return indexResource(resource, client);
 
-    }).fail(function(error) {
+    }).then(null, function(error) {
         console.log('***', itemPath, error, item);
         return null;
     });
 }
-
 
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
@@ -235,14 +230,17 @@ function importGeoJSON(project, json, options) {
 function initProject(options) {
     // var connection = new
     // JSCR.Implementation.Memory.WorkspaceConnection(options);
-    var connection = new JSCR.Implementation.Git.WorkspaceConnection(options);
-    return connection.connect()
-    // Create a project
-    .then(function(workspace) {
-        return workspace.loadProject(options.name, {
-            create : true
-        });
-    })
+    // var connection = new
+    // JSCR.Implementation.Git.WorkspaceConnection(options);
+    // return connection.connect()
+    // // Create a project
+    // .then(function(workspace) {
+    // return workspace.loadProject(options.name, {
+    // create : true
+    // });
+    // })
+
+    return Q();
 }
 
 /**
@@ -336,7 +334,7 @@ function initializeApplication(app, project) {
                 res.json(data);
             });
 
-        }).fail(function(error) {
+        }).then(null, function(error) {
             res.json({
                 error : error.message
             });
@@ -439,7 +437,7 @@ function initializeApplication(app, project) {
                 res.json(suggestions);
             });
 
-        }).fail(function(error) {
+        }, function(error) {
             res.json({
                 error : error.message
             });
@@ -607,7 +605,7 @@ function initializeApplication(app, project) {
                 res.json(result);
             });
 
-        }).fail(function(error) {
+        }, function(error) {
             res.json({
                 error : error.message
             });
@@ -635,37 +633,6 @@ function initializeApplication(app, project) {
         }));
     });
 
-    /** Stores a new resource in the repository */
-    function saveGitResource(req, res) {
-        reply(req, res, loadJsonFromRequest(req)
-        //
-        .then(function(json) {
-            var path = getRequestedPath(req);
-            if (path == '') {
-                path = getPathFromGeoJson(json);
-            }
-            var options = getOptionsFromRequest(req);
-            return importGeoJSONItem(project, path, json, options)
-            //
-            .then(function(value) {
-                // remove the resource from the validation object
-                var timestampPath = '.admin-timestamp';
-                return project //
-                .loadResource(timestampPath) //
-                .then(function(resource) {
-                    // Change it
-                    var properties = resource.getProperties();
-                    var list = properties.validated || [];
-                    properties.validated = _.without(list, path);
-                    return project.storeResource(resource, options);
-                }).then(function() {
-                    return value;
-                })
-            });
-        }));
-    }
-    
-    
     function saveResource(req, res) {
         reply(req, res, loadJsonFromRequest(req)
         //
@@ -675,7 +642,7 @@ function initializeApplication(app, project) {
                 path = getPathFromGeoJson(json);
             }
             var options = getOptionsFromRequest(req);
-            
+
             var client = new BaasBoxCli({
                 host : config.baasbox.host,
                 username : config.baasbox.username,
@@ -689,23 +656,23 @@ function initializeApplication(app, project) {
                 });
 
             });
-            
-//            //
-//            .then(function(value) {
-//                // remove the resource from the validation object
-//                var timestampPath = '.admin-timestamp';
-//                return project //
-//                .loadResource(timestampPath) //
-//                .then(function(resource) {
-//                    // Change it
-//                    var properties = resource.getProperties();
-//                    var list = properties.validated || [];
-//                    properties.validated = _.without(list, path);
-//                    return project.storeResource(resource, options);
-//                }).then(function() {
-//                    return value;
-//                })
-//            });
+
+            // //
+            // .then(function(value) {
+            // // remove the resource from the validation object
+            // var timestampPath = '.admin-timestamp';
+            // return project //
+            // .loadResource(timestampPath) //
+            // .then(function(resource) {
+            // // Change it
+            // var properties = resource.getProperties();
+            // var list = properties.validated || [];
+            // properties.validated = _.without(list, path);
+            // return project.storeResource(resource, options);
+            // }).then(function() {
+            // return value;
+            // })
+            // });
         }));
     }
 
@@ -888,24 +855,26 @@ function initializeApplication(app, project) {
     app.post('/api/validation', updateValidationResource);
 
     app.get('/api/validation', function(req, res) {
-        reply(req, res, project.loadResource(VALIDATION_RESOURCE).then(function(resource) {
-            var promise;
-            if (!resource) {
-                var options = getOptionsFromRequest(req);
-                promise = importGeoJSONItem(project, VALIDATION_RESOURCE, {
-                    properties : {
-                        validated : [],
-                        timestamp : 0
-                    }
-                }, options);
-            } else {
-                promise = Q(getGeoJsonFromResource(resource));
-            }
-            return promise.then(function(json) {
-                console.log(json);
-                return json;
-            });
-        }));
+        // reply(req, res,
+        // project.loadResource(VALIDATION_RESOURCE).then(function(resource) {
+        // var promise;
+        // if (!resource) {
+        // var options = getOptionsFromRequest(req);
+        // promise = importGeoJSONItem(project, VALIDATION_RESOURCE, {
+        // properties : {
+        // validated : [],
+        // timestamp : 0
+        // }
+        // }, options);
+        // } else {
+        // promise = Q(getGeoJsonFromResource(resource));
+        // }
+        // return promise.then(function(json) {
+        // console.log(json);
+        // return json;
+        // });
+        // }));
+        reply(req, res, Q({}));
     });
 
     app.get('/api/twitter/last', function(req, res) {
@@ -924,16 +893,14 @@ module.exports = function(app) {
     // Opens and initializes project
     return initProject(options)
     // Loads project data
-    .then(function(project) {
-        return loadData(project, options);
-    })
+    // .then(function(project) {
+    // return loadData(project, options);
+    // })
     // Initializes the application with the project
     .then(function(project) {
         initializeApplication(app, project);
         return true;
-    })
-    // Handle errors
-    .fail(function(err) {
+    }, function(err) {
         console.log('error', err);
         throw err;
     });
