@@ -1,14 +1,14 @@
 
-<div class="file-row">
+<div class="file-row" id="{{= id}}">
     <div>
         <span class="preview"><img data-dz-thumbnail /></span>
     </div>
     <div>
-        <p class="name" data-dz-name></p>
+        <p class="name"><a href="{{= href }}" class="dz-url"><span data-dz-name>{{= name }}</span></a></p>
         <strong class="error text-danger" data-dz-errormessage></strong>
     </div>
     <div>
-        <p class="size" data-dz-size></p>
+        <p class="size" data-dz-size>{{= size }}</p>
         <div class="progress progress-striped active" role="progressbar"
             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div class="progress-bar progress-bar-success"
@@ -18,7 +18,7 @@
     <div>
 
         <button data-dz-remove class="btn btn-danger delete">
-            <i class="glyphicon glyphicon-trash"></i> <span>Delete</span>
+            <i class="glyphicon glyphicon-trash"></i>
         </button>
     </div>
 </div>

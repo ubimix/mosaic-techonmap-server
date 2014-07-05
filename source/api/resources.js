@@ -1,16 +1,24 @@
 var Path = require('path');
 var Fs = require('fs');
+var _ = require('underscore')._;
 var ElasticSearch = require('elasticsearch');
+var P = require('when');
 
 var config = require('../config');
 var Namer = require('../lib/namer');
-var _ = require('underscore')._;
 var JSCR = require('jscr-api/jscr-api');
-var BaasBoxCli = require('../../baasbox/baasbox-cli');
+var BaasBoxCli = require('../../public/baasbox/baasbox-cli');
 
-var Q = require('when');
 
 var indexName = 'idx2';
+
+var bbox = new BaasBoxCli({
+    host : config.baasbox.host,
+    username : config.baasbox.username,
+    password : config.baasbox.password,
+    appcode : config.baasbox.appcode
+});
+
 
 /* ========================================================================== */
 /* Data transformation utilities */
@@ -145,12 +153,12 @@ function getOptionsFromRequest(req) {
  */
 function loadJsonFromRequest(req) {
     var data = req.body;
-    return Q(data);
+    return P(data);
 }
 
 function loadJsonMapFromRequest(req) {
     var data = req.body.data;
-    return Q(data);
+    return P(data);
 }
 
 /* ========================================================================== */
@@ -175,7 +183,7 @@ function indexResource(resource, client) {
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
-    var promise = Q();
+    var promise = P();
     var result = {};
     _.each(items, function(item) {
         var itemPath = getPathFromGeoJson(item);
@@ -202,7 +210,7 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    return Q();
+    return P();
 }
 
 /** Binds request handling to the specified application */
@@ -223,20 +231,13 @@ function initializeApplication(app, project) {
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
 
-        var client = new BaasBoxCli({
-            host : config.baasbox.host,
-            username : config.baasbox.username,
-            password : config.baasbox.password,
-            appcode : config.baasbox.appcode
-        });
-
-        client.login().then(function() {
+        bbox.login().then(function() {
 
             // var criteria = encodeURIComponent('properties.name like
             // \'Under%\'');
             // , 'where='+criteria
             console.log('queryCollection')
-            return client.queryCollection(config.baasbox.collection, {
+            return bbox.queryCollection(config.baasbox.collection, {
                 fields : 'properties,id',
                 page : 0,
                 recordsPerPage : 1000
@@ -323,17 +324,11 @@ function initializeApplication(app, project) {
         var path = getRequestedPath(req);
         var query = req.query.query;
         console.log('typeahead', path);
-        var client = new BaasBoxCli({
-            host : config.baasbox.host,
-            username : config.baasbox.username,
-            password : config.baasbox.password,
-            appcode : config.baasbox.appcode
-        });
 
-        client.login().then(function() {
+        bbox.login().then(function() {
 
             var criteria = encodeURIComponent('properties.name like \'' + query + '%\'');
-            return client.queryCollection(config.baasbox.collection, {
+            return bbox.queryCollection(config.baasbox.collection, {
                 where : criteria
             }).then(function(result) {
                 var suggestions = [];
@@ -449,7 +444,7 @@ function initializeApplication(app, project) {
     app.get('/api/resources/index', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path).then(function(results) {
-            var promise = Q();
+            var promise = P();
             var client = new ElasticSearch.Client({
                 host : 'localhost:9200',
                 log : 'trace'
@@ -486,16 +481,10 @@ function initializeApplication(app, project) {
 
         console.log('path', path);
 
-        var client = new BaasBoxCli({
-            host : config.baasbox.host,
-            username : config.baasbox.username,
-            password : config.baasbox.password,
-            appcode : config.baasbox.appcode
-        });
+        
+        bbox.login().then(function() {
 
-        client.login().then(function() {
-
-            return client.loadResource(config.baasbox.collection, path).then(function(result) {
+            return bbox.getResource(config.baasbox.collection, path).then(function(result) {
                 console.log(JSON.stringify(result, null, 2));
                 res.json(result);
             });
@@ -527,15 +516,8 @@ function initializeApplication(app, project) {
             }
             var options = getOptionsFromRequest(req);
 
-            var client = new BaasBoxCli({
-                host : config.baasbox.host,
-                username : config.baasbox.username,
-                password : config.baasbox.password,
-                appcode : config.baasbox.appcode
-            });
-
-            return client.login().then(function() {
-                return client.updateResource(config.baasbox.collection, path, json).then(function(data) {
+            return bbox.login().then(function() {
+                return bbox.updateResource(config.baasbox.collection, path, json).then(function(data) {
                     res.json(data);
                 });
 
@@ -694,6 +676,32 @@ function initializeApplication(app, project) {
 
     });
 
+    app.get('/api/file/:path', function(req, response) {
+        var path = getRequestedPath(req);
+        
+        bbox.getFile(path).then(function(fileResponse) {
+            console.log(fileResponse.headers);
+            
+            response.writeHead(200, {
+                'Content-Type' : fileResponse.headers['content-type'],
+                'Content-Length' : fileResponse.headers['content-length'],
+                'Content-Disposition' :  fileResponse.headers['content-disposition']
+            });
+            
+            fileResponse.on('data', function(data) {
+                response.write(data);
+            });
+            
+            fileResponse.on('end', function() {
+                response.end();        
+            });
+            
+        });
+        
+        
+
+    });
+
     var VALIDATION_RESOURCE = '.admin-timestamp';
     function updateValidationResource(req, res) {
         reply(req, res, loadJsonFromRequest(req).then(function(json) {
@@ -706,7 +714,7 @@ function initializeApplication(app, project) {
 
     app.get('/api/validation', function(req, res) {
       
-        reply(req, res, Q({}));
+        reply(req, res, P({}));
     });
 
 }

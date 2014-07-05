@@ -15,13 +15,13 @@ var client = new BaasBoxCli({
 
 client.login().then(function(session) {
 
-//    return client.deleteCollection('commerces').then(function(result) {
-//        console.log('[result]', result);
-//    });
-    
-    //return client.uploadFile('/home/arkub/tmp/22661.png');
-    
-    return client.listFileDetails();
+    // return client.deleteCollection('commerces').then(function(result) {
+    // console.log('[result]', result);
+    // });
+
+    // return client.uploadFile('/home/arkub/tmp/22661.png');
+
+    return client.getFile('6137cead-955b-4a5e-a167-1eb6d7d812f8');
 
     // return client.storeResource('commerces', {
     // title : 'hello',
@@ -43,8 +43,13 @@ client.login().then(function(session) {
     // console.log(JSON.stringify(data, null, 2));
     // });
     //    
-}).then(function(result) {
-console.log(result)    
+}).then(function(res) {
+    console.log(res.headers['content-type'])
+    var body = '';
+    var file = Fs.createWriteStream("file.jpg");
+    res.pipe(file);
+
+    
 }).then(null, function(error) {
     if (error)
         console.log(error);

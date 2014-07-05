@@ -16,8 +16,6 @@
 
             this.config = config || {};
 
-            var self = this;
-
             if (!config.hasOwnProperty('log')) {
                 this.config.log = 'warning';
             }
@@ -25,6 +23,8 @@
             if (!config.hosts && !config.host) {
                 this.config.host = 'http://localhost:9000';
             }
+
+            var self = this;
 
             this.login = function() {
                 var defer = P.defer();
@@ -42,6 +42,55 @@
                 return defer.promise;
             }
 
+            this.createCollection = function(collection, jsonObject) {
+                var defer = P.defer();
+                var url = config.host + '/admin/collection/' + collection;
+                Request.post(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                        function(error, res) {
+                            if (error)
+                                defer.reject(new Error(error));
+                            defer.resolve(res.body);
+                        });
+                return defer.promise;
+            }
+
+            this.queryCollection = function(collection, params) {
+                var defer = P.defer();
+                var url = config.host + '/document/' + collection + '?';
+                _.each(params, function(value, key) {
+                    if (key != undefined) {
+                        url += '&' + key + '=' + value;
+                    }
+                });
+                if (params.recordsPerPage === undefined) {
+                    url += '&recordsPerPage=100';
+                }
+
+                url += '&orderBy=properties.label';
+                console.log(url);
+
+                Request.get(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                        function(error, res) {
+                            if (error)
+                                defer.reject(new Error(error));
+                            defer.resolve(res.body.data);
+                        });
+
+                return defer.promise;
+            }
+
+            this.deleteCollection = function(collection) {
+                var defer = P.defer();
+                var url = config.host + '/admin/collection/' + collection;
+                Request.del(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                        function(error, res) {
+                            if (error)
+                                defer.reject(new Error(error));
+                            defer.resolve(res.body);
+                        });
+                return defer.promise;
+            }
+
             this.listResources = function(collection) {
                 var defer = P.defer();
                 var url = config.host + '/document/' + collection;
@@ -54,6 +103,21 @@
                         });
 
                 return defer.promise;
+            }
+
+            this.getResource = function(collection, documentId) {
+                var defer = P.defer();
+                var url = config.host + '/document/' + collection + '/' + documentId;
+
+                Request.get(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                        function(error, res) {
+                            if (error)
+                                defer.reject(new Error(error));
+                            defer.resolve(res.body.data);
+                        });
+
+                return defer.promise;
+
             }
 
             this.storeResource = function(collection, jsonObject) {
@@ -82,19 +146,21 @@
                 return defer.promise;
             }
 
-            this.getResource = function(collection, documentId) {
+            this.updateResourceField = function(collectionName, resourceId, fieldId, fieldValue) {
+                var url = self.config.host + '/document/' + collectionName + '/' + resourceId + '/.' + fieldId;
                 var defer = P.defer();
-                var url = config.host + '/document/' + collection + '/' + documentId;
-
-                Request.get(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
+                var jsonObject = {
+                    data : fieldValue
+                };
+                Request.put(url).send(jsonObject).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
                         function(error, res) {
                             if (error)
                                 defer.reject(new Error(error));
-                            defer.resolve(res.body.data);
+                            console.log(res.body)
+                            defer.resolve(res.body);
                         });
 
                 return defer.promise;
-
             }
 
             this.getFileMetadata = function(fileId) {
@@ -135,23 +201,6 @@
                 return defer.promise;
             }
 
-            this.updateField = function(collectionName, resourceId, fieldId, fieldValue) {
-                var url = self.config.host + '/document/' + collectionName + '/' + resourceId + '/.' + fieldId;
-                var defer = P.defer();
-                var jsonObject = {
-                    data : fieldValue
-                };
-                Request.put(url).send(jsonObject).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
-                        function(error, res) {
-                            if (error)
-                                defer.reject(new Error(error));
-                            console.log(res.body)
-                            defer.resolve(res.body);
-                        });
-
-                return defer.promise;
-            }
-
             this.deleteFile = function(fileId) {
                 var defer = P.defer();
                 var url = config.host + '/file/' + fileId;
@@ -163,52 +212,15 @@
                         });
                 return defer.promise;
             }
-
-            this.queryCollection = function(collection, params) {
+            
+            this.getFile = function(fileId) {
                 var defer = P.defer();
-                var url = config.host + '/document/' + collection + '?';
-                _.each(params, function(value, key) {
-                    if (key != undefined) {
-                        url += '&' + key + '=' + value;
-                    }
-                });
-                if (params.recordsPerPage === undefined) {
-                    url += '&recordsPerPage=100';
-                }
-
-                url += '&orderBy=properties.label';
-                console.log(url);
-
+                var url = config.host + '/file/' + fileId+'?download=true';
                 Request.get(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
                         function(error, res) {
                             if (error)
                                 defer.reject(new Error(error));
-                            defer.resolve(res.body.data);
-                        });
-
-                return defer.promise;
-            }
-
-            this.createCollection = function(collection, jsonObject) {
-                var defer = P.defer();
-                var url = config.host + '/admin/collection/' + collection;
-                Request.post(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
-                        function(error, res) {
-                            if (error)
-                                defer.reject(new Error(error));
-                            defer.resolve(res.body);
-                        });
-                return defer.promise;
-            }
-
-            this.deleteCollection = function(collection) {
-                var defer = P.defer();
-                var url = config.host + '/admin/collection/' + collection;
-                Request.del(url).set('X-BB-SESSION', self.session).set('X-BAASBOX-APPCODE', config.appcode).end(
-                        function(error, res) {
-                            if (error)
-                                defer.reject(new Error(error));
-                            defer.resolve(res.body);
+                            defer.resolve(res);
                         });
                 return defer.promise;
             }

@@ -341,6 +341,20 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
             var allFiles = [];
             var myDropzone;
 
+            function removeFile(fileId) {
+                return client.login().then(function(session) {
+                    return client.deleteFile(fileId);
+                }).then(function(body) {
+                    console.log('allFiles', allFiles);
+                    var idx = allFiles.indexOf(fileId);
+                    if (idx > -1) {
+                        allFiles.splice(idx, 1);
+                        return client.updateResourceField('commerces', resourceId, 'files', allFiles);
+                    }
+                });
+
+            }
+
             client.login().then(function(session) {
                 console.log('Dropzone', Dropzone.options)
                 // Dropzone.options.myDropzone.options.
@@ -386,25 +400,14 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
                     // document.querySelector('#total-progress').style.opacity =
                     // '0';
 
-                    client.updateField('commerces', resourceId, 'files', allFiles).then(function(result) {
+                    client.updateResourceField('commerces', resourceId, 'files', allFiles).then(function(result) {
                         console.log(result);
                     });
                 })
 
                 myDropzone.on('removedfile', function(file) {
                     console.log('removedfile', file);
-                    client.login().then(function(session) {
-                        return client.deleteFile(file.id);
-                    }).then(function(body) {
-                        console.log('allFiles', allFiles);
-
-                        var idx = allFiles.indexOf(file.id);
-                        if (idx > -1) {
-                            allFiles.splice(idx, 1);
-                            return client.updateField('commerces', resourceId, 'files', allFiles);
-                        }
-                    }).done();
-
+                    removeFile(file.id);
                 });
 
                 myDropzone.on('success', function(response, result) {
@@ -421,6 +424,10 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
                             file.id = result.data.id;
                             allFiles.push(file.id);
                         }
+
+                        // set URL
+                        var url = $(file.previewElement).find('.dz-url');
+                        url.attr('href', '/api/file/' + file.id)
 
                         // TODO: add delete button only when the upload was
                         // successful
@@ -448,13 +455,25 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
 
             }).then(function(files) {
                 _.each(files, function(file) {
-                    var mockFile = {
-                        name : file.fileName,
-                        size : file.contentLength,
-                        id : file.id
-                    };
-                    myDropzone.emit('addedfile', mockFile);
-                    allFiles.push(mockFile.id);
+                    if (file) {
+                        var mockFile = {
+                            name : file.fileName,
+                            size : file.contentLength,
+                            id : file.id,
+                            href : '/api/file/' + file.id
+                        };
+
+                        var fileDiv = _.template(ImagePreviewTemplate, mockFile);
+                        elm.find('#dropzone-image-previews').append(fileDiv);
+                        var delBtn = elm.find('#' + file.id).find('.delete');
+                        delBtn.on('click', function() {
+                            removeFile(file.id).then(function(result) {
+                                elm.find('#' + file.id).remove()
+                            });
+                        });
+
+                        allFiles.push(mockFile.id);
+                    }
 
                 });
 
