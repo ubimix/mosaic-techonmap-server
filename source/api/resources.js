@@ -1,11 +1,10 @@
 var Path = require('path');
 var Fs = require('fs');
-var config = require('../config');
-// TODO: when to use relative paths, absolute paths in node ?
-var Namer = require('../lib/namer');
-var _ = require('underscore')._;
 var ElasticSearch = require('elasticsearch');
 
+var config = require('../config');
+var Namer = require('../lib/namer');
+var _ = require('underscore')._;
 var JSCR = require('jscr-api/jscr-api');
 var BaasBoxCli = require('../../baasbox/baasbox-cli');
 
@@ -173,31 +172,6 @@ function indexResource(resource, client) {
 
 }
 
-/**
- * Import and stores the given GeoJSON object in the resource with the specified
- * path.
- */
-function importGeoJSONItemGit(project, itemPath, item, options) {
-    console.log('* Import "' + itemPath + '".');
-    return project.loadResource(itemPath, {
-        create : true
-    }).then(function(resource) {
-        resource = updateResourceFields(resource, item);
-        return project.storeResource(resource, options);
-    }).then(function(resource) {
-        var client = new ElasticSearch.Client({
-            host : 'localhost:9200',
-            log : 'trace'
-        });
-
-        return indexResource(resource, client);
-
-    }).then(null, function(error) {
-        console.log('***', itemPath, error, item);
-        return null;
-    });
-}
-
 /** Import an array of GeoJSON items in the specified project */
 function importGeoJSON(project, json, options) {
     var items = _.isArray(json.features) ? json.features : _.isArray(json) ? json : [ json ];
@@ -228,64 +202,7 @@ function importGeoJSON(project, json, options) {
  * </pre>
  */
 function initProject(options) {
-    // var connection = new
-    // JSCR.Implementation.Memory.WorkspaceConnection(options);
-    // var connection = new
-    // JSCR.Implementation.Git.WorkspaceConnection(options);
-    // return connection.connect()
-    // // Create a project
-    // .then(function(workspace) {
-    // return workspace.loadProject(options.name, {
-    // create : true
-    // });
-    // })
-
     return Q();
-}
-
-/**
- * Loads data in the specified project. This method returns a promise for the
- * given project. If the input file is not specified then this method just
- * returns the project promise. Used options fields:
- * 
- * <pre>
- * - dir - a root workspace directory
- * - name - a name of the repository
- * - inputFile - a data file to inject in the repository
- * </pre>
- * 
- * @returns a promise for an initialized project
- */
-function loadData(project, options) {
-    if (!options.inputFile || options.inputFile == '' || !Fs.existsSync(options.inputFile))
-        return Q(project);
-    return Q()
-    // Load file with data
-    .then(function() {
-        return Q.nfcall(Fs.readFile, options.inputFile, 'UTF-8');
-    })
-    // Parse JSON and return an array of GeoJson objects
-    .then(function(data) {
-        var json = JSON.parse(data);
-        var jsonItems = json.features || json;
-        if (!_.isArray(jsonItems)) {
-            jsonItems = [ jsonItems ];
-        }
-        return jsonItems;
-    })
-    // Store the JSON content as project resources
-    .then(function(json) {
-        return importGeoJSON(project, json, options);
-    })
-    // Shows imported resources. Just in case...
-    .then(function(resource) {
-        // console.log('Stored:', JSON.stringify(resource, null, 2));
-        return true;
-    })
-    // Return the project for the next operations
-    .then(function() {
-        return project;
-    });
 }
 
 /** Binds request handling to the specified application */
@@ -302,12 +219,6 @@ function initializeApplication(app, project) {
         return list;
     }
 
-    app.get('/api/jscr-git/resources', function(req, res) {
-        var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(function(results) {
-            return getGeoJsonList(results, true);
-        }));
-    });
 
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
@@ -535,22 +446,6 @@ function initializeApplication(app, project) {
 
     });
 
-    /**
-     * Loads and returns all resources in the 'exporing' format (without system
-     * properties)
-     */
-    app.get('/api/jscr/resources/export', function(req, res) {
-        var path = getRequestedPath(req);
-        reply(req, res, project.loadChildResources(path).then(function(results) {
-            var list = getGeoJsonList(results, false);
-            var geoJson = {
-                'type' : 'FeatureCollection',
-                'features' : list
-            };
-            return geoJson;
-        }));
-    });
-
     app.get('/api/resources/index', function(req, res) {
         var path = getRequestedPath(req);
         reply(req, res, project.loadChildResources(path).then(function(results) {
@@ -611,17 +506,6 @@ function initializeApplication(app, project) {
             });
         }).done();
 
-    });
-
-    /** Returns individual resource by its path */
-    app.get('/api/git/resources/:path', function(req, res) {
-        var path = getRequestedPath(req);
-        reply(req, res, project.loadResource(path).then(function(resource) {
-            if (!resource) {
-                throw HttpError.notFound(path);
-            }
-            return getGeoJsonFromResource(resource);
-        }));
     });
 
     /** Import 'in-batch' an array of GeoJSON items */
@@ -810,40 +694,6 @@ function initializeApplication(app, project) {
 
     });
 
-    /* --------------------------------------------------------------- */
-
-    /** Provides search results for autocompletion */
-    app.get('/api/git/typeahead', function(req, res) {
-        var path = getRequestedPath(req);
-        console.log('typeahead', path);
-        var childR = project.loadChildResources(path);
-        reply(req, res, project.loadChildResources(path)
-        // Filter resources
-        .then(function(results) {
-            var query = req.query.query;
-            var match = [];
-            if (!query)
-                return match;
-            query = query.toLowerCase();
-            var regexp = new RegExp('\\b' + query, 'gi');
-            _.each(results, function(item) {
-                if (!item.properties || !item.properties.name)
-                    return;
-                // name can be a number -> convert to string
-                var name = ('' + item.properties.name).toLowerCase();
-                if (!name.match(regexp))
-                    return;
-                // https://github.com/twitter/typeahead.js#datum
-                match.push({
-                    value : item.properties.name,
-                    tokens : [ item.properties.name ],
-                    id : item.properties.id
-                });
-            });
-            return match;
-        }));
-    });
-
     var VALIDATION_RESOURCE = '.admin-timestamp';
     function updateValidationResource(req, res) {
         reply(req, res, loadJsonFromRequest(req).then(function(json) {
@@ -855,34 +705,10 @@ function initializeApplication(app, project) {
     app.post('/api/validation', updateValidationResource);
 
     app.get('/api/validation', function(req, res) {
-        // reply(req, res,
-        // project.loadResource(VALIDATION_RESOURCE).then(function(resource) {
-        // var promise;
-        // if (!resource) {
-        // var options = getOptionsFromRequest(req);
-        // promise = importGeoJSONItem(project, VALIDATION_RESOURCE, {
-        // properties : {
-        // validated : [],
-        // timestamp : 0
-        // }
-        // }, options);
-        // } else {
-        // promise = Q(getGeoJsonFromResource(resource));
-        // }
-        // return promise.then(function(json) {
-        // console.log(json);
-        // return json;
-        // });
-        // }));
+      
         reply(req, res, Q({}));
     });
 
-    app.get('/api/twitter/last', function(req, res) {
-        var twitt = Twitter.fetchLastTweet('TechOnMap', function(err, data) {
-            res.json(data);
-        });
-
-    });
 }
 
 /* ========================================================================== */
@@ -892,11 +718,6 @@ module.exports = function(app) {
     var options = config.repository;
     // Opens and initializes project
     return initProject(options)
-    // Loads project data
-    // .then(function(project) {
-    // return loadData(project, options);
-    // })
-    // Initializes the application with the project
     .then(function(project) {
         initializeApplication(app, project);
         return true;

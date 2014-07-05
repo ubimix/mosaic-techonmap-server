@@ -114,6 +114,10 @@ define(
                         getGeometry : function() {
                             return this.get('geometry');
                         },
+                        
+                        getFileIds : function() {
+                            return this.get('files');
+                        },
 
                         getUpdated : function() {
                             // console.log('updated', this.getSys().updated);

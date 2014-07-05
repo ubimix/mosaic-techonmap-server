@@ -1,5 +1,10 @@
 require
         .config({
+            
+            packages: [
+                       { name: 'When', location: './../components/when', main: 'when' },
+                   ],
+            
             shim : {
                 'jQuery' : {
                     exports : '$'
@@ -40,9 +45,13 @@ require
                     deps : [ 'jQuery', 'Underscore', 'Backbone' ]
                 },
                 
-//                'BaasBoxCli' : {
-//                    deps : ['When', 'Underscore', 'Superagent']
-//                }
+                'BaasBoxCli' : {
+                    deps : ['When', 'Underscore', 'Superagent']
+                },
+                
+                'Superagent' : {
+                    exports : 'superagent'  
+                },
 
                 'diff_match_patch' : {
                     exports : 'diff_match_patch'
@@ -114,6 +123,7 @@ require
                         return jQuery.fn.editable;
                     }
                 }
+                
             },
 
             paths : {
@@ -143,9 +153,9 @@ require
                 CodeMirrorHyperTextMode : './codemirror/mode/djinko/djinko',
                 Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
                 Leaflet : './../components/leaflet-dist/leaflet',
-                Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable'
-//                When : './../components/when/when.js',
-//                Superagent : './../components/superagent/superagent.js'
-                    
+                Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable',
+                Dropzone : './../components/dropzone/downloads/dropzone',
+                Superagent : './../components/superagent/superagent',
+                BaasBoxCli : './../baasbox/baasbox-cli'
             }
         });

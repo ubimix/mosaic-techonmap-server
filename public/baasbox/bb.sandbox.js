@@ -3,7 +3,7 @@ var BaasBoxCli = require('./baasbox-cli');
 var Vistor = require('./file-visitor');
 var Fs = require('fs');
 var _ = require('underscore');
-var Q = require('q');
+var P = require('when');
 
 var config = require('./config');
 
@@ -15,9 +15,13 @@ var client = new BaasBoxCli({
 
 client.login().then(function(session) {
 
-    return client.deleteCollection('commerces').then(function(result) {
-        console.log('[result]', result);
-    });
+//    return client.deleteCollection('commerces').then(function(result) {
+//        console.log('[result]', result);
+//    });
+    
+    //return client.uploadFile('/home/arkub/tmp/22661.png');
+    
+    return client.listFileDetails();
 
     // return client.storeResource('commerces', {
     // title : 'hello',
@@ -39,8 +43,9 @@ client.login().then(function(session) {
     // console.log(JSON.stringify(data, null, 2));
     // });
     //    
-
-}).fail(function(error) {
+}).then(function(result) {
+console.log(result)    
+}).then(null, function(error) {
     if (error)
         console.log(error);
 }).done();

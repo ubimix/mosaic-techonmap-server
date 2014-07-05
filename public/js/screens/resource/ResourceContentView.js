@@ -1,7 +1,8 @@
-define([ '../../commons/TemplateView', 'Underscore', 'Handsontable', 'Leaflet', '../../models/Resource', 'utils',
-        'text!./ResourceContentView.html' ],
+define([ '../../commons/TemplateView', 'Underscore', 'Handsontable', 'Leaflet', 'Dropzone', 'When', 'BaasBoxCli',
+        '../../models/Resource', 'utils', 'text!./ResourceContentView.html', 'text!./ImagePreviewTemplate.html' ],
 
-function(TemplateView, _, Handsontable, Leaflet, ResourceModel, Utils, ResourceContentViewTemplate) {
+function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, ResourceModel, Utils, ResourceContentViewTemplate,
+        ImagePreviewTemplate) {
 
     // TODO: why is Handsontable undefined here
     console.log('handsontable', Handsontable)
@@ -318,6 +319,151 @@ function(TemplateView, _, Handsontable, Leaflet, ResourceModel, Utils, ResourceC
 
         renderMap : function(mapContainer) {
             this.map = this._newMap(mapContainer);
+        },
+
+        prepareDropzone : function(elm) {
+
+            var resourceId = this.getPath();
+            var resourceFileIds = this.model.getFileIds();
+
+            var config = {
+                host : 'http://localhost:9000',
+                username : '',
+                password : '',
+                appcode : '1234567890'
+            };
+            var client = new BaasBoxCli(config);
+            // an allFiles var is required since myDropzone.files does not
+            // return the mock files
+            // (the ones added through the addedfile event)
+            // TODO: see why dropzone.files does not contain the ones added
+            // through emit
+            var allFiles = [];
+            var myDropzone;
+
+            client.login().then(function(session) {
+                console.log('Dropzone', Dropzone.options)
+                // Dropzone.options.myDropzone.options.
+                myDropzone = new Dropzone('#dropzone', {
+
+                    url : config.host + '/file',
+                    headers : {
+                        'X-BB-SESSION' : session.session,
+                        'X-BAASBOX-APPCODE' : client.appcode
+                    },
+                    paramName : 'file',
+                    thumbnailWidth : 80,
+                    thumbnailHeight : 80,
+                    parallelUploads : 20,
+                    previewTemplate : ImagePreviewTemplate,
+                    autoQueue : true, // false to make sure the files aren't
+                    // queued until manually added
+                    previewsContainer : "#dropzone-image-previews",
+                    clickable : ".fileinput-button",
+
+                });
+
+                myDropzone.on('addedfile', function(file) {
+                    // Hookup the start button
+                    /*
+                     * file.previewElement.querySelector(".start").onclick =
+                     * function() { myDropzone.enqueueFile(file); };
+                     */
+                });
+
+                myDropzone.on('sending', function(file, xhr, formData) {
+                    console.log('sending...', formData)
+                    // Show the total progress bar when upload starts
+                    // document.querySelector('#total-progress').style.opacity =
+                    // '1';
+                    // And disable the start button
+                    // file.previewElement.querySelector(".start").setAttribute("disabled",
+                    // "disabled");
+                });
+
+                // Hide the total progress bar when nothing's uploading anymore
+                myDropzone.on('queuecomplete', function(progress) {
+                    // document.querySelector('#total-progress').style.opacity =
+                    // '0';
+
+                    client.updateField('commerces', resourceId, 'files', allFiles).then(function(result) {
+                        console.log(result);
+                    });
+                })
+
+                myDropzone.on('removedfile', function(file) {
+                    console.log('removedfile', file);
+                    client.login().then(function(session) {
+                        return client.deleteFile(file.id);
+                    }).then(function(body) {
+                        console.log('allFiles', allFiles);
+
+                        var idx = allFiles.indexOf(file.id);
+                        if (idx > -1) {
+                            allFiles.splice(idx, 1);
+                            return client.updateField('commerces', resourceId, 'files', allFiles);
+                        }
+                    }).done();
+
+                });
+
+                myDropzone.on('success', function(response, result) {
+                    _.each(myDropzone.files, function(file) {
+
+                        // remove progress bar
+                        var progress = $(file.previewElement).find('.progress');
+                        progress.hide();
+
+                        // set id
+                        // TODO: issue when multipe files with the same name get
+                        // uploaded at the same time
+                        if (!file.id && file.name == result.data.fileName) {
+                            file.id = result.data.id;
+                            allFiles.push(file.id);
+                        }
+
+                        // TODO: add delete button only when the upload was
+                        // successful
+
+                        // TODO: re-activate the cancel button : handy when file
+                        // sent by error
+
+                    });
+                })
+
+                var filesMetadata = [];
+                var promises = [];
+                _.each(resourceFileIds, function(fileId) {
+                    var promise = client.getFileMetadata(fileId).then(function(data) {
+                        filesMetadata.push(data);
+                    });
+                    promises.push(promise);
+                })
+
+                return P.all(promises).then(function() {
+                    return filesMetadata;
+                }, function(error) {
+                    console.log(error);
+                });
+
+            }).then(function(files) {
+                _.each(files, function(file) {
+                    var mockFile = {
+                        name : file.fileName,
+                        size : file.contentLength,
+                        id : file.id
+                    };
+                    myDropzone.emit('addedfile', mockFile);
+                    allFiles.push(mockFile.id);
+
+                });
+
+                $('.progress').hide()
+
+            }, function(error) {
+                console.log(error);
+            });
+
         },
 
         _getCoordinates : function() {
