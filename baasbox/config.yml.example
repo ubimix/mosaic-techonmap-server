@@ -1,0 +1,13 @@
+---
+# Configuration sample file (YAML)
+application:
+    title: ""
+baasbox:
+    host: "http://localhost:9000"
+    username:
+    password: 
+    appcode: 1234567890
+dataSources:
+    - source: 
+      collection: 
+
