@@ -680,7 +680,6 @@ function initializeApplication(app, project) {
         var path = getRequestedPath(req);
         
         bbox.getFile(path).then(function(fileResponse) {
-            console.log(fileResponse.headers);
             
             response.writeHead(200, {
                 'Content-Type' : fileResponse.headers['content-type'],
