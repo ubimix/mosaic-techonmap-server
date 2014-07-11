@@ -24,7 +24,7 @@ jQuery(function() {
                             }
                         })
                     }
-                    
+
                     if (valid) {
                         var elm = $(this);
 

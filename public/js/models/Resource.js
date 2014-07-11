@@ -148,7 +148,7 @@ define(
                         updateAndSave : function(newModel, callback) {
                             var copy = this.getCopy();
                             
-                            this.set('content', newModel.getContent())
+                            //this.set('content', newModel.getContent())
                             this.set('properties', newModel.getProperties());
                             this.set('geometry', newModel.getGeometry());
                             var that = this;

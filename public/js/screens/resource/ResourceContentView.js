@@ -328,8 +328,8 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
 
             var config = {
                 host : 'http://localhost:9000',
-                username : '',
-                password : '',
+                username : 'arkub',
+                password : '[leliendéfait]',
                 appcode : '1234567890'
             };
             var client = new BaasBoxCli(config);
@@ -626,7 +626,8 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
         },
 
         _getContent : function() {
-            return this.model.attributes.content || '';
+            // return this.model.attributes.content || '';
+            return this._getProperties().description || '';
         },
 
         _getProperties : function() {
@@ -659,7 +660,8 @@ function(TemplateView, _, Handsontable, Leaflet, Dropzone, P, BaasBoxCli, Resour
             changed |= this._doUpdateModel(attributes, this.geoEditor, geoDataModel);
 
             var content = this.contentEditor.getValue();
-            changed |= Utils.updateObject(attributes, 'content', content);
+            // changed |= Utils.updateObject(attributes, 'content', content);
+            changed |= Utils.updateObject(attributes, 'properties.description', content);
 
             var id = this.idFieldElm.val();
             changed |= Utils.updateObject(attributes, 'properties.id', id);

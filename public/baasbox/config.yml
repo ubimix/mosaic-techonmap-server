@@ -4,10 +4,10 @@ application:
     title: "Djk"
 baasbox:
     host: "http://localhost:9000"
-    username: arkub
-    password: '[leliendéfait]'
+    username: 
+    password: ''
     appcode: 1234567890
 dataSources:
-    - source: '/home/arkub/git/cci-preference-commerce/data/commerces060514.geo.json'
+    - source: '/home/arkub/git/cci-preference-commerce/data/commerces-20140707.geo.json'
       collection: 'commerces'
 

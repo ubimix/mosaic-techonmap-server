@@ -11,6 +11,8 @@ var client = new BaasBoxCli({
     appcode : config.baasbox.appcode
 });
 
+//TODO: check that baasbox is up and running
+
 client.login().then(function(session) {
     console.log(session);
     var collection = config.dataSources[0].collection;
@@ -40,8 +42,8 @@ client.login().then(function(session) {
     _.each(features, function(feature) {
         promise = promise.then(function() {
             console.log('[storing]', feature.properties.label);
-            feature.content = feature.properties.description;
-            delete feature.properties.description;
+            //feature.content = feature.properties.description;
+            //delete feature.properties.description;
             
             return client.storeResource(collection, feature).then(function(result) {
                 console.log('[result]', result.result, result.data.properties.label);

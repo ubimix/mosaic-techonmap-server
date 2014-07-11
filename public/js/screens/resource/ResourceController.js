@@ -19,6 +19,7 @@ function(LinkController, Resource, ResourceView) {
             var resource = new Resource({
                 id : path
             });
+            
             resource.fetch({
                 // TODO: handle errors when no resource found with given id
                 success : function(model, object) {

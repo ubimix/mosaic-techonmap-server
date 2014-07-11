@@ -26,8 +26,11 @@
 
             var self = this;
 
+            //this.login = function(params) {
             this.login = function() {
                 var defer = P.defer();
+//                params = _.defaults({}, params, { appcode: config.appcode });
+                //params = _.defaults({}, params, config);
                 Request.post(config.host + '/login').send(config).type('form').end(function(error, res) {
                     if (error)
                         defer.reject(new Error(error));
