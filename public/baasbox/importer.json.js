@@ -41,12 +41,12 @@ client.login().then(function(session) {
     
     _.each(features, function(feature) {
         promise = promise.then(function() {
-            console.log('[storing]', feature.properties.label);
+            console.log('[storing]', feature.properties.name, feature.properties.type);
             //feature.content = feature.properties.description;
             //delete feature.properties.description;
-            
+
             return client.storeResource(collection, feature).then(function(result) {
-                console.log('[result]', result.result, result.data.properties.label);
+                console.log('[result]', result.result, result.data.properties.name);
             });
         });
         
