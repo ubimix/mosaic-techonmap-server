@@ -15,7 +15,7 @@
     "moment": "~2.0.0",
     "bcrypt-nodejs": "0.0.3",
     "node-uuid":"*",
-    "yamljs":"*",
+    "yamljs":"0.1.0",
     "iconv": "*",
     "glob": "~3.1.11",
     "commander": "*",
