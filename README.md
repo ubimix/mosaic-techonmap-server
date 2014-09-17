@@ -1,19 +1,14 @@
+#TechOnMap backoffice
 
-Boilerplate from spa-express-backbone
-connect-flash is needed for Passport LocalStrategy;
-
-#README
+This project contains the backoffice of the [TechOnMap website](http://techonmap.fr). It allows to edit collaboratively geolocalized data and to keep an history of the changes. It is implemented on top of NodeJS. 
 
 ##Server installation
-
 
   npm install
 
 Generate a configuration file and set the relevant properties:
 
   node ./source/config.js -s > config.yaml
-
-Add the umx-api module to the node\_modules folder.
 
 Launch the server:
 
@@ -23,12 +18,21 @@ Launch the server:
 
   npm start
 
+
 ##Client installation
 
   bower install
 
 Open a browser at the URL specified in the server configuration file.
 
+##License
+
+This project is licensed under the MIT License. Copyright : [Ubimix](http://ubimix.com).
+
+##Authors
+
+* Mikhail Kotelnikov
+* Stéphane Laurière
 
 
 
