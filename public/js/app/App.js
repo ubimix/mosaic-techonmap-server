@@ -32,14 +32,19 @@ function(_, Backbone, LinkController, AppRouter) {
     var sync = Backbone.sync;
     var accessInfo = null;
     Backbone.sync = function(method, model, options) {
+	console.log('method',method);
+	console.log('model',model);
+	console.log('options',options);
         var that = this;
         var args = _.toArray(arguments);
         if (!accessInfo) {
             var access = new AccessInfo();
             access.load(function(data, errorArray) {
+		console.log('args',arguments);
                 if (errorArray == null) {
                     accessInfo = access;
-                    sync.call(this, method, model, options);
+                    //sync.call(this, method, model, options);
+	            sync.apply(that,args);
                 } else {
                     var error = errorArray[0]
                     if (error.status == 403) {

@@ -9,12 +9,16 @@ function(LinkController, Resource, HistoryView) {
             history.url = linkController.getLink('/api/resources/'
                     + options.path + '/history');
 
-            function showError(error) {
-                console.log(error);
+            function showError(object, error) {
+                console.log(object, error);
             }
 
+
+	    console.log('history.url:', history.url);
+	    //history.url = '/api/resources/ubimix/history';
             history.fetch({
                 success : function(history) {
+		    console.log('success', options.path);
                     var resource = new Resource({
                         id : options.path
                     });
