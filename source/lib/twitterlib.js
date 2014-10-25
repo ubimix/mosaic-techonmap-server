@@ -29,9 +29,10 @@ var twitterlib = {
         twclient.get('/statuses/user_timeline.json', {
             screen_name : screenName
         }, function(err, data) {
-            if (err)
-                throw new Error(err.toString());
-            else {
+            if (err) {
+                //throw new Error(err.toString());
+                console.log('!! TWITTERLIB ERROR:', err.toString());
+	    } else {
                 if (data && data.length > 0)
                     cache.set('tweet', data[0]);
                 return callback(err, cache.get('tweet'));
