@@ -35,7 +35,7 @@ function dumpSync(file, data) {
 
 }
 
-function replaceTag(object, oldTag, newTag) {
+function replaceTag(object, oldTag, newTag, file) {
     if (!object.tags)
         return;
     
@@ -74,26 +74,26 @@ Visitor.visit(dataFolder, function(file, directory) {
 
         } else if (object.category == 'Entreprise') {
             
-            replaceTag(object, 'b2b', 'B2B');
-            replaceTag(object, 'apps', 'applications mobiles');
-            replaceTag(object, 'design', 'webdesign');
-            replaceTag(object, 'Design', 'webdesign');
-            replaceTag(object, 'conseils', 'conseil');
-            replaceTag(object, 'jeu', 'Jeux vidéo');
-            replaceTag(object, 'reseausocial', 'réseau social');
+            replaceTag(object, 'b2b', 'B2B', file);
+            replaceTag(object, 'apps', 'applications mobiles', file);
+            replaceTag(object, 'design', 'webdesign', file);
+            replaceTag(object, 'Design', 'webdesign', file);
+            replaceTag(object, 'conseils', 'conseil', file);
+            replaceTag(object, 'jeu', 'Jeux vidéo', file);
+            replaceTag(object, 'reseausocial', 'réseau social', file);
         } else if (object.category == 'École') {
             
-            replaceTag(object, 'designer', 'webdesign');
-            replaceTag(object, 'Designer', 'webdesign');
-            replaceTag(object, 'graphiste', 'webdesign');
-            replaceTag(object, 'Graphiste', 'webdesign');
+            replaceTag(object, 'designer', 'webdesign', file);
+            replaceTag(object, 'Designer', 'webdesign', file);
+            replaceTag(object, 'graphiste', 'webdesign', file);
+            replaceTag(object, 'Graphiste', 'webdesign', file);
             
         } else if (object.category == 'Tiers-lieu') {
             
-            replaceTag(object, 'bureau', 'bureaux partagés');
-            replaceTag(object, 'bureaux', 'bureaux partagés');
-            replaceTag(object, 'bureauxpartages', 'bureaux partagés');
-            replaceTag(object, 'Graphiste', 'webdesign');
+            replaceTag(object, 'bureau', 'bureaux partagés', file);
+            replaceTag(object, 'bureaux', 'bureaux partagés', file);
+            replaceTag(object, 'bureauxpartages', 'bureaux partagés', file);
+            replaceTag(object, 'Graphiste', 'webdesign', file);
         }
 
     }
