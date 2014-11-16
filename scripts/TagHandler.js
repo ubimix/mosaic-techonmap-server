@@ -23,13 +23,28 @@ function toStructuredContent(obj) {
     delete copy.description;
     var dataYaml = Yaml.stringify(copy, 1, 2);
     // var text = description + "\n\n----\n" + dataYaml;
-    return {yaml:dataYaml, content: description};
+    return {
+        yaml : dataYaml,
+        content : description
+    };
 }
 
 function dumpSync(file, data) {
-    var str = data.content+'\n\n-------\n\n'+data.yaml;
+    var str = data.content + '\n\n-------\n\n' + data.yaml;
     Fs.writeFileSync(file, str);
+
+}
+
+function replaceTag(object, oldTag, newTag) {
+    if (!object.tags)
+        return;
     
+    if (object.tags.indexOf(oldTag) >= 0) {
+        var idx = object.tags.indexOf(oldTag);
+        object.tags.splice(idx, 1, newTag);
+        var data = toStructuredContent(object);
+        dumpSync(file, data);
+    }
 }
 
 var counter = 0;
@@ -39,12 +54,12 @@ var prestataires = [];
 Visitor.visit(dataFolder, function(file, directory) {
     if (Path.extname(file) !== '.md')
         return;
-    
+
     var content = Fs.readFileSync(file).toString();
     content = content.split('-------');
     var description = content[0].trim();
     var object = yamlToObject(description, content[1]);
-    
+
     if (!object) {
         console.log(file);
     } else {
@@ -56,33 +71,38 @@ Visitor.visit(dataFolder, function(file, directory) {
                 object.tags.push('B2B');
             var data = toStructuredContent(object);
             dumpSync(file, data);
+
+        } else if (object.category == 'Entreprise') {
             
-        }
-        
-        if (object.tags && object.tags.indexOf('b2b') >=0) {
+            replaceTag(object, 'b2b', 'B2B');
+            replaceTag(object, 'apps', 'applications mobiles');
+            replaceTag(object, 'design', 'webdesign');
+            replaceTag(object, 'Design', 'webdesign');
+            replaceTag(object, 'conseils', 'conseil');
+            replaceTag(object, 'jeu', 'Jeux vidéo');
+            replaceTag(object, 'reseausocial', 'réseau social');
+        } else if (object.category == 'École') {
             
-            var idx = object.tags.indexOf('b2b');
-            object.tags.splice(idx, 1, 'B2B');
-            var data = toStructuredContent(object);
-            dumpSync(file, data);
-        }
-        
-        if (object.tags && object.tags.indexOf('apps') >=0) {
+            replaceTag(object, 'designer', 'webdesign');
+            replaceTag(object, 'Designer', 'webdesign');
+            replaceTag(object, 'graphiste', 'webdesign');
+            replaceTag(object, 'Graphiste', 'webdesign');
             
-            var idx = object.tags.indexOf('apps');
-            object.tags.splice(idx, 1, 'applications mobiles');
-            var data = toStructuredContent(object);
-            dumpSync(file, data);
+        } else if (object.category == 'Tiers-lieu') {
+            
+            replaceTag(object, 'bureau', 'bureaux partagés');
+            replaceTag(object, 'bureaux', 'bureaux partagés');
+            replaceTag(object, 'bureauxpartages', 'bureaux partagés');
+            replaceTag(object, 'Graphiste', 'webdesign');
         }
-        
-        
+
     }
-    
+
 }).then(function() {
     ids = ids.sort();
-//    _.each(ids, function(id) {
-//        console.log(id);    
-//    })
+    // _.each(ids, function(id) {
+    // console.log(id);
+    // })
     console.log(prestataires.length);
     console.log('done');
 }).done();
