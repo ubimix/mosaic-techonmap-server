@@ -1,0 +1,10 @@
+{
+  "name": "techonmap-scripts",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "underscore": "*",
+    "q":"*",
+    "yamljs":"0.1.0"
+  }
+}
