@@ -123,10 +123,12 @@ Visitor.visit(dataFolder, function(file, directory) {
 //            replaceTag(object, 'ingenierie', 'SSII', file);
 //            replaceTag(object, 'cloudcomputing', 'cloud', file);
             
-            replaceTag(object, 'economie collaborative', 'économie collaborative', file);
-            replaceTag(object, 'equipement', 'équipement', file);
-            replaceTag(object, 'securite', 'sécurité', file);
-            replaceTag(object, 'semantique', 'sémantique', file);
+//            replaceTag(object, 'economie collaborative', 'économie collaborative', file);
+//            replaceTag(object, 'equipement', 'équipement', file);
+//            replaceTag(object, 'securite', 'sécurité', file);
+//            replaceTag(object, 'semantique', 'sémantique', file);
+            
+                replaceTag(object, 'hebergement', 'hébergement', file);
             
         } else if (object.category == 'École') {
             
