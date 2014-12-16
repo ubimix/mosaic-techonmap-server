@@ -129,7 +129,8 @@ Visitor.visit(dataFolder, function(file, directory) {
             replaceTag(object, 'vacances', 'tourisme', file);
             replaceTag(object, 'bigdata', 'big data', file);
             replaceTag(object, 'telecommunications', 'telecoms', file);
-            replaceTag(object, 'Ingénierie', 'SSII', file);
+            replaceTag(object, 'ingénierie', 'SSII', file);
+            replaceTag(object, 'ingéniérie', 'SSII', file);
             replaceTag(object, 'ingenierie', 'SSII', file);
             replaceTag(object, 'cloudcomputing', 'cloud', file);
             
@@ -176,6 +177,8 @@ Visitor.visit(dataFolder, function(file, directory) {
             replaceTag(object, 'venture capital', 'capital risque', file);
             replaceTag(object, 'greentech', 'cleantech', file);
             replaceTag(object, 'hebergement', 'hébergement', file);
+            
+            replaceTag(object, 'numerique', 'numérique', file);
         }
 
     }
