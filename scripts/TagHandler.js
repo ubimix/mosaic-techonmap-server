@@ -169,6 +169,10 @@ Visitor.visit(dataFolder, function(file, directory) {
             addTagIfTag(object, 'coaching', 'incubateur', file);
             
             replaceTag(object, 'venture capitalist', 'capital risque', file);
+            replaceTag(object, 'venturecapitalist', 'capital risque', file);
+            
+            replaceTag(object, 'businessangel', 'business angel', file);
+            
             replaceTag(object, 'venture capital', 'capital risque', file);
             replaceTag(object, 'greentech', 'cleantech', file);
             replaceTag(object, 'hebergement', 'hébergement', file);
