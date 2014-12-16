@@ -138,8 +138,6 @@ Visitor.visit(dataFolder, function(file, directory) {
             replaceTag(object, 'securite', 'sécurité', file);
             replaceTag(object, 'semantique', 'sémantique', file);
             
-            replaceTag(object, 'hebergement', 'hébergement', file);
-
             
         } else if (object.category == 'École') {
             
@@ -164,6 +162,8 @@ Visitor.visit(dataFolder, function(file, directory) {
         } else {
             
             replaceTag(object, 'federation', 'fédération', file);
+            replaceTag(object, 'developpeur', 'développeur', file);
+            replaceTag(object, 'accelerateur', 'accélérateur', file);
             replaceTag(object, 'accelerator', 'accélérateur', file);
             addTagIfTag(object, 'accompagnement', 'incubateur', file);
             addTagIfTag(object, 'coaching', 'incubateur', file);
@@ -171,6 +171,7 @@ Visitor.visit(dataFolder, function(file, directory) {
             replaceTag(object, 'venture capitalist', 'capital risque', file);
             replaceTag(object, 'venture capital', 'capital risque', file);
             replaceTag(object, 'greentech', 'cleantech', file);
+            replaceTag(object, 'hebergement', 'hébergement', file);
         }
 
     }
