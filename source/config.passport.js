@@ -55,13 +55,13 @@ module.exports = function(app) {
     });
 
     app.get('/api/auth/done', function(req, res) {
-        var dst = req.session.destination || "/workspace";
+        var dst = req.session.destination || "/loggedIn.html";
         delete req.session.destination;
         res.redirect(getRedirectUrl(dst));
     });
 
     app.get('/api/logout', function(req, res) {
-        var redirectTarget = req.query.redirect || "/workspace";
+        var redirectTarget = req.query.redirect || "/loggedIn.html";
         req.logout();
         req.session = null;
         res.redirect(getRedirectUrl(redirectTarget));

@@ -9,6 +9,9 @@ var config = require('./source/config');
 var Flash = require('connect-flash');
 var Q = require('q');
 var _ = require('underscore');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('cookie-session');
 
 var app = express();
 
@@ -35,32 +38,30 @@ function listFolders(folderPath, callback) {
     });
 }
 
-app.configure(function() {
+//app.configure(function() {
     app.set('port', app.locals.port);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
+    //app.use(express.favicon());
+    //app.use(express.logger('dev'));
+    app.use(bodyParser.json());
+//    app.use(express.methodOverride());
     // app.use(express.logger('default'));
-    app.use(express.cookieParser(app.locals.secret));
-    app.use(express.cookieSession({
+    app.use(cookieParser());
+    app.use(session({
         secret : "djinko-" + app.locals.secret,
         cookie : {
             maxAge : oneMonth
         }
     }));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(Flash());
 
-});
+//});
 
-app.configure('development', function() {
-    app.use(express.errorHandler());
+//app.configure('development', function() {
+    //app.use(express.errorHandler());
     app.use('/', express.static(path.join(__dirname, 'public/techonmap')));
     // listFolders(path.join(__dirname, 'public'), function(err, folders) {
     // folders.forEach(function(folder, array, index) {
@@ -73,15 +74,15 @@ app.configure('development', function() {
     app.use(express.static(path.join(__dirname, 'public')));
 
     app.use(middleware.serveMaster.development());
-});
+//});
 
-app.configure('production', function() {
+/*app.configure('production', function() {
     app.use(express.compress());
     app.use(express.static(path.join(__dirname, 'public'), {
         maxAge : oneMonth
     }));
     app.use(middleware.serveMaster.production());
-});
+});*/
 
 Q()
 // Configure access control
