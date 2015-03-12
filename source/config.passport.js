@@ -8,6 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var LinkedInStrategy = require('passport-linkedin').Strategy;
 
 /*
  * Passport configuration
@@ -155,6 +156,38 @@ module.exports = function(app) {
             failureRedirect : getRedirectUrl('/login')
         }));
     }
+    
+    /* ------------------------------------------------------------ */
+    // LinkedIn-based
+    var linkedInConfig = config.authentication.linkedin;
+    if (linkedInConfig.oauthkeys) {
+        passport.use(new LinkedInStrategy({
+            consumerKey : linkedInConfig.oauthkeys.consumerKey,
+            consumerSecret : linkedInConfig.oauthkeys.consumerSecret,
+            callbackURL : getRedirectUrl('/api/auth/linkedin/return')
+        }, function(token, tokenSecret, profile, done) {
+            var provider = 'linkedin';
+            var accountId = getAccountId(null, provider, profile.displayName);
+            var user = newUser({
+                accountId : accountId,
+                displayName : profile.displayName,
+                provider : provider
+            });
+            return done(undefined, user);
+        }));
+
+        // http://stackoverflow.com/questions/9885711/custom-returnurl-on-node-js-passports-google-strategy
+        app.get("/api/auth/linkedin", function(req, res, next) {
+            req.session.destination = req.query.redirect;
+            passport.authenticate('linkedin', function(err, user, info) {
+                next();
+            })(req, res, next);
+        });
+        app.get("/api/auth/linkedin/return", passport.authenticate('linkedin', {
+            successRedirect : getRedirectUrl('/api/auth/done'),
+            failureRedirect : getRedirectUrl('/login')
+        }));
+    }    
 
     /* ------------------------------------------------------------ */
     var facebookConfig = config.authentication.facebook;
