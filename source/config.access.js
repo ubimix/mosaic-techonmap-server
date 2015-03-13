@@ -89,6 +89,11 @@ module.exports = function(app) {
             }
         } else if (path.match(/^\/api\/validation\/?.*$/)) {
             resource = 'validator';
+        } else if (path.match(/^\/api\/mail\/?.*$/)) {
+            if (method == 'put' || method == 'post') {
+                resource = 'mail';
+                action = 'write';
+            }
         } else {
             resource = 'file';
         }
