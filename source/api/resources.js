@@ -283,13 +283,6 @@ function initializeApplication(app, project) {
         return list;
     }
 
-    /** Teleport API Endpoint */
-    var handlerProvider = new ServiceStubProvider({
-        path : '/api',
-        dir : __dirname,
-    });
-    handlerProvider.registerInExpressApp(app);
-
     /** Loads and returns all root resources from the storage */
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
@@ -480,6 +473,14 @@ function initializeApplication(app, project) {
         });
 
     });
+    
+    /** Teleport API Endpoint */
+    var handlerProvider = new ServiceStubProvider({
+        path : '/api',
+        dir : __dirname,
+    });
+    handlerProvider.registerInExpressApp(app);
+
 }
 
 /* ========================================================================== */
