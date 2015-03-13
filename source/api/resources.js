@@ -3,6 +3,7 @@ var Fs = require('fs');
 var config = require('../config');
 // TODO: when to use relative paths, absolute paths in node ?
 var Namer = require('../lib/namer');
+var ServiceStubProvider = require('mosaic-teleport-server').ServiceStubProvider;
 var _ = require('underscore')._;
 
 var Q = require('q');
@@ -38,7 +39,7 @@ function getGeoJsonFromResource(resource, showSystemProperties) {
     var properties = _.clone(resource.properties);
     var updated = resource.sys.updated || resource.sys.created;
     properties.updated = updated.timestamp;
-    
+
     var result = {
         id : id,
         type : "Feature",
@@ -282,6 +283,13 @@ function initializeApplication(app, project) {
         return list;
     }
 
+    /** Teleport API Endpoint */
+    var handlerProvider = new ServiceStubProvider({
+        path : '/api',
+        dir : __dirname,
+    });
+    handlerProvider.registerInExpressApp(app);
+
     /** Loads and returns all root resources from the storage */
     app.get('/api/resources', function(req, res) {
         var path = getRequestedPath(req);
@@ -300,8 +308,11 @@ function initializeApplication(app, project) {
         reply(req, res, project.loadChildResources(path).then(
                 function(results) {
                     var list = getGeoJsonList(results, false);
-		    var geoJson = {'type':'FeatureCollection','features':list};
-		    return geoJson;
+                    var geoJson = {
+                        'type' : 'FeatureCollection',
+                        'features' : list
+                    };
+                    return geoJson;
                 }));
     });
 
