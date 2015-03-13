@@ -93,6 +93,9 @@ module.exports = function(app) {
             if (method == 'put' || method == 'post') {
                 resource = 'mail';
                 action = 'write';
+            } else {
+                resource = 'mail';
+                action = 'read';
             }
         } else {
             resource = 'file';
