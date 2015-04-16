@@ -94,7 +94,7 @@ module.exports = function(app) {
     }));
     app.post("/api/login", passport.authenticate('local', {
         successRedirect : getRedirectUrl('/api/auth/done'),
-        failureRedirect : getRedirectUrl('/login'),
+        failureRedirect : getRedirectUrl('/login.html'),
         failureFlash : true
     }));
 
@@ -127,7 +127,7 @@ module.exports = function(app) {
 
     app.get("/api/auth/google/return", passport.authenticate('google', {
         successRedirect : getRedirectUrl('/api/auth/done'),
-        failureRedirect : getRedirectUrl('/login')
+        failureRedirect : getRedirectUrl('/login.html')
     }));
 
     /* ------------------------------------------------------------ */
@@ -158,7 +158,7 @@ module.exports = function(app) {
         });
         app.get("/api/auth/twitter/return", passport.authenticate('twitter', {
             successRedirect : getRedirectUrl('/api/auth/done'),
-            failureRedirect : getRedirectUrl('/login')
+            failureRedirect : getRedirectUrl('/login.html')
         }));
     }
 
@@ -190,7 +190,7 @@ module.exports = function(app) {
         });
         app.get("/api/auth/linkedin/return", passport.authenticate('linkedin', {
             successRedirect : getRedirectUrl('/api/auth/done'),
-            failureRedirect : getRedirectUrl('/login')
+            failureRedirect : getRedirectUrl('/login.html')
         }));
     }
 
@@ -212,7 +212,7 @@ module.exports = function(app) {
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
         app.get("/api/auth/facebook/return", passport.authenticate('facebook', {
             successRedirect : getRedirectUrl('/api/auth/done'),
-            failureRedirect : getRedirectUrl('/login')
+            failureRedirect : getRedirectUrl('/login.html')
         }));
     }
 
