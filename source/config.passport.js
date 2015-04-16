@@ -69,7 +69,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/logout', function(req, res) {
-        var redirectTarget = req.query.redirect || "/logged-in.html";
+        var redirectTarget = req.query.redirect || '/';
         req.logout();
         req.session = null;
         res.redirect(getRedirectUrl(redirectTarget));
