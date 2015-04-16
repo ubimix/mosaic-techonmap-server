@@ -58,13 +58,6 @@ module.exports = function(app) {
     app.get('/api/auth/done', function(req, res) {
         var dst = req.session.destination || "/logged-in.html";
         delete req.session.destination;
-        var user = req.user || {};
-        var json = json.stringify(user);
-        res.cookie('user', json, {
-            secure : true,
-            maxAge : 360000
-        });
-
         res.redirect(getRedirectUrl(dst));
     });
 
