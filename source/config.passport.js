@@ -18,10 +18,10 @@ module.exports = function(app) {
     // 
     function getRedirectUrl(path) {
         var baseUrl = app.locals.baseUrl || '';
-        //FIXME: check whether the baseUrl ends with a '/'
-    //and also check whether path is a relative or absolute URL
+        // FIXME: check whether the baseUrl ends with a '/'
+        // and also check whether path is a relative or absolute URL
         if (path && path.indexOf('/') != 0)
-             path = '/' + path;
+            path = '/' + path;
         return baseUrl + path;
     }
 
@@ -58,6 +58,13 @@ module.exports = function(app) {
     app.get('/api/auth/done', function(req, res) {
         var dst = req.session.destination || "/logged-in.html";
         delete req.session.destination;
+        var user = req.user || {};
+        var json = json.stringify(user);
+        res.cookie('user', json, {
+            secure : true,
+            maxAge : 360000
+        });
+
         res.redirect(getRedirectUrl(dst));
     });
 
@@ -80,8 +87,7 @@ module.exports = function(app) {
 
         var user = newUser({
             displayName : auth.alone.username,
-            accountId : getAccountId(auth.alone.email, 'system',
-                    auth.alone.username)
+            accountId : getAccountId(auth.alone.email, 'system', auth.alone.username)
         });
 
         return done(undefined, user);
@@ -118,8 +124,7 @@ module.exports = function(app) {
             next();
         })(req, res, next);
     });
-    
-    
+
     app.get("/api/auth/google/return", passport.authenticate('google', {
         successRedirect : getRedirectUrl('/api/auth/done'),
         failureRedirect : getRedirectUrl('/login')
@@ -156,7 +161,7 @@ module.exports = function(app) {
             failureRedirect : getRedirectUrl('/login')
         }));
     }
-    
+
     /* ------------------------------------------------------------ */
     // LinkedIn-based
     var linkedInConfig = config.authentication.linkedin;
@@ -187,7 +192,7 @@ module.exports = function(app) {
             successRedirect : getRedirectUrl('/api/auth/done'),
             failureRedirect : getRedirectUrl('/login')
         }));
-    }    
+    }
 
     /* ------------------------------------------------------------ */
     var facebookConfig = config.authentication.facebook;
@@ -198,19 +203,17 @@ module.exports = function(app) {
             callbackURL : getRedirectUrl('/api/auth/facebook/return')
         }, function(accessToken, refreshToken, profile, done) {
             var user = newUser({
-                accountId : getAccountId(null, 'facebook.com',
-                        profile.displayName),
+                accountId : getAccountId(null, 'facebook.com', profile.displayName),
                 displayName : profile.displayName,
                 provider : 'facebook'
             });
             return done(undefined, user);
         }));
         app.get("/api/auth/facebook", passport.authenticate('facebook'));
-        app.get("/api/auth/facebook/return", passport.authenticate('facebook',
-                {
-                    successRedirect : getRedirectUrl('/api/auth/done'),
-                    failureRedirect : getRedirectUrl('/login')
-                }));
+        app.get("/api/auth/facebook/return", passport.authenticate('facebook', {
+            successRedirect : getRedirectUrl('/api/auth/done'),
+            failureRedirect : getRedirectUrl('/login')
+        }));
     }
 
     /* ------------------------------------------------------------ */
