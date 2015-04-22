@@ -71,6 +71,26 @@ function addTagIfTag(object, ifTag, newTag, file) {
 }
 
 
+function removeTag(object, oldTag, file) {
+    if (!object.tags || object.tags.length==0)
+        return;
+    
+    var lowerCaseTags = [];
+    _.each(object.tags, function(tag) {
+        lowerCaseTags.push(tag.toLowerCase());
+    });
+    
+    object.tags = lowerCaseTags;
+    
+    if (object.tags.indexOf(oldTag) >= 0) {
+        var idx = object.tags.indexOf(oldTag);
+        object.tags.splice(idx, 1);
+        var data = toStructuredContent(object);
+        dumpSync(file, data);
+    }
+}
+
+
 var counter = 0;
 var ids = [];
 var prestataires = [];
@@ -98,7 +118,7 @@ Visitor.visit(dataFolder, function(file, directory) {
 
         } 
             
-        replaceTag(object, 'b2b', 'B2B', file);
+        //replaceTag(object, 'b2b', 'B2B', file);
         replaceTag(object, 'apps', 'applications mobiles', file);
         replaceTag(object, 'design', 'webdesign', file);
         replaceTag(object, 'conseils', 'conseil', file);
