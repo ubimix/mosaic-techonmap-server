@@ -353,6 +353,7 @@ function initializeApplication(app, project) {
                     properties.validated = _.without(list, path);
                     return project.storeResource(resource, options);
                 }).then(function() {
+		    value.type = 'Feature';
                     return value;
                 })
             });
