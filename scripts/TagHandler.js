@@ -210,7 +210,10 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'telecoms', 'télécoms', file);
         
         replaceTag(object, 'photos', 'photo', file);
-        replaceTag(object, 'jeu video', 'jeux vidéo', file);
+        replaceTag(object, 'jeuvideo', 'jeux vidéo', file);
+        replaceTag(object, 'jeu_video', 'jeux vidéo', file);
+        
+        replaceTag(object, 'television', 'télévision', file);
         replaceTag(object, 'place de marché', 'marketplace', file);
         replaceTag(object, 'advergame', 'advertgame', file);
         
@@ -223,8 +226,8 @@ Visitor.visit(dataFolder, function(file, directory) {
         
         replaceTag(object, 'energie', 'énergie', file);
         replaceTag(object, 'multimedia', 'multimédia', file);
-        replaceTag(object, 'media', 'média', file);
-        replaceTag(object, 'medias', 'média', file);
+        replaceTag(object, 'media', 'médias', file);
+        replaceTag(object, 'medias', 'médias', file);
         replaceTag(object, 'creation', 'création', file);
         replaceTag(object, 'edition', 'édition', file);
         replaceTag(object, 'ingenieur', 'ingénieur', file);
@@ -236,8 +239,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'accelerateur', 'accélérateur', file);
         replaceTag(object, 'academie', 'académie', file);
         replaceTag(object, 'apero', 'apéro', file);
-        replaceTag(object, 'bande dessinee', 'bande dessinée', file);
-        replaceTag(object, 'bande dessinnee', 'bande dessinée', file);
+        replaceTag(object, 'bandedessinee', 'bande dessinée', file);
         
         replaceTag(object, 'transmedia', 'transmédia', file);
         
@@ -263,6 +265,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'economiecollaborative', 'économie collaborative', file);
         replaceTag(object, 'moteurderecherche', 'moteur de recherche', file);
         replaceTag(object, 'objetsconnectes', 'objets connectés', file);
+        replaceTag(object, 'objet connecté', 'objets connectés', file);
         replaceTag(object, 'conseilregional', 'conseil régional', file);
         replaceTag(object, 'organismeassocie', 'organismes associés', file);
         
@@ -279,13 +282,17 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'jeux mobiles', 'mobiles', file);
         
         replaceTag(object, 'servicedeproximite', 'services de proximité', file);
-        replaceTag(object, 'servicesdeproximite', 'services de proximité', file);
+        replaceTag(object, 'services de proximite', 'services de proximité', file);
         
         replaceTag(object, 'handicapée', 'handicap', file);
         
-        replaceTag(object, 'multimedias', 'multimédia', file);
+        replaceTag(object, 'telemedicine', 'santé', file);
+        replaceTag(object, 'objects connectés', 'objets connectés', file);
+        
+        
         
         removeTag(object, 'logiciels informatique', file);
+        removeTag(object, 'it', file);
         removeTag(object, 'reseau', file);
         removeTag(object, 'lunette', file);
         removeTag(object, 'pointdevente', file);
@@ -333,7 +340,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         removeTag(object, 'delegation', file);
         
         removeTag(object, 'mecanique', file);
-        removeTag(object, 'symphony', file);
+        removeTag(object, 'symfony', file);
         removeTag(object, 'multicanal', file);
         removeTag(object, 'administration', file);
         removeTag(object, 'entrepreneuriat', file);
@@ -341,11 +348,12 @@ Visitor.visit(dataFolder, function(file, directory) {
         removeTag(object, 'nûmerique', file);
         removeTag(object, 'emotion', file);
         
+        
         removeTag(object, 'site', file);
-        removeTag(object, 'collcons', file);
+        removeTag(object, 'númerique', file);
         removeTag(object, 'identite', file);
         
-        removeTag(object, 'fildattente', file);
+        removeTag(object, 'filedattente', file);
         
         removeTag(object, 'serviceclients', file);
 
