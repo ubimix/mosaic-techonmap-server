@@ -96,91 +96,153 @@ Visitor.visit(dataFolder, function(file, directory) {
             var data = toStructuredContent(object);
             dumpSync(file, data);
 
-        } else if (object.category == 'Entreprise') {
+        } 
             
-            replaceTag(object, 'b2b', 'B2B', file);
-            replaceTag(object, 'apps', 'applications mobiles', file);
-            replaceTag(object, 'design', 'webdesign', file);
-            replaceTag(object, 'conseils', 'conseil', file);
-            replaceTag(object, 'jeu', 'jeux vidéo', file);
-            replaceTag(object, 'reseausocial', 'réseau social', file);
-            replaceTag(object, 'recommerce', 'ecommerce', file);
-            replaceTag(object, 'mcommerce', 'ecommerce', file);
-            replaceTag(object, 'marketplaces', 'marketplace', file);
-            replaceTag(object, 'sante', 'santé', file);
-            replaceTag(object, 'esante', 'santé', file);
-            replaceTag(object, 'silvereconomy', 'silver économie', file);
-            replaceTag(object, 'silvereco', 'silver économie', file);
-            addTagIfTag(object,'silver économie', 'santé', file);
+        replaceTag(object, 'b2b', 'B2B', file);
+        replaceTag(object, 'apps', 'applications mobiles', file);
+        replaceTag(object, 'design', 'webdesign', file);
+        replaceTag(object, 'conseils', 'conseil', file);
+        replaceTag(object, 'jeu', 'jeux vidéo', file);
+        replaceTag(object, 'reseausocial', 'réseau social', file);
+        replaceTag(object, 'recommerce', 'ecommerce', file);
+        replaceTag(object, 'mcommerce', 'ecommerce', file);
+        replaceTag(object, 'marketplaces', 'marketplace', file);
+        replaceTag(object, 'sante', 'santé', file);
+        replaceTag(object, 'esante', 'santé', file);
+        replaceTag(object, 'silvereconomy', 'silver économie', file);
+        replaceTag(object, 'silvereco', 'silver économie', file);
+        addTagIfTag(object,'silver économie', 'santé', file);
 
-            replaceTag(object, 'education', 'éducation', file);
-            
-            replaceTag(object, 'cinema', 'cinéma', file);
-            addTagIfTag(object,'cinéma', 'culture', file);
-            
-            replaceTag(object, 'mobilite', 'mobilité', file);
-            replaceTag(object, 'geolocalisation', 'géolocalisation', file);
-            addTagIfTag(object,'géolocalisation', 'mobilité', file);
-            
-            replaceTag(object, 'greent it', 'environnement', file);
-            replaceTag(object, 'developpementdurable', 'environnement', file);
+        replaceTag(object, 'education', 'éducation', file);
+        
+        replaceTag(object, 'cinema', 'cinéma', file);
+        addTagIfTag(object,'cinéma', 'culture', file);
+        
+        replaceTag(object, 'mobilite', 'mobilité', file);
+        replaceTag(object, 'geolocalisation', 'géolocalisation', file);
+        addTagIfTag(object,'géolocalisation', 'mobilité', file);
+        
+        replaceTag(object, 'greent it', 'environnement', file);
+        replaceTag(object, 'developpementdurable', 'environnement', file);
 
-            replaceTag(object, 'voyage', 'tourisme', file);
-            replaceTag(object, 'vacances', 'tourisme', file);
-            replaceTag(object, 'bigdata', 'big data', file);
-            replaceTag(object, 'telecommunications', 'telecoms', file);
-            replaceTag(object, 'ingénierie', 'SSII', file);
-            replaceTag(object, 'ingéniérie', 'SSII', file);
-            replaceTag(object, 'ingenierie', 'SSII', file);
-            replaceTag(object, 'cloudcomputing', 'cloud', file);
-            
-            replaceTag(object, 'economie collaborative', 'économie collaborative', file);
-            replaceTag(object, 'equipement', 'équipement', file);
-            replaceTag(object, 'securite', 'sécurité', file);
-            replaceTag(object, 'semantique', 'sémantique', file);
-            
-            
-        } else if (object.category == 'École') {
-            
-            replaceTag(object, 'designer', 'webdesign', file);
-            replaceTag(object, 'Designer', 'webdesign', file);
-            replaceTag(object, 'graphiste', 'webdesign', file);
-            replaceTag(object, 'Graphiste', 'webdesign', file);
-            
-            replaceTag(object, 'ingénieurs', 'ingénieur', file);
-            replaceTag(object, 'programmeur', 'développeur', file);
-            replaceTag(object, 'telecom', 'telecoms', file);
-            
-            
-        } else if (object.category == 'Tiers-lieu') {
-            
-            replaceTag(object, 'bureau', 'bureaux partagés', file);
-            replaceTag(object, 'bureaux', 'bureaux partagés', file);
-            replaceTag(object, 'bureauxpartages', 'bureaux partagés', file);
-//            replaceTag(object, 'Graphiste', 'webdesign', file);
-              replaceTag(object, 'maker', 'makerspace', file);
-              
-        } else {
-            
-            replaceTag(object, 'federation', 'fédération', file);
-            replaceTag(object, 'developpeur', 'développeur', file);
-            replaceTag(object, 'accelerateur', 'accélérateur', file);
-            replaceTag(object, 'accelerator', 'accélérateur', file);
-            addTagIfTag(object, 'accompagnement', 'incubateur', file);
-            addTagIfTag(object, 'coaching', 'incubateur', file);
-            
-            replaceTag(object, 'venture capitalist', 'capital risque', file);
-            replaceTag(object, 'venturecapitalist', 'capital risque', file);
-            
-            replaceTag(object, 'businessangel', 'business angel', file);
-            
-            replaceTag(object, 'venture capital', 'capital risque', file);
-            replaceTag(object, 'greentech', 'cleantech', file);
-            replaceTag(object, 'hebergement', 'hébergement', file);
-            
-            replaceTag(object, 'numerique', 'numérique', file);
-        }
-
+        replaceTag(object, 'voyage', 'tourisme', file);
+        replaceTag(object, 'vacances', 'tourisme', file);
+        replaceTag(object, 'bigdata', 'big data', file);
+        replaceTag(object, 'telecommunications', 'telecoms', file);
+        replaceTag(object, 'ingénierie', 'SSII', file);
+        replaceTag(object, 'ingéniérie', 'SSII', file);
+        replaceTag(object, 'ingenierie', 'SSII', file);
+        replaceTag(object, 'cloudcomputing', 'cloud', file);
+        
+        replaceTag(object, 'economie collaborative', 'économie collaborative', file);
+        replaceTag(object, 'equipement', 'équipement', file);
+        replaceTag(object, 'securite', 'sécurité', file);
+        replaceTag(object, 'semantique', 'sémantique', file);
+        
+        
+        replaceTag(object, 'designer', 'webdesign', file);
+        replaceTag(object, 'Designer', 'webdesign', file);
+        replaceTag(object, 'graphiste', 'webdesign', file);
+        replaceTag(object, 'Graphiste', 'webdesign', file);
+        
+        replaceTag(object, 'ingénieurs', 'ingénieur', file);
+        replaceTag(object, 'programmeur', 'développeur', file);
+        replaceTag(object, 'telecom', 'telecoms', file);
+        
+        
+        replaceTag(object, 'bureau', 'bureaux partagés', file);
+        replaceTag(object, 'bureaux', 'bureaux partagés', file);
+        replaceTag(object, 'bureauxpartages', 'bureaux partagés', file);
+// replaceTag(object, 'Graphiste', 'webdesign', file);
+          replaceTag(object, 'maker', 'makerspace', file);
+          
+        replaceTag(object, 'federation', 'fédération', file);
+        replaceTag(object, 'developpeur', 'développeur', file);
+        replaceTag(object, 'accelerateur', 'accélérateur', file);
+        replaceTag(object, 'accelerator', 'accélérateur', file);
+        addTagIfTag(object, 'accompagnement', 'incubateur', file);
+        addTagIfTag(object, 'coaching', 'incubateur', file);
+        
+        replaceTag(object, 'venture capitalist', 'capital risque', file);
+        replaceTag(object, 'venturecapitalist', 'capital risque', file);
+        
+        replaceTag(object, 'businessangel', 'business angel', file);
+        
+        replaceTag(object, 'venture capital', 'capital risque', file);
+        replaceTag(object, 'greentech', 'cleantech', file);
+        replaceTag(object, 'hebergement', 'hébergement', file);
+        
+        ///-------
+        removeTag(object, 'numérique', file);
+        removeTag(object, 'numerique', file);
+        
+        removeTag(object, 'tic', file);
+        removeTag(object, 'ict', file);
+        removeTag(object, 'digital', file);
+        
+        //"applis/applications" : à traiter à la main
+        replaceTag(object, 'associations', 'association', file);
+        replaceTag(object, 'application mobile', 'applications mobiles', file);
+        
+        replaceTag(object, 'telecom', 'télécoms', file);
+        replaceTag(object, 'telecoms', 'télécoms', file);
+        
+        replaceTag(object, 'photos', 'photo', file);
+        replaceTag(object, 'jeu video', 'jeux vidéo', file);
+        replaceTag(object, 'place de marché', 'marketplace', file);
+        replaceTag(object, 'advergame', 'advertgame', file);
+        
+        replaceTag(object, 'e-santé', 'santé', file);
+        
+        replaceTag(object, 'freelance', 'indépendant', file);
+        
+        replaceTag(object, 'greenit', 'environnement', file);
+        replaceTag(object, 'artistes', 'artiste', file);
+        
+        replaceTag(object, 'energie', 'énergie', file);
+        replaceTag(object, 'multimedia', 'multimédia', file);
+        replaceTag(object, 'media', 'média', file);
+        replaceTag(object, 'creation', 'création', file);
+        replaceTag(object, 'edition', 'édition', file);
+        replaceTag(object, 'ingenieur', 'ingénieur', file);
+        replaceTag(object, 'developpement', 'développement', file);
+        replaceTag(object, 'developpeur', 'développeur', file);
+        replaceTag(object, 'dematerialisation', 'dématerialisation', file);
+        replaceTag(object, 'evenements', 'événements', file);
+        replaceTag(object, 'aeronautique', 'aéronautique', file);
+        replaceTag(object, 'accelerateur', 'accélérateur', file);
+        replaceTag(object, 'academie', 'académie', file);
+        replaceTag(object, 'apero', 'apéro', file);
+        replaceTag(object, 'bande dessinee', 'bande dessinée', file);
+        replaceTag(object, 'bande dessinnee', 'bande dessinée', file);
+        
+        replaceTag(object, 'transmedia', 'transmédia', file);
+        
+        replaceTag(object, 'integrateur', 'intégrateur', file);
+        
+        replaceTag(object, 'service de proximite', 'service de proximité', file);
+        
+        replaceTag(object, 'collectivites', 'collectivités', file);
+        
+        replaceTag(object, 'etude', 'études', file);
+        replaceTag(object, 'etudes', 'études', file);
+        
+        replaceTag(object, 'reservation', 'réservations', file);
+        
+        replaceTag(object, 'debat', 'débat', file);
+        replaceTag(object, 'bibliotheque', 'bibliothèque', file);
+        
+        replaceTag(object, 'video', 'vidéo', file);
+        
+        replaceTag(object, 'education', 'éducation', file);
+        replaceTag(object, 'pepiniere', 'pépinière', file);
+        
+        replaceTag(object, 'economiecollaborative', 'économie collaborative', file);
+        replaceTag(object, 'moteurderecherche', 'moteur de recherche', file);
+        replaceTag(object, 'objetsconnectes', 'objets connectés', file);
+        replaceTag(object, 'conseilregional', 'conseil régional', file);
+        replaceTag(object, 'organismeassocie', 'organismes associés', file);
+        
     }
 
 }).then(function() {
