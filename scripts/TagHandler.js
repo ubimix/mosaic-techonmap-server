@@ -131,16 +131,16 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'esante', 'santé', file);
         replaceTag(object, 'silvereconomy', 'silver économie', file);
         replaceTag(object, 'silvereco', 'silver économie', file);
-        addtagiftag(object,'silver économie', 'santé', file);
+        addTagIfTag(object,'silver économie', 'santé', file);
 
         replaceTag(object, 'education', 'éducation', file);
         
         replaceTag(object, 'cinema', 'cinéma', file);
-        addtagiftag(object,'cinéma', 'culture', file);
+        addTagIfTag(object,'cinéma', 'culture', file);
         
         replaceTag(object, 'mobilite', 'mobilité', file);
         replaceTag(object, 'geolocalisation', 'géolocalisation', file);
-        addtagiftag(object,'géolocalisation', 'mobilité', file);
+        addTagIfTag(object,'géolocalisation', 'mobilité', file);
         
         replaceTag(object, 'greent it', 'environnement', file);
         replaceTag(object, 'developpementdurable', 'environnement', file);
@@ -182,8 +182,8 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'developpeur', 'développeur', file);
         replaceTag(object, 'accelerateur', 'accélérateur', file);
         replaceTag(object, 'accelerator', 'accélérateur', file);
-        addtagiftag(object, 'accompagnement', 'incubateur', file);
-        addtagiftag(object, 'coaching', 'incubateur', file);
+        addTagIfTag(object, 'accompagnement', 'incubateur', file);
+        addTagIfTag(object, 'coaching', 'incubateur', file);
         
         replaceTag(object, 'venture capitalist', 'capital risque', file);
         replaceTag(object, 'venturecapitalist', 'capital risque', file);
