@@ -309,7 +309,23 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'entreprenariat','entrepreneur', file);
         replaceTag(object, 'entrepreunariat','entrepreneur', file);
         replaceTag(object, 'environment','environnement', file);
-        
+        replaceTag(object, 'formations','formation', file);
+        replaceTag(object, 'freelances','indépendants', file);
+        replaceTag(object, 'gestion de la information','système d’information', file);
+        replaceTag(object, 'gestiondecontacts','gestion de contacts', file);
+        replaceTag(object, 'gestiondeparc','gestion de parc', file);
+        replaceTag(object, 'gestiondeprojet','gestion de projet', file);
+        replaceTag(object, 'green','environnement', file);
+        replaceTag(object, 'indépendant','indépendants', file);
+        replaceTag(object, 'langue','langues', file);
+        replaceTag(object, 'langues étrangères','langues', file);
+        replaceTag(object, 'livres','livre', file);
+        replaceTag(object, 'logiciels informatiques','logiciels', file);
+        replaceTag(object, 'logiciels informatiques.','logiciels', file);
+        replaceTag(object, 'logiciel','logiciels', file);
+        replaceTag(object, 'marketind','marketing', file);
+        replaceTag(object, 'mobiité','mobilité', file); 
+
         replaceTag(object, 'Batiment','bâtiment', file);
         replaceTag(object, 'Cafe','café', file);
         replaceTag(object, 'Camera','caméra', file);
@@ -323,7 +339,40 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'Enquete','enquête', file);
         replaceTag(object, 'Ereputation','ereputation', file);
         replaceTag(object, 'Etudiants','étudiants', file);        
-        
+        replaceTag(object, 'Galerievirtuelle','art', file);
+        replaceTag(object, 'Geographie','géographie', file);
+        replaceTag(object, 'Geomatique','géomatique', file);
+        replaceTag(object, 'Hotel','hôtel', file);
+        replaceTag(object, 'Independants','indépendants', file);
+        replaceTag(object, 'Infogerance','infogérance', file);
+        replaceTag(object, 'Infomediation','infomédiation', file);
+        replaceTag(object, 'Integration','intégration', file);
+        replaceTag(object, 'Jeux video','jeux vidéo', file);
+        replaceTag(object, 'Jeux-vidéo','jeux vidéo', file);
+        replaceTag(object, 'Leveedefonds','levée de fonds', file);
+        replaceTag(object, 'Reseauxsociaux','réseaux sociaux', file);
+        replaceTag(object, 'Metiers','métiers', file);
+        replaceTag(object, 'Metiersweb','métiers web', file);
+        replaceTag(object, 'Modelisation','modélisation', file);
+        replaceTag(object, 'Monetization','monétisation', file);
+        replaceTag(object, 'Monetisation','monétisation', file);
+        replaceTag(object, 'Monnaie electronique','monnaie éléctronique', file);
+        //replaceTag(object, 'Application','applications mobiles', file);
+        replaceTag(object, 'Atelier','ateliers', file);
+        replaceTag(object, 'Business','business development', file);
+        replaceTag(object, 'Carte','cartographie', file);
+        replaceTag(object, 'Carto','cartographie', file);
+        replaceTag(object, 'Collaborative','collaboratif', file);
+        replaceTag(object, 'Collaboration','collaboratif', file);
+        //replaceTag(object, 'Dev','développement', file);
+        //replaceTag(object, 'Systèmes d’information','système d’information', file);
+        replaceTag(object, 'Interactionà interactif', file);
+        replaceTag(object, 'Interactive','interactif', file);
+        replaceTag(object, 'Interactive content','interactif', file);
+        replaceTag(object, 'Logiciels informatiques','logiciels', file);
+        replaceTag(object, 'Logiciels informatiques.','logiciels', file);
+        replaceTag(object, 'Média sociaux', 'réseaux sociaux', file);
+
         
         removeTag(object, 'logiciels informatique', file);
         removeTag(object, 'it', file);
@@ -381,6 +430,17 @@ Visitor.visit(dataFolder, function(file, directory) {
         removeTag(object, 'mecanique', file);
         removeTag(object, 'nûmerique', file);
         removeTag(object, 'emotion', file);
+
+        removeTag(object, 'Economienumerique', file);
+        removeTag(object, 'Entreprise', file);
+        removeTag(object, 'Entreprises', file);
+        removeTag(object, 'Innovationouverte', file);
+        removeTag(object, 'Investisseur', file);
+        removeTag(object, 'Investissseur', file);
+        removeTag(object, 'Ngéniérie informatique', file);
+        removeTag(object, 'mymajorcompany', file);
+        
+        
         
         
         removeTag(object, 'site', file);
