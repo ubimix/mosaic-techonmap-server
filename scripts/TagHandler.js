@@ -365,7 +365,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'collaborative','collaboratif', file);
         replaceTag(object, 'collaboration','collaboratif', file);
         //replaceTag(object, 'dev','développement', file);
-        //replaceTag(object, 'systèmes d’information','système d’information', file);
+        replaceTag(object, "système d'information","systèmes d'information", file);
         replaceTag(object, 'interaction','interactif', file);
         replaceTag(object, 'interactive','interactif', file);
         replaceTag(object, 'interactive content','interactif', file);
