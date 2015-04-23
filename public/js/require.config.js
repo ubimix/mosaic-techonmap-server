@@ -116,11 +116,11 @@ require
                 BootstrapTooltip : './../components/bootstrap/js/tooltip',
                 BootstrapPopover : './../components/bootstrap/js/popover',
                 BootstrapGrowl : './../components/bootstrap-growl/jquery.bootstrap-growl',
-                moment : './../components/momentjs/min/moment-with-langs',
+                moment : './../components/momentjs/min/moment-with-locales',
                 UmxAppTemplates : './theme-techonmap/umx.app.templates',
                 CodeMirror : './../components/codemirror/lib/codemirror',
                 CodeMirrorYaml : './../components/codemirror/mode/yaml/yaml',
-                Handsontable : './../components/handsontable/dist/jquery.handsontable.full',
+                Handsontable : './../components/handsontable/dist/handsontable.full.min',
                 Leaflet : './../components/leaflet-dist/leaflet',
                 Xeditable : './../components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable'
             }

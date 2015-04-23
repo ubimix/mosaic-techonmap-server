@@ -29,7 +29,7 @@ module.exports = {
         // setup e-mail data with unicode symbols
         var mailOptions = {
             from : message.user.name + ' <' + message.user.email + '>',
-            to : 'maria.nadejde@lafonderie-idf.fr',
+            to : 'techonmap@lafonderie-idf.fr',
             subject : message.subject,
             text : message.content
         };

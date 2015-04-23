@@ -5,6 +5,7 @@
   "dependencies": {
     "underscore": "*",
     "q":"*",
-    "yamljs":"0.1.0"
+    "yamljs":"0.1.0",
+    "csv-parse": "*"
   }
 }

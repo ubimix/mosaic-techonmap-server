@@ -226,8 +226,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         
         replaceTag(object, 'energie', 'énergie', file);
         replaceTag(object, 'multimedia', 'multimédia', file);
-        replaceTag(object, 'media', 'médias', file);
-        replaceTag(object, 'medias', 'médias', file);
+        replaceTag(object, 'média', 'médias', file);
         replaceTag(object, 'creation', 'création', file);
         replaceTag(object, 'edition', 'édition', file);
         replaceTag(object, 'ingenieur', 'ingénieur', file);
@@ -289,6 +288,41 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'telemedicine', 'santé', file);
         replaceTag(object, 'objects connectés', 'objets connectés', file);
         
+        replaceTag(object, 'Accelerate ','accélérateur', file);
+        replaceTag(object, 'Acceleration','accélérateur', file);
+        replaceTag(object, 'Accelérateur','accélérateur', file);
+        replaceTag(object, 'Accompagner','accompagnement', file);
+        replaceTag(object, 'Achat','achats', file);
+        replaceTag(object, 'Bandedessinnee','bande dessinée', file);
+        replaceTag(object, 'Bibliothèque digitale','bibliothèque', file);
+        replaceTag(object, 'Billeterie web','billetterie', file);
+        replaceTag(object, 'Billeterie','billetterie', file);
+        replaceTag(object, 'Biotechnologie','biotech', file);
+        replaceTag(object, 'Crowfunding','crowdfunding', file);
+        replaceTag(object, 'Objet connectée','objets connectés', file);
+        replaceTag(object, 'Défence','défense', file);
+        replaceTag(object, 'Développeurs','développeur', file);
+        replaceTag(object, 'éditeur de logiciel','éditeur de logiciels', file);
+        replaceTag(object, 'éditeurs de logiciels','éditeur de logiciels', file);
+        replaceTag(object, 'édition de logiciels','éditeur de logiciels', file);
+        replaceTag(object, 'entrepreneurs','entrepreneur', file);
+        replaceTag(object, 'entreprenariat','entrepreneur', file);
+        replaceTag(object, 'entrepreunariat','entrepreneur', file);
+        replaceTag(object, 'environment','environnement', file);
+        
+        replaceTag(object, 'Batiment','bâtiment', file);
+        replaceTag(object, 'Cafe','café', file);
+        replaceTag(object, 'Camera','caméra', file);
+        replaceTag(object, 'Creativite','créativité', file);
+        replaceTag(object, 'Echange','échange', file);
+        replaceTag(object, 'Echangedeservices','échange de services', file);
+        replaceTag(object, 'Ecole','école', file);
+        replaceTag(object, 'Economie','économie', file);
+        replaceTag(object, 'Editorial','éditorial', file);
+        replaceTag(object, 'Electronique','électronique', file);
+        replaceTag(object, 'Enquete','enquête', file);
+        replaceTag(object, 'Ereputation','ereputation', file);
+        replaceTag(object, 'Etudiants','étudiants', file);        
         
         
         removeTag(object, 'logiciels informatique', file);
