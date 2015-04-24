@@ -240,6 +240,48 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'apero', 'apéro', file);
         replaceTag(object, 'bandedessinee', 'bande dessinée', file);
         
+        replaceTag(object, 'évènements','événements', file);
+        replaceTag(object, 'open source','opensource', file);
+        //replaceTag(object, 'opendata','open data', file);
+        replaceTag(object, 'indépendant','indépendants', file);
+        replaceTag(object, 'poledecompetitivite','pôle de compétitivité', file);
+        replaceTag(object, 'restaurants','restauration', file);
+        replaceTag(object, 'restoration','restauration', file);
+        replaceTag(object, 'réseau social','réseaux sociaux', file);
+        replaceTag(object, 'santé,','santé', file);
+        replaceTag(object, 'seriousgaming','serious games', file);
+        replaceTag(object, 'smart city','smartcity', file);
+        replaceTag(object, 'objets','objets connectés', file);
+        replaceTag(object, 'ra','réalité augmentée', file);
+        replaceTag(object, 'pressedigitale','presse en ligne', file);
+        replaceTag(object, 'métier','métiers', file);
+        replaceTag(object, 'producteur','production', file);
+        replaceTag(object, 'transport','transports', file);
+        replaceTag(object, 'voitureavecchauffeur','transports', file);
+        
+        replaceTag(object, 'reputation','e-réputation', file);
+        
+        replaceTag(object, 'presentation','présentation', file);
+        replaceTag(object, 'prevention','prévention', file);
+        replaceTag(object, 'productivite','productivité', file);
+        replaceTag(object, 'proximite','proximité', file);
+        replaceTag(object, 'publicite','publicité', file);
+        replaceTag(object, 'realite virtuelle','réalité virtuelle', file);
+        replaceTag(object, 'referencement','référencement', file);
+        replaceTag(object, 'reseaux','réseaux', file);
+        replaceTag(object, 'retribution','rétribution', file);
+        replaceTag(object, 'reunion','réunions', file);
+        replaceTag(object, 'reunions','réunions', file);
+        replaceTag(object, 'strategie','stratégie', file);
+        replaceTag(object, 'telecentre,'télécentre', file);
+        replaceTag(object, 'teleservices','téléservices', file);
+        replaceTag(object, 'tlecoms','télécoms', file);
+        replaceTag(object, 'tvconnectee','tvconnectée', file);
+        replaceTag(object, 'universite','université', file);
+        replaceTag(object, 'universitecollaborative','université collaborative', file);
+
+        
+        
         replaceTag(object, 'transmedia', 'transmédia', file);
         
         replaceTag(object, 'integrateur', 'intégrateur', file);
