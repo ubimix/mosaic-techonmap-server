@@ -210,7 +210,7 @@ function(_, YAML, Moment, CodeMirror, Resource, Dialog) {
     Utils.formatDate = function(timestamp) {
         if (!timestamp)
             return '';
-        return moment(timestamp).lang('fr').calendar();
+        return Moment(timestamp).lang('fr').calendar();
     }
     
     
