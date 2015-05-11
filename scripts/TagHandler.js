@@ -273,7 +273,7 @@ Visitor.visit(dataFolder, function(file, directory) {
         replaceTag(object, 'reunion','réunions', file);
         replaceTag(object, 'reunions','réunions', file);
         replaceTag(object, 'strategie','stratégie', file);
-        replaceTag(object, 'telecentre,'télécentre', file);
+        replaceTag(object, 'telecentre','télécentre', file);
         replaceTag(object, 'teleservices','téléservices', file);
         replaceTag(object, 'tlecoms','télécoms', file);
         replaceTag(object, 'tvconnectee','tvconnectée', file);
