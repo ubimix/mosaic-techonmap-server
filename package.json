@@ -28,7 +28,7 @@
     "ntwitter": "*",
     "passport": "*",
     "passport-facebook": "*",
-    "passport-google": "*",
+    "passport-google-openidconnect": "*",
     "passport-local": "*",
     "passport-twitter": "*",
     "q": "*",
