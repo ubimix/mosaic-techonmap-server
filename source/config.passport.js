@@ -6,7 +6,7 @@ var _ = require('underscore');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
-var GoogleStrategy = require('passport-google').Strategy;
+var GoogleStrategy = require('passport-google-openidconnect').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var LinkedInStrategy = require('passport-linkedin').Strategy;
 
@@ -93,18 +93,15 @@ module.exports = function(app) {
 
     /* ------------------------------------------------------------ */
     // Google-based
+    var googleConfig = config.authentication.google;
+    if (googleConfig.oauthkeys) {
     passport.use(new GoogleStrategy({
-        returnURL : getRedirectUrl('/api/auth/google/return'),
-        realm : app.locals.baseUrl
-    }, function(identifier, profile, done) {
-        var accountId = null;
-        if (profile.emails && profile.emails.length) {
-            var obj = profile.emails[0];
-            accountId = obj ? obj.value : null;
-        }
-        accountId = getAccountId(accountId, 'gmail.com', profile.displayName);
+	clientID : googleConfig.oauthkeys.consumerKey,
+	clientSecret : googleConfig.oauthkeys.consumerSecret,
+        callbackURL : getRedirectUrl('/api/auth/google/return')
+    }, function(iss, sub, profile, accessToken, refreshToken, done) {
         var user = newUser({
-            accountId : accountId,
+            accountId : profile.id,
             displayName : profile.displayName,
             name : profile.name,
             provider : 'google'
@@ -113,15 +110,16 @@ module.exports = function(app) {
     }));
     app.get("/api/auth/google", function(req, res, next) {
         req.session.destination = req.query.redirect;
-        passport.authenticate('google', function(err, user, info) {
+        passport.authenticate('google-openidconnect', function(err, user, info) {
             next();
         })(req, res, next);
     });
 
-    app.get("/api/auth/google/return", passport.authenticate('google', {
+    app.get("/api/auth/google/return", passport.authenticate('google-openidconnect', {
         successRedirect : getRedirectUrl('/api/auth/done'),
         failureRedirect : getRedirectUrl('/login.html')
     }));
+    }
 
     /* ------------------------------------------------------------ */
     // Twitter-based
